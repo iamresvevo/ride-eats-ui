@@ -187,6 +187,8 @@ export function Dialog(props: {
   style?: React.CSSProperties;
 }): React.ReactElement | null;
 export function Modal(props: {
+  open?: boolean;
+  onAfterClose?: () => void;
   size?: "sm" | "lg";
   className?: string;
   title?: React.ReactNode;
@@ -451,6 +453,9 @@ export function AvatarGroup(
   props: StylingProps & {
     people: { id?: string | number; name: string; src?: string }[];
     max?: number;
+    size?: number;
+    overlap?: number;
+    onMore?: () => void;
     label?: string;
   },
 ): React.ReactElement;
@@ -584,4 +589,144 @@ export function PageHeader(
 ): React.ReactElement;
 export function Toolbar(
   props: React.HTMLAttributes<HTMLDivElement> & { trailing?: React.ReactNode },
+): React.ReactElement;
+
+export type AnimatedIconName =
+  | "bell"
+  | "heart"
+  | "check"
+  | "upload"
+  | "download"
+  | "search"
+  | "refresh"
+  | "settings"
+  | "folder"
+  | "send";
+export const animatedIconNames: AnimatedIconName[];
+export function AnimatedIcon(
+  props: Omit<React.SVGProps<SVGSVGElement>, "name"> & {
+    name: AnimatedIconName;
+    size?: number;
+    strokeWidth?: number;
+    playing?: boolean;
+    loop?: boolean;
+    label?: string;
+  },
+): React.ReactElement;
+export function Popover(
+  props: StylingProps & {
+    open: boolean;
+    onOpenChange: (value: boolean) => void;
+    trigger: (
+      props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+        ref: React.Ref<HTMLButtonElement>;
+      },
+    ) => React.ReactNode;
+    children?: React.ReactNode;
+    label?: string;
+    align?: "start" | "end";
+    width?: number;
+  },
+): React.ReactElement;
+export function Collapsible(
+  props: StylingProps & {
+    open: boolean;
+    onOpenChange: (value: boolean) => void;
+    title: React.ReactNode;
+    children?: React.ReactNode;
+  },
+): React.ReactElement;
+export function Steps(
+  props: StylingProps & {
+    items: {
+      value: string;
+      label: React.ReactNode;
+      description?: React.ReactNode;
+    }[];
+    value: string;
+    onValueChange?: (value: string) => void;
+    label?: string;
+    orientation?: "horizontal" | "vertical";
+  },
+): React.ReactElement;
+export function PinInput(
+  props: StylingProps & {
+    value: string;
+    onValueChange: (value: string) => void;
+    length?: number;
+    label?: string;
+    disabled?: boolean;
+    onComplete?: (value: string) => void;
+  },
+): React.ReactElement;
+export function ToggleGroup(
+  props: StylingProps & {
+    items: {
+      value: string;
+      label: string;
+      icon?: string;
+      disabled?: boolean;
+    }[];
+    value: string | null;
+    onValueChange: (value: string | null) => void;
+    multiple?: false;
+    disabled?: boolean;
+    label?: string;
+  },
+): React.ReactElement;
+export function ToggleGroup(
+  props: StylingProps & {
+    items: {
+      value: string;
+      label: string;
+      icon?: string;
+      disabled?: boolean;
+    }[];
+    value: string[];
+    onValueChange: (value: string[]) => void;
+    multiple: true;
+    disabled?: boolean;
+    label?: string;
+  },
+): React.ReactElement;
+export function Rating(
+  props: StylingProps & {
+    value: number;
+    onValueChange: (value: number) => void;
+    max?: number;
+    label?: string;
+    readOnly?: boolean;
+  },
+): React.ReactElement;
+export function ScrollArea(
+  props: StylingProps & {
+    children?: React.ReactNode;
+    header?: React.ReactNode;
+    height?: React.CSSProperties["maxHeight"];
+    label?: string;
+  },
+): React.ReactElement;
+export function Separator(
+  props: StylingProps & {
+    label?: React.ReactNode;
+    orientation?: "horizontal" | "vertical";
+  },
+): React.ReactElement;
+export function CommandMenu(
+  props: StylingProps & {
+    open: boolean;
+    onOpenChange: (value: boolean) => void;
+    items: {
+      value: string;
+      label: string;
+      icon?: string;
+      keywords?: string;
+      shortcut?: string;
+      disabled?: boolean;
+      onSelect?: () => void;
+    }[];
+    label?: string;
+    placeholder?: string;
+    shortcut?: boolean;
+  },
 ): React.ReactElement;

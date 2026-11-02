@@ -1,27 +1,28 @@
-import React from "react";
+import React, { useLayoutEffect, useRef, useState, useId } from "react";
 import { createPortal } from "react-dom";
-import { useLayoutEffect, useId, useRef } from "react";
 import Icon from "../Icon.jsx";
 import { t } from "../i18n.js";
-
-const modalStack = [];
+const stack = [];
 function syncStack() {
-  modalStack.forEach((element, index) => {
-    const depth = modalStack.length - index - 1;
+  stack.forEach((element, index) => {
+    const depth = stack.length - index - 1;
     element.dataset.stackDepth = String(depth);
     element.dataset.backdropOwner = String(index === 0);
     element.style.setProperty("--dialog-depth", String(depth));
     element.classList.toggle("is-behind", depth > 0);
-    element.inert = depth > 0;
+    element.inert = depth > 0 || element.dataset.closing === "true";
   });
+  document.body.classList.toggle("dialog-open", stack.length > 0);
 }
-let openModals = 0;
-let exitingModals = 0;
-
-function updateScrollLock() {
-  document.body.classList.toggle("dialog-open", openModals + exitingModals > 0);
+function restoreFocus(opener) {
+  const top = stack.at(-1);
+  if (
+    opener?.isConnected &&
+    !opener.closest("[inert]") &&
+    (!top || top.contains(opener))
+  )
+    opener.focus?.({ preventScroll: true });
 }
-
 // React's autoFocus runs while <dialog> is still closed. Focus editable content
 // after showModal(), and allow an asynchronously loaded form one initial focus.
 function focusFormOnOpen(element) {
@@ -68,73 +69,9 @@ function focusFormOnOpen(element) {
   return stop;
 }
 
-/**
- * React removes a closed dialog at once, so the close animation plays on an inert copy left in its place
- * for those 150ms. It shows the same pixels, takes no input, and is removed when the animation ends.
- */
-function playExit(element, opener) {
-  if (
-    !element.classList.contains("dialog") ||
-    matchMedia("(prefers-reduced-motion: reduce)").matches
-  )
-    return false;
-  const ghost = element.cloneNode(true);
-  ghost.inert = true;
-  ghost.removeAttribute("id");
-  ghost.removeAttribute("open");
-  ghost.classList.add("dialog-closing");
-  document.body.append(ghost);
-  try {
-    ghost.showModal();
-  } catch (error) {
-    ghost.remove();
-    throw error;
-  }
-  exitingModals++;
-  updateScrollLock();
-  const scrollers = element.querySelectorAll("*");
-  ghost.querySelectorAll("*").forEach((node, index) => {
-    if (scrollers[index]?.scrollTop)
-      node.scrollTop = scrollers[index].scrollTop;
-  });
-  // The copy is modal for a moment, so focus goes back to the opener once it is gone.
-  const done = () => {
-    if (!ghost.isConnected) return;
-    ghost.remove();
-    exitingModals--;
-    updateScrollLock();
-    // A newly opened dialog owns focus; closing an older one must not steal it.
-    const top = [
-      ...document.querySelectorAll("dialog[open]:not(.dialog-closing)"),
-    ].at(-1);
-    if (!top || top.contains(opener)) opener?.focus?.({ preventScroll: true });
-  };
-  ghost.addEventListener("animationend", (event) => {
-    if (
-      event.target === ghost &&
-      ["dialog-out", "re-dialog-out", "re-drawer-out"].includes(
-        event.animationName,
-      )
-    )
-      done();
-  });
-  setTimeout(done, 300);
-  return true;
-}
-
-/**
- * The app's one popup. Rendering it opens it; unmounting it closes it.
- *
- * It owns everything every popup needs: native modal behaviour (focus trap, Escape,
- * top layer), page scroll lock, returning focus to whatever opened it, and closing on
- * a backdrop click. `onClose` fires for Escape and backdrop clicks; the parent then
- * stops rendering it. `dismissable={false}` blocks both while something is saving.
- *
- * variant: 'dialog' (centred card) or 'screen' (covers the whole window).
- * `title` adds the standard header with a close button; popups without one label themselves.
- * `footer` keeps paging/actions outside the caller's scrollable content.
- */
+/** A real React-managed native dialog. Keep it mounted and control `open` for animated exits. */
 export default function Modal({
+  open = true,
   variant = "dialog",
   size,
   className = "",
@@ -145,57 +82,111 @@ export default function Modal({
   dismissable = true,
   closeOnBackdrop = true,
   onClose,
+  onAfterClose,
   children,
   footer,
 }) {
-  const dialog = useRef(null);
-  const titleId = useId();
-
+  const [mounted, setMounted] = useState(open);
+  if (open && !mounted) setMounted(true);
+  const openerRef = useRef(null);
+  const dialog = useRef(null),
+    titleId = useId(),
+    latest = useRef({ onClose, onAfterClose });
+  latest.current = { onClose, onAfterClose };
   useLayoutEffect(() => {
-    const element = dialog.current;
-    const active = document.activeElement;
-    // Menu items disappear when their menu closes. Return to its persistent trigger.
-    const opener =
+    if (!mounted) {
+      openerRef.current = null;
+      return;
+    }
+    const element = dialog.current,
+      active = document.activeElement;
+    const candidate =
       active
-        .closest('[role="menu"]')
+        ?.closest('[role="menu"]')
         ?.parentElement.querySelector('[aria-haspopup="menu"]') || active;
-    modalStack.push(element);
-    syncStack();
-    openModals++;
-    updateScrollLock();
+    if (!openerRef.current) openerRef.current = candidate;
+    const opener = openerRef.current;
     element.dataset.entered = "false";
+    element.dataset.closing = "false";
+    stack.push(element);
+    syncStack();
+    element.showModal();
     const enterTimer = setTimeout(() => {
       element.dataset.entered = "true";
     }, 280);
-    element.showModal();
-    const stopInitialFocus = focusFormOnOpen(element);
+    const stopFocus = focusFormOnOpen(element);
     return () => {
       clearTimeout(enterTimer);
-      stopInitialFocus();
-      // React replays effects in StrictMode without removing the dialog. Only a
-      // real unmount gets an exit copy; otherwise it covers the new opening.
-      queueMicrotask(() => {
-        if (!element.isConnected) {
-          let animated = false;
-          try {
-            animated = playExit(element, opener);
-          } catch {
-            /* closing still works without animation */
-          }
-          if (!animated) opener?.focus?.({ preventScroll: true });
-        }
-        updateScrollLock();
-      });
-      const index = modalStack.indexOf(element);
-      if (index >= 0) modalStack.splice(index, 1);
-      element.inert = false;
+      stopFocus();
+      const index = stack.indexOf(element);
+      if (index >= 0) stack.splice(index, 1);
       syncStack();
       element.close();
-      openModals--;
+      queueMicrotask(() => restoreFocus(opener));
     };
-  }, []);
-
-  if (typeof document === "undefined") return null;
+  }, [mounted]);
+  useLayoutEffect(() => {
+    if (!mounted) return;
+    const element = dialog.current;
+    if (open) {
+      element.dataset.closing = "false";
+      element.classList.remove("dialog-closing");
+      element.style.animation = "";
+      element.style.transition = "";
+      syncStack();
+      return;
+    }
+    let cancelled = false,
+      finished = false,
+      animation;
+    const done = () => {
+      if (cancelled || finished) return;
+      finished = true;
+      setMounted(false);
+      latest.current.onAfterClose?.();
+    };
+    const current = getComputedStyle(element),
+      from = {
+        opacity: current.opacity,
+        transform:
+          current.transform === "none"
+            ? "matrix(1,0,0,1,0,0)"
+            : current.transform,
+      };
+    element.dataset.closing = "true";
+    element.classList.add("dialog-closing");
+    element.style.animation = "none";
+    element.style.transition = "none";
+    syncStack();
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const duration = reduced
+      ? 0
+      : variant === "dialog" && className.includes("re-drawer")
+        ? 220
+        : 180;
+    const timer = setTimeout(done, duration + 40);
+    if (reduced) done();
+    else {
+      const drawer = className.includes("re-drawer");
+      const offset = drawer
+        ? ` translateX(${className.includes("re-drawer-left") ? "-24" : "24"}px)`
+        : " translateY(8px) scale(.98)";
+      animation = element.animate(
+        [from, { opacity: 0, transform: from.transform + offset }],
+        { duration, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
+      );
+      animation.finished.then(done, () => {});
+    }
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      animation?.cancel();
+    };
+  }, [open, mounted]);
+  if (!mounted || typeof document === "undefined") return null;
+  const requestClose = () => {
+    if (open && dismissable) latest.current.onClose?.();
+  };
   return createPortal(
     <dialog
       ref={dialog}
@@ -203,27 +194,22 @@ export default function Modal({
       className={`${variant === "screen" ? "viewer" : "dialog"} ${size ? "dialog-" + size : ""} ${className}`.trim()}
       aria-label={label}
       aria-labelledby={title ? titleId : labelledBy}
-      // Escape: let the parent decide, rather than the dialog closing itself out of sync with React.
-      // If the browser closes it anyway (a second Escape), keep React in step.
       onClose={() => {
-        // Ignore a queued close from development effect cleanup after reopening.
-        if (dialog.current?.isConnected && !dialog.current.open) onClose();
+        if (open && dialog.current?.isConnected && !dialog.current.open)
+          requestClose();
       }}
       onCancel={(event) => {
-        // A file picker closed without choosing also fires `cancel`, and it bubbles up to here: only Escape on the dialog itself closes it.
         if (event.target !== dialog.current) return;
         event.preventDefault();
-        if (dismissable) onClose();
+        requestClose();
       }}
-      // A click on the backdrop lands on the dialog element itself.
       onClick={(event) => {
         if (
-          dismissable &&
           closeOnBackdrop &&
           variant === "dialog" &&
           event.target === dialog.current
         )
-          onClose();
+          requestClose();
       }}
     >
       {title && (
@@ -233,8 +219,8 @@ export default function Modal({
             type="button"
             className="btn btn-ghost btn-icon"
             aria-label={t("Close")}
-            disabled={!dismissable}
-            onClick={onClose}
+            disabled={!dismissable || !open}
+            onClick={requestClose}
           >
             <Icon name="close" />
           </button>

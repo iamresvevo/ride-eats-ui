@@ -2,6 +2,239 @@
 
 See [implementation](implementation.md) for a complete starter and integration rules. Every component is exported from `@ride-eats/ui`.
 
+## Animated Icons
+
+Ten purpose-built SVG motions: a ringing bell, beating heart, drawing check, moving upload/download arrows, searching lens, refreshing arrows, adjusting sliders, opening folder and flying send glyph. Hover, click, or replay the collection.
+
+```jsx
+import { AnimatedIcon, Button } from '@ride-eats/ui';
+
+<AnimatedIcon name="bell" size={28} />
+<AnimatedIcon name="check" playing />
+<AnimatedIcon name="refresh" playing loop />
+// Hover/focus on a parent button also triggers the icon.
+<Button><AnimatedIcon name="send" /> Send files</Button>
+```
+
+| Prop                       | Type                                                                                   | Purpose                                            |
+| -------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| name                       | bell / heart / check / upload / download / search / refresh / settings / folder / send | A motion designed for that glyph.                  |
+| playing / loop             | boolean                                                                                | Play explicitly or repeat. Hover/focus also plays. |
+| size / strokeWidth / label | number / number / string                                                               | SVG appearance and accessibility.                  |
+
+## Popover
+
+A floating, native top-layer panel for small forms and contextual details. It positions beside its trigger, escapes clipping, and dismisses on outside click or Escape.
+
+```jsx
+import { useState } from "react";
+import { Popover, Button } from "@ride-eats/ui";
+
+const [open, setOpen] = useState(false);
+<Popover
+  open={open}
+  onOpenChange={setOpen}
+  label="Share settings"
+  trigger={(props) => <Button {...props}>Share settings</Button>}
+>
+  <p>Anyone with the link can view this transfer.</p>
+  <Button onClick={() => setOpen(false)}>Done</Button>
+</Popover>;
+```
+
+| Prop                             | Type                       | Purpose                                                     |
+| -------------------------------- | -------------------------- | ----------------------------------------------------------- |
+| open / onOpenChange              | boolean / callback         | Controlled native popover.                                  |
+| trigger                          | (buttonProps) => ReactNode | Spread the supplied ref and handlers.                       |
+| label / children / width / align | content and placement      | Dialog label, panel body, pixel width, start/end alignment. |
+
+## Command Menu
+
+Keyboard-first actions with filtering, arrow navigation and a native dialog. Enable the optional Ctrl/⌘K shortcut for a global launcher.
+
+```jsx
+import { useState } from 'react';
+import { CommandMenu, Button } from '@ride-eats/ui';
+
+const [open, setOpen] = useState(false);
+<Button onClick={() => setOpen(true)}>Quick actions</Button>
+<CommandMenu open={open} onOpenChange={setOpen} shortcut
+  items={[
+    { value:'new',label:'New transfer',icon:'plus',onSelect:createTransfer },
+    { value:'team',label:'Open team',icon:'team',keywords:'people members',onSelect:openTeam },
+  ]} />
+```
+
+| Prop                | Type               | Purpose                                                        |
+| ------------------- | ------------------ | -------------------------------------------------------------- |
+| open / onOpenChange | boolean / callback | Controlled launcher.                                           |
+| items               | CommandItem[]      | value, label, icon, keywords, shortcut, disabled and onSelect. |
+| shortcut            | boolean            | Optionally register Ctrl/⌘K.                                   |
+
+## Collapsible
+
+One expandable section, with a rotating chevron and animated content height. Use it for optional settings and extra details.
+
+```jsx
+import { useState } from "react";
+import { Collapsible } from "@ride-eats/ui";
+
+const [open, setOpen] = useState(false);
+<Collapsible title="Advanced settings" open={open} onOpenChange={setOpen}>
+  <YourSettings />
+</Collapsible>;
+```
+
+| Prop                | Type               | Purpose              |
+| ------------------- | ------------------ | -------------------- |
+| open / onOpenChange | boolean / callback | Expanded state.      |
+| title / children    | ReactNode          | Trigger and content. |
+
+## Steps
+
+A compact wizard progress rail with completed, current and upcoming steps. Supports horizontal or vertical layouts and optional step navigation.
+
+```jsx
+import { useState } from "react";
+import { Steps } from "@ride-eats/ui";
+
+const [step, setStep] = useState("details");
+<Steps
+  value={step}
+  onValueChange={setStep}
+  items={[
+    { value: "details", label: "Details", description: "Name your transfer" },
+    { value: "files", label: "Files", description: "Choose what to share" },
+    { value: "review", label: "Review", description: "Ready to send" },
+  ]}
+/>;
+```
+
+| Prop                  | Type                         | Purpose                               |
+| --------------------- | ---------------------------- | ------------------------------------- |
+| items                 | {value,label,description?}[] | Ordered steps.                        |
+| value / onValueChange | string / optional callback   | Current step and optional navigation. |
+| orientation           | horizontal / vertical        | Layout direction.                     |
+
+## PIN Input
+
+One real input with individual visual cells, so pasting, numeric keyboards and one-time-code autofill work naturally.
+
+```jsx
+import { useState } from "react";
+import { PinInput } from "@ride-eats/ui";
+
+const [code, setCode] = useState("");
+<PinInput
+  label="Verification code"
+  value={code}
+  onValueChange={setCode}
+  length={6}
+  onComplete={(code) => verifyCode(code)}
+/>;
+```
+
+| Prop                      | Type                      | Purpose                                     |
+| ------------------------- | ------------------------- | ------------------------------------------- |
+| value / onValueChange     | string / callback         | Digits only, controlled.                    |
+| length / label / disabled | number / string / boolean | Cell count and field configuration.         |
+| onComplete                | (code) => void            | Called when a new complete code is entered. |
+
+## Toggle Group
+
+A compact toolbar for one or several independent selections, with native pressed states and soft selection transitions.
+
+```jsx
+import { useState } from "react";
+import { ToggleGroup } from "@ride-eats/ui";
+
+const [format, setFormat] = useState(["bold"]);
+<ToggleGroup
+  label="Text formatting"
+  multiple
+  value={format}
+  onValueChange={setFormat}
+  items={[
+    { value: "bold", label: "Bold", icon: "bold" },
+    { value: "italic", label: "Italic", icon: "italic" },
+  ]}
+/>;
+```
+
+| Prop                  | Type                                 | Purpose                          |
+| --------------------- | ------------------------------------ | -------------------------------- |
+| items                 | {value,label,icon?,disabled?}[]      | Toggle controls.                 |
+| value / onValueChange | string / null or string[] / callback | Single or multiple selection.    |
+| multiple / disabled   | boolean                              | Selection mode and availability. |
+
+## Rating
+
+A small, keyboard-accessible star rating with native radio behavior and a restrained hover lift.
+
+```jsx
+import { useState } from "react";
+import { Rating } from "@ride-eats/ui";
+
+const [rating, setRating] = useState(4);
+<Rating
+  label="How was your experience?"
+  value={rating}
+  onValueChange={setRating}
+  max={5}
+/>;
+```
+
+| Prop                   | Type              | Purpose                                        |
+| ---------------------- | ----------------- | ---------------------------------------------- |
+| value / onValueChange  | number / callback | Chosen rating, 1-based.                        |
+| max / label / readOnly | configuration     | Star count, group label and display-only mode. |
+
+## Scroll Area
+
+A contained, keyboard-scrollable region with a sticky header for search, filters or section labels.
+
+```jsx
+import { ScrollArea } from "@ride-eats/ui";
+
+<ScrollArea
+  height={240}
+  label="Team members"
+  header={
+    <input
+      type="search"
+      placeholder="Find a member…"
+      aria-label="Find a member"
+    />
+  }
+>
+  {members.map((member) => (
+    <YourRow key={member.id} member={member} />
+  ))}
+</ScrollArea>;
+```
+
+| Prop                      | Type                      | Purpose                              |
+| ------------------------- | ------------------------- | ------------------------------------ |
+| height                    | number or CSS length      | Maximum region height.               |
+| header / children         | ReactNode                 | Sticky header and scrolling content. |
+| label / className / style | accessibility and styling | Region name and appearance.          |
+
+## Separator
+
+A quiet dividing line with an optional label, in horizontal or vertical layouts.
+
+```jsx
+import { Separator } from '@ride-eats/ui';
+
+<Separator label="or continue with" />
+<Separator orientation="vertical" />
+```
+
+| Prop        | Type                  | Purpose              |
+| ----------- | --------------------- | -------------------- |
+| label       | ReactNode             | Optional line label. |
+| orientation | horizontal / vertical | Divider direction.   |
+
 ## Icon Library
 
 2,015 bundled Lucide icons plus Send’s own glyphs. Search by name or purpose, adjust size and stroke, preview motion, and copy the exact React code.
@@ -180,13 +413,38 @@ A compact check with a soft scale transition, a real native input and indetermin
 import { useState } from "react";
 import { Checkbox } from "@ride-eats/ui";
 
-const [checked, setChecked] = useState(false);
+const files = [
+  { id: "brief", name: "Campaign brief.pdf" },
+  { id: "assets", name: "Brand assets.zip" },
+];
+const [selected, setSelected] = useState(["brief"]);
+const all = selected.length === files.length;
+const mixed = selected.length > 0 && !all;
+
 <Checkbox
-  label="Notify my team"
-  hint="Send one update when the transfer is ready."
-  checked={checked}
-  onCheckedChange={setChecked}
+  label="Select all files"
+  checked={all}
+  indeterminate={mixed}
+  onCheckedChange={(checked) =>
+    setSelected(checked ? files.map((file) => file.id) : [])
+  }
 />;
+{
+  files.map((file) => (
+    <Checkbox
+      key={file.id}
+      label={file.name}
+      checked={selected.includes(file.id)}
+      onCheckedChange={(checked) =>
+        setSelected((current) =>
+          checked
+            ? [...current, file.id]
+            : current.filter((id) => id !== file.id),
+        )
+      }
+    />
+  ));
+}
 ```
 
 | Prop                      | Type               | Purpose                       |
@@ -301,11 +559,17 @@ import { PasswordInput } from "@ride-eats/ui";
 Increment and decrement controls around a directly editable number.
 
 ```jsx
-import { useState } from 'react';
-import { Number Input } from '@ride-eats/ui';
+import { useState } from "react";
+import { NumberInput } from "@ride-eats/ui";
 
 const [quantity, setQuantity] = useState(2);
-<NumberInput label="Copies" value={quantity} onValueChange={setQuantity} min={1} max={20} />
+<NumberInput
+  label="Copies"
+  value={quantity}
+  onValueChange={setQuantity}
+  min={1}
+  max={20}
+/>;
 ```
 
 | Prop                  | Type              | Purpose                      |
@@ -340,13 +604,16 @@ import { Breadcrumbs } from "@ride-eats/ui";
 Overlapping team identities with a measured hover lift and overflow count.
 
 ```jsx
-import { Avatar Group } from '@ride-eats/ui';
+import { AvatarGroup } from "@ride-eats/ui";
 
-<AvatarGroup max={4} people={[
-  { id: 'alex', name: 'Alex Rivera', src: '/alex.jpg' },
-  { id: 'sam', name: 'Sam Chen' },
-  { id: 'jordan', name: 'Jordan Lee' },
-]} />
+<AvatarGroup
+  max={4}
+  people={[
+    { id: "alex", name: "Alex Rivera", src: "/alex.jpg" },
+    { id: "sam", name: "Sam Chen" },
+    { id: "jordan", name: "Jordan Lee" },
+  ]}
+/>;
 ```
 
 | Prop   | Type              | Purpose                       |
@@ -360,10 +627,14 @@ import { Avatar Group } from '@ride-eats/ui';
 Copy a value, then show a quiet checked confirmation. Failures stay visible.
 
 ```jsx
-import { Copy Button } from '@ride-eats/ui';
+import { CopyButton } from "@ride-eats/ui";
 
-<CopyButton value="https://example.com/shared/abc" label="Copy link"
-  copiedLabel="Link copied" onCopy={() => console.log('Copied')} />
+<CopyButton
+  value="https://example.com/shared/abc"
+  label="Copy link"
+  copiedLabel="Link copied"
+  onCopy={() => console.log("Copied")}
+/>;
 ```
 
 | Prop                | Type      | Purpose                      |
@@ -377,11 +648,16 @@ import { Copy Button } from '@ride-eats/ui';
 A compact upload target with drag feedback, keyboard selection, size checks and file-type validation. Your app handles uploading.
 
 ```jsx
-import { File Dropzone } from '@ride-eats/ui';
+import { FileDropzone } from "@ride-eats/ui";
 
-<FileDropzone accept="image/*,.pdf" maxSize={10 * 1024 * 1024} multiple
-  onFiles={files => setFiles(files)}
-  label="Drop your files here" description="or browse from your device" />
+<FileDropzone
+  accept="image/*,.pdf"
+  maxSize={10 * 1024 * 1024}
+  multiple
+  onFiles={(files) => setFiles(files)}
+  label="Drop your files here"
+  description="or browse from your device"
+/>;
 ```
 
 | Prop                           | Type                     | Purpose                                    |

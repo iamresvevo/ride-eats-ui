@@ -1,7 +1,10 @@
+import { motionPages } from "./motion-data.js";
+import MotionDemos from "./MotionDemos.jsx";
 import { collectionPages } from "./collection-data.js";
 import {
   CollectionDemo,
   StackedDialogDemo,
+  SimpleDialogDemo,
   CardsDemo,
   ToastDemo,
 } from "./CollectionDemos.jsx";
@@ -45,6 +48,7 @@ const {
 } = UI;
 const repo = "https://github.com/iamresvevo/ride-eats-ui";
 const components = [
+  ...motionPages,
   ...collectionPages,
   {
     id: "segmented",
@@ -236,8 +240,13 @@ const components = [
     group: "Feedback",
     description: "A focused moment, with a soft landing.",
     detail:
-      "Send’s native modal with Tools-style depth stacking: edit a draft, Cancel, then choose Keep editing or Discard changes in a second sheet. The underlying draft and focus are preserved.",
-    code: `<Dialog\n  open={open}\n  onOpenChange={setOpen}\n  title="Create a folder"\n  footer={<Button variant="primary" onClick={save}>Create folder</Button>}\n>\n  <Field label="Folder name"><input placeholder="Untitled folder" /></Field>\n</Dialog>`,
+      "A single native dialog with a smooth React-managed exit, keyboard focus and one backdrop. For a draft and discard confirmation, open the separate Stacked Dialogs example.",
+    code: `const [open, setOpen] = useState(false);
+<Button onClick={() => setOpen(true)}>Open dialog</Button>
+<Dialog open={open} onOpenChange={setOpen} title="Transfer details"
+  footer={<Button onClick={() => setOpen(false)}>Done</Button>}>
+  <p>Campaign assets contains 12 files, ready to share.</p>
+</Dialog>`,
     props: [
       ["open", "boolean", "Controlled visibility."],
       ["onOpenChange", "(open) => void", "Dismissal callback."],
@@ -455,6 +464,8 @@ function Demo({ id }) {
       ].filter((p) => p.label.toLowerCase().includes(q.toLowerCase())),
     [],
   );
+  if (motionPages.some((page) => page.id === id))
+    return <MotionDemos id={id} />;
   if (collectionPages.some((page) => page.id === id))
     return <CollectionDemo id={id} />;
   switch (id) {
@@ -643,7 +654,7 @@ function Demo({ id }) {
     case "date-time":
       return <DateTimePicker value={date} onChange={setDate} future />;
     case "dialog":
-      return <StackedDialogDemo />;
+      return <SimpleDialogDemo />;
     case "skeleton":
       return (
         <Skeleton label="Loading account">
@@ -859,7 +870,7 @@ function App() {
           ]}
           activeValue={selected ? "overview" : current}
           onNavigate={(item) => navigate(item.value)}
-          guestContent={<Badge>v0.3.0</Badge>}
+          guestContent={<Badge>v0.4.0</Badge>}
           extras={
             <>
               <a
@@ -922,6 +933,7 @@ function App() {
           ))}
         </div>
         {[
+          "Motion",
           "Navigation",
           "Actions",
           "Inputs",
@@ -1096,7 +1108,7 @@ function App() {
               component. React 19 or newer.
             </p>
             <h2 className="doc-heading">1. Install a reviewed version</h2>
-            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.3.0"}</Code>
+            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.4.0"}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
             <Code>{`import { ThemeProvider, ToastProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ThemeProvider defaultTheme="system">\n      <ToastProvider>\n        <Button variant="primary">Hello, Studio</Button>\n      </ToastProvider>\n    </ThemeProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>
@@ -1287,13 +1299,6 @@ function App() {
             Ride Eats UI <span className="footer-dot">·</span> Built from the
             details.
           </span>
-          <a
-            href={`${repo}/blob/main/docs/source-map.md`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Extracted from Send ↗
-          </a>
         </footer>
       </main>
     </div>

@@ -108,10 +108,20 @@ export function ToastProvider({ children, maxVisible = 3 }) {
     [],
   );
   const answer = useCallback((id, value) => {
-    const resolve = pending.current.get(id);
-    pending.current.delete(id);
-    setRequests((current) => current.filter((item) => item.id !== id));
-    resolve?.(value);
+    setRequests((current) =>
+      current.map((item) =>
+        item.id === id && !item.closing
+          ? { ...item, closing: true, answer: value }
+          : item,
+      ),
+    );
+  }, []);
+  const finishAnswer = useCallback((request) => {
+    setRequests((current) => current.filter((item) => item.id !== request.id));
+    const resolve = pending.current.get(request.id);
+    pending.current.delete(request.id);
+    // Resolve only after the real top sheet has left React and the native stack.
+    requestAnimationFrame(() => resolve?.(request.answer === true));
   }, []);
   const context = useMemo(() => ({ toast, confirm }), [toast, confirm]);
   const request = requests[0];
@@ -121,6 +131,8 @@ export function ToastProvider({ children, maxVisible = 3 }) {
       {request && (
         <Modal
           key={request.id}
+          open={!request.closing}
+          onAfterClose={() => finishAnswer(request)}
           labelledBy={titleId}
           className="confirm-dialog"
           onClose={() => answer(request.id, false)}

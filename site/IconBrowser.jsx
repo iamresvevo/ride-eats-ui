@@ -4,7 +4,7 @@ import {
   iconNames,
   Button,
   Select,
-  Slider,
+  Segmented,
   useToast,
 } from "../react/index.jsx";
 import { iconTags } from "../react/icons/search.js";
@@ -80,7 +80,10 @@ export default function IconBrowser() {
     const pool =
       terms.length || category !== "All"
         ? iconNames
-        : [...popular, ...iconNames.filter((name) => !popular.includes(name))];
+        : [
+            ...popular.filter((name) => iconNames.includes(name)),
+            ...iconNames.filter((name) => !popular.includes(name)),
+          ];
     return pool.filter((name) => {
       const text = (
         name +
@@ -113,19 +116,19 @@ export default function IconBrowser() {
         <span>{filtered.length.toLocaleString()} icons</span>
       </div>
       <div className="icon-browser-categories">
-        {Object.keys(categories).map((name) => (
-          <button
-            type="button"
-            key={name}
-            aria-pressed={category === name}
-            onClick={() => {
-              setCategory(name);
-              setLimit(72);
-            }}
-          >
-            {name}
-          </button>
-        ))}
+        <Segmented
+          name="Icon category"
+          fit
+          value={category}
+          onChange={(name) => {
+            setCategory(name);
+            setLimit(72);
+          }}
+          options={Object.keys(categories).map((value) => ({
+            value,
+            label: value,
+          }))}
+        />
       </div>
       <div className="icon-workbench">
         <div className="icon-selected">
@@ -141,46 +144,64 @@ export default function IconBrowser() {
           <strong>{selected}</strong>
         </div>
         <div className="icon-controls">
-          <Slider
-            label="Size"
-            min={16}
-            max={48}
-            step={2}
-            value={size}
-            onValueChange={setSize}
-            formatValue={(v) => v + " px"}
-          />
           <div className="icon-control-row">
-            <Select
-              label="Stroke width"
-              value={stroke}
-              onValueChange={setStroke}
-              options={[
-                { value: "1.5", label: "Fine · 1.5" },
-                { value: "1.7", label: "Send · 1.7" },
-                { value: "2", label: "Regular · 2" },
-                { value: "2.5", label: "Bold · 2.5" },
-              ]}
-            />
-            <Select
-              label="Icon motion"
-              value={motion}
-              onValueChange={setMotion}
-              options={[
-                "none",
-                "draw",
-                "spin",
-                "pulse",
-                "bounce",
-                "rotate",
-              ].map((value) => ({
-                value,
-                label:
-                  value === "none"
-                    ? "No motion"
-                    : value[0].toUpperCase() + value.slice(1),
-              }))}
-            />
+            <div className="icon-choice-field">
+              <span>Size</span>
+              <div className="icon-choice-scroll">
+                <Segmented
+                  name="Icon size"
+                  fit
+                  value={String(size)}
+                  onChange={(value) => setSize(Number(value))}
+                  options={[16, 20, 24, 32, 40, 48].map((value) => ({
+                    value: String(value),
+                    label: value + " px",
+                  }))}
+                />
+              </div>
+            </div>
+            <div className="icon-choice-field">
+              <span>Stroke</span>
+              <div className="icon-choice-scroll">
+                <Segmented
+                  name="Icon stroke"
+                  fit
+                  value={stroke}
+                  onChange={setStroke}
+                  options={[
+                    { value: "1.5", label: "Fine" },
+                    { value: "1.7", label: "Send" },
+                    { value: "2", label: "Regular" },
+                    { value: "2.5", label: "Bold" },
+                  ]}
+                />
+              </div>
+            </div>
+            <div className="icon-choice-field">
+              <span>Motion</span>
+              <div className="icon-choice-scroll">
+                <Segmented
+                  name="Icon motion"
+                  fit
+                  value={motion}
+                  onChange={setMotion}
+                  options={[
+                    "none",
+                    "draw",
+                    "spin",
+                    "pulse",
+                    "bounce",
+                    "rotate",
+                  ].map((value) => ({
+                    value,
+                    label:
+                      value === "none"
+                        ? "Still"
+                        : value[0].toUpperCase() + value.slice(1),
+                  }))}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

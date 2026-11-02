@@ -282,3 +282,80 @@ test("custom SVG glyphs use the same accessible Icon API", () => {
   assert.match(html, /data-motion="draw"/);
   assert.match(html, /M4 4h16v16H4Z/);
 });
+
+test("animated icons contain native SVG motion and no animated view wrapper", () => {
+  for (const name of UI.animatedIconNames) {
+    const html = render("AnimatedIcon", { name, size: 28, playing: true });
+    assert.match(html, /<svg/);
+    assert.match(html, /<animate(?:Transform)? /);
+    assert.doesNotMatch(html, /<div/);
+    assert.doesNotMatch(html, /animation:/);
+  }
+  assert.match(render("AnimatedIcon", { name: "heart" }), /attributeName="d"/);
+  assert.match(
+    render("AnimatedIcon", { name: "check" }),
+    /attributeName="stroke-dashoffset"/,
+  );
+  assert.match(
+    render("Icon", { name: "check", motion: "draw" }),
+    /attributeName="stroke-dashoffset"/,
+  );
+});
+test("new platform controls expose native interaction semantics", () => {
+  const noop = () => {};
+  const cases = [
+    [
+      "Popover",
+      {
+        open: false,
+        onOpenChange: noop,
+        trigger: (props) => React.createElement("button", props, "Details"),
+        children: "Content",
+      },
+    ],
+    [
+      "Collapsible",
+      {
+        open: false,
+        onOpenChange: noop,
+        title: "Details",
+        children: "Content",
+      },
+    ],
+    ["Steps", { items: [{ value: "a", label: "Details" }], value: "a" }],
+    ["PinInput", { value: "123", onValueChange: noop }],
+    [
+      "ToggleGroup",
+      {
+        items: [{ value: "a", label: "Bold" }],
+        value: ["a"],
+        multiple: true,
+        onValueChange: noop,
+      },
+    ],
+    ["Rating", { value: 4, onValueChange: noop }],
+    ["ScrollArea", { header: "Search", children: "Rows" }],
+    ["Separator", { label: "or" }],
+  ];
+  for (const [name, props] of cases)
+    assert.ok(render(name, props).length > 0, name);
+  assert.match(
+    render("PinInput", { value: "123", onValueChange: noop }),
+    /autoComplete="one-time-code"/i,
+  );
+  assert.match(
+    render("Steps", { items: [{ value: "a", label: "Details" }], value: "a" }),
+    /aria-current="step"/,
+  );
+});
+
+test("copyable component examples import existing public exports", async () => {
+  const { collectionPages } = await import("../site/collection-data.js");
+  const { motionPages } = await import("../site/motion-data.js");
+  for (const page of [...collectionPages, ...motionPages])
+    for (const raw of page.imports.split(",")) {
+      const name = raw.trim();
+      assert.match(name, /^[A-Za-z_$][\w$]*$/, page.id);
+      assert.ok(name in UI, `${page.id}: missing ${name}`);
+    }
+});

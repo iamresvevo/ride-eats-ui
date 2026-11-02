@@ -1,4 +1,10 @@
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import Icon from "./send/Icon.jsx";
 import Avatar from "./send/AccountAvatar.jsx";
 import Modal from "./send/ui/Modal.jsx";
@@ -106,9 +112,9 @@ export function Checkbox({
   inputProps = {},
 }) {
   const input = useRef(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     input.current.indeterminate = indeterminate;
-  }, [indeterminate]);
+  });
   return (
     <label
       className={`re-check ${disabled ? "is-disabled" : ""} ${className}`}
@@ -119,7 +125,11 @@ export function Checkbox({
         ref={input}
         type="checkbox"
         checked={checked}
-        onChange={(e) => onCheckedChange(e.target.checked)}
+        onChange={(e) => {
+          const next = e.target.checked;
+          e.target.indeterminate = indeterminate;
+          onCheckedChange(next);
+        }}
         disabled={disabled}
       />
       <span className="re-check-box" aria-hidden="true">
@@ -289,7 +299,7 @@ export function NumberInput({
 }) {
   const id = useId();
   const [draft, setDraft] = useState(String(value));
-  useEffect(() => setDraft(String(value)), [value]);
+  useLayoutEffect(() => setDraft(String(value)), [value]);
   const clamp = (number) => Math.min(max, Math.max(min, number));
   return (
     <div className={`re-number ${className}`} style={style}>
@@ -303,7 +313,7 @@ export function NumberInput({
             onValueChange(clamp(Number((value - step).toFixed(10))))
           }
         >
-          −
+          <Icon name="minus" />
         </button>
         <input
           id={id}
@@ -338,7 +348,7 @@ export function NumberInput({
             onValueChange(clamp(Number((value + step).toFixed(10))))
           }
         >
-          +
+          <Icon name="plus" />
         </button>
       </div>
     </div>
@@ -375,33 +385,46 @@ export function AvatarGroup({
   people,
   max = 4,
   label = "Team members",
+  size = 40,
+  overlap = 12,
+  onMore,
   className = "",
   style,
 }) {
-  const visible = people.slice(0, max);
+  const count = Math.max(0, Math.floor(max)),
+    visible = people.slice(0, count),
+    extra = people.length - visible.length;
+  const More = onMore ? "button" : "span";
   return (
     <div
       className={`re-avatar-group ${className}`}
-      style={style}
+      style={{
+        "--avatar-size": `${size}px`,
+        "--avatar-overlap": `${overlap}px`,
+        ...style,
+      }}
       aria-label={label}
     >
       {visible.map((person, i) => (
         <span
           key={person.id || i}
           className="re-avatar-person"
+          style={{ "--avatar-index": visible.length - i }}
           title={person.name}
           aria-label={person.name}
         >
           <Avatar {...person} />
         </span>
       ))}
-      {people.length > max && (
-        <span
+      {extra > 0 && (
+        <More
+          type={onMore ? "button" : undefined}
           className="re-avatar-more"
-          aria-label={`${people.length - max} more members`}
+          aria-label={`${extra} more members`}
+          onClick={onMore}
         >
-          +{people.length - max}
-        </span>
+          +{extra}
+        </More>
       )}
     </div>
   );
@@ -580,8 +603,9 @@ export function Drawer({
   className = "",
   style,
 }) {
-  return open ? (
+  return (
     <Modal
+      open={open}
       title={title}
       className={`re-drawer re-drawer-${side} ${className}`}
       style={style}
@@ -590,7 +614,7 @@ export function Drawer({
     >
       {children}
     </Modal>
-  ) : null;
+  );
 }
 export function DataTable({
   columns,
@@ -629,6 +653,13 @@ export function DataTable({
     >
       <table>
         {caption && <caption>{caption}</caption>}
+        <colgroup>
+          {selectable && <col style={{ width: 44 }} />}
+          {columns.map((column) => (
+            <col key={column.key} style={{ width: column.width }} />
+          ))}
+          {rowActions && <col style={{ width: 72 }} />}
+        </colgroup>
         <thead>
           <tr>
             {selectable && (

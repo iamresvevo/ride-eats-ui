@@ -137,3 +137,41 @@ export function PlatformExample() {
     </>
   );
 }
+import {
+  AnimatedIcon,
+  Popover,
+  CommandMenu,
+  PinInput,
+  ToggleGroup,
+  Steps,
+  ScrollArea,
+  Separator,
+} from "../react/index.jsx";
+export function MotionUsage() {
+  const [open, setOpen] = useState(false),
+    [pin, setPin] = useState(""),
+    [format, setFormat] = useState<string[]>([]);
+  return (
+    <>
+      <AnimatedIcon name="bell" playing />
+      <Popover
+        open={open}
+        onOpenChange={setOpen}
+        trigger={(props) => <Button {...props}>Details</Button>}
+      >
+        Content
+      </Popover>
+      <CommandMenu open={open} onOpenChange={setOpen} items={[]} />
+      <PinInput value={pin} onValueChange={setPin} />
+      <ToggleGroup
+        multiple
+        value={format}
+        onValueChange={setFormat}
+        items={[{ value: "bold", label: "Bold" }]}
+      />
+      <Steps value="a" items={[{ value: "a", label: "Details" }]} />
+      <ScrollArea header="Search">Rows</ScrollArea>
+      <Separator label="or" />
+    </>
+  );
+}

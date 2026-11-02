@@ -1725,3 +1725,180 @@
   white-space: nowrap;
   flex: none;
 }
+.checkbox-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+  width: 350px;
+  max-width: 100%;
+}
+.checkbox-demo-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.checkbox-demo-files {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding-left: 29px;
+}
+.checkbox-demo-files .re-control-copy {
+  font-size: 12px;
+  color: var(--muted);
+}
+.table-person {
+  gap: 9px;
+}
+.table-person .account-avatar {
+  width: 28px;
+  height: 28px;
+}
+.table-person strong {
+  font-size: 12px;
+  line-height: 1.35;
+}
+.table-person small {
+  font-size: 10px;
+  margin-top: 2px;
+  line-height: 1.35;
+}
+.table-demo .re-data-table td:last-child > .btn {
+  height: 28px;
+  padding: 0 8px;
+  font-size: 11px;
+}
+.docs-search {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  isolation: isolate;
+}
+.docs-search:before {
+  content: "";
+  position: absolute;
+  inset: -14px -4px -10px;
+  z-index: -1;
+  background: var(--bg);
+}
+.docs-search:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--raised);
+  border-radius: inherit;
+  z-index: -1;
+}
+.docs-search input,
+.docs-search > .icon {
+  position: relative;
+  z-index: 1;
+}
+.icon-choice-field > span {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+.icon-choice-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 2px;
+}
+.icon-choice-scroll .segmented {
+  width: max-content;
+  box-shadow: none;
+}
+.icon-choice-scroll .segmented button {
+  min-width: 0;
+  padding: 0 11px;
+  height: 30px;
+  font-size: 11px;
+}
+.icon-control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.icon-controls .re-slider {
+  display: none;
+}
+.icon-browser-categories {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  padding: 2px;
+}
+.icon-browser-categories .segmented {
+  width: max-content;
+}
+.icon-browser-categories .segmented button {
+  font-size: 11px;
+  padding: 0 12px;
+  min-width: 0;
+}
+.animated-icon-demo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.animated-icon-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.animated-icon-toolbar > span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.animated-glyph-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+.animated-glyph-grid > button {
+  border: 0;
+  background: var(--raised);
+  border-radius: 16px;
+  min-height: 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-direction: column;
+  color: var(--text);
+}
+.animated-glyph-grid > button > span {
+  font-size: 10px;
+  color: var(--muted);
+}
+.preview-animated-icons {
+  padding: 56px 22px 44px;
+}
+.scroll-demo-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 16px;
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+}
+.scroll-demo-row > span {
+  flex: 1;
+}
+.scroll-demo-row > small {
+  color: var(--faint);
+}
+@media (max-width: 600px) {
+  .animated-glyph-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .animated-icon-toolbar {
+    align-items: flex-start;
+  }
+  .icon-choice-scroll .segmented button {
+    padding: 0 9px;
+  }
+}

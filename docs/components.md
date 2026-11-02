@@ -163,7 +163,7 @@ These retain Send’s original props. DateTimePicker uses Unix **seconds**, loca
 
 Sizes: `sm`, `md`, `lg`. Uses Send’s native dialog with focus management, scroll lock, backdrop, Escape and exit animation. The parent updates `open` in `onOpenChange`.
 
-For the original render-to-open API: `{open && <Modal title="…" onClose={() => setOpen(false)} dismissable={!saving} footer={actions}>…</Modal>}`. Note the original spelling **dismissable** on Modal; the controlled Dialog adapter uses **dismissible**. Modal also accepts `label`, `labelledBy`, `className`, `closeOnBackdrop`, `variant` and `size`; use the default dialog variant in the library (Send’s full-screen viewer styles are not included).
+For the lower-level API, keep Modal mounted and pass open for a React-managed exit. The legacy conditional mount API closes immediately on unmount: `{open && <Modal title="…" onClose={() => setOpen(false)} dismissable={!saving} footer={actions}>…</Modal>}`. Note the original spelling **dismissable** on Modal; the controlled Dialog adapter uses **dismissible**. Modal also accepts `label`, `labelledBy`, `className`, `closeOnBackdrop`, `variant` and `size`; use the default dialog variant in the library (Send’s full-screen viewer styles are not included).
 
 ## Skeleton and identity
 

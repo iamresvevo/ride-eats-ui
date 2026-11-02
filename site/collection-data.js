@@ -1,4 +1,12 @@
-const entry = (id, name, group, description, code, props, imports = name) => ({
+const entry = (
+  id,
+  name,
+  group,
+  description,
+  code,
+  props,
+  imports = name === "PIN Input" ? "PinInput" : name.replaceAll(" ", ""),
+) => ({
   id,
   name,
   group,
@@ -164,7 +172,17 @@ export const collectionPages = [
     "Checkbox",
     "Inputs",
     "A compact check with a soft scale transition, a real native input and indeterminate support.",
-    `const [checked, setChecked] = useState(false);\n<Checkbox label="Notify my team" hint="Send one update when the transfer is ready."\n  checked={checked} onCheckedChange={setChecked} />`,
+    `const files = [{ id: 'brief', name: 'Campaign brief.pdf' }, { id: 'assets', name: 'Brand assets.zip' }];
+const [selected, setSelected] = useState(['brief']);
+const all = selected.length === files.length;
+const mixed = selected.length > 0 && !all;
+
+<Checkbox label="Select all files" checked={all} indeterminate={mixed}
+  onCheckedChange={checked => setSelected(checked ? files.map(file => file.id) : [])} />
+{files.map(file => <Checkbox key={file.id} label={file.name}
+  checked={selected.includes(file.id)}
+  onCheckedChange={checked => setSelected(current => checked
+    ? [...current, file.id] : current.filter(id => id !== file.id))} />)}`,
     [
       [
         "checked / onCheckedChange",

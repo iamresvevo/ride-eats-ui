@@ -32,3 +32,9 @@ Segmented is extracted from Send src/components/Segmented.jsx. Its placeSelectio
 - Modal retains Send's native dialog/focus/exit handling and adds a Tools-style shared-backdrop stack: underlying dialogs stay mounted, inert and scaled while the top dialog owns input.
 - Card, MetricGrid, StatCard, Tile, PageHeader and Toolbar follow Tools' compact dashboard surfaces, metric hierarchy and launcher tiles. Generic inputs, tables, accordion, drawer and timeline are new React components, not claimed as direct Send source copies.
 - The built-in catalog vendors 2,015 icons from `lucide-static` 1.66.0 under ISC, with its full copyright and Feather-derived notices in `react/icons/LICENSE.lucide`. Existing Send PATHS are retained. The kit adds lazy loading, custom glyph registration, searchable names/tags and opt-in icon motion.
+
+## v0.4 interaction corrections
+
+Dialog close transitions now keep real React/native dialog nodes mounted through their exit; DOM exit clones are removed. Async confirmation resolves only after its top sheet finishes closing, so discarding closes the form afterward. Focus ownership survives StrictMode effect replay. Checkbox mixed state is controlled and the example uses real parent/child selection. Number input tracks are symmetric; tables use fixed selection/action columns and a compact row rhythm; avatar groups use uniform sizes and separator rings.
+
+Ten further components and native SVG animated presets are in react/motion.jsx. Native animate/animateTransform change paths, strokes and internal SVG geometry; no HTML/view wrapper animates. Generic Icon motion also uses native SVG animation. Sidebar search is sticky and icon controls reuse Segmented.

@@ -13,7 +13,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.3.0
+npm install github:iamresvevo/ride-eats-ui#v0.4.0
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -256,3 +256,17 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 ```
 
 [Search and preview the icon catalog](https://iamresvevo.github.io/ride-eats-ui/#icons). Motion is opt-in and respects reduced motion. Icons are Lucide artwork behind Ride Eats UI's component API, not claimed as original Ride Eats drawings.
+
+## Native SVG motion and more components
+
+[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) now have a dedicated page. These animate SVG paths, strokes and internal parts with native animate/animateTransform elements, rather than moving a view wrapper. Presets: bell, heart, check, upload, download, search, refresh, settings, folder and send. Hover/focus plays once; playing and loop provide explicit control. Reduced-motion preferences stop playback.
+
+```jsx
+<AnimatedIcon name="bell" size={28} />
+<AnimatedIcon name="heart" playing loop />
+<AnimatedIcon name="check" playing />
+```
+
+The library also includes Popover, CommandMenu, Collapsible, Steps, PinInput, ToggleGroup, Rating, ScrollArea and Separator. The component browser has 51 pages. Its sidebar search stays pinned, and icon size/stroke/motion choices are segmented selectors.
+
+Keep Dialog/Modal mounted and use open={false} for the animated exit. useConfirm resolves after the confirmation has closed, so a parent form can then close without competing animations. Dialog is a simple-sheet demo; Stacked Dialogs demonstrates the draft/discard workflow.

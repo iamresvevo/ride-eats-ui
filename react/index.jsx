@@ -570,8 +570,9 @@ export function Dialog({
       closing.current = false;
     }
   };
-  return open ? (
+  return (
     <SendModal
+      open={open}
       title={title}
       className={className}
       style={style}
@@ -582,7 +583,7 @@ export function Dialog({
     >
       {children}
     </SendModal>
-  ) : null;
+  );
 }
 export function Pagination({ page, pageSize, total, onPageChange, disabled }) {
   return (
@@ -641,3 +642,5 @@ export * from "./collection.jsx";
 
 export { IconProvider } from "./icons/registry.jsx";
 export { iconNames } from "./icons/names.js";
+
+export * from "./motion.jsx";

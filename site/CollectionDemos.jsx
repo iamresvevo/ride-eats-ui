@@ -127,10 +127,11 @@ export function TableDemo() {
               </div>
             ),
           },
-          { key: "role", label: "Role", sortable: true },
+          { key: "role", label: "Role", sortable: true, width: 110 },
           {
             key: "status",
             label: "Status",
+            width: 110,
             render: (value) => (
               <Badge tone={value === "Active" ? "good" : "wait"}>{value}</Badge>
             ),
@@ -358,28 +359,7 @@ export function CollectionDemo({ id }) {
         <Button onClick={() => setAlert(true)}>Show alert</Button>
       );
     case "checkbox":
-      return (
-        <div className="demo-stack">
-          <UI.Checkbox
-            label="Notify my team"
-            hint="One update when the transfer is ready."
-            checked={checked}
-            onCheckedChange={setChecked}
-          />
-          <UI.Checkbox
-            label="Some files selected"
-            checked={false}
-            indeterminate
-            onCheckedChange={() => {}}
-          />
-          <UI.Checkbox
-            label="Managed by your workspace"
-            checked
-            disabled
-            onCheckedChange={() => {}}
-          />
-        </div>
-      );
+      return <CheckboxDemo />;
     case "radio-group":
       return (
         <UI.RadioGroup
@@ -765,5 +745,101 @@ export function ToastDemo() {
         Three at most. Repeated messages merge.
       </span>
     </div>
+  );
+}
+
+export function CheckboxDemo() {
+  const [notify, setNotify] = useState(true);
+  const [selected, setSelected] = useState(["brief"]);
+  const files = [
+    { id: "brief", name: "Campaign brief.pdf" },
+    { id: "assets", name: "Brand assets.zip" },
+  ];
+  const mixed = selected.length > 0 && selected.length < files.length;
+  return (
+    <div className="checkbox-demo">
+      <UI.Checkbox
+        label="Notify my team"
+        hint="One update when the transfer is ready."
+        checked={notify}
+        onCheckedChange={setNotify}
+      />
+      <div className="checkbox-demo-group">
+        <UI.Checkbox
+          label={
+            mixed
+              ? "Some files selected"
+              : selected.length === files.length
+                ? "All files selected"
+                : "No files selected"
+          }
+          hint={`${selected.length} of ${files.length} files`}
+          checked={selected.length === files.length}
+          indeterminate={mixed}
+          inputProps={{ "aria-label": "Select all files" }}
+          onCheckedChange={(checked) =>
+            setSelected(checked ? files.map((file) => file.id) : [])
+          }
+        />
+        <div className="checkbox-demo-files">
+          {files.map((file) => (
+            <UI.Checkbox
+              key={file.id}
+              label={file.name}
+              checked={selected.includes(file.id)}
+              onCheckedChange={(checked) =>
+                setSelected((current) =>
+                  checked
+                    ? [...current, file.id]
+                    : current.filter((id) => id !== file.id),
+                )
+              }
+            />
+          ))}
+        </div>
+      </div>
+      <UI.Checkbox
+        label="Managed by your workspace"
+        hint="Controlled by your administrator."
+        checked
+        disabled
+        onCheckedChange={() => {}}
+      />
+    </div>
+  );
+}
+
+export function SimpleDialogDemo() {
+  const [open, setOpen] = useState(false);
+  const toast = useToast();
+  return (
+    <>
+      <Button variant="primary" icon="settings" onClick={() => setOpen(true)}>
+        Open dialog
+      </Button>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Transfer details"
+        footer={
+          <Button
+            variant="primary"
+            onClick={() => {
+              setOpen(false);
+              toast("Details reviewed", { tone: "good" });
+            }}
+          >
+            Done
+          </Button>
+        }
+      >
+        <p className="muted" style={{ fontSize: 13, lineHeight: 1.8 }}>
+          Campaign assets contains 12 files, ready to share with your team.
+        </p>
+        <UI.SettingRow label="Access">
+          <Badge>Anyone with the link</Badge>
+        </UI.SettingRow>
+      </Dialog>
+    </>
   );
 }

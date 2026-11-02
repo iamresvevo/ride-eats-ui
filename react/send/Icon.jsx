@@ -1,4 +1,5 @@
-import React, { lazy, Suspense } from "react";
+import { useSvgMotion } from "../icons/useSvgMotion.js";
+import React, { lazy, Suspense, useRef } from "react";
 import { loaders } from "../icons/loaders.js";
 import { useCustomIcons } from "../icons/registry.jsx";
 const loadedChunks = new Map();
@@ -28,6 +29,7 @@ function catalogChunk(key) {
 }
 
 const PATHS = {
+  minus: "M5 12h14",
   filter: "M3 5h18l-7 8v6l-4-2v-4L3 5Z",
   infinity:
     "M12 12c-2-2.7-3.7-4-5.5-4a4 4 0 0 0 0 8c1.8 0 3.5-1.3 5.5-4Zm0 0c2 2.7 3.7 4 5.5 4a4 4 0 0 0 0-8c-1.8 0-3.5 1.3-5.5 4Z",
@@ -106,6 +108,13 @@ export default function Icon({
   animateOn = "hover",
   ...props
 }) {
+  const ref = useRef(null);
+  useSvgMotion(ref, {
+    playing: animateOn === "always" && motion !== "none",
+    loop: motion === "spin" || motion === "pulse",
+    hover: animateOn === "hover" && motion !== "none",
+    name: motion + ":" + name,
+  });
   const custom = useCustomIcons();
   const accessible = label || props["aria-label"] || title;
   const Glyph =
@@ -113,6 +122,7 @@ export default function Icon({
   return (
     <svg
       {...props}
+      ref={ref}
       className={`icon ${className}`}
       data-icon={name}
       data-motion={motion}
@@ -131,16 +141,63 @@ export default function Icon({
       aria-hidden={accessible ? undefined : true}
     >
       {title && <title>{title}</title>}
-      {custom[name] ||
-        (PATHS[name] ? (
-          <path d={PATHS[name]} pathLength="1" />
-        ) : Glyph ? (
-          <Suspense fallback={null}>
-            <Glyph name={name} />
-          </Suspense>
-        ) : (
-          <path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" />
-        ))}
+      <g strokeDasharray={motion === "draw" ? 1 : undefined}>
+        {motion === "spin" && (
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            from="0 12 12"
+            to="360 12 12"
+            dur="1.3s"
+            begin="indefinite"
+          />
+        )}
+        {motion === "rotate" && (
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="0 12 12;24 12 12;0 12 12"
+            dur=".6s"
+            begin="indefinite"
+          />
+        )}
+        {motion === "bounce" && (
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            values="0 0;0 -4;0 1;0 0"
+            dur=".65s"
+            begin="indefinite"
+          />
+        )}
+        {motion === "pulse" && (
+          <animate
+            attributeName="opacity"
+            values="1;.4;1"
+            dur="1.5s"
+            begin="indefinite"
+          />
+        )}
+        {motion === "draw" && (
+          <animate
+            attributeName="stroke-dashoffset"
+            from="1"
+            to="0"
+            dur=".7s"
+            begin="indefinite"
+          />
+        )}
+        {custom[name] ||
+          (PATHS[name] ? (
+            <path d={PATHS[name]} pathLength="1" />
+          ) : Glyph ? (
+            <Suspense fallback={null}>
+              <Glyph name={name} />
+            </Suspense>
+          ) : (
+            <path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" />
+          ))}
+      </g>
     </svg>
   );
 }
