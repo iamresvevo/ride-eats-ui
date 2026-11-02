@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.1
+npm install github:iamresvevo/ride-eats-ui#v0.9.2
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -42,7 +42,7 @@ For theme, toasts and Send’s tooltips in one place:
 ```jsx
 import { UIProvider } from "@ride-eats/ui";
 
-<UIProvider defaultTheme="system">
+<UIProvider defaultTheme="system" accent="#1fa476">
   <App />
 </UIProvider>;
 ```

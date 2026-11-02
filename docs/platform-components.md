@@ -762,6 +762,8 @@ import { UploadProgress } from '@ride-eats/ui';
 
 ## DataGrid
 
+`toolbarActions` accepts your primary action, such as an upload button. Selection and expansion columns stay 36px while data columns take the available width.
+
 Display. A compact table with search, filters, sorting, column visibility and resizing, sticky columns, bulk actions and optional row expansion. Fixed-row virtual scrolling supports larger local datasets.
 
 ```jsx
@@ -892,7 +894,7 @@ import { SettingsPanel, Field, Button } from '@ride-eats/ui';
 | Prop | Type | Behavior |
 | --- | --- | --- |
 | title / description | ReactNode | Panel heading. |
-| sections | {id,title,description?,children}[] | Responsive sections and caller-owned controls. |
+| sections | {id,title,icon?,description?,children}[] | Rounded sections, optional icons and caller-owned controls. |
 | actions | ReactNode | Compact footer actions. |
 
 ## Team Directory
@@ -955,7 +957,7 @@ import { SupportInbox } from '@ride-eats/ui';
 | --- | --- | --- |
 | threads | SupportThread[] | id, name, subject, status, time and messages; messages contain id, author, text, time and own. |
 | value / onValueChange | string / callback | Selected conversation ID. |
-| onReply / label | (id,text) => Promise | void / string | Optional reply callback; controls are omitted without it. Draft clears when selecting another thread. |
+| onReply / label | (id,text) => Promise | void / string | Optional reply callback; controls are omitted without it. Drafts are retained per conversation during the mounted session. Search filters names and subjects. |
 
 ## Sticky Bar
 

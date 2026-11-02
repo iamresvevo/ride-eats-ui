@@ -1,5 +1,5 @@
 {
-  "version": "0.9.0",
+  "version": "0.9.2",
   "capture": "Supported browser tools; independent baseline/candidate reloads; JPEG",
   "states": [
     {
@@ -93,6 +93,36 @@
       "state": "Initial demo state; workbench collapsed; sidebar at start."
     },
     {
+      "file": "date-range-picker-dark.jpg",
+      "page": "date-range-picker",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1083
+      },
+      "state": "Start calendar open."
+    },
+    {
+      "file": "date-range-picker-light.jpg",
+      "page": "date-range-picker",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1083
+      },
+      "state": "Start calendar open."
+    },
+    {
       "file": "dropdown-dark.jpg",
       "page": "dropdown",
       "theme": "dark",
@@ -121,6 +151,36 @@
         "height": 1138
       },
       "state": "Actions menu open."
+    },
+    {
+      "file": "file-manager-dark.jpg",
+      "page": "file-manager",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1196
+      },
+      "state": "Initial component state."
+    },
+    {
+      "file": "file-manager-light.jpg",
+      "page": "file-manager",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1196
+      },
+      "state": "Initial component state."
     },
     {
       "file": "form-dark.jpg",
@@ -153,6 +213,36 @@
       "state": "Initial demo state; workbench collapsed; sidebar at start."
     },
     {
+      "file": "settings-panel-dark.jpg",
+      "page": "settings-panel",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1433
+      },
+      "state": "Initial component state."
+    },
+    {
+      "file": "settings-panel-light.jpg",
+      "page": "settings-panel",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1433
+      },
+      "state": "Initial component state."
+    },
+    {
       "file": "stacked-dialogs-dark.jpg",
       "page": "stacked-dialogs",
       "theme": "dark",
@@ -181,6 +271,66 @@
         "height": 1086
       },
       "state": "Folder draft named Audit folder; Cancel opens stacked discard confirmation."
+    },
+    {
+      "file": "sticky-bar-dark.jpg",
+      "page": "sticky-bar",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1302
+      },
+      "state": "Floating after one settled PageDown (scrollTop 300px)."
+    },
+    {
+      "file": "sticky-bar-light.jpg",
+      "page": "sticky-bar",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1302
+      },
+      "state": "Floating after one settled PageDown (scrollTop 300px)."
+    },
+    {
+      "file": "support-inbox-dark.jpg",
+      "page": "support-inbox",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1349
+      },
+      "state": "Initial component state."
+    },
+    {
+      "file": "support-inbox-light.jpg",
+      "page": "support-inbox",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1349
+      },
+      "state": "Initial component state."
     },
     {
       "file": "toggle-group-dark.jpg",

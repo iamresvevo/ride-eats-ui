@@ -402,7 +402,18 @@
   z-index: 4;
 }
 .re-grid .re-grid-control {
+  position: sticky;
+  left: 0;
+  z-index: 2;
   padding: 6px;
+}
+.re-grid .re-grid-expansion {
+  position: sticky;
+  z-index: 2;
+}
+.re-grid th.re-grid-control,
+.re-grid th.re-grid-expansion {
+  z-index: 5;
 }
 .re-grid .re-check-box {
   width: 17px;
@@ -793,6 +804,10 @@
 }
 .re-settings-panel {
   width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+  display: grid;
+  gap: 12px;
 }
 .re-settings-panel h2,
 .re-workflow-heading h2,
@@ -807,34 +822,58 @@
 .re-settings-panel section p {
   font-size: 12px;
   color: var(--muted);
-  line-height: 1.6;
-  margin: 7px 0 0;
+  line-height: 1.5;
+  margin: 4px 0 0;
 }
 .re-settings-panel > header {
-  margin-bottom: 20px;
+  padding: 0 4px 4px;
 }
 .re-settings-panel > section {
-  padding: 16px 0;
-  border-top: 1px solid var(--line);
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--r-lg);
   display: grid;
-  grid-template-columns: minmax(120px, 1fr) minmax(0, 2fr);
-  gap: 24px;
+  gap: 16px;
+}
+.re-settings-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.re-settings-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: var(--r-circle);
+  background: var(--raised);
+  color: var(--brand-ink);
+}
+.re-settings-icon .icon {
+  width: 18px;
+  height: 18px;
 }
 .re-settings-panel h3 {
   margin: 0;
   font-size: 13px;
-  font-weight: 550;
+  font-weight: 600;
 }
 .re-settings-panel > section > div:last-child {
   display: grid;
-  gap: 14px;
+  gap: 12px;
+}
+.re-settings-panel .field textarea {
+  min-height: 64px;
+  max-height: 160px;
+  font-family: inherit;
+  border-radius: var(--r-lg);
 }
 .re-settings-panel > footer {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
+  padding: 2px 4px;
 }
 .re-workflow-heading {
   display: flex;
@@ -944,128 +983,255 @@
 .re-support {
   width: 100%;
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
+  grid-template-columns: 244px minmax(0, 1fr);
+  height: 400px;
   background: var(--surface);
-  border-radius: var(--r);
+  border-radius: var(--r-lg);
   overflow: hidden;
-  min-height: 400px;
 }
 .re-support > aside {
+  min-width: 0;
+  min-height: 0;
+  padding: 12px 8px;
   border-right: 1px solid var(--line);
-  padding: 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.re-support aside h2 {
-  padding: 0 6px 14px;
+.re-support-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 6px;
+}
+.re-support-heading h2 {
   font-size: 14px;
+  margin: 0;
+}
+.re-support-count::before {
+  display: none;
+}
+.re-support-search {
+  order: 0;
+  width: 100%;
+  flex-shrink: 0;
+}
+.re-support aside [role="list"] {
+  overflow: auto;
+  min-height: 0;
 }
 .re-support aside button {
   width: 100%;
   border: 0;
   background: none;
   text-align: left;
-  border-radius: var(--r-pill);
+  border-radius: var(--r-lg);
   padding: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: var(--text);
+  transition: background var(--motion-fast) var(--motion-ease);
 }
+.re-support aside button:hover,
 .re-support aside button[aria-current] {
-  background: var(--brand-soft);
+  background: var(--raised);
 }
-.re-support aside strong {
-  display: block;
+.re-support .account-avatar {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  font-size: 11px;
+}
+.re-support-summary {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.re-support-row-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.re-support-row-title strong {
   font-size: 12px;
-  font-weight: 550;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.re-support time {
+  font-size: 10px;
+  color: var(--faint);
+  white-space: nowrap;
 }
 .re-support aside small {
   display: block;
   font-size: 11px;
   color: var(--muted);
-  margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.re-support aside button > span {
+.re-support-status {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
-}
-.re-support time {
+  gap: 5px;
   font-size: 10px;
   color: var(--muted);
 }
-.re-support .badge {
-  font-size: 9px;
-  padding: 3px 6px;
+.re-support-status i {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-circle);
+  background: var(--faint);
+}
+.re-support-status[data-open] i {
+  background: var(--brand);
 }
 .re-support-thread {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
 }
 .re-support-thread > header {
-  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--line);
 }
+.re-support-thread > header > div {
+  flex: 1;
+  min-width: 0;
+}
 .re-support-thread > header strong {
-  font-size: 13px;
   display: block;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .re-support-thread > header small {
+  display: block;
   font-size: 11px;
   color: var(--muted);
-  display: block;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 .re-support-thread > ol {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   list-style: none;
   padding: 16px;
   margin: 0;
-  max-height: 260px;
   overflow: auto;
   flex: 1;
+  min-height: 100px;
+  overscroll-behavior: contain;
 }
 .re-support-thread > ol > li {
   background: var(--raised);
   padding: 10px 12px;
-  border-radius: var(--r-sm);
-  max-width: 90%;
+  border-radius: var(--r-lg);
+  max-width: 85%;
   align-self: flex-start;
+  animation: re-support-message-in var(--motion-enter) var(--motion-ease) both;
 }
 .re-support-thread > ol > li[data-own] {
-  background: var(--brand-soft);
+  background: var(--ink);
+  color: var(--on-ink);
   align-self: flex-end;
 }
-.re-support-thread li strong {
+.re-support-message-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.re-support-message-meta strong {
   font-size: 10px;
-  color: var(--muted);
+  font-weight: 600;
+}
+.re-support-thread li[data-own] time {
+  color: inherit;
 }
 .re-support-thread li p {
-  font-size: 12px;
-  margin: 5px 0 7px;
-  line-height: 1.6;
+  font-size: 13px;
+  margin: 6px 0 0;
+  line-height: 1.5;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 .re-support-thread > form {
-  padding: 12px 16px;
+  padding: 10px 16px 12px;
   display: grid;
   gap: 8px;
   border-top: 1px solid var(--line);
 }
-.re-support-thread > form > label {
+.re-support-thread > form .field {
+  gap: 6px;
+}
+.re-support-thread > form .field label {
   font-size: 11px;
   color: var(--muted);
 }
-.re-support-thread textarea {
+.re-support-thread > form .field textarea {
   resize: vertical;
-  min-height: 60px;
-  border: 0;
-  background: var(--raised);
-  border-radius: var(--r-sm);
-  padding: 9px;
-  font-size: 12px;
+  min-height: 52px;
+  max-height: 120px;
+  padding: 9px 12px;
+  border-radius: var(--r-lg);
+  font-family: inherit;
 }
-.re-support-thread > form > .btn {
-  justify-self: end;
+.re-support-compose-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.re-support-compose-actions > span {
+  font-size: 10px;
+  color: var(--faint);
+}
+.re-support-empty {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  height: 100%;
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+}
+.re-support-empty .icon {
+  color: var(--brand-ink);
+}
+.re-support-empty strong {
+  color: var(--text);
+  font-size: 13px;
+}
+.re-support-empty p {
+  font-size: 12px;
+  margin: 0;
+}
+@keyframes re-support-message-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .re-support-thread > ol > li {
+    animation: none;
+  }
 }
 @media (max-width: 760px) {
   .re-app-shell,
@@ -1093,7 +1259,7 @@
     gap: 12px;
   }
   .re-support {
-    grid-template-columns: 150px minmax(0, 1fr);
+    grid-template-columns: 200px minmax(0, 1fr);
   }
   .re-support > aside {
     padding: 12px 4px;
@@ -1109,6 +1275,7 @@
   }
   .re-support {
     grid-template-columns: 1fr;
+    height: auto;
   }
   .re-support > aside {
     border-right: 0;
@@ -1119,10 +1286,11 @@
     overflow: auto;
   }
   .re-support aside [role="listitem"] {
-    min-width: 160px;
+    min-width: 220px;
   }
   .re-support-thread > ol {
-    max-height: 220px;
+    max-height: 240px;
+    min-height: 180px;
   }
 }
 @media (pointer: coarse) {

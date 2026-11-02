@@ -332,8 +332,8 @@ export const platformPages = [
       ["title / description", "ReactNode", "Panel heading."],
       [
         "sections",
-        "{id,title,description?,children}[]",
-        "Responsive sections and caller-owned controls.",
+        "{id,title,icon?,description?,children}[]",
+        "Rounded sections, optional icons and caller-owned controls.",
       ],
       ["actions", "ReactNode", "Compact footer actions."],
     ],
@@ -420,7 +420,7 @@ export const platformPages = [
       [
         "onReply / label",
         "(id,text) => Promise | void / string",
-        "Optional reply callback; controls are omitted without it. Draft clears when selecting another thread.",
+        "Optional reply callback; controls are omitted without it. Drafts are retained per conversation during the mounted session. Search filters names and subjects.",
       ],
     ],
     "SupportInbox",

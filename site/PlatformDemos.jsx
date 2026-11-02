@@ -121,6 +121,7 @@ export default function PlatformDemos({ id }) {
     [teams, setTeams] = useState(["alex"]),
     [tag, setTag] = useState(""),
     [text, setText] = useState(""),
+    [workspaceName, setWorkspaceName] = useState("Design Studio"),
     [range, setRange] = useState({ start: "2026-11-02", end: "2026-11-09" }),
     [time, setTime] = useState("09:00"),
     [saved, setSaved] = useState(false),
@@ -568,7 +569,7 @@ export default function PlatformDemos({ id }) {
                 size="sm"
                 onClick={() => {
                   setSheet(false);
-                  toast("Settings saved locally", { tone: "good" });
+                  toast("Settings updated for this preview", { tone: "good" });
                 }}
               >
                 Save changes
@@ -681,14 +682,17 @@ export default function PlatformDemos({ id }) {
             sections={[
               {
                 id: "general",
+                icon: "building-2",
                 title: "General",
                 description: "How your workspace appears to the team.",
                 children: (
                   <>
                     <UI.Field label="Workspace name">
                       <input
-                        value={text || "Design Studio"}
-                        onChange={(event) => setText(event.target.value)}
+                        value={workspaceName}
+                        onChange={(event) =>
+                          setWorkspaceName(event.target.value)
+                        }
                       />
                     </UI.Field>
                     <UI.Textarea
@@ -702,6 +706,7 @@ export default function PlatformDemos({ id }) {
               },
               {
                 id: "notifications",
+                icon: "bell",
                 title: "Notifications",
                 description: "Keep everyone up to date.",
                 children: (
@@ -715,9 +720,10 @@ export default function PlatformDemos({ id }) {
             ]}
             actions={
               <UI.Button
+                variant="primary"
                 size="sm"
                 onClick={() =>
-                  toast("Settings saved locally", { tone: "good" })
+                  toast("Settings updated for this preview", { tone: "good" })
                 }
               >
                 Save changes
@@ -824,9 +830,43 @@ export default function PlatformDemos({ id }) {
 
 function StickyDemo() {
   const [tab, setTab] = useState("payments");
-  return <div className="floater-demo" role="region" aria-label="Scrollable floating toolbar example" tabIndex={0}>
-    <UI.PageHeader title="Workspace" description="Scroll to see Tools’ floating controls and progressive fade." />
-    <UI.StickyBar offset={0}><UI.Tabs value={tab} onValueChange={setTab} items={[{value:"payments",label:"Payments",count:8},{value:"activity",label:"Activity"}]} /></UI.StickyBar>
-    <div className="floater-demo-rows">{Array.from({length:12},(_,i)=><UI.Card key={i} padding="sm"><UI.SettingRow label={tab === "payments" ? `Transfer ${i+1}` : `Workspace update ${i+1}`} hint="Content stays behind the floating controls."><UI.Badge tone="good">Ready</UI.Badge></UI.SettingRow></UI.Card>)}</div>
-  </div>;
+  return (
+    <div
+      className="floater-demo"
+      role="region"
+      aria-label="Scrollable floating toolbar example"
+      tabIndex={0}
+    >
+      <UI.PageHeader
+        title="Workspace"
+        description="Scroll to see Tools’ floating controls and progressive fade."
+      />
+      <UI.StickyBar offset={0}>
+        <UI.Tabs
+          value={tab}
+          onValueChange={setTab}
+          items={[
+            { value: "payments", label: "Payments", count: 8 },
+            { value: "activity", label: "Activity" },
+          ]}
+        />
+      </UI.StickyBar>
+      <div className="floater-demo-rows">
+        {Array.from({ length: 12 }, (_, i) => (
+          <UI.Card key={i} padding="sm">
+            <UI.SettingRow
+              label={
+                tab === "payments"
+                  ? `Transfer ${i + 1}`
+                  : `Workspace update ${i + 1}`
+              }
+              hint="Content stays behind the floating controls."
+            >
+              <UI.Badge tone="good">Ready</UI.Badge>
+            </UI.SettingRow>
+          </UI.Card>
+        ))}
+      </div>
+    </div>
+  );
 }

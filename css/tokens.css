@@ -13,7 +13,7 @@
   --brand-hover: color-mix(in srgb, var(--brand) 88%, #111113);
   --brand-strong: var(--brand-hover);
   --brand-ink: color-mix(in srgb, var(--brand) 72%, #111113);
-  --on-brand: #fff;
+  --on-brand: #06140e;
   --verified: #0482ee;
   --bad-strong: color-mix(in srgb, var(--bad) 88%, #111113);
   --good: #15803d;

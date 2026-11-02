@@ -1,7 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import Icon from "./send/Icon.jsx";
 import Modal from "./send/ui/Modal.jsx";
-import { Button, Field, Badge, Select } from "./index.jsx";
+import { Button, Field, Badge, Select, Avatar } from "./index.jsx";
 import { DataGrid } from "./DataGrid.jsx";
 import { Form, Textarea } from "./forms.jsx";
 import { useConfirm, useToast } from "./Feedback.jsx";
@@ -14,17 +14,29 @@ export function SettingsPanel({
   className = "",
   style,
 }) {
+  const id = useId();
   return (
-    <section className={`re-settings-panel ${className}`} style={style}>
+    <section
+      className={`re-settings-panel ${className}`}
+      style={style}
+      aria-labelledby={id}
+    >
       <header>
-        <h2>{title}</h2>
+        <h2 id={id}>{title}</h2>
         {description && <p>{description}</p>}
       </header>
       {sections.map((section) => (
-        <section key={section.id}>
-          <div>
-            <h3>{section.title}</h3>
-            {section.description && <p>{section.description}</p>}
+        <section key={section.id} aria-labelledby={`${id}-${section.id}`}>
+          <div className="re-settings-section-heading">
+            {section.icon && (
+              <span className="re-settings-icon">
+                <Icon name={section.icon} />
+              </span>
+            )}
+            <div>
+              <h3 id={`${id}-${section.id}`}>{section.title}</h3>
+              {section.description && <p>{section.description}</p>}
+            </div>
           </div>
           <div>{section.children}</div>
         </section>
@@ -221,33 +233,33 @@ export function FileManager({
     toast = useToast();
   return (
     <div className={`re-file-manager ${className}`} style={style}>
-      <div className="re-workflow-heading">
-        <h2>Files</h2>
-        {onUpload && (
-          <>
-            <Button
-              size="sm"
-              icon="upload"
-              onClick={() => input.current.click()}
-            >
-              Upload files
-            </Button>
-            <input
-              ref={input}
-              className="re-sr-only"
-              aria-label="Choose files to upload"
-              type="file"
-              multiple
-              onChange={(event) => {
-                onUpload([...event.target.files]);
-                event.target.value = "";
-              }}
-            />
-          </>
-        )}
-      </div>
       <DataGrid
         label="Files"
+        toolbarActions={
+          onUpload && (
+            <>
+              <Button
+                size="sm"
+                variant="primary"
+                icon="upload"
+                onClick={() => input.current.click()}
+              >
+                Upload files
+              </Button>
+              <input
+                ref={input}
+                className="re-sr-only"
+                aria-label="Choose files to upload"
+                type="file"
+                multiple
+                onChange={(event) => {
+                  onUpload([...event.target.files]);
+                  event.target.value = "";
+                }}
+              />
+            </>
+          )
+        }
         rows={files}
         columns={[
           {
@@ -353,16 +365,49 @@ export function SupportInbox({
   className = "",
   style,
 }) {
-  const selected = threads.find((thread) => thread.id === value),
-    [draft, setDraft] = useState(""),
-    [pending, setPending] = useState(false),
-    [error, setError] = useState(""),
-    busy = useRef(false),
-    id = useId();
+  const selected = threads.find((thread) => thread.id === value);
+  const [query, setQuery] = useState("");
+  const [drafts, setDrafts] = useState({});
+  const [sending, setSending] = useState({});
+  const [errors, setErrors] = useState({});
+  const busy = useRef(new Set());
+  const messages = useRef(null);
+  const draft = drafts[value] || "";
+  const pending = !!sending[value];
+  const visible = threads.filter((thread) =>
+    `${thread.name} ${thread.subject}`
+      .toLocaleLowerCase()
+      .includes(query.trim().toLocaleLowerCase()),
+  );
+  const messageCount = selected?.messages.length;
   useEffect(() => {
-    setDraft("");
-    setError("");
-  }, [value]);
+    const node = messages.current;
+    if (node) node.scrollTop = node.scrollHeight;
+  }, [value, messageCount]);
+  const send = async (event) => {
+    event.preventDefault();
+    const threadId = value,
+      text = draft.trim();
+    if (!text || busy.current.has(threadId) || !onReply) return;
+    busy.current.add(threadId);
+    setSending((old) => ({ ...old, [threadId]: true }));
+    setErrors((old) => ({ ...old, [threadId]: "" }));
+    try {
+      await onReply(threadId, text);
+      setDrafts((old) => ({
+        ...old,
+        [threadId]: old[threadId]?.trim() === text ? "" : old[threadId],
+      }));
+    } catch (reason) {
+      setErrors((old) => ({
+        ...old,
+        [threadId]: reason?.message || "Unable to send reply.",
+      }));
+    } finally {
+      busy.current.delete(threadId);
+      setSending((old) => ({ ...old, [threadId]: false }));
+    }
+  };
   return (
     <section
       className={`re-support ${className}`}
@@ -370,90 +415,136 @@ export function SupportInbox({
       aria-label={label}
     >
       <aside>
-        <h2>{label}</h2>
+        <div className="re-support-heading">
+          <h2>{label}</h2>
+          <Badge className="re-support-count">{threads.length}</Badge>
+        </div>
+        <label className="re-grid-search re-support-search">
+          <Icon name="search" />
+          <input
+            type="search"
+            aria-label={`Search ${label}`}
+            placeholder="Find a conversation…"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </label>
         <div role="list" aria-label="Conversations">
-          {threads.map((thread) => (
+          {visible.map((thread) => (
             <div role="listitem" key={thread.id}>
               <button
                 type="button"
                 aria-current={value === thread.id ? "true" : undefined}
                 onClick={() => onValueChange(thread.id)}
               >
-                <strong>{thread.name}</strong>
-                <small>{thread.subject}</small>
-                <span>
-                  <Badge tone={thread.status === "Open" ? "good" : "neutral"}>
+                <Avatar name={thread.name} />
+                <span className="re-support-summary">
+                  <span className="re-support-row-title">
+                    <strong>{thread.name}</strong>
+                    <time>{thread.time}</time>
+                  </span>
+                  <small>{thread.subject}</small>
+                  <span
+                    className="re-support-status"
+                    data-open={thread.status === "Open" || undefined}
+                  >
+                    <i aria-hidden="true" />
                     {thread.status}
-                  </Badge>
-                  <time>{thread.time}</time>
+                    {drafts[thread.id] && <span> · Draft</span>}
+                  </span>
                 </span>
               </button>
             </div>
           ))}
+          {!visible.length && (
+            <p className="re-platform-empty">
+              {threads.length
+                ? "No matching conversations."
+                : "No conversations yet."}
+            </p>
+          )}
         </div>
       </aside>
       <div className="re-support-thread">
         {selected ? (
           <>
             <header>
-              <strong>{selected.subject}</strong>
-              <small>{selected.name}</small>
+              <Avatar name={selected.name} />
+              <div>
+                <strong>{selected.subject}</strong>
+                <small>{selected.name}</small>
+              </div>
+              <Badge tone={selected.status === "Open" ? "good" : "neutral"}>
+                {selected.status}
+              </Badge>
             </header>
-            <ol aria-label="Messages">
+            <ol
+              key={selected.id}
+              ref={messages}
+              aria-label={`Messages with ${selected.name}`}
+              aria-live="polite"
+              aria-relevant="additions text"
+            >
               {selected.messages.map((message) => (
                 <li key={message.id} data-own={message.own || undefined}>
-                  <strong>{message.author}</strong>
+                  <div className="re-support-message-meta">
+                    <strong>{message.author}</strong>
+                    <time>{message.time}</time>
+                  </div>
                   <p>{message.text}</p>
-                  <time>{message.time}</time>
                 </li>
               ))}
+              {!selected.messages.length && (
+                <li className="re-support-no-messages">
+                  Start the conversation with a reply.
+                </li>
+              )}
             </ol>
             {onReply && (
-              <form
-                onSubmit={async (event) => {
-                  event.preventDefault();
-                  if (!draft.trim() || busy.current) return;
-                  busy.current = true;
-                  setPending(true);
-                  setError("");
-                  try {
-                    await onReply(value, draft.trim());
-                    setDraft("");
-                  } catch (reason) {
-                    setError(reason.message || "Unable to send reply.");
-                  } finally {
-                    busy.current = false;
-                    setPending(false);
-                  }
-                }}
-              >
-                <label htmlFor={id}>Reply to {selected.name}</label>
-                <textarea
-                  id={id}
+              <form onSubmit={send}>
+                <Textarea
+                  label={`Reply to ${selected.name}`}
                   rows={2}
                   value={draft}
-                  onChange={(event) => setDraft(event.target.value)}
+                  onChange={(event) =>
+                    setDrafts((old) => ({
+                      ...old,
+                      [value]: event.target.value,
+                    }))
+                  }
                   placeholder="Write a reply…"
                   disabled={pending}
+                  error={errors[value]}
                 />
-                {error && (
-                  <p role="alert" className="re-form-error">
-                    {error}
-                  </p>
-                )}
-                <Button
-                  size="sm"
-                  type="submit"
-                  loading={pending}
-                  disabled={!draft.trim()}
-                >
-                  Send reply
-                </Button>
+                <div className="re-support-compose-actions">
+                  <span>Reply to conversation</span>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    type="submit"
+                    icon="send"
+                    loading={pending}
+                    loadingLabel="Sending…"
+                    disabled={!draft.trim()}
+                  >
+                    Send reply
+                  </Button>
+                </div>
               </form>
             )}
           </>
         ) : (
-          <p className="re-platform-empty">Choose a conversation.</p>
+          <div className="re-support-empty">
+            <Icon name="messages-square" size={28} />
+            <strong>
+              {threads.length ? "Choose a conversation" : "Your inbox is clear"}
+            </strong>
+            <p>
+              {threads.length
+                ? "Open a thread to read and reply."
+                : "New conversations will appear here."}
+            </p>
+          </div>
         )}
       </div>
     </section>

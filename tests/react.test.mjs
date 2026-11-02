@@ -848,3 +848,12 @@ test("date ranges use shared custom calendar triggers instead of native browser 
   assert.equal((disabled.match(/disabled=""/g) || []).length, 3);
   assert.match(disabled, /Choose date/);
 });
+
+test("solid accent foreground chooses the higher contrast black or white", async () => {
+  const { accentText } = await import("../react/accent.js");
+  assert.equal(accentText("#000"), "#ffffff");
+  assert.equal(accentText("#fff"), "#000000");
+  assert.equal(accentText("#0066ff"), "#ffffff");
+  assert.equal(accentText("#ffcc00"), "#000000");
+  assert.equal(accentText("var(--custom)"), undefined);
+});

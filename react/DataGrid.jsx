@@ -1,5 +1,5 @@
 import { Popover } from "./motion.jsx";
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useLayoutEffect } from "react";
 import Icon from "./send/Icon.jsx";
 import { Checkbox } from "./collection.jsx";
 import { Button, Select } from "./index.jsx";
@@ -19,6 +19,7 @@ export function DataGrid({
   bulkActions = [],
   renderExpanded,
   rowActions,
+  toolbarActions,
   loading = false,
   error,
   onRetry,
@@ -35,9 +36,18 @@ export function DataGrid({
     [selected, setSelected] = useState([]),
     [expanded, setExpanded] = useState([]),
     [page, setPage] = useState(0),
-    [top, setTop] = useState(0);
+    [top, setTop] = useState(0),
+    [availableWidth, setAvailableWidth] = useState(0);
   const scroll = useRef(null),
     resizing = useRef(null);
+  useLayoutEffect(() => {
+    const node = scroll.current;
+    const measure = () => setAvailableWidth(node.clientWidth);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
   const data = useMemo(
       () => getGridRows(rows, columns, { query, filters, sort }),
       [rows, columns, query, filters, sort],
@@ -59,12 +69,20 @@ export function DataGrid({
   const controlColumns =
       Number(bulkActions.length > 0) + Number(!!renderExpanded),
     cellCount = visible.length + controlColumns + Number(!!rowActions);
-  let pinOffset = 0;
+  const reservedWidth = controlColumns * 36 + (rowActions ? 68 : 0);
+  const dataWidth = visible.reduce(
+    (sum, column) => sum + (widths[column.key] || column.width || 160),
+    0,
+  );
+  const tableWidth = Math.max(availableWidth, dataWidth + reservedWidth);
+  const scale = dataWidth ? (tableWidth - reservedWidth) / dataWidth : 1;
+  let pinOffset = controlColumns * 36;
   const layout = visible.map((column) => {
-    const width = widths[column.key] || column.width || 160,
+    const width = widths[column.key] || column.width || 160;
+    const displayWidth = width * scale,
       left = pinOffset;
-    if (column.pinned) pinOffset += width;
-    return { ...column, width, left };
+    if (column.pinned) pinOffset += displayWidth;
+    return { ...column, width, displayWidth, left };
   });
   const reset = () => {
     setPage(0);
@@ -133,15 +151,22 @@ export function DataGrid({
             />
           ))}
         </Popover>
+        {toolbarActions}
       </div>
       {filterDefinitions.length > 0 && (
         <div className="re-grid-filters">
           {filterDefinitions.map((filter) => (
             <div key={filter.key} className="re-grid-filter">
               <span>{filter.label}</span>
-              <Select label={filter.label} value={filters[filter.key] || ""}
-                options={[{value:"",label:"All"},...filter.options]}
-                onValueChange={value => { setFilters({...filters,[filter.key]:value}); reset(); }} />
+              <Select
+                label={filter.label}
+                value={filters[filter.key] || ""}
+                options={[{ value: "", label: "All" }, ...filter.options]}
+                onValueChange={(value) => {
+                  setFilters({ ...filters, [filter.key]: value });
+                  reset();
+                }}
+              />
             </div>
           ))}
         </div>
@@ -175,18 +200,13 @@ export function DataGrid({
         <table
           aria-label={label}
           aria-rowcount={windowed ? data.length + 1 : undefined}
-          style={{
-            minWidth: layout.reduce(
-              (sum, column) => sum + column.width,
-              controlColumns * 36 + (rowActions ? 68 : 0),
-            ),
-          }}
+          style={{ width: tableWidth, minWidth: tableWidth }}
         >
           <colgroup>
             {bulkActions.length > 0 && <col style={{ width: 36 }} />}
             {renderExpanded && <col style={{ width: 36 }} />}
             {layout.map((column) => (
-              <col key={column.key} style={{ width: column.width }} />
+              <col key={column.key} style={{ width: column.displayWidth }} />
             ))}
             {rowActions && <col style={{ width: 68 }} />}
           </colgroup>
@@ -217,7 +237,10 @@ export function DataGrid({
                 </th>
               )}
               {renderExpanded && (
-                <th>
+                <th
+                  className="re-grid-expansion"
+                  style={{ left: bulkActions.length ? 36 : 0 }}
+                >
                   <span className="re-sr-only">Details</span>
                 </th>
               )}
@@ -381,7 +404,10 @@ export function DataGrid({
                           </td>
                         )}
                         {renderExpanded && (
-                          <td>
+                          <td
+                            className="re-grid-expansion"
+                            style={{ left: bulkActions.length ? 36 : 0 }}
+                          >
                             <button
                               className="re-grid-expand"
                               type="button"

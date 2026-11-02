@@ -173,6 +173,9 @@ export default function DateTimePicker({
     .slice(0, 7)
     .map((day) => day.toLocaleDateString(language, { weekday: "narrow" }));
   const today = new Date();
+  const minuteChoices = [...new Set([...MINUTES, chosen.getMinutes()])].sort(
+    (a, b) => a - b,
+  );
   const hourLabel = (hour) =>
     new Date(2000, 0, 1, hour).toLocaleTimeString(language, {
       hour: "numeric",
@@ -355,7 +358,7 @@ export default function DateTimePicker({
                   role="listbox"
                   aria-label={t("Minute")}
                 >
-                  {MINUTES.map((minutes) => (
+                  {minuteChoices.map((minutes) => (
                     <button
                       key={minutes}
                       type="button"

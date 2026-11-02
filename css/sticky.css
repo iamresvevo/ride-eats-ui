@@ -23,14 +23,16 @@
 }
 .re-floater-fade {
   position: absolute;
-  inset: -8px -12px -48px;
+  inset: calc(-1 * var(--float-cover-top, 8px)) -16px -32px;
   z-index: -1;
   opacity: var(--float-progress, 0);
   pointer-events: none;
+}
+.re-sticky-bar[data-fade] .re-floater-fade {
   background: linear-gradient(
     to bottom,
-    var(--bg) 0%,
-    var(--bg) 32%,
+    var(--float-background, var(--bg)) 0%,
+    var(--float-background, var(--bg)) calc(100% - 32px),
     transparent 100%
   );
 }

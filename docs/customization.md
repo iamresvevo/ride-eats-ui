@@ -1,20 +1,27 @@
 # Customization
 
-Import the library stylesheet once, then your app’s overrides. Content, routes and data belong in props; appearance belongs in tokens and scoped CSS.
+Set the solid accent once at the application root. The provider updates root tokens, including body-level dialogs, calendars and toasts.
+
+```jsx
+import { UIProvider } from '@ride-eats/ui';
+import '@ride-eats/ui/styles.css';
+
+<UIProvider accent="#1fa476" defaultTheme="system">
+  <App />
+</UIProvider>
+```
+
+Hex colors (`#rgb` or `#rrggbb`) get automatic black or white foreground text. For another CSS color format, pass `accentForeground` explicitly. Use one root provider; theme and accent are document-wide. Changes update live and provider-owned inline tokens are restored on unmount.
+
+Primary buttons, Done/Save actions, checked controls, sliders, ratings and calendar selections use the accent. Navigation selection can retain the neutral ink pill; status and destructive colors keep their own meanings. Supporting surfaces remain solid neutral colors.
+
+Advanced overrides can follow the library stylesheet:
 
 ```css
-/* after @ride-eats/ui/styles.css */
-:root {
-  --brand: #1fa476;
-  --brand-hover: #1b9169;
-  --brand-strong: #1b9169;
-  --r-sm: 12px;
-  --r-lg: 20px;
-  --r-dialog: 28px;
-  --r-pill: 999px;
-  --content: 1132px;
-}
+:root { --brand: #1fa476; --on-brand: #000; }
 ```
+
+Hover and icon variants derive from `--brand`; no extra palette setup is required.
 
 | Tokens                                       | Purpose                                      |
 | -------------------------------------------- | -------------------------------------------- |

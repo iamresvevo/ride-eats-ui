@@ -1,0 +1,22 @@
+{
+  "version": "0.9.2",
+  "checks": [
+    "module/import checks",
+    "design contract",
+    "TypeScript",
+    "26 tests",
+    "production build",
+    "support search, switching, retained drafts and local reply",
+    "36px file-selection column and bulk selection",
+    "settings editable empty name",
+    "sticky fade covers padded scroll root",
+    "provider accent reaches body-level calendar and uses contrasting text",
+    "changed layouts at desktop and 390px"
+  ],
+  "limits": [
+    "Drafts are session state, not persisted storage",
+    "Demo replies and settings do not imply backend persistence",
+    "Physical devices and exhaustive browser/screen-reader behavior remain unverified"
+  ],
+  "visualComparisons": 24
+}

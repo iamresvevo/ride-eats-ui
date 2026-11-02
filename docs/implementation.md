@@ -25,7 +25,7 @@ import "./your-overrides.css";
 
 export default function App() {
   return (
-    <UIProvider defaultTheme="system">
+    <UIProvider defaultTheme="system" accent="#1fa476">
       <YourApp />
     </UIProvider>
   );
@@ -137,3 +137,9 @@ The implementation workbench follows the primary example and uses Accordion, Car
 ```
 
 StickyBar follows Tools' sentinel behavior, discovers the nearest scroll container, and inherits Header's measured `--header-height` from their shared ancestor. Content scrolls beneath sharp controls with a scroll-driven neutral fade and layered 2/6/12px backdrop blur. Use `offset={0}` inside an independent scroll area, `blur={false}` for fade only, or `fade={false}` for no overlay. Keep it in the content parent whose boundary should stop it. Header also applies its progressive neutral fade/blur as scrolling begins. Blur support depends on the browser; the neutral gradient is the fallback.
+
+### One accent, including overlays
+
+Use `<UIProvider accent="#1fa476">` once at the application root. The root tokens reach body-level popovers, calendars and feedback. Hex values get a contrasting black/white foreground; `accentForeground` overrides it. Primary actions use the solid accent, navigation retains neutral selection pills, and semantic danger/status colors stay separate.
+
+SettingsPanel supports optional section `icon` values. SupportInbox retains drafts per thread for its mounted session and filters conversations locally by name/subject. DataGrid accepts `toolbarActions` for upload/create controls and reserves 36px selection/expansion columns.

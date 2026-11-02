@@ -306,6 +306,8 @@ export function useToast(): (
 ) => void;
 
 export function UIProvider(props: {
+  accent?: string;
+  accentForeground?: string;
   toastOptions?: { maxVisible?: number };
   icons?: Record<string, React.ReactNode>;
   children?: React.ReactNode;
@@ -871,6 +873,7 @@ export function DataGrid<T extends object>(
     }[];
     renderExpanded?: (row: T) => React.ReactNode;
     rowActions?: (row: T) => React.ReactNode;
+    toolbarActions?: React.ReactNode;
     loading?: boolean;
     error?: string;
     onRetry?: () => void;
@@ -961,6 +964,7 @@ export function SettingsPanel(
     sections: {
       id: string;
       title: React.ReactNode;
+      icon?: string;
       description?: React.ReactNode;
       children: React.ReactNode;
     }[];

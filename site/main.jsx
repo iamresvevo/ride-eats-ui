@@ -793,14 +793,13 @@ const canonicalPage = (id) =>
   })[id] ||
   id ||
   "overview";
-function App() {
+function App({ accent, setAccent }) {
   const [current, setCurrent] = useState(() =>
       canonicalPage(location.hash.slice(1)),
     ),
     [query, setQuery] = useState(""),
     [mode, setMode] = useState("preview"),
-    [mobile, setMobile] = useState(false),
-    [accent, setAccent] = useState("#1fa476");
+    [mobile, setMobile] = useState(false);
   const [compact, setCompact] = useState(
     () => matchMedia("(max-width: 760px)").matches,
   );
@@ -825,12 +824,7 @@ function App() {
     return () => removeEventListener("hashchange", change);
   }, []);
   return (
-    <div
-      className="docs-app"
-      style={{
-        "--brand": accent,
-      }}
-    >
+    <div className="docs-app">
       <div className="docs-shell-header">
         <Header
           brand={{
@@ -861,7 +855,7 @@ function App() {
           ]}
           activeValue={selected ? "overview" : current}
           onNavigate={(item) => navigate(item.value)}
-          guestContent={<Badge>v0.9.1</Badge>}
+          guestContent={<Badge>v0.9.2</Badge>}
           extras={
             <>
               <a
@@ -1102,9 +1096,9 @@ function App() {
               component. React 19 or newer.
             </p>
             <h2 className="doc-heading">1. Install a reviewed version</h2>
-            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.9.1"}</Code>
+            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.9.2"}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
-            <Code>{`import { UIProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App() {\n  return (\n    <UIProvider defaultTheme="system">\n      <Button variant="primary">Hello, Studio</Button>\n    </UIProvider>\n  );\n}`}</Code>
+            <Code>{`import { UIProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App({accent,setAccent}) {\n  return (\n    <UIProvider defaultTheme="system">\n      <Button variant="primary">Hello, Studio</Button>\n    </UIProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>
             <p className="component-description">
               Pass your brand, routes and account into Header. Keep API calls
@@ -1159,11 +1153,12 @@ function App() {
                 <Switch checked label="Made for you" onChange={() => {}} />
               </div>
             </div>
-            <Code>{`:root {\n  --brand: ${accent};\n  --brand-hover: ${accent};\n  --brand-strong: ${accent};\n  --r-sm: 12px;\n  --r-lg: 24px;\n  --content: 1132px;\n}`}</Code>
+            <Code>{`<UIProvider accent="${accent}" defaultTheme="system">\n  <App />\n</UIProvider>`}</Code>
             <p className="fine-print">
-              Override tokens after the library stylesheet, or on a wrapper for
-              a subtree. Body-level toast and date-picker portals inherit global
-              tokens. All supplied labels are yours to translate.
+              Set the accent once at your application root. Hex colors get
+              automatic black or white foreground text. The same accent reaches
+              dialogs, calendars and toasts. CSS token overrides remain
+              available for advanced customization.
             </p>
           </>
         ) : (
@@ -1312,13 +1307,16 @@ function App() {
     </div>
   );
 }
+function DocsRoot() {
+  const [accent, setAccent] = useState("#1fa476");
+  return (
+    <UI.UIProvider defaultTheme="dark" accent={accent}>
+      <App accent={accent} setAccent={setAccent} />
+    </UI.UIProvider>
+  );
+}
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThemeProvider defaultTheme="dark">
-      <ToastProvider>
-        <UI.Tooltips />
-        <App />
-      </ToastProvider>
-    </ThemeProvider>
+    <DocsRoot />
   </React.StrictMode>,
 );

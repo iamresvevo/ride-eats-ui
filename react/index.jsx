@@ -1,3 +1,4 @@
+import { accentText } from "./accent.js";
 import { IconProvider } from "./icons/registry.jsx";
 import { CardHeader, CardFooter } from "./collection.jsx";
 import { ToastProvider } from "./Feedback.jsx";
@@ -621,7 +622,34 @@ export function UIProvider({
   storageKey = "rideEatsUI.theme",
   toastOptions,
   icons,
+  accent,
+  accentForeground,
 }) {
+  useLayoutEffect(() => {
+    if (!accent) return;
+    const root = document.documentElement.style;
+    const tokens = {
+      "--brand": accent,
+      "--on-brand": accentForeground || accentText(accent),
+    };
+    const previous = Object.fromEntries(
+      Object.keys(tokens).map((key) => [
+        key,
+        [root.getPropertyValue(key), root.getPropertyPriority(key)],
+      ]),
+    );
+    for (const [key, value] of Object.entries(tokens))
+      if (value) root.setProperty(key, value);
+    return () => {
+      for (const [key, value] of Object.entries(tokens)) {
+        if (value && root.getPropertyValue(key) === value) {
+          const [old, priority] = previous[key];
+          if (old) root.setProperty(key, old, priority);
+          else root.removeProperty(key);
+        }
+      }
+    };
+  }, [accent, accentForeground]);
   return (
     <IconProvider icons={icons}>
       <ThemeProvider defaultTheme={defaultTheme} storageKey={storageKey}>
