@@ -39,6 +39,23 @@ const {
 const repo = "https://github.com/iamresvevo/ride-eats-ui";
 const components = [
   {
+    id: "segmented",
+    name: "Segmented",
+    group: "Inputs",
+    description: "Send’s fluid radio tabs, extracted directly.",
+    detail:
+      "The original Send segmented control, with one sliding selection surface and a directional stretch-and-settle. Use this for radio choices; use Tabs for content panels.",
+    code: `<Segmented name="visibility" value={visibility} onChange={setVisibility} fit
+  options={[{value:'private',label:'Private'},{value:'public',label:'Public'}]} />`,
+    props: [
+      ["options", "{value,label?,icon?,title?}[]", "Available radio choices."],
+      ["value / onChange", "string / callback", "Controlled selection."],
+      ["label / name / icon", "string", "Group label and optional icon."],
+      ["disabled / fit", "boolean", "Disable selection or fit the content."],
+    ],
+  },
+
+  {
     id: "header",
     name: "Header",
     group: "Navigation",
@@ -98,7 +115,7 @@ const components = [
     group: "Navigation",
     description: "A clear choice, with just enough movement.",
     detail:
-      "Controlled tabs with counts, roving focus, arrow keys, Home and End. Supply panel IDs to associate your own content panels.",
+      "Controlled tabs with Send’s sliding, stretching selection pill, counts, roving focus, arrow keys, Home and End. Supply panel IDs to associate your own content panels.",
     code: `<Tabs\n  value={tab}\n  onValueChange={setTab}\n  items={[\n    { value: 'all', label: 'All files', count: 24 },\n    { value: 'shared', label: 'Shared', count: 8 },\n    { value: 'archived', label: 'Archived' },\n  ]}\n/>`,
     props: [
       [
@@ -416,6 +433,20 @@ function Demo({ id }) {
     [],
   );
   switch (id) {
+    case "segmented":
+      return (
+        <UI.Segmented
+          name="visibility"
+          value={status}
+          onChange={setStatus}
+          fit
+          options={[
+            { value: "active", label: "Private", icon: "lock" },
+            { value: "draft", label: "Public", icon: "globe" },
+          ]}
+        />
+      );
+
     case "header":
       return (
         <div className="header-demo">
@@ -830,7 +861,7 @@ function App() {
           <strong>
             Ride Eats <span>UI</span>
           </strong>
-          <Badge>v0.2</Badge>
+          <Badge>v0.2.1</Badge>
         </a>
         <div className="top-links">
           <span className="react-tag">
@@ -1070,7 +1101,7 @@ function App() {
               component. React 19 or newer.
             </p>
             <h2 className="doc-heading">1. Install a reviewed version</h2>
-            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.2.0"}</Code>
+            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.2.1"}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
             <Code>{`import { ThemeProvider, ToastProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ThemeProvider defaultTheme="system">\n      <ToastProvider>\n        <Button variant="primary">Hello, Studio</Button>\n      </ToastProvider>\n    </ThemeProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>

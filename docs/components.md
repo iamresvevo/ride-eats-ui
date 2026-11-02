@@ -214,3 +214,22 @@ Badge tones: neutral/good/wait/bad. Pagination is 1-based and hidden when only o
 `<UIProvider defaultTheme="system"><App /></UIProvider>` combines ThemeProvider, ToastProvider and Send’s Tooltips. Use either UIProvider or the individual providers, not both.
 
 `<Tooltips />` may also be mounted once at app root. It reads `data-tooltip` and icon-only `aria-label` values, including inside menu portals. Button’s `title` prop supplies its tooltip text. `<PageLoading label="Loading files" />` is Send’s delayed first-load spinner.
+
+## Animated segmented controls
+
+Tabs uses Send’s single moving selection surface, including its directional stretch and 400ms settle. It remeasures labels on resize and skips movement for reduced motion. For radio-style choices, use the extracted Send component directly:
+
+```jsx
+<Segmented
+  name="visibility"
+  value={visibility}
+  onChange={setVisibility}
+  fit
+  options={[
+    { value: "private", label: "Private" },
+    { value: "public", label: "Public" },
+  ]}
+/>
+```
+
+Segmented accepts label, icon, name, options, value, onChange, disabled and fit. It retains radiogroup semantics; use Tabs for content panels.

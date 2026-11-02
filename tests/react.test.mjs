@@ -88,3 +88,47 @@ test("unverified identities omit the verification badge and retain safe labels",
     /&lt;script&gt;/,
   );
 });
+
+test("Send selection motion slides and stretches only after initial placement", async (t) => {
+  const { placeSelection } = await import("../react/send/hooks/selection.js");
+  const previous = globalThis.matchMedia;
+  t.after(() => {
+    if (previous) globalThis.matchMedia = previous;
+    else delete globalThis.matchMedia;
+  });
+  globalThis.matchMedia = () => ({ matches: false });
+  const frames = [];
+  const liquid = {
+    style: {},
+    getAnimations: () => [],
+    animate: (keyframes, options) => frames.push({ keyframes, options }),
+  };
+  const pill = { dataset: {}, style: {}, firstElementChild: liquid };
+  const selected = {
+    offsetLeft: 4,
+    offsetTop: 4,
+    offsetWidth: 100,
+    offsetHeight: 34,
+  };
+  const root = {
+    offsetWidth: 300,
+    querySelector: (selector) =>
+      selector === "[data-selection-pill]" ? pill : selected,
+  };
+  placeSelection(root, false);
+  assert.equal(frames.length, 0);
+  assert.equal(pill.style.transition, "none");
+  selected.offsetLeft = 108;
+  placeSelection(root, true);
+  assert.equal(pill.style.transform, "translate(108px, 4px)");
+  assert.equal(pill.style.transition, "");
+  assert.equal(frames.length, 1);
+  assert.equal(frames[0].options.duration, 400);
+  assert.match(frames[0].keyframes[1].transform, /0\.88/);
+  assert.equal(liquid.style.transformOrigin, "25% center");
+  globalThis.matchMedia = () => ({ matches: true });
+  selected.offsetLeft = 4;
+  placeSelection(root, true);
+  assert.equal(frames.length, 1);
+  assert.equal(pill.style.transition, "none");
+});

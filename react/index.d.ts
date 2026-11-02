@@ -259,3 +259,19 @@ export function UIProvider(props: {
 }): React.ReactElement;
 export function Tooltips(): React.ReactElement | null;
 export function PageLoading(props: { label?: string }): React.ReactElement;
+
+export function Segmented(props: {
+  label?: string;
+  icon?: string;
+  name?: string;
+  options: {
+    value: string;
+    label?: React.ReactNode;
+    icon?: string;
+    title?: string;
+  }[];
+  value: string;
+  onChange: (value: string) => void;
+  disabled?: boolean;
+  fit?: boolean;
+}): React.ReactElement;

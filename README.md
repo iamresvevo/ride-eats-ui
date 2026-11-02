@@ -13,7 +13,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.2.0
+npm install github:iamresvevo/ride-eats-ui#v0.2.1
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -86,6 +86,8 @@ export default function AppHeader({ account, signOut }) {
 ```
 
 `account` is `{ name, email?, avatar?, verified? }`. Use `loading` while checking a session and `signingOut` while signing out. Provide `guestContent` for a signed-out action. `extras` accepts notifications or other React controls. Omit `onNavigate` to use ordinary links; when supplied, route navigation belongs in that callback. No authentication service or backend is bundled.
+
+Tabs now share Send’s fluid sliding and stretching selection pill. `Segmented` exposes the original Send radio-control API. Both honor reduced motion.
 
 ## Dropdowns and tabs
 
@@ -189,7 +191,7 @@ Override CSS variables after importing the stylesheet:
 
 | Area               | Components                                                                                   |
 | ------------------ | -------------------------------------------------------------------------------------------- |
-| Navigation         | `Header`, `AccountMenu`, `Menu`, `Dropdown`, `Tabs`, `Chips`, `Pagination`                   |
+| Navigation         | `Header`, `AccountMenu`, `Menu`, `Dropdown`, `Tabs`, `Segmented`, `Chips`, `Pagination`      |
 | Actions            | `Button`, `Icon`                                                                             |
 | Inputs             | `Field`, `Select`, `SearchSelect`, `Switch`, `DateTimePicker`                                |
 | Feedback           | `Dialog`, `Modal`, `Skeleton`, `Bone`, `BoneText`, `EmptyState`, `ToastProvider`, `useToast` |

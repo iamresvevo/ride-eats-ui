@@ -1,3 +1,5 @@
+import { placeSelection } from "./send/hooks/selection.js";
+export { default as Segmented } from "./send/Segmented.jsx";
 import Tooltips from "./send/ui/Tooltips.jsx";
 export { default as Tooltips } from "./send/ui/Tooltips.jsx";
 export { default as PageLoading } from "./send/ui/PageLoading.jsx";
@@ -29,7 +31,13 @@ export {
   MenuLabel,
   MenuSeparator,
 } from "./send/ui/Menu.jsx";
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 
 export function ThemeProvider({
@@ -111,18 +119,57 @@ export function Tabs({
   ...props
 }) {
   const buttons = useRef([]);
+  const root = useRef(null);
+  const previous = useRef(value);
+  useLayoutEffect(() => {
+    placeSelection(
+      root.current,
+      previous.current !== value,
+      '[aria-selected="true"]',
+    );
+    previous.current = value;
+  });
+  const itemKeys = items.map((item) => item.value).join("\0");
+  useLayoutEffect(() => {
+    const element = root.current;
+    const observer = new ResizeObserver(() =>
+      placeSelection(element, false, '[aria-selected="true"]'),
+    );
+    observer.observe(element);
+    element
+      .querySelectorAll("button")
+      .forEach((button) => observer.observe(button));
+    return () => {
+      observer.disconnect();
+      element
+        .querySelector("[data-selection-pill] > span")
+        ?.getAnimations()
+        .forEach((animation) => animation.cancel());
+    };
+  }, [itemKeys]);
+
   return (
     <div
       {...props}
+      ref={root}
       role="tablist"
       aria-label={label}
       className={`tabs ${props.className || ""}`}
     >
+      <span
+        className="tabs-selection"
+        data-selection-pill=""
+        aria-hidden="true"
+      >
+        <span />
+      </span>
       {items.map((item, i) => (
         <button
           type="button"
           key={item.value}
-          ref={(node) => (buttons.current[i] = node)}
+          ref={(node) => {
+            buttons.current[i] = node;
+          }}
           role="tab"
           id={item.id}
           aria-controls={item.panelId}
