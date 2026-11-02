@@ -26,6 +26,7 @@ export default function Menu({
   trigger,
   align = "end",
   className = "",
+  style,
   children,
 }) {
   const [open, setOpen] = useState(false);
@@ -91,7 +92,7 @@ export default function Menu({
     setOpen(false);
   };
   return (
-    <div ref={root} className={`menu ${className}`.trim()}>
+    <div ref={root} className={`menu ${className}`.trim()} style={style}>
       {trigger({
         ref: button,
         "aria-haspopup": "menu",

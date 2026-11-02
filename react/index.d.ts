@@ -30,7 +30,7 @@ export interface MenuRow {
   onSelect?: () => void;
   items?: MenuRow[];
 }
-export interface HeaderProps {
+export interface HeaderProps extends StylingProps {
   brand: { name: string; href?: string; logoLight?: string; logoDark?: string };
   items?: NavItem[];
   activeValue?: string;
@@ -62,12 +62,14 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   ref?: React.Ref<HTMLButtonElement>;
 }
 export function Button(props: ButtonProps): React.ReactElement;
-export function Dropdown(props: {
-  trigger?: React.ReactNode;
-  items: MenuRow[];
-  align?: "start" | "end";
-  label?: string;
-}): React.ReactElement;
+export function Dropdown(
+  props: StylingProps & {
+    trigger?: React.ReactNode;
+    items: MenuRow[];
+    align?: "start" | "end";
+    label?: string;
+  },
+): React.ReactElement;
 export function Menu(props: {
   trigger: (
     props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -76,6 +78,7 @@ export function Menu(props: {
   ) => React.ReactNode;
   align?: "start" | "end";
   className?: string;
+  style?: React.CSSProperties;
   children?: React.ReactNode;
 }): React.ReactElement;
 export function MenuItem(props: {
@@ -113,26 +116,38 @@ export function Tabs(
     label?: string;
   },
 ): React.ReactElement;
-export function Chips(props: {
-  items: TabItem[];
-  value: string;
-  onValueChange: (value: string) => void;
-}): React.ReactElement;
-export function Select(props: {
-  options: Option[];
-  value: string;
-  onValueChange: (value: string) => void;
-  label?: string;
-  disabled?: boolean;
-}): React.ReactElement;
-export function SearchSelect(props: {
-  label?: string;
-  load: (query: string) => Promise<Option[]>;
-  value?: Option[];
-  onValueChange: (items: Option[]) => void;
-  max?: number;
-  placeholder?: string;
-}): React.ReactElement;
+export function Chips(
+  props: StylingProps & {
+    items: TabItem[];
+    value: string;
+    onValueChange: (value: string) => void;
+  },
+): React.ReactElement;
+export function Select(
+  props: StylingProps & {
+    options: (Omit<Option, "label"> & { label: React.ReactNode })[];
+    renderValue?: (
+      option: (Omit<Option, "label"> & { label: React.ReactNode }) | undefined,
+    ) => React.ReactNode;
+    value: string;
+    onValueChange: (value: string) => void;
+    label?: string;
+    disabled?: boolean;
+  },
+): React.ReactElement;
+export function SearchSelect(
+  props: StylingProps & {
+    label?: string;
+    load: (query: string) => Promise<Option[]>;
+    value?: Option[];
+    onValueChange: (items: Option[]) => void;
+    max?: number;
+    placeholder?: string;
+    disabled?: boolean;
+    renderOption?: (item: Option) => React.ReactNode;
+    renderSelected?: (item: Option) => React.ReactNode;
+  },
+): React.ReactElement;
 export function Switch(props: {
   icon?: string;
   label: React.ReactNode;
@@ -149,11 +164,16 @@ export function SettingRow(props: {
   wide?: boolean;
   children?: React.ReactNode;
 }): React.ReactElement;
-export function DateTimePicker(props: {
-  value: number;
-  future?: boolean;
-  onChange: (unixSeconds: number) => void;
-}): React.ReactElement;
+export function DateTimePicker(
+  props: StylingProps & {
+    label?: string;
+    locale?: string;
+    disabled?: boolean;
+    value: number;
+    future?: boolean;
+    onChange: (unixSeconds: number) => void;
+  },
+): React.ReactElement;
 export function Dialog(props: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -162,6 +182,9 @@ export function Dialog(props: {
   footer?: React.ReactNode;
   size?: "sm" | "md" | "lg";
   dismissible?: boolean;
+  beforeClose?: () => boolean | Promise<boolean>;
+  className?: string;
+  style?: React.CSSProperties;
 }): React.ReactElement | null;
 export function Modal(props: {
   size?: "sm" | "lg";
@@ -197,36 +220,64 @@ export function VerifiedName(props: {
 export function VerificationBadge(props: {
   verified?: boolean;
 }): React.ReactElement | null;
-export function Icon(props: { name: string }): React.ReactElement;
-export function Badge(props: {
-  tone?: "neutral" | "good" | "wait" | "bad";
+export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, "name"> {
+  name: string;
+  size?: number;
+  strokeWidth?: number;
+  label?: string;
+  title?: string;
+  motion?: "none" | "draw" | "spin" | "pulse" | "bounce" | "rotate";
+  animateOn?: "hover" | "always";
+}
+export function Icon(props: IconProps): React.ReactElement;
+export function IconProvider(props: {
+  icons: Record<string, React.ReactNode>;
   children?: React.ReactNode;
 }): React.ReactElement;
-export function Stat(props: {
-  label: React.ReactNode;
-  value: React.ReactNode;
-  hint?: React.ReactNode;
-  tone?: "good" | "bad" | "";
-}): React.ReactElement;
-export function Card(
-  props: React.HTMLAttributes<HTMLElement> & {
-    title?: string;
+export const iconNames: readonly string[];
+export function Badge(
+  props: React.HTMLAttributes<HTMLSpanElement> & {
+    tone?: "neutral" | "good" | "wait" | "bad";
     children?: React.ReactNode;
   },
 ): React.ReactElement;
-export function Field(props: {
-  label: React.ReactNode;
-  hint?: React.ReactNode;
-  error?: React.ReactNode;
-  id?: string;
-  children: React.ReactElement;
-}): React.ReactElement;
-export function EmptyState(props: {
-  title: React.ReactNode;
-  description?: React.ReactNode;
-  icon?: string;
-  action?: React.ReactNode;
-}): React.ReactElement;
+export function Stat(
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    label: React.ReactNode;
+    value: React.ReactNode;
+    hint?: React.ReactNode;
+    tone?: "good" | "bad" | "";
+  },
+): React.ReactElement;
+export function Card(
+  props: Omit<React.HTMLAttributes<HTMLElement>, "title"> & {
+    title?: React.ReactNode;
+    description?: React.ReactNode;
+    action?: React.ReactNode;
+    footer?: React.ReactNode;
+    variant?: "default" | "soft" | "plain";
+    padding?: "default" | "sm" | "none";
+    children?: React.ReactNode;
+  },
+): React.ReactElement;
+export function Field(
+  props: StylingProps & {
+    label: React.ReactNode;
+    hint?: React.ReactNode;
+    error?: React.ReactNode;
+    id?: string;
+    children: React.ReactElement;
+  },
+): React.ReactElement;
+export function EmptyState(
+  props: StylingProps & {
+    title: React.ReactNode;
+    description?: React.ReactNode;
+    icon?: string | false;
+    illustration?: React.ReactNode;
+    action?: React.ReactNode;
+  },
+): React.ReactElement;
 export function Pagination(props: {
   page: number;
   pageSize: number;
@@ -245,14 +296,21 @@ export function useTheme(): {
   setTheme: React.Dispatch<React.SetStateAction<Theme>>;
 };
 export function ToastProvider(props: {
+  maxVisible?: number;
   children?: React.ReactNode;
 }): React.ReactElement;
 export function useToast(): (
   message: React.ReactNode,
-  options?: { tone?: "neutral" | "good" | "bad"; duration?: number },
+  options?: {
+    tone?: "neutral" | "good" | "bad";
+    duration?: number;
+    id?: string;
+  },
 ) => void;
 
 export function UIProvider(props: {
+  toastOptions?: { maxVisible?: number };
+  icons?: Record<string, React.ReactNode>;
   children?: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
@@ -275,3 +333,255 @@ export function Segmented(props: {
   disabled?: boolean;
   fit?: boolean;
 }): React.ReactElement;
+
+export interface StylingProps {
+  className?: string;
+  style?: React.CSSProperties;
+}
+export interface ConfirmOptions {
+  title: React.ReactNode;
+  message?: React.ReactNode;
+  confirmLabel?: React.ReactNode;
+  cancelLabel?: React.ReactNode;
+  danger?: boolean;
+}
+export function useConfirm(): (options: ConfirmOptions) => Promise<boolean>;
+export function useFeedback(): {
+  toast: ReturnType<typeof useToast>;
+  confirm: ReturnType<typeof useConfirm>;
+};
+export const FeedbackProvider: typeof ToastProvider;
+export function Accordion(
+  props: StylingProps & {
+    items: {
+      value: string;
+      title: React.ReactNode;
+      content: React.ReactNode;
+      icon?: string;
+    }[];
+    value: string | null;
+    onValueChange: (value: string | null) => void;
+    label?: string;
+  },
+): React.ReactElement;
+export function Alert(
+  props: StylingProps & {
+    tone?: "neutral" | "good" | "bad";
+    title: React.ReactNode;
+    children?: React.ReactNode;
+    onDismiss?: () => void;
+    action?: React.ReactNode;
+  },
+): React.ReactElement;
+export function Checkbox(
+  props: StylingProps & {
+    checked: boolean;
+    onCheckedChange: (value: boolean) => void;
+    label: React.ReactNode;
+    hint?: React.ReactNode;
+    disabled?: boolean;
+    indeterminate?: boolean;
+    inputProps?: Omit<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      "checked" | "onChange" | "type"
+    >;
+  },
+): React.ReactElement;
+export function RadioGroup(
+  props: StylingProps & {
+    options: {
+      value: string;
+      label: React.ReactNode;
+      description?: React.ReactNode;
+      trailing?: React.ReactNode;
+      disabled?: boolean;
+    }[];
+    value: string;
+    onValueChange: (value: string) => void;
+    label?: string;
+    name?: string;
+    disabled?: boolean;
+  },
+): React.ReactElement;
+export function Slider(
+  props: StylingProps & {
+    value: number;
+    onValueChange: (value: number) => void;
+    min?: number;
+    max?: number;
+    step?: number;
+    label?: string;
+    formatValue?: (value: number) => string;
+    disabled?: boolean;
+  },
+): React.ReactElement;
+export function Progress(
+  props: StylingProps & {
+    value?: number;
+    max?: number;
+    label?: string;
+    hint?: React.ReactNode;
+    indeterminate?: boolean;
+  },
+): React.ReactElement;
+export function PasswordInput(
+  props: React.InputHTMLAttributes<HTMLInputElement> & {
+    label?: React.ReactNode;
+    hint?: React.ReactNode;
+  },
+): React.ReactElement;
+export function NumberInput(
+  props: StylingProps & {
+    value: number;
+    onValueChange: (value: number) => void;
+    min?: number;
+    max?: number;
+    step?: number;
+    label?: string;
+    disabled?: boolean;
+  },
+): React.ReactElement;
+export function Breadcrumbs(
+  props: StylingProps & {
+    items: { label: React.ReactNode; href?: string }[];
+    label?: string;
+  },
+): React.ReactElement;
+export function AvatarGroup(
+  props: StylingProps & {
+    people: { id?: string | number; name: string; src?: string }[];
+    max?: number;
+    label?: string;
+  },
+): React.ReactElement;
+export function CopyButton(
+  props: StylingProps & {
+    value: string;
+    label?: React.ReactNode;
+    copiedLabel?: React.ReactNode;
+    onCopy?: () => void;
+    onError?: (error: unknown) => void;
+  },
+): React.ReactElement;
+export function FileDropzone(
+  props: StylingProps & {
+    onFiles: (files: File[]) => void;
+    accept?: string;
+    multiple?: boolean;
+    disabled?: boolean;
+    maxSize?: number;
+    label?: React.ReactNode;
+    description?: React.ReactNode;
+  },
+): React.ReactElement;
+export function Timeline(
+  props: StylingProps & {
+    items: {
+      id?: string | number;
+      title: React.ReactNode;
+      description?: React.ReactNode;
+      time?: React.ReactNode;
+      dateTime?: string;
+      icon?: string;
+      tone?: string;
+    }[];
+    label?: string;
+  },
+): React.ReactElement;
+export function Drawer(
+  props: StylingProps & {
+    open: boolean;
+    onOpenChange: (value: boolean) => void;
+    title?: React.ReactNode;
+    children?: React.ReactNode;
+    footer?: React.ReactNode;
+    side?: "left" | "right";
+  },
+): React.ReactElement | null;
+export interface TableSort {
+  key: string;
+  direction: "asc" | "desc";
+}
+export interface TableColumn<T> {
+  key: Extract<keyof T, string>;
+  label: React.ReactNode;
+  render?: (value: T[keyof T], row: T) => React.ReactNode;
+  sortable?: boolean;
+  width?: React.CSSProperties["width"];
+  align?: "left" | "center" | "right";
+}
+export function DataTable<T extends Record<string, unknown>>(
+  props: StylingProps & {
+    columns: TableColumn<T>[];
+    rows: T[];
+    rowKey?:
+      Extract<keyof T, string> | ((row: T, index: number) => string | number);
+    caption?: React.ReactNode;
+    emptyText?: React.ReactNode;
+    emptyContent?: React.ReactNode;
+    loading?: boolean;
+    sort?: TableSort;
+    onSortChange?: (sort: TableSort) => void;
+    onRowClick?: (row: T) => void;
+    selectedKeys?: (string | number)[];
+    onSelectionChange?: (keys: (string | number)[]) => void;
+    rowActions?: (row: T) => React.ReactNode;
+    density?: "compact" | "comfortable";
+  },
+): React.ReactElement;
+export function CardHeader(
+  props: Omit<React.HTMLAttributes<HTMLDivElement>, "title"> & {
+    title?: React.ReactNode;
+    description?: React.ReactNode;
+    action?: React.ReactNode;
+  },
+): React.ReactElement;
+export function CardBody(
+  props: React.HTMLAttributes<HTMLDivElement>,
+): React.ReactElement;
+export function CardFooter(
+  props: React.HTMLAttributes<HTMLDivElement>,
+): React.ReactElement;
+export function MetricGrid(
+  props: React.HTMLAttributes<HTMLDivElement> & { minWidth?: number },
+): React.ReactElement;
+export function StatCard(
+  props: React.HTMLAttributes<HTMLElement> & {
+    label: React.ReactNode;
+    value: React.ReactNode;
+    hint?: React.ReactNode;
+    icon?: string;
+    tone?: "neutral" | "good" | "bad";
+    trend?: React.ReactNode;
+    trendLabel?: React.ReactNode;
+    chart?: number[];
+    progress?: number;
+    variant?: "default" | "compact" | "inline" | "hero";
+  },
+): React.ReactElement;
+export function Tile(
+  props: StylingProps & {
+    title: React.ReactNode;
+    description?: React.ReactNode;
+    icon?: string;
+    image?: string;
+    meta?: React.ReactNode;
+    footer?: React.ReactNode;
+    href?: string;
+    onClick?: React.MouseEventHandler;
+    disabled?: boolean;
+  },
+): React.ReactElement;
+export function PageHeader(
+  props: React.HTMLAttributes<HTMLElement> & {
+    title: string;
+    description?: React.ReactNode;
+    eyebrow?: React.ReactNode;
+    icon?: string;
+    image?: string;
+    actions?: React.ReactNode;
+  },
+): React.ReactElement;
+export function Toolbar(
+  props: React.HTMLAttributes<HTMLDivElement> & { trailing?: React.ReactNode },
+): React.ReactElement;

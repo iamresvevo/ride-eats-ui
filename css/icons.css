@@ -1,0 +1,9 @@
+/* Opt-in motion. Default glyphs are still; hover/focus can animate an entire button group. */
+.icon{transform-origin:center;overflow:visible}.icon[data-motion=none]{animation:none}
+.icon[data-motion=spin][data-animate-on=always],.icon[data-motion=spin]:hover,:is(button,a):is(:hover,:focus-visible)>.icon[data-motion=spin]{animation:re-icon-spin 1.3s linear infinite}
+.icon[data-motion=pulse][data-animate-on=always],.icon[data-motion=pulse]:hover,:is(button,a):is(:hover,:focus-visible)>.icon[data-motion=pulse]{animation:re-icon-pulse 1.7s ease-in-out infinite}
+.icon[data-motion=bounce][data-animate-on=always],.icon[data-motion=bounce]:hover,:is(button,a):is(:hover,:focus-visible)>.icon[data-motion=bounce]{animation:re-icon-bounce .65s cubic-bezier(.22,1,.36,1)}
+.icon[data-motion=rotate][data-animate-on=always],.icon[data-motion=rotate]:hover,:is(button,a):is(:hover,:focus-visible)>.icon[data-motion=rotate]{animation:re-icon-turn .6s cubic-bezier(.22,1,.36,1)}
+.icon[data-motion=draw][data-animate-on=always]>:not(title),.icon[data-motion=draw]:hover>:not(title),:is(button,a):is(:hover,:focus-visible)>.icon[data-motion=draw]>:not(title){stroke-dasharray:1;animation:re-icon-draw .7s cubic-bezier(.22,1,.36,1) both}
+@keyframes re-icon-spin{to{transform:rotate(360deg)}}@keyframes re-icon-pulse{50%{opacity:.45;transform:scale(.9)}}@keyframes re-icon-bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}70%{transform:translateY(1px)}}@keyframes re-icon-turn{0%{transform:rotate(0)}50%{transform:rotate(24deg)}100%{transform:rotate(0)}}@keyframes re-icon-draw{from{stroke-dashoffset:1;opacity:.4}to{stroke-dashoffset:0;opacity:1}}
+@media(prefers-reduced-motion:reduce){.icon,.icon>*{animation:none!important;transition:none!important}}

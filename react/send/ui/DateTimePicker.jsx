@@ -15,7 +15,16 @@ const MINUTES = [0, 15, 30, 45];
  * chosen moment, and opens a month grid with hour and minute lists beside it. `value` is a Unix
  * time; with `future`, moments already past can't be picked.
  */
-export default function DateTimePicker({ value, future = false, onChange }) {
+export default function DateTimePicker({
+  value,
+  future = false,
+  onChange,
+  label = "Date and time",
+  locale,
+  disabled = false,
+  className = "",
+  style,
+}) {
   const [open, setOpen] = useState(false);
   const chosen = new Date(value * 1000);
   const [month, setMonth] = useState(
@@ -25,7 +34,7 @@ export default function DateTimePicker({ value, future = false, onChange }) {
   const button = useRef(null);
   const panel = useRef(null);
   const presence = usePresence(open);
-  const language = getLanguage();
+  const language = locale || getLanguage();
   // Read once per opening, so the past stays put while the panel is open.
   const [now, setNow] = useState(null);
   // Inside a dialog the panel must live in it too, or the dialog's top layer would cover it.
@@ -152,11 +161,12 @@ export default function DateTimePicker({ value, future = false, onChange }) {
     ) < new Date(earliest.getTime() - 899000);
 
   return (
-    <div ref={root} className="dtp">
+    <div ref={root} className={`dtp ${className}`} style={style}>
       <button
         ref={button}
         type="button"
         className="dtp-field"
+        disabled={disabled}
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={toggle}
@@ -178,7 +188,7 @@ export default function DateTimePicker({ value, future = false, onChange }) {
           <div
             ref={panel}
             role="dialog"
-            aria-label={t("Send at")}
+            aria-label={t(label)}
             className={`dtp-panel ${presence.closing ? "is-closing" : ""}`.trim()}
             onAnimationEnd={presence.onAnimationEnd}
           >

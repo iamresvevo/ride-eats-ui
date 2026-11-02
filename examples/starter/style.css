@@ -1,0 +1,27 @@
+:root {
+  --content: 1132px;
+  --r-lg: 20px;
+}
+main.site-page {
+  padding-top: 32px;
+}
+.re-card .re-data-table {
+  border: 0;
+}
+.re-toolbar input {
+  width: 260px;
+}
+.stack {
+  gap: 24px;
+}
+.re-page-header {
+  margin-bottom: 2px;
+}
+@media (max-width: 600px) {
+  main.site-page {
+    padding-top: 20px;
+  }
+  .re-toolbar input {
+    width: 100%;
+  }
+}

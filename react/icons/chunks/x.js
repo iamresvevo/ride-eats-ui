@@ -1,0 +1,2 @@
+// Lucide 1.66.0, ISC. See ../LICENSE.lucide.
+export default {"x-line-top":[["path",{"d":"M18 4H6"}],["path",{"d":"M18 8 6 20"}],["path",{"d":"m6 8 12 12"}]],"x":[["path",{"d":"M18 6 6 18"}],["path",{"d":"m6 6 12 12"}]]};

@@ -15,6 +15,8 @@ export default function Header({
   menuContent,
   guestContent,
   extras,
+  className = "",
+  style,
 }) {
   const header = useRef(null);
   useLayoutEffect(() => {
@@ -126,7 +128,11 @@ export default function Header({
     return () => observer.disconnect();
   }, [activeValue, items]);
   return (
-    <header ref={header} className="site-header site-header-scope send-header">
+    <header
+      ref={header}
+      className={`site-header site-header-scope send-header ${className}`}
+      style={style}
+    >
       <div className="header-blur" aria-hidden="true" />
       <a
         className="brand"

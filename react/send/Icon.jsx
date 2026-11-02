@@ -1,4 +1,32 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
+import { loaders } from "../icons/loaders.js";
+import { useCustomIcons } from "../icons/registry.jsx";
+const loadedChunks = new Map();
+function catalogChunk(key) {
+  if (!loaders[key]) return null;
+  if (!loadedChunks.has(key))
+    loadedChunks.set(
+      key,
+      lazy(() =>
+        loaders[key]().then((module) => ({
+          default: ({ name }) =>
+            (
+              module.default[name] || [
+                ["path", { d: "M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" }],
+              ]
+            ).map(([tag, attributes], index) =>
+              React.createElement(tag, {
+                ...attributes,
+                pathLength: 1,
+                key: index,
+              }),
+            ),
+        })),
+      ),
+    );
+  return loadedChunks.get(key);
+}
+
 const PATHS = {
   filter: "M3 5h18l-7 8v6l-4-2v-4L3 5Z",
   infinity:
@@ -65,19 +93,54 @@ const PATHS = {
   shield: "M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3M9 12l2 2 4-4",
 };
 
-export default function Icon({ name }) {
+export default function Icon({
+  name,
+  size,
+  strokeWidth = 1.7,
+  color,
+  className = "",
+  style,
+  label,
+  title,
+  motion = "none",
+  animateOn = "hover",
+  ...props
+}) {
+  const custom = useCustomIcons();
+  const accessible = label || props["aria-label"] || title;
+  const Glyph =
+    !PATHS[name] && !custom[name] ? catalogChunk(String(name || "")[0]) : null;
   return (
     <svg
-      className="icon"
+      {...props}
+      className={`icon ${className}`}
+      data-icon={name}
+      data-motion={motion}
+      data-animate-on={animateOn}
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
+      stroke={color || "currentColor"}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
-      aria-hidden="true"
+      width={size || 16}
+      height={size || 16}
+      style={{ ...(size ? { width: size, height: size } : {}), ...style }}
+      role={accessible ? "img" : undefined}
+      aria-label={accessible}
+      aria-hidden={accessible ? undefined : true}
     >
-      <path d={PATHS[name]} />
+      {title && <title>{title}</title>}
+      {custom[name] ||
+        (PATHS[name] ? (
+          <path d={PATHS[name]} pathLength="1" />
+        ) : Glyph ? (
+          <Suspense fallback={null}>
+            <Glyph name={name} />
+          </Suspense>
+        ) : (
+          <path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" />
+        ))}
     </svg>
   );
 }

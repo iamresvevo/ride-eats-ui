@@ -59,3 +59,81 @@ export function Example() {
     </ThemeProvider>
   );
 }
+
+import {
+  DataTable,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  StatCard,
+  MetricGrid,
+  Tile,
+  Icon,
+  IconProvider,
+  Accordion,
+  Checkbox,
+  Slider,
+  Progress,
+  useConfirm,
+} from "../react/index.jsx";
+export function PlatformExample() {
+  const [selected, setSelected] = useState<(string | number)[]>([]);
+  const confirm = useConfirm();
+  return (
+    <>
+      <MetricGrid>
+        <StatCard
+          label="Payments"
+          value="153"
+          chart={[1, 3, 2, 7]}
+          trend="+12%"
+        />
+        <Tile title="Files" href="/files" />
+      </MetricGrid>
+      <Card
+        title="Members"
+        description="Shared workspace"
+        variant="soft"
+        footer={<Button>Save</Button>}
+      >
+        <DataTable
+          rows={[{ id: "a", name: "Alex" }]}
+          columns={[
+            {
+              key: "name",
+              label: "Name",
+              render: (value) => <strong>{value}</strong>,
+            },
+          ]}
+          selectedKeys={selected}
+          onSelectionChange={setSelected}
+        />
+      </Card>
+      <Card>
+        <CardHeader title="Custom" />
+        <CardBody>Body</CardBody>
+        <CardFooter>Footer</CardFooter>
+      </Card>
+      <Icon name="headset" size={24} motion="draw" />
+      <IconProvider icons={{ brand: <path d="M4 4h16v16H4Z" /> }}>
+        <Icon name="brand" />
+      </IconProvider>
+      <Accordion
+        items={[{ value: "a", title: "A", content: "Body" }]}
+        value={null}
+        onValueChange={() => {}}
+      />
+      <Checkbox label="Select" checked onCheckedChange={() => {}} />
+      <Progress value={64} />
+      <Slider value={50} onValueChange={() => {}} />
+      <Button
+        onClick={async () => {
+          await confirm({ title: "Discard?", danger: true });
+        }}
+      >
+        Cancel
+      </Button>
+    </>
+  );
+}

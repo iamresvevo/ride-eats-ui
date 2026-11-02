@@ -1,8 +1,20 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { useLayoutEffect, useId, useRef } from "react";
 import Icon from "../Icon.jsx";
 import { t } from "../i18n.js";
 
+const modalStack = [];
+function syncStack() {
+  modalStack.forEach((element, index) => {
+    const depth = modalStack.length - index - 1;
+    element.dataset.stackDepth = String(depth);
+    element.dataset.backdropOwner = String(index === 0);
+    element.style.setProperty("--dialog-depth", String(depth));
+    element.classList.toggle("is-behind", depth > 0);
+    element.inert = depth > 0;
+  });
+}
 let openModals = 0;
 let exitingModals = 0;
 
@@ -98,7 +110,13 @@ function playExit(element, opener) {
     if (!top || top.contains(opener)) opener?.focus?.({ preventScroll: true });
   };
   ghost.addEventListener("animationend", (event) => {
-    if (event.target === ghost && event.animationName === "dialog-out") done();
+    if (
+      event.target === ghost &&
+      ["dialog-out", "re-dialog-out", "re-drawer-out"].includes(
+        event.animationName,
+      )
+    )
+      done();
   });
   setTimeout(done, 300);
   return true;
@@ -120,6 +138,7 @@ export default function Modal({
   variant = "dialog",
   size,
   className = "",
+  style,
   title,
   label,
   labelledBy,
@@ -140,11 +159,18 @@ export default function Modal({
       active
         .closest('[role="menu"]')
         ?.parentElement.querySelector('[aria-haspopup="menu"]') || active;
+    modalStack.push(element);
+    syncStack();
     openModals++;
     updateScrollLock();
+    element.dataset.entered = "false";
+    const enterTimer = setTimeout(() => {
+      element.dataset.entered = "true";
+    }, 280);
     element.showModal();
     const stopInitialFocus = focusFormOnOpen(element);
     return () => {
+      clearTimeout(enterTimer);
       stopInitialFocus();
       // React replays effects in StrictMode without removing the dialog. Only a
       // real unmount gets an exit copy; otherwise it covers the new opening.
@@ -160,14 +186,20 @@ export default function Modal({
         }
         updateScrollLock();
       });
+      const index = modalStack.indexOf(element);
+      if (index >= 0) modalStack.splice(index, 1);
+      element.inert = false;
+      syncStack();
       element.close();
       openModals--;
     };
   }, []);
 
-  return (
+  if (typeof document === "undefined") return null;
+  return createPortal(
     <dialog
       ref={dialog}
+      style={style}
       className={`${variant === "screen" ? "viewer" : "dialog"} ${size ? "dialog-" + size : ""} ${className}`.trim()}
       aria-label={label}
       aria-labelledby={title ? titleId : labelledBy}
@@ -210,6 +242,7 @@ export default function Modal({
       )}
       {children}
       {footer && <div className="dialog-footer">{footer}</div>}
-    </dialog>
+    </dialog>,
+    document.body,
   );
 }

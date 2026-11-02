@@ -1,10 +1,10 @@
 # Ride Eats UI
 
-**Send’s familiar details, as customizable React components.**
+**A complete React UI foundation for Ride Eats tools and internal platforms.**
 
-A React-first UI library extracted from [Ride Eats Send](https://github.com/iamresvevo/ride-eats-send): the animated header and account menu, dropdowns, dialogs, switches, settings rows, date/time picker, skeletons, icons and identity components. Generic tabs, fields and feedback primitives complete the system.
+A React-first UI library extracted from [Ride Eats Send](https://github.com/iamresvevo/ride-eats-send): the animated header and account menu, dropdowns, dialogs, switches, settings rows, date/time picker, skeletons, icons and identity components. Tables, cards, tiles, metrics, inputs, stacked feedback and a 2,015-icon catalog extend the system.
 
-[Live component browser](https://iamresvevo.github.io/ride-eats-ui/) · [Component reference](docs/components.md) · [Customization](docs/customization.md) · [Send extraction map](docs/source-map.md)
+[Live component browser](https://iamresvevo.github.io/ride-eats-ui/) · [Start a working app](docs/implementation.md) · [Component reference](docs/components.md) · [Customization](docs/customization.md) · [Send extraction map](docs/source-map.md)
 
 ![Ride Eats UI component browser](docs/preview.jpg)
 
@@ -13,7 +13,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.2.2
+npm install github:iamresvevo/ride-eats-ui#v0.3.0
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -218,3 +218,41 @@ Read [AGENTS.md](AGENTS.md), [the component reference](docs/components.md), and 
 The stylesheet includes global base, form, typography and theme rules. Review it when integrating into an existing design system. Inter loads from Google Fonts with system fallbacks. This is a web React library, not a React Native library. Existing Send and Tools deployments do not automatically consume it.
 
 The older vanilla DOM helpers remain available from `@ride-eats/ui/vanilla`; they are a compatibility entry point. New integrations should use React.
+
+## Build a complete platform screen
+
+[Implementation guide](docs/implementation.md) · [Expanded component APIs](docs/platform-components.md) · [Runnable starter app](examples/starter)
+
+```jsx
+<UIProvider>
+  <Header brand={brand} items={navigation} account={account} />
+  <main className="site-page stack">
+    <PageHeader title="Payments" actions={<Button>Check connection</Button>} />
+    <MetricGrid>
+      <StatCard label="Payments" value="153" hint="1 open" />
+      <StatCard label="Paid" value="5" tone="good" />
+      <StatCard label="Passed" value="44 / 48" progress={92} />
+    </MetricGrid>
+    <Card title="Recent payments" description="Shared across your team.">
+      <DataTable columns={columns} rows={payments} />
+    </Card>
+  </main>
+</UIProvider>
+```
+
+The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioGroup, Slider, Progress, PasswordInput, NumberInput, Breadcrumbs, AvatarGroup, CopyButton, FileDropzone, Timeline, Drawer, CardHeader, CardBody, CardFooter, MetricGrid, StatCard, Tile, PageHeader, Toolbar**, and async **useConfirm** / **useFeedback**.
+
+## Built-in icons
+
+**2,015 Lucide icons**, plus Send's original glyphs, under one API. The catalog is bundled with the kit in lazy letter groups; it does not use an external icon CDN or add a runtime icon-package dependency. Artwork attribution and the ISC/Feather notices are included in [the icon notice](react/icons/NOTICE.md).
+
+```jsx
+<Icon name="headset" size={24} strokeWidth={1.7} />
+<Icon name="loader-circle" motion="spin" animateOn="always" />
+<Icon name="check" motion="draw" />
+<IconProvider icons={{ brand: <path d="M4 12 12 4l8 8-8 8Z" /> }}>
+  <Icon name="brand" size={32} />
+</IconProvider>
+```
+
+[Search and preview the icon catalog](https://iamresvevo.github.io/ride-eats-ui/#icons). Motion is opt-in and respects reduced motion. Icons are Lucide artwork behind Ride Eats UI's component API, not claimed as original Ride Eats drawings.

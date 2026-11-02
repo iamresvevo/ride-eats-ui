@@ -1,3 +1,13 @@
+import { IconProvider } from "./icons/registry.jsx";
+import { CardHeader, CardFooter } from "./collection.jsx";
+import { ToastProvider } from "./Feedback.jsx";
+export {
+  ToastProvider,
+  FeedbackProvider,
+  useToast,
+  useConfirm,
+  useFeedback,
+} from "./Feedback.jsx";
 import SendIcon from "./send/Icon.jsx";
 import { placeSelection } from "./send/hooks/selection.js";
 export { default as Segmented } from "./send/Segmented.jsx";
@@ -77,22 +87,55 @@ const ThemeContext = React.createContext({
 });
 export const useTheme = () => React.useContext(ThemeContext);
 
-export function Badge({ tone = "neutral", children }) {
-  return <span className={`badge ${tone}`}>{children}</span>;
-}
-export function Card({ title, children, className = "", ...props }) {
+export function Badge({
+  tone = "neutral",
+  children,
+  className = "",
+  ...props
+}) {
   return (
-    <section {...props} className={`card ${className}`}>
-      {title && <h2>{title}</h2>}
+    <span {...props} className={`badge ${tone} ${className}`}>
       {children}
+    </span>
+  );
+}
+export function Card({
+  title,
+  description,
+  action,
+  footer,
+  variant = "default",
+  padding = "default",
+  children,
+  className = "",
+  ...props
+}) {
+  return (
+    <section
+      {...props}
+      className={`card re-card re-card-${variant} re-card-padding-${padding} ${className}`}
+    >
+      {(title || description || action) && (
+        <CardHeader title={title} description={description} action={action} />
+      )}
+      {children}
+      {footer && <CardFooter>{footer}</CardFooter>}
     </section>
   );
 }
-export function Field({ label, hint, error, id, children }) {
+export function Field({
+  label,
+  hint,
+  error,
+  id,
+  children,
+  className = "",
+  style,
+}) {
   const generated = useId();
-  const fieldId = id || generated;
+  const fieldId = id || children?.props?.id || generated;
   return (
-    <div className="field">
+    <div className={`field ${className}`} style={style}>
       <label htmlFor={fieldId}>{label}</label>
       {React.isValidElement(children)
         ? React.cloneElement(children, {
@@ -201,9 +244,9 @@ export function Tabs({
     </div>
   );
 }
-export function Chips({ items, value, onValueChange }) {
+export function Chips({ items, value, onValueChange, className = "", style }) {
   return (
-    <div className="chips">
+    <div className={`chips ${className}`} style={style}>
       {items.map((item) => (
         <button
           type="button"
@@ -226,6 +269,11 @@ export function SearchSelect({
   onValueChange,
   max = 50,
   placeholder = "Search or select",
+  className = "",
+  style,
+  disabled = false,
+  renderOption,
+  renderSelected,
 }) {
   const [query, setQuery] = useState(""),
     [rows, setRows] = useState([]),
@@ -274,20 +322,21 @@ export function SearchSelect({
     return () => document.removeEventListener("pointerdown", outside);
   }, []);
   const choose = (item) => {
-    if (value.length < max) {
+    if (!disabled && value.length < max) {
       onValueChange([...value, item]);
       setQuery("");
       setOpen(false);
     }
   };
   return (
-    <div className="search-select" ref={root}>
+    <div className={`search-select ${className}`} style={style} ref={root}>
       <div className="search-select-chips">
         {value.map((item) => (
           <span className="search-select-chip" key={item.value}>
-            {item.label}
+            {renderSelected ? renderSelected(item) : item.label}
             <button
               type="button"
+              disabled={disabled}
               aria-label={`Remove ${item.label}`}
               onClick={() =>
                 onValueChange(value.filter((v) => v.value !== item.value))
@@ -307,7 +356,7 @@ export function SearchSelect({
         aria-activedescendant={active >= 0 ? `${id}-${active}` : undefined}
         placeholder={placeholder}
         value={query}
-        disabled={value.length >= max}
+        disabled={disabled || value.length >= max}
         onFocus={() => setOpen(true)}
         onChange={(e) => {
           setQuery(e.target.value);
@@ -348,10 +397,14 @@ export function SearchSelect({
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => choose(item)}
                 >
-                  <span className="search-select-label">
-                    <strong>{item.label}</strong>
-                    <small className="muted">{item.detail}</small>
-                  </span>
+                  {renderOption ? (
+                    renderOption(item)
+                  ) : (
+                    <span className="search-select-label">
+                      <strong>{item.label}</strong>
+                      <small className="muted">{item.detail}</small>
+                    </span>
+                  )}
                 </div>
               ))}
           </div>
@@ -361,48 +414,22 @@ export function SearchSelect({
   );
 }
 
-export function Stat({ label, value, hint, tone = "" }) {
+export function Stat({
+  label,
+  value,
+  hint,
+  tone = "",
+  className = "",
+  ...props
+}) {
   return (
-    <div className={`stat ${tone}`}>
+    <div {...props} className={`stat ${tone} ${className}`}>
       <span className="stat-label">{label}</span>
       <strong className="stat-value">{value}</strong>
       {hint && <span className="stat-hint">{hint}</span>}
     </div>
   );
 }
-
-export function ToastProvider({ children }) {
-  const [messages, setMessages] = useState([]);
-  const timers = useRef(new Set());
-  useEffect(() => () => timers.current.forEach(clearTimeout), []);
-  const toast = (message, { tone = "neutral", duration = 3200 } = {}) => {
-    const id = crypto.randomUUID();
-    setMessages((rows) => [...rows, { id, message, tone }]);
-    const timer = setTimeout(() => {
-      setMessages((rows) => rows.filter((row) => row.id !== id));
-      timers.current.delete(timer);
-    }, duration);
-    timers.current.add(timer);
-  };
-  return (
-    <ToastContext.Provider value={toast}>
-      {children}
-      {typeof document !== "undefined" &&
-        createPortal(
-          <div className="react-toasts" aria-live="polite">
-            {messages.map((item) => (
-              <div key={item.id} className={`toast in ${item.tone}`}>
-                {item.message}
-              </div>
-            ))}
-          </div>,
-          document.body,
-        )}
-    </ToastContext.Provider>
-  );
-}
-const ToastContext = React.createContext(() => {});
-export const useToast = () => React.useContext(ToastContext);
 
 export function Button({
   variant = "secondary",
@@ -462,10 +489,14 @@ export function Dropdown({
   items,
   align = "end",
   label = "Actions",
+  className = "",
+  style,
 }) {
   return (
     <SendMenu
       align={align}
+      className={className}
+      style={style}
       trigger={(props) => (
         <Button {...props} aria-label={label}>
           {trigger}
@@ -482,10 +513,14 @@ export function Select({
   onValueChange,
   label = "Select",
   disabled = false,
+  className = "",
+  style,
+  renderValue,
 }) {
   return (
     <SendMenu
-      className="react-select"
+      className={`react-select ${className}`}
+      style={style}
       align="start"
       trigger={(props) => (
         <Button
@@ -495,7 +530,9 @@ export function Select({
           className="menu-select"
         >
           <span className="select-label">
-            {options.find((item) => item.value === value)?.label || label}
+            {renderValue
+              ? renderValue(options.find((item) => item.value === value))
+              : options.find((item) => item.value === value)?.label || label}
           </span>
           <SendIcon name="select" />
         </Button>
@@ -519,13 +556,28 @@ export function Dialog({
   footer,
   size = "md",
   dismissible = true,
+  beforeClose,
+  className,
+  style,
 }) {
+  const closing = useRef(false);
+  const requestClose = async () => {
+    if (closing.current || !dismissible) return;
+    closing.current = true;
+    try {
+      if (!beforeClose || (await beforeClose()) !== false) onOpenChange(false);
+    } finally {
+      closing.current = false;
+    }
+  };
   return open ? (
     <SendModal
       title={title}
+      className={className}
+      style={style}
       size={size === "md" ? undefined : size}
       dismissable={dismissible}
-      onClose={() => onOpenChange(false)}
+      onClose={requestClose}
       footer={footer}
     >
       {children}
@@ -543,9 +595,24 @@ export function Pagination({ page, pageSize, total, onPageChange, disabled }) {
     />
   );
 }
-export function EmptyState({ title, description, icon = "files", action }) {
+export function EmptyState({
+  title,
+  description,
+  icon = "files",
+  action,
+  illustration,
+  className,
+  style,
+}) {
   return (
-    <SendEmpty icon={icon} title={title} text={description}>
+    <SendEmpty
+      icon={icon}
+      title={title}
+      text={description}
+      illustration={illustration}
+      className={className}
+      style={style}
+    >
       {action}
     </SendEmpty>
   );
@@ -555,13 +622,22 @@ export function UIProvider({
   children,
   defaultTheme = "system",
   storageKey = "rideEatsUI.theme",
+  toastOptions,
+  icons,
 }) {
   return (
-    <ThemeProvider defaultTheme={defaultTheme} storageKey={storageKey}>
-      <ToastProvider>
-        {children}
-        <Tooltips />
-      </ToastProvider>
-    </ThemeProvider>
+    <IconProvider icons={icons}>
+      <ThemeProvider defaultTheme={defaultTheme} storageKey={storageKey}>
+        <ToastProvider {...toastOptions}>
+          {children}
+          <Tooltips />
+        </ToastProvider>
+      </ThemeProvider>
+    </IconProvider>
   );
 }
+
+export * from "./collection.jsx";
+
+export { IconProvider } from "./icons/registry.jsx";
+export { iconNames } from "./icons/names.js";

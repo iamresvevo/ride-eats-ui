@@ -1,0 +1,769 @@
+import React, { useMemo, useState } from "react";
+import * as UI from "../react/index.jsx";
+const IconBrowser = React.lazy(() => import("./IconBrowser.jsx"));
+const {
+  Button,
+  Badge,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  StatCard,
+  MetricGrid,
+  Tile,
+  PageHeader,
+  Toolbar,
+  DataTable,
+  Checkbox,
+  Pagination,
+  Dropdown,
+  Field,
+  Dialog,
+  useToast,
+  useConfirm,
+} = UI;
+const people = [
+  {
+    id: "alex",
+    name: "Alex Rivera",
+    email: "alex@example.com",
+    status: "Active",
+    role: "Owner",
+  },
+  {
+    id: "sam",
+    name: "Sam Chen",
+    email: "sam@example.com",
+    status: "Active",
+    role: "Editor",
+  },
+  {
+    id: "jordan",
+    name: "Jordan Lee",
+    email: "jordan@example.com",
+    status: "Invited",
+    role: "Viewer",
+  },
+  {
+    id: "casey",
+    name: "Casey Morgan",
+    email: "casey@example.com",
+    status: "Active",
+    role: "Editor",
+  },
+  {
+    id: "taylor",
+    name: "Taylor Kim",
+    email: "taylor@example.com",
+    status: "Active",
+    role: "Viewer",
+  },
+  {
+    id: "drew",
+    name: "Drew Parker",
+    email: "drew@example.com",
+    status: "Invited",
+    role: "Viewer",
+  },
+];
+export function TableDemo() {
+  const [query, setQuery] = useState(""),
+    [sort, setSort] = useState({ key: "name", direction: "asc" }),
+    [selected, setSelected] = useState([]),
+    [page, setPage] = useState(1);
+  const toast = useToast();
+  const filtered = useMemo(
+    () =>
+      people
+        .filter((row) =>
+          (row.name + " " + row.email)
+            .toLowerCase()
+            .includes(query.toLowerCase()),
+        )
+        .sort(
+          (a, b) =>
+            a[sort.key].localeCompare(b[sort.key]) *
+            (sort.direction === "asc" ? 1 : -1),
+        ),
+    [query, sort],
+  );
+  return (
+    <div className="table-demo">
+      <Toolbar
+        trailing={
+          <Badge>
+            {selected.length
+              ? `${selected.length} selected`
+              : `${filtered.length} members`}
+          </Badge>
+        }
+      >
+        <input
+          type="search"
+          aria-label="Find a member"
+          placeholder="Find a member…"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setPage(1);
+          }}
+        />
+      </Toolbar>
+      <DataTable
+        caption="Team members"
+        rows={filtered.slice((page - 1) * 4, page * 4)}
+        columns={[
+          {
+            key: "name",
+            label: "Name",
+            sortable: true,
+            render: (_, row) => (
+              <div className="table-person">
+                <UI.Avatar name={row.name} />
+                <span>
+                  <strong>{row.name}</strong>
+                  <small>{row.email}</small>
+                </span>
+              </div>
+            ),
+          },
+          { key: "role", label: "Role", sortable: true },
+          {
+            key: "status",
+            label: "Status",
+            render: (value) => (
+              <Badge tone={value === "Active" ? "good" : "wait"}>{value}</Badge>
+            ),
+          },
+        ]}
+        sort={sort}
+        onSortChange={setSort}
+        selectedKeys={selected}
+        onSelectionChange={setSelected}
+        rowActions={(row) => (
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => toast(`Open ${row.name}`)}
+          >
+            View
+          </Button>
+        )}
+      />
+      <Pagination
+        page={page}
+        pageSize={4}
+        total={filtered.length}
+        onPageChange={setPage}
+      />
+    </div>
+  );
+}
+export function StackedDialogDemo() {
+  const [open, setOpen] = useState(false),
+    [name, setName] = useState("");
+  const confirm = useConfirm(),
+    toast = useToast();
+  const requestClose = async () => {
+    if (
+      !name ||
+      (await confirm({
+        title: "Discard changes?",
+        message:
+          "Your folder has not been created. Discard the draft or keep editing.",
+        confirmLabel: "Discard changes",
+        cancelLabel: "Keep editing",
+        danger: true,
+      }))
+    ) {
+      setOpen(false);
+      setName("");
+    }
+  };
+  return (
+    <div className="demo-stack">
+      <Button variant="primary" icon="plus" onClick={() => setOpen(true)}>
+        Create a folder
+      </Button>
+      <span className="demo-caption">
+        Type a name, then Cancel to see the stacked confirmation.
+      </span>
+      <Dialog
+        open={open}
+        onOpenChange={requestClose}
+        title="Create a folder"
+        footer={
+          <>
+            <Button onClick={requestClose}>Cancel</Button>
+            <Button
+              variant="primary"
+              disabled={!name.trim()}
+              onClick={() => {
+                setOpen(false);
+                setName("");
+                toast("Folder created", { tone: "good" });
+              }}
+            >
+              Create folder
+            </Button>
+          </>
+        }
+      >
+        <p
+          className="muted"
+          style={{ fontSize: 12, lineHeight: 1.7, marginBottom: 16 }}
+        >
+          Keep your next project organized. Give this folder a name to get
+          started.
+        </p>
+        <Field label="Folder name" hint="You can rename it later.">
+          <input
+            placeholder="Campaign assets"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Field>
+      </Dialog>
+    </div>
+  );
+}
+export function CardsDemo() {
+  const toast = useToast();
+  return (
+    <div className="cards-demo">
+      <Card
+        title="Transfer settings"
+        description="A few details before you share."
+        action={<Badge tone="good">Ready</Badge>}
+        footer={
+          <>
+            <Button size="sm" variant="ghost">
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={() => toast("Saved", { tone: "good" })}
+            >
+              Save changes
+            </Button>
+          </>
+        }
+      >
+        <UI.SettingRow
+          icon="globe"
+          label="Access"
+          hint="Who can open this link?"
+        >
+          <Badge>Anyone with the link</Badge>
+        </UI.SettingRow>
+        <UI.SettingRow
+          icon="clock"
+          label="Expires"
+          hint="A little time to download."
+        >
+          <span className="muted" style={{ fontSize: 12 }}>
+            7 days
+          </span>
+        </UI.SettingRow>
+      </Card>
+      <Card variant="soft">
+        <CardHeader
+          title="A quieter surface"
+          description="Use the compound API for a custom layout."
+        />
+        <CardBody>
+          <p className="muted" style={{ fontSize: 12, lineHeight: 1.7 }}>
+            CardHeader, CardBody and CardFooter compose naturally with your own
+            content.
+          </p>
+        </CardBody>
+        <CardFooter>
+          <UI.CopyButton value="https://example.com/share" label="Copy link" />
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}
+export function CollectionDemo({ id }) {
+  const [value, setValue] = useState("delivery"),
+    [checked, setChecked] = useState(true),
+    [number, setNumber] = useState(64),
+    [text, setText] = useState(""),
+    [open, setOpen] = useState(false),
+    [files, setFiles] = useState([]),
+    [alert, setAlert] = useState(true),
+    [tab, setTab] = useState("payments");
+  const toast = useToast();
+  switch (id) {
+    case "icons":
+      return (
+        <React.Suspense
+          fallback={<UI.PageLoading label="Loading icon catalog" />}
+        >
+          <IconBrowser />
+        </React.Suspense>
+      );
+    case "data-table":
+      return <TableDemo />;
+    case "stacked-dialogs":
+      return <StackedDialogDemo />;
+    case "card":
+      return <CardsDemo />;
+    case "accordion":
+      return (
+        <UI.Accordion
+          value={value}
+          onValueChange={setValue}
+          items={[
+            {
+              value: "delivery",
+              title: "How does delivery work?",
+              icon: "send",
+              content:
+                "Your recipient gets a secure download link. They can open it on any device, without installing an app.",
+            },
+            {
+              value: "expiry",
+              title: "Can I change the expiry?",
+              icon: "clock",
+              content:
+                "Choose an expiry in transfer settings. Your files stay available until the date you select.",
+            },
+            {
+              value: "access",
+              title: "Who can access my files?",
+              icon: "lock",
+              content:
+                "Only people with the link, or the people you explicitly invite.",
+            },
+          ]}
+        />
+      );
+    case "alert":
+      return alert ? (
+        <UI.Alert
+          tone="good"
+          title="Your files are ready"
+          onDismiss={() => setAlert(false)}
+          action={
+            <Button size="sm" onClick={() => toast("Opening transfer")}>
+              View transfer
+            </Button>
+          }
+        >
+          A secure link is ready to share with your team.
+        </UI.Alert>
+      ) : (
+        <Button onClick={() => setAlert(true)}>Show alert</Button>
+      );
+    case "checkbox":
+      return (
+        <div className="demo-stack">
+          <UI.Checkbox
+            label="Notify my team"
+            hint="One update when the transfer is ready."
+            checked={checked}
+            onCheckedChange={setChecked}
+          />
+          <UI.Checkbox
+            label="Some files selected"
+            checked={false}
+            indeterminate
+            onCheckedChange={() => {}}
+          />
+          <UI.Checkbox
+            label="Managed by your workspace"
+            checked
+            disabled
+            onCheckedChange={() => {}}
+          />
+        </div>
+      );
+    case "radio-group":
+      return (
+        <UI.RadioGroup
+          label="Who can access this?"
+          value={value === "delivery" ? "private" : value}
+          onValueChange={setValue}
+          options={[
+            {
+              value: "private",
+              label: "Only invited people",
+              description: "A private space for your team.",
+              trailing: <UI.Icon name="lock" />,
+            },
+            {
+              value: "public",
+              label: "Anyone with the link",
+              description: "Easy to share, no account needed.",
+              trailing: <UI.Icon name="globe" />,
+            },
+          ]}
+        />
+      );
+    case "slider":
+      return (
+        <UI.Slider
+          label="Volume"
+          value={number}
+          onValueChange={setNumber}
+          formatValue={(value) => value + "%"}
+        />
+      );
+    case "progress":
+      return (
+        <div className="demo-stack" style={{ width: 380, maxWidth: "100%" }}>
+          <UI.Progress
+            label="Uploading campaign assets"
+            value={number}
+            hint={`${number}% complete · 12 files`}
+          />
+          <div className="demo-row">
+            <Button
+              size="sm"
+              onClick={() => setNumber((value) => Math.min(100, value + 12))}
+            >
+              Advance
+            </Button>
+            <Button size="sm" variant="ghost" onClick={() => setNumber(0)}>
+              Reset
+            </Button>
+          </div>
+          <UI.Progress label="Preparing your files" indeterminate />
+        </div>
+      );
+    case "password-input":
+      return (
+        <div style={{ width: 320, maxWidth: "100%" }}>
+          <UI.PasswordInput
+            label="Password"
+            placeholder="Enter your password"
+            autoComplete="new-password"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            hint="Keep it memorable. Keep it yours."
+          />
+        </div>
+      );
+    case "number-input":
+      return (
+        <UI.NumberInput
+          label="Copies"
+          value={number === 64 ? 2 : number}
+          onValueChange={setNumber}
+          min={1}
+          max={20}
+        />
+      );
+    case "breadcrumbs":
+      return (
+        <UI.Breadcrumbs
+          items={[
+            { label: "Workspace", href: "#overview" },
+            { label: "Transfers", href: "#data-table" },
+            { label: "Campaign assets" },
+          ]}
+        />
+      );
+    case "avatar-group":
+      return (
+        <div className="demo-stack">
+          <UI.AvatarGroup max={4} people={people} />
+          <span className="demo-caption">A shared workspace for six.</span>
+        </div>
+      );
+    case "copy-button":
+      return (
+        <div className="demo-stack">
+          <code className="copy-demo-value">ride-eats.com/shared/creative</code>
+          <UI.CopyButton
+            value="https://ride-eats.com/shared/creative"
+            label="Copy link"
+            copiedLabel="Link copied"
+          />
+        </div>
+      );
+    case "file-dropzone":
+      return (
+        <div style={{ width: 420, maxWidth: "100%" }}>
+          <UI.FileDropzone accept="image/*,.pdf" onFiles={setFiles} />
+          {files.length > 0 && (
+            <div className="selected-files">
+              {files.map((file) => (
+                <div key={file.name}>
+                  <UI.Icon name="files" />
+                  <span>{file.name}</span>
+                  <small>{Math.ceil(file.size / 1024)} KB</small>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    case "timeline":
+      return (
+        <UI.Timeline
+          items={[
+            {
+              id: 1,
+              title: "Transfer delivered",
+              description: "Campaign assets reached Alex.",
+              time: "Just now",
+              icon: "check",
+              tone: "good",
+            },
+            {
+              id: 2,
+              title: "12 files uploaded",
+              description: "48 MB · Ready to share",
+              time: "2 minutes ago",
+              icon: "upload",
+            },
+            {
+              id: 3,
+              title: "Folder created",
+              time: "5 minutes ago",
+              icon: "folder",
+            },
+          ]}
+        />
+      );
+    case "drawer":
+      return (
+        <>
+          <Button variant="primary" icon="list" onClick={() => setOpen(true)}>
+            View details
+          </Button>
+          <UI.Drawer
+            open={open}
+            onOpenChange={setOpen}
+            title="Transfer details"
+            footer={
+              <Button variant="primary" onClick={() => setOpen(false)}>
+                Done
+              </Button>
+            }
+          >
+            <UI.SettingRow
+              icon="files"
+              label="Campaign assets"
+              hint="12 files · 48 MB"
+            >
+              <Badge tone="good">Delivered</Badge>
+            </UI.SettingRow>
+            <UI.Timeline
+              items={[
+                {
+                  id: 1,
+                  title: "Shared with Alex",
+                  time: "Just now",
+                  icon: "send",
+                },
+                {
+                  id: 2,
+                  title: "Upload complete",
+                  time: "2 minutes ago",
+                  icon: "check",
+                  tone: "good",
+                },
+              ]}
+            />
+          </UI.Drawer>
+        </>
+      );
+    case "stat-cards":
+      return (
+        <div className="demo-stat-collection">
+          <MetricGrid minWidth={160}>
+            <StatCard label="Payments" value="153" hint="1 open" />
+            <StatCard
+              label="Paid"
+              value="5"
+              hint="Available from Drop 1"
+              tone="good"
+            />
+            <StatCard label="Scenarios passed" value="44 / 48" progress={92} />
+            <StatCard
+              label="Avg. response"
+              value="1400 ms"
+              hint="300 calls · 6 errors"
+            />
+          </MetricGrid>
+          <MetricGrid minWidth={180}>
+            <StatCard
+              label="Downloads"
+              value="1,284"
+              variant="compact"
+              trend="+12.8%"
+              chart={[12, 18, 15, 30, 24, 40, 48, 52]}
+            />
+            <StatCard
+              label="Storage used"
+              value="64 GB"
+              variant="compact"
+              hint="of 100 GB"
+              progress={64}
+            />
+            <StatCard
+              label="Active team"
+              value="24"
+              variant="inline"
+              hint="Across 3 workspaces"
+            />
+          </MetricGrid>
+        </div>
+      );
+    case "tiles":
+      return (
+        <MetricGrid minWidth={220}>
+          <Tile
+            icon="files"
+            title="My transfers"
+            description="Everything you have shared, in one familiar place."
+            meta="24 files"
+            onClick={() => toast("Open transfers")}
+            footer="View transfers"
+          />
+          <Tile
+            icon="team"
+            title="Team workspace"
+            description="A shared space for your people and projects."
+            meta="6 members"
+            onClick={() => toast("Open workspace")}
+            footer="Open workspace"
+          />
+        </MetricGrid>
+      );
+    case "page-header":
+      return (
+        <PageHeader
+          title="Payments"
+          icon="storage"
+          description="Shared across your admin devices."
+          actions={
+            <Button
+              size="sm"
+              icon="restore"
+              onClick={() => toast("Connection checked", { tone: "good" })}
+            >
+              Check connection
+            </Button>
+          }
+        />
+      );
+    case "dashboard":
+      return (
+        <div className="dashboard-demo stack">
+          <PageHeader
+            title="Payments"
+            icon="storage"
+            description="PayBridge sandbox · merchant-test"
+            actions={
+              <Button
+                size="sm"
+                onClick={() => toast("Connected", { tone: "good" })}
+              >
+                Check connection
+              </Button>
+            }
+          />
+          <MetricGrid minWidth={140}>
+            <StatCard label="Payments" value="153" hint="1 open" />
+            <StatCard
+              label="Paid"
+              value="5"
+              tone="good"
+              hint="Available from Drop 1"
+            />
+            <StatCard label="Scenarios passed" value="44 / 48" hint="48 run" />
+          </MetricGrid>
+          <UI.Tabs
+            value={tab}
+            onValueChange={setTab}
+            items={[
+              { value: "payments", label: "Payments", count: 153 },
+              { value: "checkouts", label: "App checkouts" },
+              { value: "activity", label: "Activity", count: 300 },
+            ]}
+          />
+          <Card
+            title={
+              tab === "payments"
+                ? "Recent payments"
+                : tab === "checkouts"
+                  ? "App checkouts"
+                  : "Activity"
+            }
+            description="One shared view across your admin devices."
+          >
+            <DataTable
+              columns={[
+                { key: "name", label: "Reference" },
+                { key: "amount", label: "Amount", align: "right" },
+                {
+                  key: "status",
+                  label: "Status",
+                  render: (v) => (
+                    <Badge tone={v === "Paid" ? "good" : "wait"}>{v}</Badge>
+                  ),
+                },
+              ]}
+              rows={[
+                {
+                  id: 1,
+                  name: "Payment #1053",
+                  amount: "SRD 250.00",
+                  status: "Paid",
+                },
+                {
+                  id: 2,
+                  name: "Payment #1052",
+                  amount: "SRD 180.00",
+                  status: "Pending",
+                },
+              ]}
+            />
+          </Card>
+        </div>
+      );
+    default:
+      return null;
+  }
+}
+
+export function ToastDemo() {
+  const toast = useToast();
+  return (
+    <div className="demo-stack">
+      <div className="demo-row">
+        <Button
+          variant="primary"
+          icon="check"
+          onClick={() => toast("Changes saved", { tone: "good" })}
+        >
+          Save changes
+        </Button>
+        <Button
+          icon="copy"
+          onClick={() => toast("Link copied", { tone: "good" })}
+        >
+          Copy link
+        </Button>
+      </div>
+      <Button
+        variant="ghost"
+        onClick={() => {
+          toast("Upload complete", { tone: "good" });
+          toast("Transfer is ready to share");
+          toast("Alex received your files", { tone: "good" });
+        }}
+      >
+        Preview stacked notifications
+      </Button>
+      <span className="demo-caption">
+        Three at most. Repeated messages merge.
+      </span>
+    </div>
+  );
+}

@@ -25,3 +25,10 @@ Tooltips and PageLoading are also extracted from Send’s matching src/component
 ## Fluid selection motion
 
 Segmented is extracted from Send src/components/Segmented.jsx. Its placeSelection geometry, 400ms easing and directional stretch/settle are shared with Tabs through react/send/hooks/selection.js. Tabs retains tablist/tab semantics and panel associations; Segmented retains Send’s radiogroup/radio semantics. Both disable movement for reduced motion and remeasure on resize.
+
+## Feedback, platform composition and icon catalog (v0.3)
+
+- React Feedback adapts Send's `src/components/Feedback.jsx`: bounded depth-stacked toasts, two-phase expiry and async confirmations. It adds message deduplication, configurable duration/limit, tone icons and queued confirmations. Classes are isolated from legacy vanilla toast styles.
+- Modal retains Send's native dialog/focus/exit handling and adds a Tools-style shared-backdrop stack: underlying dialogs stay mounted, inert and scaled while the top dialog owns input.
+- Card, MetricGrid, StatCard, Tile, PageHeader and Toolbar follow Tools' compact dashboard surfaces, metric hierarchy and launcher tiles. Generic inputs, tables, accordion, drawer and timeline are new React components, not claimed as direct Send source copies.
+- The built-in catalog vendors 2,015 icons from `lucide-static` 1.66.0 under ISC, with its full copyright and Feather-derived notices in `react/icons/LICENSE.lucide`. Existing Send PATHS are retained. The kit adds lazy loading, custom glyph registration, searchable names/tags and opt-in icon motion.

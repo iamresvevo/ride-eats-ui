@@ -1,3 +1,10 @@
+import { collectionPages } from "./collection-data.js";
+import {
+  CollectionDemo,
+  StackedDialogDemo,
+  CardsDemo,
+  ToastDemo,
+} from "./CollectionDemos.jsx";
 import React, { useState, useCallback } from "react";
 import { createRoot } from "react-dom/client";
 import * as UI from "../react/index.jsx";
@@ -38,6 +45,7 @@ const {
 } = UI;
 const repo = "https://github.com/iamresvevo/ride-eats-ui";
 const components = [
+  ...collectionPages,
   {
     id: "segmented",
     name: "Segmented",
@@ -228,7 +236,7 @@ const components = [
     group: "Feedback",
     description: "A focused moment, with a soft landing.",
     detail:
-      "Send’s native modal: focus management, scroll lock, Escape, backdrop dismissal and an animated exit. Compose a footer, block dismissal while saving, or use the lower-level Modal.",
+      "Send’s native modal with Tools-style depth stacking: edit a draft, Cancel, then choose Keep editing or Discard changes in a second sheet. The underlying draft and focus are preserved.",
     code: `<Dialog\n  open={open}\n  onOpenChange={setOpen}\n  title="Create a folder"\n  footer={<Button variant="primary" onClick={save}>Create folder</Button>}\n>\n  <Field label="Folder name"><input placeholder="Untitled folder" /></Field>\n</Dialog>`,
     props: [
       ["open", "boolean", "Controlled visibility."],
@@ -324,7 +332,7 @@ const components = [
     group: "Feedback",
     description: "A small confirmation. Then out of the way.",
     detail:
-      "Use ToastProvider once and useToast anywhere inside it. Timers are cleaned up on unmount; messages are announced politely.",
+      "Use ToastProvider once and useToast anywhere inside it. Send-style depth stacking shows at most three notifications, deduplicates repeated messages, and animates expiry. Timers clean up on unmount; messages are announced politely.",
     code: `const toast = useToast();\n<Button onClick={() => toast('Changes saved', { tone: 'good' })}>\n  Save changes\n</Button>`,
     props: [
       ["toast(message, options?)", "function", "Show a message."],
@@ -332,7 +340,7 @@ const components = [
       [
         "options.duration",
         "number",
-        "Milliseconds before removal; default 3200.",
+        "Milliseconds before removal; default 5000.",
       ],
     ],
   },
@@ -400,8 +408,23 @@ const components = [
     group: "Layout",
     description: "A neutral surface. Room for the task.",
     detail:
-      "A small layout primitive using the shared surface, radius and spacing tokens. Avoid stacking filled cards inside each other.",
-    code: `<Card title="Storage">\n  <p className="muted">Your files, in one place.</p>\n  <Button variant="primary">Manage storage</Button>\n</Card>`,
+      "Tools-style card surfaces with title, description, actions and footer slots. Use CardHeader, CardBody and CardFooter for fully custom composition, plus default, soft and plain variants.",
+    imports:
+      "Card, CardHeader, CardBody, CardFooter, Button, Badge, SettingRow",
+    code: `<Card title="Transfer settings" description="A few details before you share."
+  action={<Badge tone="good">Ready</Badge>}
+  footer={<Button variant="primary" onClick={save}>Save changes</Button>}>
+  <SettingRow label="Access" hint="Who can open this link?">
+    <Badge>Anyone with the link</Badge>
+  </SettingRow>
+</Card>
+
+// Custom composition:
+<Card variant="soft">
+  <CardHeader title="Storage" />
+  <CardBody>{children}</CardBody>
+  <CardFooter>{actions}</CardFooter>
+</Card>`,
     props: [
       ["title / children", "ReactNode", "Optional heading and content."],
       [
@@ -432,6 +455,8 @@ function Demo({ id }) {
       ].filter((p) => p.label.toLowerCase().includes(q.toLowerCase())),
     [],
   );
+  if (collectionPages.some((page) => page.id === id))
+    return <CollectionDemo id={id} />;
   switch (id) {
     case "segmented":
       return (
@@ -618,36 +643,7 @@ function Demo({ id }) {
     case "date-time":
       return <DateTimePicker value={date} onChange={setDate} future />;
     case "dialog":
-      return (
-        <>
-          <Button variant="primary" icon="plus" onClick={() => setOpen(true)}>
-            Create a folder
-          </Button>
-          <Dialog
-            open={open}
-            onOpenChange={setOpen}
-            title="Create a folder"
-            footer={
-              <>
-                <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    setOpen(false);
-                    toast("Folder created", { tone: "good" });
-                  }}
-                >
-                  Create folder
-                </Button>
-              </>
-            }
-          >
-            <Field label="Folder name">
-              <input placeholder="Untitled folder" />
-            </Field>
-          </Dialog>
-        </>
-      );
+      return <StackedDialogDemo />;
     case "skeleton":
       return (
         <Skeleton label="Loading account">
@@ -672,7 +668,6 @@ function Demo({ id }) {
             <VerifiedName name="Alex Rivera" verified />
             <small className="muted">alex@example.com</small>
           </div>
-          <Avatar name="Sam Chen" />
         </div>
       );
     case "settings":
@@ -712,15 +707,7 @@ function Demo({ id }) {
         />
       );
     case "toast":
-      return (
-        <Button
-          variant="primary"
-          icon="check"
-          onClick={() => toast("Changes saved", { tone: "good" })}
-        >
-          Save changes
-        </Button>
-      );
+      return <ToastDemo />;
     case "field":
       return (
         <div style={{ width: 320, maxWidth: "100%" }}>
@@ -769,14 +756,7 @@ function Demo({ id }) {
         />
       );
     case "card":
-      return (
-        <Card title="Storage">
-          <p className="muted">Your files, in one place.</p>
-          <Button variant="primary" onClick={() => toast("Manage storage")}>
-            Manage storage
-          </Button>
-        </Card>
-      );
+      return <CardsDemo />;
     default:
       return null;
   }
@@ -849,45 +829,67 @@ function App() {
         "--brand-strong": accent,
       }}
     >
-      <header className="docs-top">
-        <a
-          className="docs-brand"
-          href="#overview"
-          onClick={() => navigate("overview")}
-        >
-          <span className="brand-mark">
-            <Icon name="send" />
-          </span>
-          <strong>
-            Ride Eats <span>UI</span>
-          </strong>
-          <Badge>v0.2.2</Badge>
-        </a>
-        <div className="top-links">
-          <span className="react-tag">
-            <span>⚛</span> Built for React
-          </span>
-          <a href={repo} target="_blank" rel="noreferrer">
-            GitHub <Icon name="external" />
-          </a>
-          <button
-            className="theme-toggle"
-            aria-label="Toggle theme"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            <Icon name={theme === "dark" ? "sun" : "moon"} />
-          </button>
-          <button
-            className="mobile-toggle"
-            aria-label="Toggle navigation"
-            aria-expanded={mobile}
-            aria-controls="component-navigation"
-            onClick={() => setMobile(!mobile)}
-          >
-            <Icon name="list" />
-          </button>
-        </div>
-      </header>
+      <div className="docs-shell-header">
+        <Header
+          brand={{
+            name: "UI",
+            href: "#overview",
+            logoLight: import.meta.env.BASE_URL + "brand/bite-dark.png",
+            logoDark: import.meta.env.BASE_URL + "brand/bite-light.png",
+          }}
+          items={[
+            {
+              value: "overview",
+              label: "Components",
+              icon: "files",
+              href: "#overview",
+            },
+            {
+              value: "installation",
+              label: "Get started",
+              icon: "terminal",
+              href: "#installation",
+            },
+            {
+              value: "customization",
+              label: "Customize",
+              icon: "settings",
+              href: "#customization",
+            },
+          ]}
+          activeValue={selected ? "overview" : current}
+          onNavigate={(item) => navigate(item.value)}
+          guestContent={<Badge>v0.3.0</Badge>}
+          extras={
+            <>
+              <a
+                className="docs-github"
+                href={repo}
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub <Icon name="external" />
+              </a>
+              <Button
+                variant="ghost"
+                className="btn-icon"
+                aria-label="Toggle theme"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                icon={theme === "dark" ? "sun" : "moon"}
+              />
+              <Button
+                variant="ghost"
+                className="btn-icon mobile-toggle"
+                aria-label="Toggle navigation"
+                aria-expanded={mobile}
+                aria-controls="component-navigation"
+                onClick={() => setMobile(!mobile)}
+                icon="list"
+              />
+            </>
+          }
+        />
+      </div>
       <aside
         id="component-navigation"
         inert={compact && !mobile}
@@ -901,7 +903,6 @@ function App() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <kbd>⌕</kbd>
         </label>
         <div className="sidebar-group">
           <span>Get started</span>
@@ -1013,15 +1014,9 @@ function App() {
                 </span>
               </div>
             ) : (
-              <Code>{selected.code}</Code>
-            )}
-            <section className="usage-section">
-              <div className="section-label">
-                <span>01</span>
-                <h2>Usage</h2>
-              </div>
               <Code>{`import { ${
-                selected.id === "skeleton"
+                selected.imports ||
+                (selected.id === "skeleton"
                   ? "Skeleton, Bone, BoneText"
                   : selected.id === "dialog"
                     ? "Dialog, Field, Button"
@@ -1043,12 +1038,12 @@ function App() {
                                     ? "EmptyState"
                                     : selected.id === "toast"
                                       ? "Button, useToast"
-                                      : selected.name.replaceAll(" ", "")
+                                      : selected.name.replaceAll(" ", ""))
               } } from '@ride-eats/ui';\n\n${selected.code}`}</Code>
-            </section>
+            )}
             <section className="usage-section">
               <div className="section-label">
-                <span>02</span>
+                <span>01</span>
                 <h2>Props</h2>
               </div>
               <div className="props-scroll">
@@ -1101,7 +1096,7 @@ function App() {
               component. React 19 or newer.
             </p>
             <h2 className="doc-heading">1. Install a reviewed version</h2>
-            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.2.2"}</Code>
+            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.3.0"}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
             <Code>{`import { ThemeProvider, ToastProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ThemeProvider defaultTheme="system">\n      <ToastProvider>\n        <Button variant="primary">Hello, Studio</Button>\n      </ToastProvider>\n    </ThemeProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>
@@ -1171,14 +1166,14 @@ function App() {
               <span className="status-dot" /> FROM RIDE EATS SEND · NOW REUSABLE
             </div>
             <h1 className="intro-title">
-              Familiar by design.
+              The Ride Eats UI system.
               <br />
-              <span>Yours to build with.</span>
+              <span>Ready for your next tool.</span>
             </h1>
             <p className="intro-copy">
-              The little details that make Send feel right.
+              Reusable React components from Send and Tools.
               <br />
-              Extracted into customizable React components.
+              Add your data, routes and workflows.
             </p>
             <div className="intro-actions">
               <Button
@@ -1202,12 +1197,24 @@ function App() {
                 <strong>{components.length}</strong> component pages
               </span>
               <span>
-                <strong>React 19</strong> native components
+                <strong>2,015 icons</strong> built in, loaded on demand
               </span>
               <span>
                 <strong>Light & dark</strong> considered together
               </span>
             </div>
+            <section className="overview-dashboard">
+              <div className="collection-heading">
+                <div>
+                  <div className="eyebrow">Built with the same components</div>
+                  <h2>A familiar screen, in a few lines.</h2>
+                </div>
+                <Button size="sm" onClick={() => navigate("dashboard")}>
+                  View implementation <Icon name="next" />
+                </Button>
+              </div>
+              <CollectionDemo id="dashboard" />
+            </section>
             <div className="collection-heading">
               <div>
                 <div className="eyebrow">THE COLLECTION</div>

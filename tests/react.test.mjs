@@ -132,3 +132,153 @@ test("Send selection motion slides and stretches only after initial placement", 
   assert.equal(frames.length, 1);
   assert.equal(pill.style.transition, "none");
 });
+
+test("all new controls render with their basic implementation API", () => {
+  const noop = () => {};
+  const cases = [
+    [
+      "Accordion",
+      {
+        items: [{ value: "a", title: "A", content: "Detail" }],
+        value: "a",
+        onValueChange: noop,
+      },
+    ],
+    ["Alert", { title: "Saved", children: "Done", tone: "good" }],
+    ["Checkbox", { label: "Select", checked: true, onCheckedChange: noop }],
+    [
+      "RadioGroup",
+      {
+        label: "Access",
+        options: [{ value: "a", label: "Private" }],
+        value: "a",
+        onValueChange: noop,
+      },
+    ],
+    ["Slider", { value: 50, onValueChange: noop }],
+    ["Progress", { value: 64 }],
+    ["PasswordInput", { value: "test", onChange: noop }],
+    ["NumberInput", { value: 2, onValueChange: noop, min: 1, max: 10 }],
+    [
+      "Breadcrumbs",
+      { items: [{ label: "Home", href: "/" }, { label: "Current" }] },
+    ],
+    ["AvatarGroup", { people: [{ name: "Alex" }] }],
+    ["CopyButton", { value: "test" }],
+    ["FileDropzone", { onFiles: noop }],
+    ["Timeline", { items: [{ title: "Created" }] }],
+    [
+      "Card",
+      {
+        title: "Settings",
+        description: "Details",
+        action: React.createElement("button", null, "More"),
+        footer: "Footer",
+        children: "Body",
+      },
+    ],
+    [
+      "StatCard",
+      { label: "Paid", value: 5, chart: [1, 4, 2, 6], progress: 60 },
+    ],
+    ["Tile", { title: "Files", href: "/files" }],
+    ["PageHeader", { title: "Payments", icon: "files" }],
+    [
+      "DateTimePicker",
+      { value: 1800000000, label: "Scheduled date", disabled: true },
+    ],
+  ];
+  for (const [name, props] of cases)
+    assert.ok(render(name, props).length > 0, name);
+});
+test("DataTable exposes caller cells, sorting state, selection and empty/loading content", () => {
+  const html = render("DataTable", {
+    caption: "People",
+    rows: [{ id: "alex", name: "Alex", status: "Active" }],
+    columns: [
+      { key: "name", label: "Name", sortable: true },
+      {
+        key: "status",
+        label: "Status",
+        render: (value) => React.createElement("strong", null, value),
+      },
+    ],
+    sort: { key: "name", direction: "asc" },
+    onSortChange() {},
+    selectedKeys: ["alex"],
+    onSelectionChange() {},
+    rowActions: () => React.createElement("button", null, "View"),
+  });
+  assert.match(html, /aria-sort="ascending"/);
+  assert.match(html, /<strong>Active<\/strong>/);
+  assert.match(html, /data-selected="true"/);
+  assert.match(html, /Select all rows/);
+  assert.match(html, /View/);
+  assert.match(
+    render("DataTable", {
+      columns: [{ key: "name", label: "Name" }],
+      rows: [],
+      emptyContent: "Nothing to show",
+    }),
+    /Nothing to show/,
+  );
+  assert.match(
+    render("DataTable", {
+      columns: [{ key: "name", label: "Name" }],
+      rows: [],
+      loading: true,
+    }),
+    /aria-busy="true"/,
+  );
+});
+test("bundled catalog is extensive and contains safe SVG nodes in lazy chunks", async () => {
+  const { iconNames } = await import("../react/icons/names.js");
+  const { loaders } = await import("../react/icons/loaders.js");
+  assert.ok(iconNames.length >= 2000);
+  assert.equal(new Set(iconNames).size, iconNames.length);
+  let count = 0;
+  for (const load of Object.values(loaders)) {
+    const { default: icons } = await load();
+    for (const nodes of Object.values(icons)) {
+      count++;
+      for (const [tag, attrs] of nodes) {
+        assert.ok(
+          [
+            "path",
+            "circle",
+            "rect",
+            "line",
+            "polyline",
+            "polygon",
+            "ellipse",
+          ].includes(tag),
+          tag,
+        );
+        assert.ok(
+          Object.keys(attrs).every(
+            (key) => !key.toLowerCase().startsWith("on"),
+          ),
+        );
+      }
+    }
+  }
+  assert.equal(count, iconNames.length);
+});
+test("custom SVG glyphs use the same accessible Icon API", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(
+      UI.IconProvider,
+      { icons: { brand: React.createElement("path", { d: "M4 4h16v16H4Z" }) } },
+      React.createElement(UI.Icon, {
+        name: "brand",
+        size: 32,
+        label: "Company",
+        motion: "draw",
+      }),
+    ),
+  );
+  assert.match(html, /aria-label="Company"/);
+  assert.match(html, /width="32"/);
+  assert.match(html, /data-motion="draw"/);
+  assert.match(html, /M4 4h16v16H4Z/);
+});

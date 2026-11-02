@@ -1,5 +1,7 @@
 # React component reference
 
+[Complete starter and implementation guide](implementation.md) · [Tables, cards, tiles, metrics, icons and all platform additions](platform-components.md)
+
 ```jsx
 import { Header, Button, Dropdown, Tabs } from "@ride-eats/ui";
 import "@ride-eats/ui/styles.css";
