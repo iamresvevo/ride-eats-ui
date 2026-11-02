@@ -852,3 +852,16 @@ import { AnimatedIcon } from '@ride-eats/ui';
 ```
 
 Hover/focus plays once. `playing` starts playback, `loop` repeats it, and reduced-motion preferences stop it. Size, strokeWidth, color/style and label remain customizable. Catalog shapes load in letter chunks.
+
+## Gesture components
+
+| Component | Minimal API | Interaction |
+| --- | --- | --- |
+| Rating | `value`, `onValueChange` | Drag across stars, hover preview, native radio keys; pointer cancellation restores the starting rating. |
+| ReorderList | `items`, `onReorder` | Drag handles, arrow keys, move buttons. Defaults to `item.id` and `item.label`; customize with `getItemKey` / `renderItem`. |
+| SwipeActions | `actions`, `children` | Drag left or press Show actions. Actions run only on explicit press. |
+| Carousel | `items`, `renderItem` | Native touch scroll, mouse drag, arrow keys, previous/next and dots. |
+| SplitPane | `value`, `onValueChange`, `first`, `second` | Drag divider; arrows resize, Shift uses larger steps, Home/End reach bounds. |
+| RangeSlider | `value={[low,high]}`, `onValueChange` | Two native range handles, keyboard and formatted labels; bounds cannot cross. |
+
+All accept `className` and `style` and inherit shared tokens. Positional animations respect reduced motion. ReorderList requires stable IDs and is intended for bounded lists. No virtualized, cross-list or cross-column drag-and-drop is bundled. Swipe actions are caller callbacks; library demos do not mutate a backend.

@@ -13,7 +13,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.5.1
+npm install github:iamresvevo/ride-eats-ui#v0.6.0
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -269,8 +269,26 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 <AnimatedIcon name="check" playing />
 ```
 
-The library also includes Popover, CommandMenu, Collapsible, Steps, PinInput, ToggleGroup, Rating, ScrollArea and Separator. The component browser has 51 pages. Its sidebar search stays pinned, and icon size/stroke/motion choices are segmented selectors.
+The library also includes Popover, CommandMenu, Collapsible, Steps, PinInput, ToggleGroup, Rating, ScrollArea and Separator. The component browser has 56 pages. Its sidebar search stays pinned, and icon size uses a slider while stroke/motion use segmented selectors.
 
 Keep Dialog/Modal mounted and use open={false} for the animated exit. useConfirm resolves after the confirmation has closed, so a parent form can then close without competing animations. Dialog is a simple-sheet demo; Stacked Dialogs demonstrates the draft/discard workflow.
 
 Selected ratings, checkboxes, radio options, toggle groups, steps and sliders use `--brand` / `--brand-soft`. Override those tokens to customize the accent. `--brand-ink` supplies readable accent text in both themes.
+
+### Gestures
+
+```jsx
+<Rating value={rating} onValueChange={setRating} />
+<ReorderList items={tasks} onReorder={setTasks} />
+<RangeSlider value={range} onValueChange={setRange} label="Budget" />
+<SplitPane value={split} onValueChange={setSplit}
+  first={<Navigation />} second={<Workspace />} />
+<Carousel items={cards} renderItem={card => <Card>{card.title}</Card>} />
+<SwipeActions actions={[{value:'archive', label:'Archive', onSelect:archive}]}>
+  <FileRow />
+</SwipeActions>
+```
+
+Rating supports drag selection, hover previews and native radio keyboard controls. ReorderList uses stable item IDs and caller-owned ordering, with drag handles, arrow keys and explicit move buttons. SwipeActions reveals actions without executing them; buttons provide the same behavior. Carousel uses native touch scrolling and mouse drag, arrows and dot navigation. SplitPane supports pointer resizing and keyboard arrows/Home/End. RangeSlider uses two native range inputs that cannot cross.
+
+Use gestures where they make the task easier. Static content remains stable. Reduced-motion preferences remove positional animations and smooth scrolling. ReorderList is for bounded lists, not virtualized or cross-column drag-and-drop. SwipeActions shows up to three compact actions; use a menu for longer lists. Touch paths use Pointer Events/native scrolling; physical-device gesture feel still needs validation in each consuming application.

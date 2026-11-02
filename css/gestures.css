@@ -1,0 +1,305 @@
+.re-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.re-rating {
+  touch-action: pan-y;
+  user-select: none;
+}
+.re-rating svg {
+  transition:
+    fill 180ms,
+    stroke 180ms,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.re-reorder {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+}
+.re-reorder ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.re-reorder li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--raised);
+  border-radius: 16px;
+  padding: 12px;
+  transition:
+    background 180ms,
+    box-shadow 180ms;
+}
+.re-reorder li[data-dragging] {
+  background: var(--brand-soft);
+  box-shadow: inset 0 0 0 1px var(--brand);
+  z-index: 1;
+}
+.re-drag-handle,
+.re-reorder-controls button,
+.re-swipe-toggle,
+.re-carousel-nav > button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  flex: none;
+}
+.re-drag-handle {
+  touch-action: none;
+  cursor: grab;
+}
+.re-drag-handle:active {
+  cursor: grabbing;
+}
+.re-reorder-content {
+  flex: 1;
+  min-width: 0;
+}
+.re-reorder-controls {
+  display: flex;
+  gap: 2px;
+}
+.re-reorder-controls button:disabled {
+  opacity: 0.25;
+}
+.re-swipe {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--brand-soft);
+}
+.re-swipe-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--swipe-width);
+  display: flex;
+}
+.re-swipe-actions button {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+}
+.re-swipe-actions .is-destructive {
+  color: var(--bad);
+  background: var(--bad-soft);
+}
+.re-swipe-content {
+  position: relative;
+  background: var(--raised);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 88px;
+  touch-action: pan-y;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;
+}
+.re-swipe-content[data-dragging] {
+  transition: none;
+}
+.re-swipe-toggle {
+  margin-left: auto;
+}
+.re-carousel {
+  width: 100%;
+  max-width: 640px;
+}
+.re-carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: 20px;
+  touch-action: pan-x pan-y;
+  cursor: grab;
+}
+.re-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+.re-carousel-track[data-dragging] {
+  scroll-snap-type: none;
+  user-select: none;
+  cursor: grabbing;
+}
+.re-carousel-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.re-carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+.re-carousel-nav > div {
+  display: flex;
+  gap: 8px;
+}
+.re-carousel-nav > div button {
+  padding: 0;
+  width: 7px;
+  height: 7px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--line-strong);
+  transition:
+    width 240ms,
+    background 240ms;
+}
+.re-carousel-nav > div button[aria-current] {
+  width: 24px;
+  background: var(--brand);
+}
+.re-carousel-nav > button {
+  background: var(--raised);
+}
+.re-carousel-nav > button:disabled {
+  opacity: 0.3;
+}
+.re-split {
+  display: grid;
+  grid-template-columns: minmax(0, var(--split)) 16px minmax(0, 1fr);
+  width: 100%;
+  min-height: 240px;
+}
+.re-split > div:first-child,
+.re-split > div:last-child {
+  min-width: 0;
+  overflow: auto;
+  background: var(--raised);
+  border-radius: 18px;
+  padding: 20px;
+}
+.re-split > [role="separator"] {
+  cursor: col-resize;
+  touch-action: none;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+}
+.re-split > [role="separator"] > span {
+  width: 4px;
+  height: 32px;
+  background: var(--line-strong);
+  border-radius: 4px;
+  transition:
+    background 180ms,
+    height 180ms;
+}
+.re-split > [role="separator"]:hover > span,
+.re-split[data-dragging] > [role="separator"] > span {
+  background: var(--brand);
+  height: 44px;
+}
+.re-range-slider {
+  position: relative;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 420px;
+}
+.re-range-slider legend {
+  font-size: 13px;
+  font-weight: 550;
+  margin-bottom: 8px;
+}
+.re-range-slider output {
+  color: var(--brand-ink);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.re-range-rail {
+  position: relative;
+  height: 38px;
+  margin-top: 12px;
+}
+.re-range-rail > span {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  right: 0;
+  height: 5px;
+  border-radius: 99px;
+  background: linear-gradient(
+    to right,
+    var(--sunken) var(--low),
+    var(--brand) var(--low),
+    var(--brand) var(--high),
+    var(--sunken) var(--high)
+  );
+}
+.re-range-rail input {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  appearance: none;
+  pointer-events: none;
+  box-shadow: none;
+}
+.re-range-rail input::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--surface);
+  border: 4px solid var(--brand);
+  border-radius: 50%;
+  pointer-events: auto;
+  cursor: grab;
+}
+.re-range-rail input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--surface);
+  border: 4px solid var(--brand);
+  border-radius: 50%;
+  pointer-events: auto;
+  cursor: grab;
+}
+.re-range-slider:disabled {
+  opacity: 0.4;
+}
+@media (prefers-reduced-motion: reduce) {
+  .re-swipe-content,
+  .re-rating svg,
+  .re-carousel-nav button,
+  .re-split span {
+    transition: none;
+  }
+}

@@ -439,3 +439,49 @@ test("every catalog icon has generated per-shape native SVG animation", async ()
   }
   assert.equal(count, 2015);
 });
+
+test("gesture controls expose keyboard alternatives and controlled boundaries", () => {
+  const noop = () => {};
+  const reorder = render("ReorderList", {
+    items: [
+      { id: "a", label: "First" },
+      { id: "b", label: "Second" },
+    ],
+    onReorder: noop,
+  });
+  assert.match(reorder, /aria-label="Move item 1 down"/);
+  assert.match(reorder, /disabled="" aria-label="Move item 1 up"/);
+  assert.match(reorder, /role="status"/);
+  const swipe = render("SwipeActions", {
+    actions: [{ value: "archive", label: "Archive", onSelect: noop }],
+    children: "File",
+  });
+  assert.match(swipe, /aria-label="Show actions"/);
+  assert.match(swipe, /inert=""/);
+  const split = render("SplitPane", {
+    value: 40,
+    onValueChange: noop,
+    first: "A",
+    second: "B",
+  });
+  assert.match(split, /role="separator"/);
+  assert.match(split, /aria-valuenow="40"/);
+  const range = render("RangeSlider", {
+    value: [20, 80],
+    onValueChange: noop,
+    label: "Budget",
+  });
+  assert.equal((range.match(/type="range"/g) || []).length, 2);
+  assert.match(range, /aria-label="Budget minimum"/);
+  assert.match(range, /aria-label="Budget maximum"/);
+  const carousel = render("Carousel", {
+    items: [
+      { id: "a", title: "One" },
+      { id: "b", title: "Two" },
+    ],
+    renderItem: (item) => item.title,
+  });
+  assert.match(carousel, /aria-roledescription="carousel"/);
+  assert.match(carousel, /aria-label="Next slide"/);
+  assert.match(carousel, /inert=""/);
+});

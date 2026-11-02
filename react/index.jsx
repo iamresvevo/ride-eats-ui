@@ -644,3 +644,5 @@ export { IconProvider } from "./icons/registry.jsx";
 export { iconNames } from "./icons/names.js";
 
 export * from "./motion.jsx";
+
+export * from "./gestures.jsx";

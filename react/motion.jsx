@@ -475,9 +475,61 @@ export function Rating({
   className = "",
   style,
 }) {
-  const id = useId();
+  const id = useId(),
+    root = useRef(null),
+    drag = useRef(null);
+  const [preview, setPreview] = useState(null);
+  const at = (x) => {
+    const labels = [...root.current.querySelectorAll("label")];
+    const index = labels.findIndex(
+      (label) => x < label.getBoundingClientRect().right,
+    );
+    return index < 0 ? max : index + 1;
+  };
   return (
-    <fieldset className={`re-rating ${className}`} style={style}>
+    <fieldset
+      ref={root}
+      className={`re-rating ${className}`}
+      style={style}
+      onPointerDown={(event) => {
+        if (readOnly || event.button !== 0 || !event.target.closest("label"))
+          return;
+        event.preventDefault();
+        drag.current = { initial: value, last: value };
+        root.current.setPointerCapture(event.pointerId);
+        const next = at(event.clientX);
+        drag.current.last = next;
+        setPreview(next);
+        onValueChange(next);
+        root.current.querySelectorAll("input")[next - 1]?.focus();
+      }}
+      onPointerMove={(event) => {
+        if (readOnly || (!event.target.closest("label") && !drag.current))
+          return;
+        const next = at(event.clientX);
+        setPreview(next);
+        if (drag.current && drag.current.last !== next) {
+          drag.current.last = next;
+          onValueChange(next);
+        }
+      }}
+      onPointerUp={() => {
+        if (drag.current)
+          root.current
+            .querySelectorAll("input")
+            [drag.current.last - 1]?.focus();
+        drag.current = null;
+        setPreview(null);
+      }}
+      onPointerCancel={() => {
+        if (drag.current) onValueChange(drag.current.initial);
+        drag.current = null;
+        setPreview(null);
+      }}
+      onPointerLeave={() => {
+        if (!drag.current) setPreview(null);
+      }}
+    >
       <legend>{label}</legend>
       {Array.from({ length: max }, (_, i) => (
         <label key={i} title={`${i + 1} of ${max}`}>
@@ -487,12 +539,15 @@ export function Rating({
             value={i + 1}
             checked={value === i + 1}
             disabled={readOnly}
-            onChange={() => onValueChange(i + 1)}
+            onChange={() => {
+              setPreview(null);
+              onValueChange(i + 1);
+            }}
             aria-label={`${i + 1} of ${max}`}
           />
           <svg
             viewBox="0 0 24 24"
-            data-filled={i < value || undefined}
+            data-filled={i < (preview ?? value) || undefined}
             aria-hidden="true"
           >
             <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z" />

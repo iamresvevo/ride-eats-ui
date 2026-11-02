@@ -1,3 +1,4 @@
+import GestureDemos from "./GestureDemos.jsx";
 import React, { lazy, Suspense, useState } from "react";
 import * as UI from "../react/index.jsx";
 const IconBrowser = lazy(() => import("./IconBrowser.jsx"));
@@ -13,6 +14,16 @@ export default function MotionDemos({ id }) {
     [replay, setReplay] = useState(0),
     [query, setQuery] = useState("");
   const toast = UI.useToast();
+  if (
+    [
+      "reorder-list",
+      "swipe-actions",
+      "carousel",
+      "split-pane",
+      "range-slider",
+    ].includes(id)
+  )
+    return <GestureDemos key={id} id={id} />;
   switch (id) {
     case "animated-icons":
       return (

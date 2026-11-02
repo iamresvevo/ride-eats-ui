@@ -1,3 +1,4 @@
+import * as UI from "../react/index.jsx";
 import { useState } from "react";
 import {
   Header,
@@ -175,3 +176,21 @@ export function MotionUsage() {
     </>
   );
 }
+
+const gestures = (
+  <>
+    <UI.ReorderList
+      items={[{ id: "a", label: "First" }]}
+      onReorder={(items) => items[0].label}
+    />
+    <UI.SwipeActions actions={[{ value: "a", label: "Archive" }]}>
+      File
+    </UI.SwipeActions>
+    <UI.Carousel
+      items={[{ id: "a", title: "One" }]}
+      renderItem={(item) => item.title}
+    />
+    <UI.SplitPane value={40} onValueChange={() => {}} first="A" second="B" />
+    <UI.RangeSlider value={[20, 80]} onValueChange={() => {}} />
+  </>
+);

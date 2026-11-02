@@ -722,3 +722,57 @@ export function CommandMenu(
     shortcut?: boolean;
   },
 ): React.ReactElement;
+
+export function ReorderList<T>(
+  props: StylingProps & {
+    items: T[];
+    onReorder: (items: T[]) => void;
+    getItemKey?: (item: T) => string | number;
+    renderItem?: (item: T, index: number) => React.ReactNode;
+    label?: string;
+    disabled?: boolean;
+  },
+): React.ReactElement;
+export function SwipeActions(
+  props: StylingProps & {
+    children: React.ReactNode;
+    actions: {
+      value: string;
+      label: string;
+      icon?: string;
+      destructive?: boolean;
+      onSelect?: () => void;
+    }[];
+    label?: string;
+  },
+): React.ReactElement;
+export function Carousel<T>(
+  props: StylingProps & {
+    items: T[];
+    renderItem: (item: T, index: number) => React.ReactNode;
+    label?: string;
+  },
+): React.ReactElement;
+export function SplitPane(
+  props: StylingProps & {
+    value: number;
+    onValueChange: (value: number) => void;
+    min?: number;
+    max?: number;
+    first: React.ReactNode;
+    second: React.ReactNode;
+    label?: string;
+  },
+): React.ReactElement;
+export function RangeSlider(
+  props: StylingProps & {
+    value: [number, number];
+    onValueChange: (value: [number, number]) => void;
+    min?: number;
+    max?: number;
+    step?: number;
+    label?: string;
+    formatValue?: (value: number) => string;
+    disabled?: boolean;
+  },
+): React.ReactElement;

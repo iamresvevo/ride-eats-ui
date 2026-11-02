@@ -1,3 +1,4 @@
+import { gesturePages } from "./gesture-data.js";
 const page = (
   id,
   name,
@@ -17,6 +18,7 @@ const page = (
   imports,
 });
 export const motionPages = [
+  ...gesturePages,
   page(
     "animated-icons",
     "Animated Icons",
@@ -155,7 +157,7 @@ export const motionPages = [
     "rating",
     "Rating",
     "Inputs",
-    "A small, keyboard-accessible star rating with native radio behavior and a restrained hover lift.",
+    "Drag across stars to choose a rating, preview on hover, or use native radio keyboard controls. Touch cancellation restores the previous value.",
     `const [rating, setRating] = useState(4);\n<Rating label="How was your experience?" value={rating} onValueChange={setRating} max={5} />`,
     [
       ["value / onValueChange", "number / callback", "Chosen rating, 1-based."],
