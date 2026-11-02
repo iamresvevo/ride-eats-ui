@@ -144,9 +144,6 @@ import {
   CommandMenu,
   PinInput,
   ToggleGroup,
-  Steps,
-  ScrollArea,
-  Separator,
 } from "../react/index.jsx";
 export function MotionUsage() {
   const [open, setOpen] = useState(false),
@@ -170,9 +167,6 @@ export function MotionUsage() {
         onValueChange={setFormat}
         items={[{ value: "bold", label: "Bold" }]}
       />
-      <Steps value="a" items={[{ value: "a", label: "Details" }]} />
-      <ScrollArea header="Search">Rows</ScrollArea>
-      <Separator label="or" />
     </>
   );
 }

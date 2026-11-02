@@ -1,0 +1,615 @@
+{
+  "version": "0.9.0",
+  "cssFiles": 15,
+  "publicApis": [
+    "Accordion",
+    "AccountMenu",
+    "ActivityFeed",
+    "Alert",
+    "AnimatedIcon",
+    "AppShell",
+    "Avatar",
+    "AvatarGroup",
+    "Badge",
+    "Bone",
+    "BoneText",
+    "BottomSheet",
+    "Breadcrumbs",
+    "Button",
+    "Card",
+    "CardBody",
+    "CardFooter",
+    "CardHeader",
+    "Carousel",
+    "Checkbox",
+    "Chips",
+    "Combobox",
+    "CommandMenu",
+    "ContextMenu",
+    "CopyButton",
+    "DataGrid",
+    "DataTable",
+    "DateRangePicker",
+    "DateTimePicker",
+    "Dialog",
+    "Drawer",
+    "Dropdown",
+    "EmptyState",
+    "FeedbackProvider",
+    "Field",
+    "FileDropzone",
+    "FileManager",
+    "Form",
+    "Header",
+    "Icon",
+    "IconProvider",
+    "Menu",
+    "MenuItem",
+    "MenuLabel",
+    "MenuSeparator",
+    "MenuSub",
+    "MetricGrid",
+    "MultiSelect",
+    "NotificationCenter",
+    "NumberInput",
+    "PageHeader",
+    "PageLoading",
+    "Pagination",
+    "PasswordInput",
+    "PinInput",
+    "Popover",
+    "Progress",
+    "RadioGroup",
+    "RangeSlider",
+    "Rating",
+    "ReorderList",
+    "SearchSelect",
+    "Segmented",
+    "Select",
+    "SettingRow",
+    "SettingsPanel",
+    "Skeleton",
+    "Slider",
+    "SplitPane",
+    "StatCard",
+    "StickyBar",
+    "SupportInbox",
+    "SwipeActions",
+    "Switch",
+    "Tabs",
+    "TeamDirectory",
+    "Textarea",
+    "ThemeProvider",
+    "Tile",
+    "TimePicker",
+    "Timeline",
+    "ToastProvider",
+    "ToggleGroup",
+    "ToggleGroup",
+    "Toolbar",
+    "Tooltips",
+    "UIProvider",
+    "UploadProgress",
+    "VerificationBadge",
+    "VerifiedName",
+    "WorkspaceSwitcher",
+    "animatedIconNames",
+    "iconNames",
+    "useConfirm",
+    "useFeedback",
+    "useTheme",
+    "useToast"
+  ],
+  "documentationPages": [
+    {
+      "id": "segmented",
+      "name": "Segmented",
+      "group": "Inputs",
+      "source": "react/send/Segmented.jsx"
+    },
+    {
+      "id": "header",
+      "name": "Header",
+      "group": "Navigation",
+      "source": "react/send/Header.jsx"
+    },
+    {
+      "id": "dropdown",
+      "name": "Dropdown",
+      "group": "Navigation",
+      "source": "react/send/ui/Menu.jsx"
+    },
+    {
+      "id": "tabs",
+      "name": "Tabs",
+      "group": "Navigation",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "button",
+      "name": "Button",
+      "group": "Actions",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "select",
+      "name": "Select",
+      "group": "Inputs",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "search-select",
+      "name": "Search Select",
+      "group": "Inputs",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "switch",
+      "name": "Switch",
+      "group": "Inputs",
+      "source": "react/send/ui/Switch.jsx"
+    },
+    {
+      "id": "date-time",
+      "name": "Date & Time",
+      "group": "Inputs",
+      "source": "react/send/ui/DateTimePicker.jsx"
+    },
+    {
+      "id": "dialog",
+      "name": "Dialog",
+      "group": "Feedback",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "group": "Feedback",
+      "source": "react/send/ui/Skeleton.jsx"
+    },
+    {
+      "id": "identity",
+      "name": "Identity",
+      "group": "Display",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "settings",
+      "name": "Setting Row",
+      "group": "Layout",
+      "source": "react/send/ui/SettingRow.jsx"
+    },
+    {
+      "id": "pagination",
+      "name": "Pagination",
+      "group": "Navigation",
+      "source": "react/send/ui/Pagination.jsx"
+    },
+    {
+      "id": "toast",
+      "name": "Toast",
+      "group": "Feedback",
+      "source": "react/Feedback.jsx"
+    },
+    {
+      "id": "field",
+      "name": "Field",
+      "group": "Inputs",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "group": "Display",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "empty",
+      "name": "Empty State",
+      "group": "Feedback",
+      "source": "react/send/ui/EmptyState.jsx"
+    },
+    {
+      "id": "chips",
+      "name": "Chips",
+      "group": "Navigation",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "card",
+      "name": "Card",
+      "group": "Layout",
+      "source": "react/index.jsx"
+    },
+    {
+      "id": "icons",
+      "name": "Icon Library",
+      "group": "Display",
+      "imports": "Icon, IconProvider",
+      "source": "react/send/Icon.jsx"
+    },
+    {
+      "id": "data-table",
+      "name": "Data Table",
+      "group": "Display",
+      "imports": "DataTable, Badge, Button",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "stacked-dialogs",
+      "name": "Stacked Dialogs",
+      "group": "Recipes",
+      "imports": "Button, Dialog, Field, useConfirm",
+      "source": "react/Feedback.jsx"
+    },
+    {
+      "id": "accordion",
+      "name": "Accordion",
+      "group": "Layout",
+      "imports": "Accordion",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "alert",
+      "name": "Alert",
+      "group": "Feedback",
+      "imports": "Alert, Button",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "group": "Inputs",
+      "imports": "Checkbox",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "radio-group",
+      "name": "Radio Group",
+      "group": "Inputs",
+      "imports": "RadioGroup",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "slider",
+      "name": "Slider",
+      "group": "Inputs",
+      "imports": "Slider",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "progress",
+      "name": "Progress",
+      "group": "Feedback",
+      "imports": "Progress, Button",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "password-input",
+      "name": "Password Input",
+      "group": "Inputs",
+      "imports": "PasswordInput",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "number-input",
+      "name": "Number Input",
+      "group": "Inputs",
+      "imports": "NumberInput",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "group": "Navigation",
+      "imports": "Breadcrumbs",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "avatar-group",
+      "name": "Avatar Group",
+      "group": "Display",
+      "imports": "AvatarGroup",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "copy-button",
+      "name": "Copy Button",
+      "group": "Actions",
+      "imports": "CopyButton",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "file-dropzone",
+      "name": "File Dropzone",
+      "group": "Inputs",
+      "imports": "FileDropzone",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "group": "Display",
+      "imports": "Timeline",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "drawer",
+      "name": "Drawer",
+      "group": "Layout",
+      "imports": "Drawer, Button",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "stat-cards",
+      "name": "Stat Cards",
+      "group": "Display",
+      "imports": "MetricGrid, StatCard",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "tiles",
+      "name": "Tiles",
+      "group": "Layout",
+      "imports": "Tile, MetricGrid",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "page-header",
+      "name": "Page Header",
+      "group": "Layout",
+      "imports": "PageHeader, Button",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard Layout",
+      "group": "Recipes",
+      "imports": "PageHeader,MetricGrid,StatCard,Tabs,Card,DataTable",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "reorder-list",
+      "name": "Reorder List",
+      "group": "Layout",
+      "imports": "ReorderList",
+      "source": "react/motion.jsx"
+    },
+    {
+      "id": "swipe-actions",
+      "name": "Swipe Actions",
+      "group": "Actions",
+      "imports": "SwipeActions",
+      "source": "react/motion.jsx"
+    },
+    {
+      "id": "carousel",
+      "name": "Carousel",
+      "group": "Display",
+      "imports": "Carousel, Card",
+      "source": "react/motion.jsx"
+    },
+    {
+      "id": "split-pane",
+      "name": "Split Pane",
+      "group": "Layout",
+      "imports": "SplitPane",
+      "source": "react/motion.jsx"
+    },
+    {
+      "id": "range-slider",
+      "name": "Range Slider",
+      "group": "Inputs",
+      "imports": "RangeSlider",
+      "source": "react/motion.jsx"
+    },
+    {
+      "id": "animated-icons",
+      "name": "Animated Icons",
+      "group": "Motion",
+      "imports": "AnimatedIcon, Button",
+      "source": "react/send/Icon.jsx"
+    },
+    {
+      "id": "popover",
+      "name": "Popover",
+      "group": "Feedback",
+      "imports": "Popover, Button",
+      "source": "react/motion.jsx"
+    },
+    {
+      "id": "command-menu",
+      "name": "Command Menu",
+      "group": "Navigation",
+      "imports": "CommandMenu",
+      "source": "react/CommandMenu.jsx"
+    },
+    {
+      "id": "pin-input",
+      "name": "PIN Input",
+      "group": "Inputs",
+      "imports": "PinInput",
+      "source": "react/motion.jsx"
+    },
+    {
+      "id": "toggle-group",
+      "name": "Toggle Group",
+      "group": "Inputs",
+      "imports": "ToggleGroup",
+      "source": "react/motion.jsx"
+    },
+    {
+      "id": "rating",
+      "name": "Rating",
+      "group": "Inputs",
+      "imports": "Rating",
+      "source": "react/motion.jsx"
+    },
+    {
+      "id": "textarea",
+      "name": "Textarea",
+      "group": "Inputs",
+      "imports": "Textarea",
+      "source": "react/forms.jsx"
+    },
+    {
+      "id": "form",
+      "name": "Form",
+      "group": "Inputs",
+      "imports": "Form, Field, Button",
+      "source": "react/forms.jsx"
+    },
+    {
+      "id": "combobox",
+      "name": "Combobox",
+      "group": "Inputs",
+      "imports": "Combobox",
+      "source": "react/forms.jsx"
+    },
+    {
+      "id": "multi-select",
+      "name": "Multi Select",
+      "group": "Inputs",
+      "imports": "MultiSelect",
+      "source": "react/forms.jsx"
+    },
+    {
+      "id": "date-range-picker",
+      "name": "Date Range Picker",
+      "group": "Inputs",
+      "imports": "DateRangePicker",
+      "source": "react/forms.jsx"
+    },
+    {
+      "id": "time-picker",
+      "name": "Time Picker",
+      "group": "Inputs",
+      "imports": "TimePicker",
+      "source": "react/forms.jsx"
+    },
+    {
+      "id": "upload-progress",
+      "name": "Upload Progress",
+      "group": "Feedback",
+      "imports": "UploadProgress",
+      "source": "react/forms.jsx"
+    },
+    {
+      "id": "data-grid",
+      "name": "DataGrid",
+      "group": "Display",
+      "imports": "DataGrid",
+      "source": "react/DataGrid.jsx"
+    },
+    {
+      "id": "app-shell",
+      "name": "App Shell",
+      "group": "Layout",
+      "imports": "AppShell, WorkspaceSwitcher, NotificationCenter, Card",
+      "source": "react/platform.jsx"
+    },
+    {
+      "id": "workspace-switcher",
+      "name": "Workspace Switcher",
+      "group": "Navigation",
+      "imports": "WorkspaceSwitcher",
+      "source": "react/platform.jsx"
+    },
+    {
+      "id": "notification-center",
+      "name": "Notification Center",
+      "group": "Feedback",
+      "imports": "NotificationCenter",
+      "source": "react/platform.jsx"
+    },
+    {
+      "id": "bottom-sheet",
+      "name": "Bottom Sheet",
+      "group": "Feedback",
+      "imports": "BottomSheet, Button",
+      "source": "react/platform.jsx"
+    },
+    {
+      "id": "context-menu",
+      "name": "Context Menu",
+      "group": "Actions",
+      "imports": "ContextMenu, Card",
+      "source": "react/platform.jsx"
+    },
+    {
+      "id": "nested-popovers",
+      "name": "Nested Popovers",
+      "group": "Recipes",
+      "imports": "Popover, Button",
+      "source": "react/platform.jsx"
+    },
+    {
+      "id": "settings-panel",
+      "name": "Settings Panel",
+      "group": "Layout",
+      "imports": "SettingsPanel, Field, Button",
+      "source": "react/workflows.jsx"
+    },
+    {
+      "id": "team-directory",
+      "name": "Team Directory",
+      "group": "Workflows",
+      "imports": "TeamDirectory",
+      "source": "react/workflows.jsx"
+    },
+    {
+      "id": "file-manager",
+      "name": "File Manager",
+      "group": "Workflows",
+      "imports": "FileManager",
+      "source": "react/workflows.jsx"
+    },
+    {
+      "id": "activity-feed",
+      "name": "Activity Feed",
+      "group": "Display",
+      "imports": "ActivityFeed",
+      "source": "react/workflows.jsx"
+    },
+    {
+      "id": "support-inbox",
+      "name": "Support Inbox",
+      "group": "Workflows",
+      "imports": "SupportInbox",
+      "source": "react/workflows.jsx"
+    },
+    {
+      "id": "sticky-bar",
+      "name": "Sticky Bar",
+      "group": "Layout",
+      "imports": "StickyBar, Tabs",
+      "source": "react/StickyBar.jsx"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "source": "send",
+      "path": "ride-eats-send/src/styles/style.css",
+      "sha256": "741c11618d731ab4fc14b9c393be207df9475d6d8b01d0259a47acaaf4f99429"
+    },
+    {
+      "source": "tools",
+      "path": "ride-eats-tools/public/css/style.css",
+      "sha256": "d083868e4db75fd3cc6038fd44b32d61536812c366e5fa04e650c4742856c48b"
+    },
+    {
+      "source": "header",
+      "path": "ride-eats-tools/public/css/site-header.css",
+      "sha256": "411a65f3ba0d963b72c9cbb9af3c8c1c6a1e0da851cfae2c7fd5abf77a5ad49b"
+    }
+  ],
+  "checks": [
+    "one foundation owner",
+    "tokenized corners",
+    "neutral semantic supporting surfaces",
+    "shared CSS easing",
+    "literal demo icons resolve",
+    "all public APIs have a design family",
+    "unique component page IDs"
+  ]
+}

@@ -1,7 +1,7 @@
 # Build a compact platform
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.8.1
+npm install github:iamresvevo/ride-eats-ui#v0.9.0
 ```
 
 Import `@ride-eats/ui/styles.css` once and wrap the app in UIProvider. The complete runnable example is [examples/platform](../examples/platform/README.md). Component references, workflows and recipes have live examples, imports and prop tables; selected primitives also have an implementation workbench built from shared prop controls, live components and complete copyable React examples.

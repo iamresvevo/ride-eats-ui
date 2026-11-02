@@ -1,0 +1,163 @@
+{
+  "sources": [
+    {
+      "source": "send",
+      "path": "ride-eats-send/src/styles/style.css",
+      "sha256": "741c11618d731ab4fc14b9c393be207df9475d6d8b01d0259a47acaaf4f99429"
+    },
+    {
+      "source": "tools",
+      "path": "ride-eats-tools/public/css/style.css",
+      "sha256": "d083868e4db75fd3cc6038fd44b32d61536812c366e5fa04e650c4742856c48b"
+    },
+    {
+      "source": "header",
+      "path": "ride-eats-tools/public/css/site-header.css",
+      "sha256": "411a65f3ba0d963b72c9cbb9af3c8c1c6a1e0da851cfae2c7fd5abf77a5ad49b"
+    }
+  ],
+  "families": {
+    "navigation": {
+      "source": "Send Header/AccountMenu/Segmented/Menu and Tools tabs/chips/stickyBar",
+      "apis": [
+        "Header",
+        "AccountMenu",
+        "Menu",
+        "MenuItem",
+        "MenuSub",
+        "MenuLabel",
+        "MenuSeparator",
+        "Dropdown",
+        "Tabs",
+        "Segmented",
+        "Chips",
+        "Pagination",
+        "Breadcrumbs",
+        "WorkspaceSwitcher",
+        "AppShell",
+        "StickyBar",
+        "CommandMenu"
+      ]
+    },
+    "actions": {
+      "source": "Send ActionButton and Tools pill actions; derivative controls use the same tokens",
+      "apis": [
+        "Button",
+        "CopyButton",
+        "ToggleGroup",
+        "ContextMenu"
+      ]
+    },
+    "forms": {
+      "source": "Send Field/Switch/DateTimePicker; local and remote selectors retain their distinct data semantics",
+      "apis": [
+        "Field",
+        "Switch",
+        "Select",
+        "SearchSelect",
+        "DateTimePicker",
+        "Checkbox",
+        "RadioGroup",
+        "Slider",
+        "PasswordInput",
+        "NumberInput",
+        "FileDropzone",
+        "PinInput",
+        "Rating",
+        "Textarea",
+        "Form",
+        "Combobox",
+        "MultiSelect",
+        "DateRangePicker",
+        "TimePicker",
+        "RangeSlider"
+      ]
+    },
+    "feedback": {
+      "source": "Send native Modal, feedback depth stack, skeletons, empty states; shared presence lifecycle",
+      "apis": [
+        "Dialog",
+        "Drawer",
+        "BottomSheet",
+        "Popover",
+        "NotificationCenter",
+        "ToastProvider",
+        "useToast",
+        "useConfirm",
+        "Skeleton",
+        "Bone",
+        "BoneText",
+        "EmptyState",
+        "Alert",
+        "Progress",
+        "UploadProgress"
+      ]
+    },
+    "display": {
+      "source": "Tools Cards/stats/table structure, Send identity and vendored icon geometry",
+      "apis": [
+        "Card",
+        "CardHeader",
+        "CardBody",
+        "CardFooter",
+        "MetricGrid",
+        "StatCard",
+        "Tile",
+        "PageHeader",
+        "Toolbar",
+        "SettingRow",
+        "DataTable",
+        "DataGrid",
+        "Avatar",
+        "AvatarGroup",
+        "VerificationBadge",
+        "VerifiedName",
+        "Badge",
+        "Timeline",
+        "ActivityFeed",
+        "Icon",
+        "AnimatedIcon",
+        "IconProvider",
+        "Accordion",
+        "PageLoading",
+        "Tooltips"
+      ]
+    },
+    "gestures": {
+      "source": "Extensions inherit Send/Tools density, pill actions, neutral surfaces and shared easing",
+      "apis": [
+        "ReorderList",
+        "SwipeActions",
+        "Carousel",
+        "SplitPane"
+      ]
+    },
+    "workflows": {
+      "source": "Compositions of the audited controls; caller data/callbacks remain application-owned",
+      "apis": [
+        "SettingsPanel",
+        "TeamDirectory",
+        "FileManager",
+        "SupportInbox"
+      ]
+    },
+    "providers": {
+      "source": "Nonvisual integration APIs; no independent design surface",
+      "apis": [
+        "UIProvider",
+        "ThemeProvider",
+        "useTheme",
+        "useDebounce",
+        "FeedbackProvider",
+        "useFeedback",
+        "animatedIconNames",
+        "iconNames"
+      ]
+    }
+  },
+  "removed": {
+    "Steps": "Use application-owned flow state and existing navigation/form components. No additional wizard abstraction.",
+    "ScrollArea": "Use a labelled native scroll region and StickyBar when floating controls are needed.",
+    "Separator": "Use a semantic hr or an owning layout separator; MenuSeparator stays inside the Menu compound API."
+  }
+}

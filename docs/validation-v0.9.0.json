@@ -1,0 +1,63 @@
+{
+  "version": "0.9.0",
+  "scope": {
+    "publicApis": 97,
+    "componentWorkflowRecipePages": 72,
+    "guidePages": 3,
+    "stylesheets": 15
+  },
+  "checks": {
+    "cleanInstall": "passed",
+    "componentTests": 24,
+    "designContract": "passed",
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "visualComparisons": 14
+  },
+  "browserSweep": {
+    "desktop": {
+      "pageLoads": 156,
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "missingPages": 0,
+      "pageOverflow": 0,
+      "consoleErrors": 0,
+      "note": "Initial full sweep before pruning three pages; final shared-menu and command preview changes verified separately."
+    },
+    "narrow": {
+      "pageLoads": 78,
+      "width": 390,
+      "initialFindings": 1,
+      "resolution": "DataTable off-screen accessibility label anchored; affected page rechecked at document width 390px.",
+      "note": "Initial full sweep before pruning three pages."
+    },
+    "reference": "Live Send verified: dark bg #0c0c0d, surface #161618, raised/brand-soft #1f1f22, large radius 28px, pill radius 999px, spring-soft cubic-bezier(.25,1,.3,1).",
+    "finalRetainedPages": {
+      "desktop": 75,
+      "narrow": 75,
+      "width": 390,
+      "missingPages": 0,
+      "pageOverflow": 0
+    }
+  },
+  "interactionChecks": [
+    "Dropdown open, nested Sort selection, Escape close and restored focus",
+    "Stacked discard confirmation: underlying draft inert, Keep editing preserves text, discard closes sequentially",
+    "BottomSheet open/close and narrow viewport edge placement",
+    "ToggleGroup uses ink pills and real Bold geometry; SVG viewport stays steady",
+    "Shared motion helper retains reduced-motion behavior in selection regression tests",
+    "All literal demo icon names resolve; 2,015 canonical entries plus 277 compatibility names validated",
+    "All ten implementation-workbench generated React examples parse with data/state/callbacks",
+    "Fourteen independent baseline/candidate pairs cover app shell, form, grid, toggle, open menu, stacked confirmation and open bottom sheet in both themes",
+    "Native top-layer role menus selected successfully inside clipped TeamDirectory table and invitation dialog; focused command creates draft and updates filtered list"
+  ],
+  "limits": [
+    "Full API/source and page coverage does not mean every prop permutation was interaction-tested",
+    "Physical touch-device feel and exhaustive screen-reader conformance are unverified",
+    "No exhaustive cross-browser engine certification; native popover exit and blur depend on support",
+    "Browser screenshot capture is manual; CI runs the static design contract, tests, types and build",
+    "Local demos do not imply backend persistence, delivery or production data changes"
+  ]
+}

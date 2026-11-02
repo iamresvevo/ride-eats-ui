@@ -31,7 +31,7 @@ Segmented is extracted from Send src/components/Segmented.jsx. Its placeSelectio
 - React Feedback adapts Send's `src/components/Feedback.jsx`: bounded depth-stacked toasts, two-phase expiry and async confirmations. It adds message deduplication, configurable duration/limit, tone icons and queued confirmations. Classes are isolated from legacy vanilla toast styles.
 - Modal retains Send's native dialog/focus/exit handling and adds a Tools-style shared-backdrop stack: underlying dialogs stay mounted, inert and scaled while the top dialog owns input.
 - Card, MetricGrid, StatCard, Tile, PageHeader and Toolbar follow Tools' compact dashboard surfaces, metric hierarchy and launcher tiles. Generic inputs, tables, accordion, drawer and timeline are new React components, not claimed as direct Send source copies.
-- The built-in catalog vendors 2,015 icons from `lucide-static` 1.66.0 under ISC, with its full copyright and Feather-derived notices in `react/icons/LICENSE.lucide`. Existing Send PATHS are retained. The kit adds lazy loading, custom glyph registration, searchable names/tags and opt-in icon motion.
+- The built-in catalog vendors 2,015 canonical glyphs and 277 compatibility names from `lucide-static` 1.66.0 under ISC, with its full copyright and Feather-derived notices in `react/icons/LICENSE.lucide`. Existing Send PATHS are retained. The kit adds lazy loading, custom glyph registration, searchable names/tags and opt-in icon motion.
 
 ## v0.4 interaction corrections
 
@@ -42,3 +42,7 @@ Ten further components and native SVG animated presets are in react/motion.jsx. 
 ## v0.8.1 Send/Tools alignment
 
 StickyBar ports the sentinel and captured-scroll behavior from Tools public/js/core/ui.js stickyBar and public/css/style.css sticky-bar. It adds a nearest-scroll-root measurement and layered neutral backdrop blur to the existing progressive header fade. The library's own prop controls compose Accordion, Card, Field, NumberInput, Switch, Button and CopyButton; generated examples include the actual controlled state/data/callbacks. Solid accent fills and circular compact controls reflect the user's current design corrections; legacy translucent accent tokens now map to neutral supporting surfaces. Send's soft cubic easing is exposed as --motion-ease. BottomSheet has its own bottom-edge entry/exit instead of the generic centered-dialog animation.
+
+## v0.9 system audit
+
+The full [design audit](design-audit.md) and [inventory](design-audit.json) supersede isolated visual-fix notes. Source fingerprints and all public API families are in design/contract.json. css/tokens.css now owns palette, shapes, density and easing; CSS modules own their component rules. JS motion reads the same easing helper. Docs no longer recolor component surfaces. Catalog generation also includes upstream SVG compatibility names, including Bold.

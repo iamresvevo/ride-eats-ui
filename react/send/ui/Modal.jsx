@@ -1,3 +1,4 @@
+import { motionEase } from "../hooks/motion.js";
 import React, { useLayoutEffect, useRef, useState, useId } from "react";
 import { createPortal } from "react-dom";
 import Icon from "../Icon.jsx";
@@ -111,9 +112,12 @@ export default function Modal({
     stack.push(element);
     syncStack();
     element.showModal();
-    const enterTimer = setTimeout(() => {
-      element.dataset.entered = "true";
-    }, className.includes("re-bottom-sheet") ? 440 : 380);
+    const enterTimer = setTimeout(
+      () => {
+        element.dataset.entered = "true";
+      },
+      className.includes("re-bottom-sheet") ? 440 : 380,
+    );
     const stopFocus = focusFormOnOpen(element);
     return () => {
       clearTimeout(enterTimer);
@@ -162,19 +166,30 @@ export default function Modal({
     const sheet = className.includes("re-bottom-sheet");
     const duration = reduced
       ? 80
-      : sheet ? 300
-      : variant === "dialog" && className.includes("re-drawer")
-        ? 220
-        : 180;
+      : sheet
+        ? 300
+        : variant === "dialog" && className.includes("re-drawer")
+          ? 220
+          : 180;
     const timer = setTimeout(done, duration + 40);
     {
       const drawer = className.includes("re-drawer");
-      const offset = reduced ? "" : sheet ? " translateY(calc(100% + 24px))" : drawer
-        ? ` translateX(${className.includes("re-drawer-left") ? "-24" : "24"}px)`
-        : " translateY(8px) scale(.98)";
+      const offset = reduced
+        ? ""
+        : sheet
+          ? " translateY(calc(100% + 24px))"
+          : drawer
+            ? ` translateX(${className.includes("re-drawer-left") ? "-24" : "24"}px)`
+            : " translateY(8px) scale(.98)";
       animation = element.animate(
-        [from, { opacity: sheet && !reduced ? 1 : 0, transform: from.transform + offset }],
-        { duration, easing: current.getPropertyValue("--motion-ease").trim() || "cubic-bezier(.25,1,.3,1)", fill: "forwards" },
+        [
+          from,
+          {
+            opacity: sheet && !reduced ? 1 : 0,
+            transform: from.transform + offset,
+          },
+        ],
+        { duration, easing: motionEase(element), fill: "forwards" },
       );
       animation.finished.then(done, () => {});
     }

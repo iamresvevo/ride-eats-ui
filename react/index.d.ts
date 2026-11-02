@@ -124,16 +124,21 @@ export function Chips(
   },
 ): React.ReactElement;
 export function Select(
-  props: StylingProps & {
-    options: (Omit<Option, "label"> & { label: React.ReactNode })[];
-    renderValue?: (
-      option: (Omit<Option, "label"> & { label: React.ReactNode }) | undefined,
-    ) => React.ReactNode;
-    value: string;
-    onValueChange: (value: string) => void;
-    label?: string;
-    disabled?: boolean;
-  },
+  props: StylingProps &
+    Omit<
+      React.ButtonHTMLAttributes<HTMLButtonElement>,
+      "value" | "onChange" | "children"
+    > & {
+      options: (Omit<Option, "label"> & { label: React.ReactNode })[];
+      renderValue?: (
+        option:
+          (Omit<Option, "label"> & { label: React.ReactNode }) | undefined,
+      ) => React.ReactNode;
+      value: string;
+      onValueChange: (value: string) => void;
+      label?: string;
+      disabled?: boolean;
+    },
 ): React.ReactElement;
 export function SearchSelect(
   props: StylingProps & {
@@ -602,19 +607,6 @@ export function Popover(
     width?: number;
   },
 ): React.ReactElement;
-export function Steps(
-  props: StylingProps & {
-    items: {
-      value: string;
-      label: React.ReactNode;
-      description?: React.ReactNode;
-    }[];
-    value: string;
-    onValueChange?: (value: string) => void;
-    label?: string;
-    orientation?: "horizontal" | "vertical";
-  },
-): React.ReactElement;
 export function PinInput(
   props: StylingProps & {
     value: string;
@@ -662,20 +654,6 @@ export function Rating(
     max?: number;
     label?: string;
     readOnly?: boolean;
-  },
-): React.ReactElement;
-export function ScrollArea(
-  props: StylingProps & {
-    children?: React.ReactNode;
-    header?: React.ReactNode;
-    height?: React.CSSProperties["maxHeight"];
-    label?: string;
-  },
-): React.ReactElement;
-export function Separator(
-  props: StylingProps & {
-    label?: React.ReactNode;
-    orientation?: "horizontal" | "vertical";
   },
 ): React.ReactElement;
 export interface CommandItem {
@@ -1057,10 +1035,12 @@ export function SupportInbox(
     label?: string;
   },
 ): React.ReactElement;
-export function StickyBar(props: StylingProps & {
-  children: React.ReactNode;
-  offset?: number | string;
-  fade?: boolean;
-  blur?: boolean;
-  label?: string;
-}): React.ReactElement;
+export function StickyBar(
+  props: StylingProps & {
+    children: React.ReactNode;
+    offset?: number | string;
+    fade?: boolean;
+    blur?: boolean;
+    label?: string;
+  },
+): React.ReactElement;

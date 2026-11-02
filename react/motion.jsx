@@ -307,53 +307,6 @@ export function Popover({
     </>
   );
 }
-export function Steps({
-  items,
-  value,
-  onValueChange,
-  label = "Progress",
-  orientation = "horizontal",
-  className = "",
-  style,
-}) {
-  const active = items.findIndex((item) => item.value === value);
-  return (
-    <ol
-      className={`re-steps ${className}`}
-      style={style}
-      data-orientation={orientation}
-      aria-label={label}
-    >
-      {items.map((item, i) => {
-        const Tag = onValueChange ? "button" : "div";
-        return (
-          <li
-            key={item.value}
-            data-state={
-              i < active ? "complete" : i === active ? "current" : "upcoming"
-            }
-          >
-            <Tag
-              type={onValueChange ? "button" : undefined}
-              onClick={
-                onValueChange ? () => onValueChange(item.value) : undefined
-              }
-              aria-current={i === active ? "step" : undefined}
-            >
-              <span className="re-step-number">
-                {i < active ? <Icon name="check" /> : i + 1}
-              </span>
-              <span>
-                <strong>{item.label}</strong>
-                {item.description && <small>{item.description}</small>}
-              </span>
-            </Tag>
-          </li>
-        );
-      })}
-    </ol>
-  );
-}
 export function PinInput({
   value,
   onValueChange,
@@ -531,45 +484,6 @@ export function Rating({
         </label>
       ))}
     </fieldset>
-  );
-}
-export function ScrollArea({
-  children,
-  height = 240,
-  label = "Scrollable content",
-  header,
-  className = "",
-  style,
-}) {
-  return (
-    <div
-      className={`re-scroll-area ${className}`}
-      style={{ maxHeight: height, ...style }}
-      tabIndex={0}
-      role="region"
-      aria-label={label}
-    >
-      {header && <div className="re-scroll-header">{header}</div>}
-      {children}
-    </div>
-  );
-}
-export function Separator({
-  label,
-  orientation = "horizontal",
-  className = "",
-  style,
-}) {
-  return (
-    <div
-      role="separator"
-      aria-orientation={orientation}
-      className={`re-separator ${className}`}
-      data-orientation={orientation}
-      style={style}
-    >
-      {label && <span>{label}</span>}
-    </div>
   );
 }
 export { CommandMenu } from "./CommandMenu.jsx";

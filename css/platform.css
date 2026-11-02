@@ -1,16 +1,4 @@
 /* Compact defaults. Consumers can opt into roomier density with data-density="comfortable". */
-:root {
-  --ui-control: 36px;
-  --ui-row: 40px;
-  --ui-panel: 16px;
-  --ui-gap: 12px;
-}
-[data-density="comfortable"] {
-  --ui-control: 44px;
-  --ui-row: 52px;
-  --ui-panel: 24px;
-  --ui-gap: 18px;
-}
 .btn:not(.btn-sm):not(.btn-lg):not(.btn-icon) {
   height: var(--ui-control);
   padding-inline: 14px;
@@ -32,7 +20,7 @@
   line-height: 1.6;
   background: var(--raised);
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--r-sm);
   color: var(--text);
 }
 .re-card-padding-default {
@@ -71,7 +59,6 @@
   color: var(--muted);
 }
 .re-combobox-input {
-  border-radius: var(--r-pill);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -109,14 +96,14 @@
 }
 .re-combobox-options {
   margin: 0;
-  padding: 5px;
   border: 0;
-  border-radius: 14px;
-  background: var(--raised);
+  border-radius: var(--r);
   color: var(--text);
   box-shadow: var(--shadow-2);
   max-height: 240px;
   overflow-y: auto;
+  background: var(--surface);
+  padding: 6px;
 }
 .re-combobox-options [role="option"] {
   display: flex;
@@ -124,15 +111,15 @@
   justify-content: space-between;
   gap: 12px;
   padding: 9px 10px;
-  border-radius: 9px;
   font-size: 13px;
   cursor: pointer;
+  border-radius: var(--r-pill);
 }
 .re-combobox-options [role="option"][data-active] {
-  background: var(--surface);
+  background: var(--raised);
 }
 .re-combobox-options [aria-selected="true"] {
-  color: var(--brand-ink);
+  color: var(--text);
 }
 .re-combobox-options [aria-disabled="true"] {
   opacity: 0.4;
@@ -198,7 +185,7 @@
   font-size: 12px;
   padding: 6px 10px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--r-pill);
   background: var(--raised);
 }
 .re-date-range > div > .icon {
@@ -216,7 +203,7 @@
   gap: 12px;
   padding: 12px;
   background: var(--raised);
-  border-radius: 12px;
+  border-radius: var(--r-sm);
 }
 .re-upload-progress > div > div {
   min-width: 0;
@@ -244,7 +231,7 @@
 .re-grid {
   width: 100%;
   min-width: 0;
-  border-radius: 16px;
+  border-radius: var(--r);
   background: var(--surface);
   overflow: hidden;
 }
@@ -272,7 +259,7 @@
   align-items: center;
   gap: 6px;
   background: var(--raised);
-  border-radius: 999px;
+  border-radius: var(--r-pill);
   height: 32px;
   padding: 0 10px;
   width: 180px;
@@ -315,7 +302,7 @@
   width: 190px;
   background: var(--raised);
   padding: 10px;
-  border-radius: 12px;
+  border-radius: var(--r-sm);
   box-shadow: var(--shadow-2);
   display: grid;
   gap: 12px;
@@ -340,7 +327,7 @@
 .re-grid-filters select {
   border: 0;
   background: var(--raised);
-  border-radius: 8px;
+  border-radius: var(--r-pill);
   font-size: 11px;
   padding: 5px 8px;
   height: 28px;
@@ -351,9 +338,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
-  background: var(--brand-soft);
   font-size: 12px;
-  color: var(--brand-ink);
 }
 .re-grid-bulk > span {
   margin-right: auto;
@@ -422,7 +407,7 @@
 .re-grid .re-check-box {
   width: 17px;
   height: 17px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
 }
 .re-grid-cell-fixed {
   overflow: hidden;
@@ -461,7 +446,7 @@
   width: 9px;
   cursor: col-resize;
   touch-action: none;
-  border-radius: 4px;
+  border-radius: var(--r-pill);
 }
 .re-column-resizer:hover,
 .re-column-resizer:focus-visible {
@@ -485,11 +470,8 @@
   width: 100%;
   border: 0;
   background: var(--raised);
-  border-radius: 12px;
-  padding: 8px;
   display: flex;
   align-items: center;
-  gap: 9px;
   font-size: 12px;
   text-align: left;
 }
@@ -502,7 +484,7 @@
 .re-workspace-mark {
   width: 28px;
   height: 28px;
-  border-radius: 9px;
+  border-radius: var(--r-circle);
   flex: none;
   background: var(--brand-soft);
   color: var(--brand-ink);
@@ -519,7 +501,7 @@
   position: relative;
   border: 0;
   background: var(--raised);
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   width: 32px;
   height: 32px;
   display: grid;
@@ -531,7 +513,7 @@
   top: -3px;
   background: var(--brand);
   color: var(--on-brand);
-  border-radius: 99px;
+  border-radius: var(--r-pill);
   min-width: 15px;
   height: 15px;
   font-size: 9px;
@@ -568,7 +550,7 @@
   width: 100%;
   padding: 12px;
   border: 0;
-  border-radius: 0;
+  border-radius: var(--r-pill);
   background: none;
   text-align: left;
 }
@@ -594,7 +576,7 @@
 .re-notifications-list i {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   background: var(--brand);
   margin-top: 5px;
 }
@@ -602,7 +584,7 @@
   display: grid;
   grid-template-columns: 204px minmax(0, 1fr);
   background: var(--bg);
-  border-radius: 18px;
+  border-radius: var(--r);
   overflow: hidden;
   min-height: 460px;
   width: 100%;
@@ -635,22 +617,15 @@
   width: 100%;
   height: 36px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--r-pill);
   background: none;
-  color: var(--muted);
   padding: 0 10px;
   text-align: left;
-  font-size: 12px;
   white-space: nowrap;
 }
 .re-app-sidebar nav > button:hover,
 .re-app-mobile-nav nav > button:hover {
   background: var(--raised);
-}
-.re-app-sidebar nav > button[aria-current],
-.re-app-mobile-nav nav > button[aria-current] {
-  background: var(--brand-soft);
-  color: var(--brand-ink);
 }
 .re-app-sidebar nav > button > span {
   flex: 1;
@@ -725,7 +700,7 @@
   width: min(560px, 100%);
   height: var(--sheet-height);
   max-height: calc(100dvh - 24px);
-  border-radius: 24px 24px 0 0;
+  border-radius: var(--r-dialog) var(--r-dialog) 0 0;
   translate: 0 var(--sheet-offset);
   padding: 24px 20px 16px;
   display: flex;
@@ -747,7 +722,7 @@
 .re-sheet-handle span {
   height: 4px;
   width: 30px;
-  border-radius: 4px;
+  border-radius: var(--r-pill);
   background: var(--line-strong);
 }
 .re-sheet-body {
@@ -762,18 +737,18 @@
 }
 .re-context-menu {
   border: 0;
-  padding: 5px;
   margin: 0;
   width: 220px;
-  border-radius: 14px;
-  background: var(--raised);
+  border-radius: var(--r);
   color: var(--text);
   box-shadow: var(--shadow-2);
+  background: var(--surface);
+  padding: 6px;
 }
 .re-context-menu button {
   border: 0;
   background: none;
-  border-radius: 9px;
+  border-radius: var(--r-pill);
   display: flex;
   align-items: center;
   gap: 9px;
@@ -784,7 +759,7 @@
 }
 .re-context-menu button:hover,
 .re-context-menu button:focus-visible {
-  background: var(--surface);
+  background: var(--raised);
 }
 .re-context-menu button > span {
   flex: 1;
@@ -796,11 +771,21 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows 340ms var(--spring-soft), opacity 200ms var(--motion-ease);
+  transition:
+    grid-template-rows 340ms var(--spring-soft),
+    opacity 200ms var(--motion-ease);
 }
-.re-context-sub.is-open { grid-template-rows: 1fr; opacity: 1; }
-.re-context-sub > div { min-height: 0; overflow: hidden; }
-.re-context-sub button { padding-left: 30px; }
+.re-context-sub.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.re-context-sub > div {
+  min-height: 0;
+  overflow: hidden;
+}
+.re-context-sub button {
+  padding-left: 30px;
+}
 .re-context-menu hr {
   margin: 5px 8px;
   border: 0;
@@ -868,7 +853,7 @@
   height: 28px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   background: var(--brand-soft);
   color: var(--brand-ink);
   font-size: 10px;
@@ -924,7 +909,7 @@
   width: 28px;
   height: 28px;
   flex: none;
-  border-radius: 9px;
+  border-radius: var(--r-sm);
   display: grid;
   place-items: center;
   background: var(--brand-soft);
@@ -961,7 +946,7 @@
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   background: var(--surface);
-  border-radius: 16px;
+  border-radius: var(--r);
   overflow: hidden;
   min-height: 400px;
 }
@@ -978,7 +963,7 @@
   border: 0;
   background: none;
   text-align: left;
-  border-radius: 10px;
+  border-radius: var(--r-pill);
   padding: 10px;
 }
 .re-support aside button[aria-current] {
@@ -1042,7 +1027,7 @@
 .re-support-thread > ol > li {
   background: var(--raised);
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: var(--r-sm);
   max-width: 90%;
   align-self: flex-start;
 }
@@ -1075,7 +1060,7 @@
   min-height: 60px;
   border: 0;
   background: var(--raised);
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   padding: 9px;
   font-size: 12px;
 }
@@ -1260,10 +1245,6 @@
   font-size: 14px;
   color: color-mix(in srgb, var(--text) 82%, var(--bg));
 }
-.re-app-sidebar nav > button[aria-current],
-.re-app-mobile-nav nav > button[aria-current] {
-  color: var(--brand-ink);
-}
 /* One workspace selector, using Send's actual menu and presence animation. */
 .menu.re-workspace-menu {
   display: block;
@@ -1274,12 +1255,12 @@
   height: 36px;
   padding: 4px 8px;
   gap: 8px;
-  border-radius: 10px;
+  border-radius: var(--r-pill);
 }
 .re-workspace-trigger .re-workspace-mark {
   width: 24px;
   height: 24px;
-  border-radius: 7px;
+  border-radius: var(--r-pill);
 }
 .re-workspace-trigger .re-workspace-mark > .icon {
   width: 14px;
@@ -1289,13 +1270,13 @@
   width: 248px;
   min-width: 220px;
   padding: 5px;
-  border-radius: 14px;
+  border-radius: var(--r);
 }
 .re-workspace-menu .menu-item {
   height: 36px;
   padding: 0 9px;
   font-size: 12px;
-  border-radius: 9px;
+  border-radius: var(--r-pill);
   gap: 8px;
 }
 .re-workspace-menu .re-workspace-option-copy {
@@ -1326,9 +1307,91 @@
   padding: 4px 8px;
   background: var(--raised);
   color: var(--text);
-  border-radius: 10px;
+  border-radius: var(--r-pill);
   font-size: 12px;
 }
 .menu.re-workspace-menu > .re-workspace-trigger:hover {
   background: var(--hover);
+}
+.re-context-menu button,
+.re-tab,
+.re-toggle-group button,
+.re-radio,
+.re-checkbox,
+.re-data-table tbody tr,
+.re-app-sidebar nav > button,
+.re-app-mobile-nav nav > button {
+  transition:
+    color 160ms var(--motion-ease),
+    background-color 160ms var(--motion-ease),
+    border-color 160ms var(--motion-ease),
+    box-shadow 160ms var(--motion-ease);
+}
+.re-workspace-mark,
+.re-workspace-trigger .re-workspace-mark {
+  border-radius: var(--r-pill);
+  background: var(--brand);
+  color: var(--on-brand);
+}
+.dialog.re-bottom-sheet[open]:not(.dialog-closing) {
+  animation: re-sheet-in 420ms var(--motion-ease) both;
+}
+@keyframes re-sheet-in {
+  from {
+    opacity: 1;
+    transform: translateY(calc(100% + 24px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.re-grid-bulk {
+  margin: 0 12px 10px;
+  border-radius: var(--r-pill);
+  background: var(--raised);
+  color: var(--text);
+}
+.re-grid-bulk > span {
+  color: var(--brand-ink);
+}
+.re-grid-filter .menu-select {
+  height: 30px;
+  min-height: 30px;
+  border-radius: var(--r-pill);
+  font-size: 12px;
+}
+.re-app-sidebar nav > button,
+.re-app-mobile-nav nav > button,
+.menu.re-workspace-menu > .re-workspace-trigger {
+  border-radius: var(--r-pill);
+}
+.re-app-sidebar nav > button[aria-current],
+.re-app-mobile-nav nav > button[aria-current] {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dialog.re-bottom-sheet[open]:not(.dialog-closing) {
+    animation: re-sheet-reduced 80ms linear both !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @keyframes re-sheet-reduced {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+.re-app-shell {
+  transition: grid-template-columns var(--motion-selection) var(--motion-ease);
+}
+.re-grid td {
+  transition: background-color var(--motion-fast) var(--motion-ease);
+}
+.re-combobox-options [aria-selected="true"] > .icon {
+  color: var(--brand);
 }

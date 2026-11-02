@@ -1,2 +1,4 @@
 /* Motion is native SVG animate/animateTransform, not CSS transforms on the view. */
-.icon{overflow:visible}
+.icon {
+  overflow: visible;
+}

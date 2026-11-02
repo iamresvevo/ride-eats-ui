@@ -28,7 +28,9 @@ export default function MotionDemos({ id }) {
   switch (id) {
     case "animated-icons":
       return (
-        <Suspense fallback={<UI.Skeleton width="100%" height={300} />}>
+        <Suspense
+          fallback={<UI.PageLoading label="Loading animated icon library" />}
+        >
           <IconBrowser animated />
         </Suspense>
       );
@@ -66,42 +68,6 @@ export default function MotionDemos({ id }) {
       );
     case "command-menu":
       return <CommandDemo />;
-    case "steps":
-      return (
-        <div className="demo-stack" style={{ width: "100%" }}>
-          <UI.Steps
-            value={value}
-            onValueChange={setValue}
-            items={[
-              {
-                value: "details",
-                label: "Details",
-                description: "Name your transfer",
-              },
-              { value: "files", label: "Files", description: "Choose files" },
-              {
-                value: "review",
-                label: "Review",
-                description: "Ready to send",
-              },
-            ]}
-          />
-          <UI.Button
-            size="sm"
-            onClick={() =>
-              setValue(
-                value === "details"
-                  ? "files"
-                  : value === "files"
-                    ? "review"
-                    : "details",
-              )
-            }
-          >
-            Next step
-          </UI.Button>
-        </div>
-      );
     case "pin-input":
       return (
         <div className="demo-stack">
@@ -137,50 +103,6 @@ export default function MotionDemos({ id }) {
           value={rating}
           onValueChange={setRating}
         />
-      );
-    case "scroll-area":
-      return (
-        <UI.ScrollArea
-          height={250}
-          label="Team members"
-          style={{ maxWidth: 380 }}
-          header={
-            <input
-              type="search"
-              placeholder="Find a member…"
-              aria-label="Filter scroll area"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          }
-        >
-          {[
-            "Alex Rivera",
-            "Sam Chen",
-            "Jordan Lee",
-            "Casey Morgan",
-            "Taylor Kim",
-            "Drew Parker",
-            "Riley James",
-            "Morgan Cruz",
-          ]
-            .filter((name) => name.toLowerCase().includes(query.toLowerCase()))
-            .map((name, i) => (
-              <div className="scroll-demo-row" key={name}>
-                <UI.Avatar name={name} />
-                <span>{name}</span>
-                <small>{i % 2 ? "Editor" : "Viewer"}</small>
-              </div>
-            ))}
-        </UI.ScrollArea>
-      );
-    case "separator":
-      return (
-        <div className="demo-stack" style={{ width: 300, maxWidth: "100%" }}>
-          <UI.Button variant="primary">Continue with Ride Eats</UI.Button>
-          <UI.Separator label="or continue with" />
-          <UI.Button>Email address</UI.Button>
-        </div>
       );
     default:
       return null;

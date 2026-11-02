@@ -1,5 +1,12 @@
 import React from "react";
-import { createContext, use, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  use,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Icon from "../Icon.jsx";
 import usePresence from "../hooks/usePresence.js";
 import { t } from "../i18n.js";
@@ -36,37 +43,114 @@ export default function Menu({
   const root = useRef(null);
   const button = useRef(null);
   const panel = useRef(null);
-  const presence = usePresence(open);
+  const presence = usePresence(open, panel);
 
   const items = () => visibleItems(panel.current);
 
+  // Native top-layer positioning keeps menus visible inside tables and clipped shells
+  // without losing inherited theme tokens, compound context, or dialog ancestry.
+  useLayoutEffect(() => {
+    if (!presence.mounted || !panel.current) return;
+    const node = panel.current;
+    const place = () => {
+      const box = button.current.getBoundingClientRect();
+      const matchWidth = root.current.matches(".react-select, .menu-block");
+      if (matchWidth) {
+        node.style.width = Math.min(box.width, innerWidth - 16) + "px";
+        node.style.minWidth = node.style.width;
+      }
+      node.style.maxWidth =
+        (matchWidth ? innerWidth - 16 : Math.min(300, innerWidth - 16)) + "px";
+      node.style.maxHeight = Math.max(80, innerHeight - 16) + "px";
+      const above =
+        box.bottom + node.offsetHeight + 8 > innerHeight &&
+        box.top > innerHeight - box.bottom;
+      setUp(above);
+      node.style.left =
+        Math.max(
+          8,
+          Math.min(
+            align === "end" ? box.right - node.offsetWidth : box.left,
+            innerWidth - node.offsetWidth - 8,
+          ),
+        ) + "px";
+      node.style.top =
+        Math.max(
+          8,
+          above
+            ? box.top - node.offsetHeight - 8
+            : Math.min(box.bottom + 8, innerHeight - node.offsetHeight - 8),
+        ) + "px";
+    };
+    if (
+      typeof node.showPopover === "function" &&
+      !node.matches(":popover-open")
+    )
+      node.showPopover();
+    place();
+    const resize = new ResizeObserver(place);
+    resize.observe(node);
+    const onScroll = () => {
+      const box = button.current?.getBoundingClientRect();
+      if (!box || box.bottom < 0 || box.top > innerHeight) setOpen(false);
+      else place();
+    };
+    document.addEventListener("scroll", onScroll, {
+      capture: true,
+      passive: true,
+    });
+    window.addEventListener("resize", place, { passive: true });
+    return () => {
+      resize.disconnect();
+      document.removeEventListener("scroll", onScroll, true);
+      window.removeEventListener("resize", place);
+    };
+  }, [open, presence.mounted, align]);
+
   useEffect(() => {
     if (!open) return;
-    // No room below the trigger: flip above it.
-    setUp(
-      button.current.getBoundingClientRect().bottom +
-        panel.current.offsetHeight +
-        16 >
-        innerHeight,
-    );
-
     const onPointer = (event) => {
-      if (!root.current.contains(event.target)) setOpen(false);
+      if (
+        !root.current.contains(event.target) &&
+        !panel.current?.contains(event.target)
+      )
+        setOpen(false);
     };
     const onKey = (event) => {
       const inPicker = panel.current.hasAttribute("data-sub");
+      if (event.key === "Tab") {
+        setOpen(false);
+        return;
+      }
       if (event.key === "Escape" || (event.key === "ArrowLeft" && inPicker)) {
         event.preventDefault();
         // Collapse an expanded group first; close the menu after that.
-        if (inPicker) return setSub(null);
+        if (inPicker) {
+          const parent = panel.current.querySelector(
+            '[data-sub-trigger][aria-expanded="true"]',
+          );
+          setSub(null);
+          parent?.focus();
+          return;
+        }
         setOpen(false);
         button.current?.focus();
-      } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      } else if (
+        event.key === "ArrowRight" &&
+        document.activeElement?.hasAttribute("data-sub-trigger")
+      ) {
+        event.preventDefault();
+        document.activeElement.click();
+      } else if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
         event.preventDefault();
         const list = items();
         const next =
-          list.indexOf(document.activeElement) +
-          (event.key === "ArrowDown" ? 1 : -1);
+          event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? list.length - 1
+              : list.indexOf(document.activeElement) +
+                (event.key === "ArrowDown" ? 1 : -1);
         list[(next + list.length) % list.length]?.focus();
       }
     };
@@ -103,6 +187,7 @@ export default function Menu({
       {presence.mounted && (
         <div
           ref={panel}
+          popover="manual"
           className={`menu-panel menu-${align} ${up ? "menu-up" : ""} ${presence.closing ? "is-closing" : ""}`.trim()}
           role="menu"
           inert={presence.closing}
@@ -135,6 +220,7 @@ export function MenuItem({
     <button
       type="button"
       role={typeof checked === "boolean" ? "menuitemradio" : "menuitem"}
+      tabIndex={-1}
       aria-checked={typeof checked === "boolean" ? checked : undefined}
       className={danger ? "menu-item menu-item-danger" : "menu-item"}
       disabled={disabled}
@@ -165,12 +251,16 @@ export const MenuSeparator = () => (
  */
 export function MenuSub({ id, icon, label, value, children }) {
   const menu = use(MenuContext);
+  const row = useRef(null);
   const open = menu.sub === id;
   return (
     <div className="menu-sub">
       <button
         type="button"
+        ref={row}
         role="menuitem"
+        data-sub-trigger={id}
+        tabIndex={-1}
         aria-expanded={open}
         className="menu-item"
         onClick={() => menu.setSub(open ? null : id)}
@@ -188,7 +278,15 @@ export function MenuSub({ id, icon, label, value, children }) {
         inert={!open}
       >
         <div>
-          <MenuContext value={{ ...menu, close: () => menu.setSub(null) }}>
+          <MenuContext
+            value={{
+              ...menu,
+              close: () => {
+                menu.setSub(null);
+                row.current?.focus();
+              },
+            }}
+          >
             {children}
           </MenuContext>
         </div>

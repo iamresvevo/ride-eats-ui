@@ -67,7 +67,7 @@
   align-items: flex-start;
   gap: 12px;
   padding: 17px 18px;
-  border-radius: 16px;
+  border-radius: var(--r);
   background: var(--raised);
   width: 100%;
   max-width: 460px;
@@ -77,7 +77,7 @@
   place-items: center;
   width: 27px;
   height: 27px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   background: var(--surface);
   color: var(--muted);
   flex: none;
@@ -129,7 +129,6 @@
   margin-top: 1px;
   display: grid;
   place-items: center;
-  border-radius: 6px;
   box-shadow: inset 0 0 0 1.5px var(--line-strong);
   background: var(--surface);
   flex: none;
@@ -162,7 +161,7 @@
   width: 9px;
   height: 1.5px;
   background: currentColor;
-  border-radius: 1px;
+  border-radius: var(--r-circle);
 }
 .re-check input:indeterminate + .re-check-box .icon {
   display: none;
@@ -209,13 +208,14 @@
   gap: 12px;
   padding: 16px;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--r-pill);
   cursor: pointer;
   background: var(--surface);
   transition:
     background 200ms,
     border-color 200ms,
     box-shadow 200ms;
+  transition-timing-function: var(--motion-ease);
 }
 .re-radio-option.is-selected {
   border-color: var(--line-strong);
@@ -232,16 +232,17 @@
   place-items: center;
   width: 17px;
   height: 17px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   box-shadow: inset 0 0 0 1.5px var(--line-strong);
   flex: none;
   transition: box-shadow 0.2s;
+  transition-timing-function: var(--motion-ease);
 }
 .re-radio-dot:after {
   content: "";
   width: 7px;
   height: 7px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   background: var(--text);
   transform: scale(0);
   transition: transform 220ms var(--motion-ease);
@@ -285,7 +286,7 @@
   color: var(--muted);
   font-size: 11px;
   background: var(--raised);
-  border-radius: 7px;
+  border-radius: var(--r-sm);
   min-width: 38px;
   text-align: center;
   padding: 4px 6px;
@@ -295,7 +296,7 @@
   height: 5px;
   border: 0;
   padding: 0;
-  border-radius: 99px;
+  border-radius: var(--r-pill);
   appearance: none;
   -webkit-appearance: none;
   background: linear-gradient(
@@ -310,16 +311,17 @@
   -webkit-appearance: none;
   width: 19px;
   height: 19px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   background: var(--surface);
   border: 4px solid var(--text);
-  box-shadow: 0 2px 7px #0002;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.12);
   transition: transform 160ms;
+  transition-timing-function: var(--motion-ease);
 }
 .re-slider input[type="range"]::-moz-range-thumb {
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   background: var(--surface);
   border: 4px solid var(--text);
 }
@@ -351,7 +353,7 @@
 .re-progress-track {
   height: 6px;
   background: var(--sunken);
-  border-radius: 99px;
+  border-radius: var(--r-pill);
   overflow: hidden;
   isolation: isolate;
 }
@@ -394,7 +396,7 @@
   right: 3px;
   top: 3px;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--r-sm);
   background: transparent;
   color: var(--faint);
 }
@@ -412,15 +414,11 @@
   font-weight: 500;
 }
 .re-number > div {
-  display: flex;
   align-items: center;
-  padding: 4px;
-  border-radius: 12px;
+  border-radius: var(--r-pill);
   background: var(--raised);
-  width: 150px;
 }
 .re-number input {
-  width: 64px;
   appearance: textfield;
   -moz-appearance: textfield;
   text-align: center;
@@ -438,16 +436,15 @@
 .re-number button {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 32px;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--r-pill);
   background: var(--surface);
   color: var(--text);
   font-size: 19px;
   transition:
     background 0.15s,
     transform 0.15s;
+  transition-timing-function: var(--motion-ease);
 }
 .re-number button:active {
   transform: scale(0.94);
@@ -489,37 +486,19 @@
 .re-avatar-group {
   display: flex;
   align-items: center;
-  padding-left: 7px;
 }
 .re-avatar-person {
-  display: block;
   margin-left: -7px;
   border: 3px solid var(--surface);
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   transition: transform 0.22s var(--motion-ease);
 }
-.re-avatar-person:hover {
-  transform: translateY(-5px);
-  z-index: 2;
-}
-.re-avatar-person .account-avatar {
-  width: 37px;
-  height: 37px;
-  font-size: 11px;
-  background: var(--raised);
-}
 .re-avatar-more {
-  display: grid;
-  place-items: center;
   width: 43px;
   height: 43px;
-  background: var(--ink);
-  color: var(--on-ink);
   border: 3px solid var(--surface);
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   margin-left: -7px;
-  font-size: 11px;
-  font-weight: 500;
 }
 .re-copy-wrap {
   display: flex;
@@ -547,11 +526,12 @@
   gap: 7px;
   background: var(--surface);
   border: 1px dashed var(--line-strong);
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   transition:
     background 200ms,
     border-color 200ms,
     transform 200ms;
+  transition-timing-function: var(--motion-ease);
 }
 .re-dropzone:hover,
 .re-dropzone.is-dragging {
@@ -566,7 +546,7 @@
   place-items: center;
   width: 44px;
   height: 44px;
-  border-radius: 14px;
+  border-radius: var(--r);
   background: var(--raised);
   color: var(--muted);
   margin-bottom: 9px;
@@ -631,7 +611,7 @@
   place-items: center;
   width: 29px;
   height: 29px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   background: var(--raised);
   color: var(--muted);
   flex: none;
@@ -672,7 +652,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  border-radius: 22px;
+  border-radius: var(--r-lg);
 }
 .re-drawer-right {
   left: auto;
@@ -717,7 +697,7 @@
   width: 100%;
   overflow: auto;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r);
   background: var(--surface);
 }
 .re-data-table table {
@@ -728,14 +708,10 @@
 }
 .re-data-table caption {
   text-align: left;
-  padding: 18px;
-  font-size: 13px;
   font-weight: 550;
   border-bottom: 1px solid var(--line);
 }
 .re-data-table th {
-  padding: 12px 18px;
-  font-size: 10px;
   font-weight: 500;
   color: var(--faint);
   background: var(--raised);
@@ -755,12 +731,11 @@
   height: 12px;
 }
 .re-data-table td {
-  padding: 15px 18px;
   border-top: 1px solid var(--line);
-  font-size: 12px;
 }
 .re-data-table tbody tr {
   transition: background 0.15s;
+  transition-timing-function: var(--motion-ease);
 }
 .re-data-table tbody tr:hover {
   background: var(--raised);
@@ -791,10 +766,6 @@
 }
 .re-data-table:has(.menu-panel) {
   overflow: visible;
-}
-.re-data-table[data-density="compact"] td {
-  padding-top: 9px;
-  padding-bottom: 9px;
 }
 .re-table-loading {
   display: flex;
@@ -827,6 +798,7 @@
   }
 }
 .re-sr-only {
+  inset: 0 auto auto 0;
   position: absolute;
   width: 1px;
   height: 1px;
@@ -842,7 +814,7 @@
 }
 /* The Tools dashboard language: filled surfaces, compact hierarchy, no decorative outlines. */
 .re-card {
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   padding: 22px;
   background: var(--surface);
   box-shadow: var(--shadow-card);
@@ -908,7 +880,7 @@
 .re-stat-card {
   position: relative;
   background: var(--surface);
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   padding: 18px;
   display: flex;
   flex-direction: column;
@@ -957,7 +929,7 @@
 .re-stat-trend {
   font-size: 10px;
   color: var(--good);
-  border-radius: 999px;
+  border-radius: var(--r-pill);
   padding: 2px 6px;
   background: var(--good-soft);
 }
@@ -973,7 +945,7 @@
 }
 .re-stat-progress {
   height: 4px;
-  border-radius: 99px;
+  border-radius: var(--r-pill);
   background: var(--sunken);
   margin-top: 8px;
   overflow: hidden;
@@ -988,7 +960,7 @@
 .re-stat-compact {
   padding: 14px 16px;
   gap: 6px;
-  border-radius: 16px;
+  border-radius: var(--r);
 }
 .re-stat-compact .re-stat-main > strong {
   font-size: 23px;
@@ -1018,7 +990,7 @@
   text-align: left;
   padding: 22px;
   border: 0;
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   background: var(--surface);
   box-shadow: var(--shadow-card);
   text-decoration: none;
@@ -1048,7 +1020,7 @@
   place-items: center;
   width: 42px;
   height: 42px;
-  border-radius: 13px;
+  border-radius: var(--r-sm);
   background: var(--raised);
   color: var(--muted);
   overflow: hidden;
@@ -1131,7 +1103,7 @@
   place-items: center;
   width: 50px;
   height: 50px;
-  border-radius: 16px;
+  border-radius: var(--r);
   background: var(--surface);
   color: var(--muted);
   flex: none;
@@ -1167,7 +1139,7 @@
 }
 .re-toolbar input {
   height: 36px;
-  border-radius: 999px;
+  border-radius: var(--r-pill);
   min-width: 160px;
   max-width: 100%;
   font-size: 12px;
@@ -1244,7 +1216,7 @@
   width: 16px;
   height: 16px;
   margin-top: 0;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
 }
 .re-data-table .re-check-box .icon {
   width: 11px;
@@ -1266,7 +1238,7 @@
   height: var(--avatar-size, 40px);
   box-sizing: border-box;
   border: 3px solid var(--avatar-ring, var(--surface));
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   margin-left: calc(-1 * var(--avatar-overlap, 12px));
   flex: none;
 }
@@ -1306,4 +1278,7 @@ button.re-avatar-more {
 button.re-avatar-more:hover {
   color: var(--text);
   background: var(--sunken);
+}
+.re-check-box {
+  border-radius: var(--r-circle);
 }

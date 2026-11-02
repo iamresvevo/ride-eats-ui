@@ -9,7 +9,7 @@
   margin: 0;
   padding: 18px;
   border: 0;
-  border-radius: 18px;
+  border-radius: var(--r);
   background: var(--surface);
   color: var(--text);
   box-shadow:
@@ -30,92 +30,6 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-}
-.re-steps {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  width: 100%;
-  gap: 14px;
-}
-.re-steps li {
-  flex: 1;
-  min-width: 0;
-  position: relative;
-}
-.re-steps li:not(:last-child):after {
-  content: "";
-  height: 1px;
-  background: var(--line-strong);
-  position: absolute;
-  left: 36px;
-  right: 0;
-  top: 15px;
-  z-index: 0;
-}
-.re-steps li > button,
-.re-steps li > div {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 0;
-  background: none;
-  text-align: left;
-  padding: 0;
-  color: var(--muted);
-}
-.re-step-number {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--raised);
-  font-size: 12px;
-  color: var(--faint);
-  transition:
-    background 0.25s,
-    color 0.25s,
-    transform 0.25s;
-}
-.re-steps [data-state="current"] .re-step-number {
-  background: var(--ink);
-  color: var(--on-ink);
-  box-shadow: 0 0 0 4px var(--surface);
-}
-.re-steps [data-state="complete"] .re-step-number {
-  background: var(--brand-soft);
-  color: var(--brand);
-}
-.re-steps strong {
-  font-size: 12px;
-  font-weight: 550;
-  color: var(--text);
-}
-.re-steps small {
-  display: block;
-  font-size: 10px;
-  color: var(--faint);
-  margin-top: 4px;
-}
-.re-steps[data-orientation="vertical"] {
-  flex-direction: column;
-  gap: 24px;
-}
-.re-steps[data-orientation="vertical"] li > button,
-.re-steps[data-orientation="vertical"] li > div {
-  flex-direction: row;
-  align-items: center;
-}
-.re-steps[data-orientation="vertical"] li:not(:last-child):after {
-  width: 1px;
-  height: calc(100% + 24px);
-  left: 15px;
-  right: auto;
-  top: 20px;
 }
 .re-pin > label {
   display: block;
@@ -145,7 +59,7 @@
   width: 40px;
   height: 48px;
   background: var(--raised);
-  border-radius: 11px;
+  border-radius: var(--r-pill);
   font-size: 20px;
   font-weight: 550;
   font-variant-numeric: tabular-nums;
@@ -153,6 +67,7 @@
   transition:
     box-shadow 0.2s,
     background 0.2s;
+  transition-timing-function: var(--motion-ease);
 }
 .re-pin-control:focus-within [data-active] {
   box-shadow: inset 0 0 0 1.5px var(--text);
@@ -162,11 +77,11 @@
   opacity: 0.4;
 }
 .re-toggle-group {
+  border-radius: var(--r-pill);
   display: inline-flex;
   gap: 4px;
   background: var(--raised);
   padding: 4px;
-  border-radius: 12px;
 }
 .re-toggle-group > button {
   display: flex;
@@ -174,19 +89,23 @@
   gap: 7px;
   background: transparent;
   border: 0;
-  border-radius: 8px;
-  padding: 8px 11px;
+  border-radius: var(--r-pill);
   font-size: 12px;
   color: var(--muted);
   transition:
     background 0.18s,
     color 0.18s,
     transform 0.18s;
+  transition-timing-function: var(--motion-ease);
+  height: 32px;
+  padding: 0 12px;
+  font-weight: 600;
+  justify-content: center;
 }
 .re-toggle-group > button[aria-pressed="true"] {
-  background: var(--surface);
-  box-shadow: var(--shadow-card);
-  color: var(--text);
+  background: var(--ink);
+  box-shadow: none;
+  color: var(--on-ink);
 }
 .re-toggle-group > button:active {
   transform: scale(0.96);
@@ -227,6 +146,7 @@
     fill 0.2s,
     stroke 0.2s,
     transform 0.22s;
+  transition-timing-function: var(--motion-ease);
 }
 .re-rating svg[data-filled] {
   fill: var(--ink);
@@ -238,63 +158,15 @@
 .re-rating input:focus-visible + svg {
   outline: 2px solid var(--brand);
   outline-offset: 3px;
-  border-radius: 5px;
-}
-.re-scroll-area {
-  width: 100%;
-  overflow: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line-strong) transparent;
-  border-radius: 14px;
-  background: var(--raised);
-}
-.re-scroll-header {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  padding: 14px 16px;
-  background: var(--raised);
-  font-size: 12px;
-  font-weight: 550;
-  box-shadow: 0 1px 0 var(--line);
-}
-.re-separator {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--faint);
-  font-size: 11px;
-  width: 100%;
-  margin: 12px 0;
-}
-.re-separator:before,
-.re-separator:after {
-  content: "";
-  height: 1px;
-  background: var(--line);
-  flex: 1;
-}
-.re-separator:not(:has(span)):after {
-  display: none;
-}
-.re-separator[data-orientation="vertical"] {
-  display: inline-flex;
-  width: 1px;
-  min-height: 24px;
-  margin: 0 12px;
-  background: var(--line);
+  border-radius: var(--r-sm);
 }
 .dialog.re-command {
   padding: 0;
   overflow: hidden;
-  max-width: 480px;
 }
 .re-command-search {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
   border-bottom: 1px solid var(--line);
 }
 .re-command-search > .icon {
@@ -305,8 +177,6 @@
   border: 0;
   box-shadow: none;
   padding: 0;
-  font-size: 13px;
-  height: 30px;
   min-width: 0;
   flex: 1;
 }
@@ -315,24 +185,15 @@
   color: var(--faint);
   padding: 3px 5px;
   border: 1px solid var(--line);
-  border-radius: 5px;
+  border-radius: var(--r-sm);
 }
 .re-command-list {
-  padding: 7px;
-  max-height: 300px;
   overflow: auto;
 }
 .re-command-list [role="option"] {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 10px;
   cursor: pointer;
-  font-size: 12px;
-}
-.re-command-list [role="option"].is-active {
-  background: var(--raised);
 }
 .re-command-list [role="option"] > span {
   flex: 1;
@@ -351,16 +212,12 @@
 }
 .re-command-footer {
   display: flex;
-  gap: 16px;
-  padding: 11px 16px;
   border-top: 1px solid var(--line);
-  font-size: 10px;
   color: var(--faint);
 }
 @media (prefers-reduced-motion: reduce) {
   .re-animated-icon *,
   .re-popover,
-  .re-step-number,
   .re-pin-cells > span,
   .re-toggle-group button,
   .re-rating svg {
@@ -372,7 +229,7 @@
 .dialog.re-command {
   width: min(460px, calc(100vw - 24px));
   max-width: 460px;
-  border-radius: 18px;
+  border-radius: var(--r);
   margin-top: min(13vh, 96px);
   margin-bottom: auto;
 }
@@ -410,7 +267,6 @@
 }
 .re-command-list {
   padding: 5px;
-  max-height: min(340px, 54dvh);
 }
 .re-command-group-label {
   padding: 8px 9px 4px;
@@ -419,9 +275,8 @@
   font-weight: 550;
 }
 .re-command-list [role="option"] {
-  padding: 8px 9px;
   min-height: 36px;
-  border-radius: 9px;
+  border-radius: var(--r-pill);
   gap: 9px;
   font-size: 12px;
 }
@@ -438,10 +293,8 @@
 }
 .re-command-list [role="option"] > span > small {
   display: block;
-  margin-top: 3px;
   color: var(--muted);
   font-size: 10px;
-  line-height: 1.5;
 }
 .re-command-list [role="option"] > .icon {
   width: 15px;

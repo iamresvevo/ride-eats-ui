@@ -21,7 +21,7 @@ export const collectionPages = [
     "icons",
     "Icon Library",
     "Display",
-    "2,015 bundled Lucide icons plus Send’s own glyphs. Search by name or purpose, adjust size and stroke, preview motion, and copy the exact React code.",
+    "2,015 canonical Lucide glyphs and 277 compatibility names plus Send’s own glyphs. Search by name or purpose, adjust size and stroke, preview motion, and copy the exact React code.",
     `<Icon name="headset" size={24} strokeWidth={1.7} />
 <Icon name="loader-circle" motion="spin" animateOn="always" />
 <Icon name="check" motion="draw" />

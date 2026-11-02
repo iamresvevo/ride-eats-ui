@@ -24,7 +24,11 @@ Run npm ci, npm run check, npm run build, npm test. Validate changed interaction
 
 Use docs/implementation.md and examples/starter for the complete working integration. Build screens with Card, MetricGrid, StatCard, Tile, PageHeader, Toolbar and DataTable instead of reproducing their CSS. DataTable uses caller-owned sorting, selection and rows, with render functions for cells/actions. Wrap the app once in UIProvider; useConfirm supplies Promise-based confirmations that stack over existing dialogs while preserving drafts. Toasts are bounded and deduplicated.
 
-The icon API supports 2,015 vendored Lucide glyphs plus Send paths and custom IconProvider entries. Art remains attributed upstream. Icons load in letter chunks and use optional reduced-motion-aware animation. Regenerate with npm run icons:generate; include the upstream license. Do not claim vendor artwork as original hand-drawn Ride Eats artwork.
+The icon API supports 2,015 vendored Lucide glyphs with 277 compatibility names, plus Send paths and custom IconProvider entries. Art remains attributed upstream. Icons load in letter chunks and use optional reduced-motion-aware animation. Regenerate with npm run icons:generate; include the upstream license. Do not claim vendor artwork as original hand-drawn Ride Eats artwork.
+
+## Design contract
+
+Read docs/design-audit.md and design/contract.json. css/tokens.css is the sole foundation owner. Use shape and motion tokens; no local numeric corner radii, tinted semantic backgrounds, new local easing curves, or undocumented public API families. Run npm run design:check; CI enforces it. Docs previews must not override the components’ own colors. Put component changes in the owning stylesheet rather than late patch rules.
 
 ## Compact platform components
 

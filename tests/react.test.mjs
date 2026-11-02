@@ -45,6 +45,22 @@ test("Field associates validation with a caller supplied id", () => {
   assert.match(html, /aria-invalid="true"/);
   assert.match(html, /id="email-hint"/);
 });
+test("Select preserves Field label and validation associations", () => {
+  const html = render("Field", {
+    id: "role",
+    label: "Role",
+    error: "Choose a role",
+    children: React.createElement(UI.Select, {
+      value: "",
+      options: [{ value: "editor", label: "Editor" }],
+      onValueChange() {},
+    }),
+  });
+  assert.match(html, /for="role"/);
+  assert.match(html, /<button[^>]*id="role"/);
+  assert.match(html, /aria-describedby="role-hint"/);
+  assert.match(html, /aria-invalid="true"/);
+});
 test("Header uses caller supplied brand, links and account; no Send routes", () => {
   const html = render("Header", {
     brand: { name: "Acme", href: "/acme" },
@@ -263,7 +279,7 @@ test("bundled catalog is extensive and contains safe SVG nodes in lazy chunks", 
       }
     }
   }
-  assert.equal(count, iconNames.length);
+  assert.equal(count, UI.iconNames.length);
 });
 test("custom SVG glyphs use the same accessible Icon API", () => {
   const html = renderToStaticMarkup(
@@ -352,7 +368,6 @@ test("new platform controls expose native interaction semantics", () => {
         children: "Content",
       },
     ],
-    ["Steps", { items: [{ value: "a", label: "Details" }], value: "a" }],
     ["PinInput", { value: "123", onValueChange: noop }],
     [
       "ToggleGroup",
@@ -364,18 +379,12 @@ test("new platform controls expose native interaction semantics", () => {
       },
     ],
     ["Rating", { value: 4, onValueChange: noop }],
-    ["ScrollArea", { header: "Search", children: "Rows" }],
-    ["Separator", { label: "or" }],
   ];
   for (const [name, props] of cases)
     assert.ok(render(name, props).length > 0, name);
   assert.match(
     render("PinInput", { value: "123", onValueChange: noop }),
     /autoComplete="one-time-code"/i,
-  );
-  assert.match(
-    render("Steps", { items: [{ value: "a", label: "Details" }], value: "a" }),
-    /aria-current="step"/,
   );
 });
 
@@ -410,9 +419,11 @@ test("every catalog icon has generated per-shape native SVG animation", async ()
   const names = new Set(UI.animatedIconNames);
   for (const name of UI.iconNames) assert.ok(names.has(name), name);
   let count = 0;
+  const geometryNames = new Set();
   for (const loader of Object.values(loaders)) {
     const { default: icons } = await loader();
     for (const [name, nodes] of Object.entries(icons)) {
+      geometryNames.add(name);
       assert.ok(nodes.length, name);
       for (const [tag] of nodes)
         assert.ok(
@@ -430,7 +441,8 @@ test("every catalog icon has generated per-shape native SVG animation", async ()
       count++;
     }
   }
-  assert.equal(count, 2015);
+  assert.equal(count, UI.iconNames.length);
+  for (const name of UI.iconNames) assert.ok(geometryNames.has(name), name);
 });
 
 test("gesture controls expose keyboard alternatives and controlled boundaries", () => {
@@ -644,7 +656,15 @@ test("visual regression comparison detects layout changes while tolerating small
 });
 
 test("audit removes duplicate APIs and preserves canonical equivalents", () => {
-  for (const name of ["Autocomplete", "Collapsible", "Stat", "Modal"])
+  for (const name of [
+    "Autocomplete",
+    "Collapsible",
+    "Stat",
+    "Modal",
+    "Steps",
+    "ScrollArea",
+    "Separator",
+  ])
     assert.equal(name in UI, false, name);
   assert.match(
     render("Combobox", {
@@ -722,26 +742,88 @@ test("command search ranks multi-term queries and preserves nested scope paths",
   );
 });
 
-test('implementation workbench emits complete parsable controlled React examples', async () => {
-  const { implementationCode } = await import('../site/implementation-code.js');
-  const { transformWithEsbuild } = await import('vite');
+test("implementation workbench emits complete parsable controlled React examples", async () => {
+  const { implementationCode } = await import("../site/implementation-code.js");
+  const { transformWithEsbuild } = await import("vite");
   const examples = [
-    ['Textarea', {label:'Notes'}, {value:'', onChange(){}}],
-    ['Combobox', {label:'Assignee'}, {options:[{value:'a',label:'Alex'}],value:'a',onValueChange(){}}],
-    ['MultiSelect', {label:'People'}, {options:[{value:'a',label:'Alex'}],value:['a'],onValueChange(){}}],
-    ['TimePicker', {}, {value:'09:00',onValueChange(){}}],
-    ['DateRangePicker', {}, {value:{start:'',end:''},onValueChange(){}}],
-    ['Rating', {max:5}, {value:3,onValueChange(){}}],
-    ['RangeSlider', {min:0,max:100}, {value:[20,80],onValueChange(){}}],
-    ['SplitPane', {}, {value:40,first:'Navigation',second:'Content',onValueChange(){}}],
-    ['DataGrid', {label:'Records'}, {rows:[{id:'1',name:'Alex'}],columns:[{key:'name',label:'Name'}]}],
-    ['AppShell', {brand:'Studio'}, {items:[{value:'home',label:'Home'}],value:'home',onValueChange(){}}],
+    ["Textarea", { label: "Notes" }, { value: "", onChange() {} }],
+    [
+      "Combobox",
+      { label: "Assignee" },
+      {
+        options: [{ value: "a", label: "Alex" }],
+        value: "a",
+        onValueChange() {},
+      },
+    ],
+    [
+      "MultiSelect",
+      { label: "People" },
+      {
+        options: [{ value: "a", label: "Alex" }],
+        value: ["a"],
+        onValueChange() {},
+      },
+    ],
+    ["TimePicker", {}, { value: "09:00", onValueChange() {} }],
+    [
+      "DateRangePicker",
+      {},
+      { value: { start: "", end: "" }, onValueChange() {} },
+    ],
+    ["Rating", { max: 5 }, { value: 3, onValueChange() {} }],
+    [
+      "RangeSlider",
+      { min: 0, max: 100 },
+      { value: [20, 80], onValueChange() {} },
+    ],
+    [
+      "SplitPane",
+      {},
+      { value: 40, first: "Navigation", second: "Content", onValueChange() {} },
+    ],
+    [
+      "DataGrid",
+      { label: "Records" },
+      {
+        rows: [{ id: "1", name: "Alex" }],
+        columns: [{ key: "name", label: "Name" }],
+      },
+    ],
+    [
+      "AppShell",
+      { brand: "Studio" },
+      {
+        items: [{ value: "home", label: "Home" }],
+        value: "home",
+        onValueChange() {},
+      },
+    ],
   ];
-  for (const [component,props,controlled] of examples) {
-    const source=implementationCode(component,props,controlled);
-    await transformWithEsbuild(source,'example.jsx',{loader:'jsx'});
-    assert.match(source,/export default function Example/);
-    if ('value' in controlled) { assert.match(source,/useState\(/); assert.match(source,component==='Textarea'?/onChange=/:/onValueChange=/); }
-    for(const key of ['options','rows','columns','items']) if(key in controlled) assert.ok(source.includes(`const ${key} =`));
+  for (const [component, props, controlled] of examples) {
+    const source = implementationCode(component, props, controlled);
+    await transformWithEsbuild(source, "example.jsx", { loader: "jsx" });
+    assert.match(source, /export default function Example/);
+    if ("value" in controlled) {
+      assert.match(source, /useState\(/);
+      assert.match(
+        source,
+        component === "Textarea" ? /onChange=/ : /onValueChange=/,
+      );
+    }
+    for (const key of ["options", "rows", "columns", "items"])
+      if (key in controlled) assert.ok(source.includes(`const ${key} =`));
   }
+});
+
+test("compatibility icon names resolve real upstream geometry", async () => {
+  const { default: icons } = await import("../react/icons/chunks/b.js");
+  assert.ok(UI.iconNames.includes("bold"));
+  assert.match(icons.bold[0][1].d, /M6 12h9/);
+  for (const name of ["bold", "italic", "underline"]) {
+    const html = render("Icon", { name });
+    assert.match(html, /<path/);
+    assert.doesNotMatch(html, /M9 9a3 3/);
+  }
+  assert.ok(!JSON.stringify(icons.bold).includes("M9 9a3 3"));
 });

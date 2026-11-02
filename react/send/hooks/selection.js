@@ -1,3 +1,4 @@
+import { motionEase } from "./motion.js";
 // Motion extracted from Send Segmented.jsx; shared by radio controls and Tabs.
 export function placeSelection(
   root,
@@ -41,7 +42,7 @@ export function placeSelection(
         { transform: "scale(0.98, 1.035)", offset: 0.72 },
         { transform: "scale(1, 1)", offset: 1 },
       ],
-      { duration: 400, easing: "cubic-bezier(.22,1,.36,1)" },
+      { duration: 400, easing: motionEase(root) },
     );
   }
 }

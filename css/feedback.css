@@ -27,7 +27,7 @@
   align-items: center;
   gap: 9px;
   padding: 12px 14px;
-  border-radius: 16px;
+  border-radius: var(--r);
   background: var(--ink);
   color: var(--on-ink);
   box-shadow: var(--shadow-pop);
@@ -53,7 +53,7 @@
   place-items: center;
   background: transparent;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   padding: 3px;
   margin-left: 6px;
   opacity: 0.5;
@@ -109,7 +109,9 @@
   pointer-events: none;
   animation: none;
 }
-.dialog[open][data-entered="false"]:not(.is-behind):not(.dialog-closing):not(.re-bottom-sheet):not(.re-drawer) {
+.dialog[open][data-entered="false"]:not(.is-behind):not(.dialog-closing):not(
+    .re-bottom-sheet
+  ):not(.re-drawer) {
   animation: re-dialog-in 260ms var(--motion-ease) both;
 }
 .dialog[open][data-entered="true"] {
@@ -139,7 +141,7 @@
   place-items: center;
   width: 38px;
   height: 38px;
-  border-radius: 12px;
+  border-radius: var(--r-circle);
   background: var(--raised);
   color: var(--muted);
   margin-bottom: 18px;
@@ -167,7 +169,7 @@
   place-items: center;
   width: 56px;
   height: 56px;
-  border-radius: 18px;
+  border-radius: var(--r-circle);
   background: var(--raised);
   color: var(--muted);
   margin-bottom: 18px;
@@ -178,7 +180,7 @@
   position: absolute;
   inset: -5px;
   border: 1px solid var(--line);
-  border-radius: 23px;
+  border-radius: var(--r-circle);
   transform: rotate(-6deg);
 }
 .empty-icon > .icon {

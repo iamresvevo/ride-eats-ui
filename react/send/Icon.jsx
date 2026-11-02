@@ -32,6 +32,10 @@ function catalogChunk(key) {
 }
 
 const PATHS = {
+  // Core formatting controls render synchronously. Geometry is Lucide/ISC (see icons notice).
+  bold: "M6 12h9a4 4 0 010 8H7a1 1 0 01-1-1V5a1 1 0 011-1h7a4 4 0 010 8",
+  italic: "M19 4h-9M14 20H5M15 4 9 20",
+  underline: "M6 4v6a6 6 0 0 0 12 0V4M4 20h16",
   minus: "M5 12h14",
   filter: "M3 5h18l-7 8v6l-4-2v-4L3 5Z",
   infinity:

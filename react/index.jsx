@@ -498,6 +498,7 @@ export function Select({
   className = "",
   style,
   renderValue,
+  ...buttonProps
 }) {
   return (
     <SendMenu
@@ -506,7 +507,12 @@ export function Select({
       align="start"
       trigger={(props) => (
         <Button
+          {...buttonProps}
           {...props}
+          onClick={(event) => {
+            buttonProps.onClick?.(event);
+            if (!event.defaultPrevented) props.onClick(event);
+          }}
           disabled={disabled}
           aria-label={label}
           className="menu-select"
@@ -640,4 +646,4 @@ export * from "./forms.jsx";
 export { DataGrid } from "./DataGrid.jsx";
 export * from "./platform.jsx";
 export * from "./workflows.jsx";
-export { StickyBar } from './StickyBar.jsx';
+export { StickyBar } from "./StickyBar.jsx";

@@ -1,10 +1,4 @@
 /* Brand states inherit the consumer's existing --brand tokens. */
-:root {
-  --brand-ink: color-mix(in srgb, var(--brand) 72%, #111);
-}
-[data-theme="dark"] {
-  --brand-ink: color-mix(in srgb, var(--brand) 72%, #fff);
-}
 .re-rating svg[data-filled] {
   fill: var(--brand);
   stroke: var(--brand);
@@ -23,14 +17,6 @@
 }
 .re-radio-dot:after {
   background: var(--brand);
-}
-.re-toggle-group > button[aria-pressed="true"] {
-  color: var(--brand-ink);
-  background: var(--brand-soft);
-}
-.re-steps [data-state="current"] .re-step-number {
-  background: var(--brand);
-  color: var(--on-brand);
 }
 .re-slider input[type="range"] {
   background: linear-gradient(

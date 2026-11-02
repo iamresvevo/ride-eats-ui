@@ -23,13 +23,13 @@ export const motionPages = [
     "animated-icons",
     "Animated Icons",
     "Motion",
-    "Native SVG animation for the complete 2,015-icon catalog. Visible stroke tracing keeps a faint, steady outline underneath. Selection plays immediately; Replay and Loop preview make playback explicit. Ten bespoke presets add path morphs and purpose-built motion. Search any icon, hover to play, and copy one React component.",
+    "Native SVG animation for the complete 2,292 supported icon names. Visible stroke tracing keeps a faint, steady outline underneath. Selection plays immediately; Replay and Loop preview make playback explicit. Ten bespoke presets add path morphs and purpose-built motion. Search any icon, hover to play, and copy one React component.",
     `<AnimatedIcon name="bell" size={28} />\n<AnimatedIcon name="check" playing />\n<AnimatedIcon name="refresh" playing loop />\n// Hover/focus on a parent button also triggers the icon.\n<Button><AnimatedIcon name="send" /> Send files</Button>`,
     [
       [
         "name",
         "string — any catalog name",
-        "All 2,015 catalog names, plus refresh. Ten bespoke presets; remaining glyphs use native SVG stroke tracing.",
+        "All 2,292 supported names, plus refresh. Ten bespoke presets; remaining glyphs use native SVG stroke tracing.",
       ],
       [
         "playing / loop",
@@ -73,7 +73,7 @@ export const motionPages = [
     "command-menu",
     "Command Menu",
     "Navigation",
-    "A workspace command palette: grouped ranked search, nested scopes, recent commands, modifier shortcuts, async execution and error recovery. The demo performs real local navigation and creates drafts.",
+    "A workspace command palette: grouped ranked search, nested scopes, recent commands, modifier shortcuts, async execution and error recovery. The focused demo creates local drafts and filters transfers.",
     `<CommandMenu open={open} onOpenChange={setOpen} shortcut items={[{value:'new',label:'New transfer',group:'Create',description:'Create a draft',shortcut:'Alt+N',onSelect:createDraft},{value:'settings',label:'Settings',group:'Navigate',items:settingsCommands}]} />`,
     [
       [
@@ -98,22 +98,6 @@ export const motionPages = [
       ],
     ],
     "CommandMenu",
-  ),
-  page(
-    "steps",
-    "Steps",
-    "Navigation",
-    "A compact wizard progress rail with completed, current and upcoming steps. Supports horizontal or vertical layouts and optional step navigation.",
-    `const [step, setStep] = useState('details');\n<Steps value={step} onValueChange={setStep} items={[\n  {value:'details',label:'Details',description:'Name your transfer'},\n  {value:'files',label:'Files',description:'Choose what to share'},\n  {value:'review',label:'Review',description:'Ready to send'},\n]} />`,
-    [
-      ["items", "{value,label,description?}[]", "Ordered steps."],
-      [
-        "value / onValueChange",
-        "string / optional callback",
-        "Current step and optional navigation.",
-      ],
-      ["orientation", "horizontal | vertical", "Layout direction."],
-    ],
   ),
   page(
     "pin-input",
@@ -168,37 +152,6 @@ export const motionPages = [
         "configuration",
         "Star count, group label and display-only mode.",
       ],
-    ],
-  ),
-  page(
-    "scroll-area",
-    "Scroll Area",
-    "Layout",
-    "A contained, keyboard-scrollable region with a sticky header for search, filters or section labels.",
-    `<ScrollArea height={240} label="Team members"\n  header={<input type="search" placeholder="Find a member…" aria-label="Find a member" />}>\n  {members.map(member => <YourRow key={member.id} member={member} />)}\n</ScrollArea>`,
-    [
-      ["height", "number or CSS length", "Maximum region height."],
-      [
-        "header / children",
-        "ReactNode",
-        "Sticky header and scrolling content.",
-      ],
-      [
-        "label / className / style",
-        "accessibility and styling",
-        "Region name and appearance.",
-      ],
-    ],
-  ),
-  page(
-    "separator",
-    "Separator",
-    "Layout",
-    "A quiet dividing line with an optional label, in horizontal or vertical layouts.",
-    `<Separator label="or continue with" />\n<Separator orientation="vertical" />`,
-    [
-      ["label", "ReactNode", "Optional line label."],
-      ["orientation", "horizontal | vertical", "Divider direction."],
     ],
   ),
 ];

@@ -1,3 +1,4 @@
+import { motionEase } from "./send/hooks/motion.js";
 import React, { useId, useLayoutEffect, useRef, useState } from "react";
 import Icon from "./send/Icon.jsx";
 
@@ -36,7 +37,7 @@ export function ReorderList({
             { transform: `translateY(${old.top - box.top}px)` },
             { transform: "translateY(0)" },
           ],
-          { duration: 240, easing: "cubic-bezier(.22,1,.36,1)" },
+          { duration: 240, easing: motionEase(node) },
         );
       }
     });

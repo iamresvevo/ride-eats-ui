@@ -1,7 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import Icon from "./send/Icon.jsx";
 import Modal from "./send/ui/Modal.jsx";
-import { Button, Field, Badge } from "./index.jsx";
+import { Button, Field, Badge, Select } from "./index.jsx";
 import { DataGrid } from "./DataGrid.jsx";
 import { Form, Textarea } from "./forms.jsx";
 import { useConfirm, useToast } from "./Feedback.jsx";
@@ -74,23 +74,20 @@ export function TeamDirectory({
       width: 140,
       render: (_, row) =>
         onRoleChange ? (
-          <select
-            aria-label={`Role for ${row.name}`}
+          <Select
+            label={`Role for ${row.name}`}
             value={row.role}
-            onChange={async (event) => {
+            options={roles.map((role) => ({ value: role, label: role }))}
+            onValueChange={async (role) => {
               try {
-                await onRoleChange(row.id, event.target.value);
+                await onRoleChange(row.id, role);
               } catch (error) {
                 toast(error.message || "Unable to change role", {
                   tone: "bad",
                 });
               }
             }}
-          >
-            {roles.map((role) => (
-              <option key={role}>{role}</option>
-            ))}
-          </select>
+          />
         ) : (
           row.role
         ),
@@ -174,7 +171,7 @@ export function TeamDirectory({
             toast("Invitation sent", { tone: "good" });
           }}
         >
-          {({ field, errors, submitting }) => (
+          {({ field, values, setValue, errors, submitting }) => (
             <>
               <Field label="Name" error={errors.name}>
                 <input {...field("name")} autoComplete="name" />
@@ -183,11 +180,13 @@ export function TeamDirectory({
                 <input {...field("email")} type="email" autoComplete="email" />
               </Field>
               <Field label="Role">
-                <select {...field("role")}>
-                  {roles.map((role) => (
-                    <option key={role}>{role}</option>
-                  ))}
-                </select>
+                <Select
+                  label="Role"
+                  value={values.role}
+                  disabled={submitting}
+                  options={roles.map((role) => ({ value: role, label: role }))}
+                  onValueChange={(role) => setValue("role", role)}
+                />
               </Field>
               <div className="re-form-actions">
                 <Button

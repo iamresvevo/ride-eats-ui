@@ -20,6 +20,7 @@
     background 0.16s,
     color 0.16s,
     opacity 0.16s;
+  transition-timing-function: var(--motion-ease);
 }
 /* Secondary actions are outlined, so they never read as the flat status tags next to them. */
 .btn {
@@ -49,7 +50,7 @@
 }
 .btn-brand {
   background: var(--brand);
-  color: #ffffff;
+  color: var(--white);
 }
 .btn-surface {
   background: var(--surface);
@@ -74,7 +75,7 @@
 }
 .btn-danger:hover {
   background: var(--bad);
-  color: #ffffff;
+  color: var(--white);
 }
 .btn-ghost-danger {
   color: var(--bad);
@@ -84,11 +85,11 @@
   color: var(--bad);
 }
 .btn-light {
-  background: #ffffff;
-  color: #111113;
+  background: var(--white);
+  color: var(--text-light);
 }
 .btn-light:hover {
-  background: #ffffff;
+  background: var(--white);
   opacity: 0.9;
 }
 .btn-sm {
@@ -119,7 +120,7 @@
   height: 14px;
   border: 2px solid currentColor;
   border-right-color: transparent;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   flex: none;
   animation: spin 0.8s linear infinite;
 }
@@ -136,7 +137,7 @@
   height: 16px;
   border: 2px solid var(--brand);
   border-right-color: transparent;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   animation: spin 0.8s linear infinite;
 }
 
@@ -153,7 +154,7 @@
   min-width: 210px;
   max-width: min(300px, calc(100vw - 24px));
   padding: 6px;
-  border-radius: 16px;
+  border-radius: var(--r);
   background: var(--surface);
   box-shadow:
     var(--shadow-pop),
@@ -184,7 +185,7 @@
   height: 36px;
   padding: 0 10px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--r-pill);
   background: transparent;
   color: var(--text);
   font-size: 13px;
@@ -192,6 +193,7 @@
   text-align: left;
   white-space: nowrap;
   transition: background 0.12s;
+  transition-timing-function: var(--motion-ease);
 }
 .menu-item:hover,
 .menu-item:focus-visible {
@@ -343,6 +345,7 @@
   flex: none;
   background: var(--sunken);
   transition: background 0.16s;
+  transition-timing-function: var(--motion-ease);
 }
 .switch-track::after {
   content: "";
@@ -351,10 +354,11 @@
   left: 3px;
   width: 16px;
   height: 16px;
-  border-radius: 50%;
-  background: #ffffff;
+  border-radius: var(--r-circle);
+  background: var(--white);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   transition: left 0.16s var(--ease);
+  transition-timing-function: var(--motion-ease);
 }
 .switch input:checked + .switch-track {
   background: var(--brand);
@@ -412,7 +416,7 @@
 .bone {
   display: block;
   flex: none;
-  border-radius: 8px;
+  border-radius: var(--r-sm);
   background: var(--neutral-soft);
   animation: bone 1.1s var(--motion-ease) infinite alternate;
 }
@@ -422,7 +426,7 @@
   width: 10ch;
   max-width: 100%;
   height: auto;
-  border-radius: 0.3em;
+  border-radius: var(--r-sm);
   vertical-align: baseline;
   font-style: normal;
   color: transparent;
@@ -448,43 +452,43 @@
 .bone-tile {
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: var(--r-sm);
 }
 .bone-tile-lg {
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: var(--r-sm);
 }
 .bone-avatar {
   width: 34px;
   height: 34px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
 }
 .bone-avatar-lg {
   width: 64px;
   height: 64px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
 }
 .bone-dot {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
 }
 .bone-glyph {
   width: 16px;
   height: 16px;
-  border-radius: 5px;
+  border-radius: var(--r-sm);
 }
 .bone-check {
   width: 18px;
   height: 18px;
   margin-left: 4px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
 }
 .bone-badge {
   width: 84px;
   height: 22px;
-  border-radius: 7px;
+  border-radius: var(--r-sm);
 }
 .bone-badge-wide {
   width: 124px;
@@ -529,7 +533,7 @@
 .bone-qr {
   width: 112px;
   height: 112px;
-  border-radius: 12px;
+  border-radius: var(--r-sm);
 }
 .bone-control {
   width: 305px;
@@ -585,7 +589,7 @@
   max-height: calc(100dvh - 32px);
   padding: 22px;
   border: 0;
-  border-radius: var(--r-lg);
+  border-radius: var(--r-dialog);
   background: var(--surface);
   color: var(--text);
   box-shadow: var(--shadow-pop);
@@ -767,20 +771,10 @@
 .menu-profile .verification-badge,
 .profile span.verification-badge {
   display: inline-flex;
-  color: #0482ee;
+  color: var(--verified);
 }
 
 /* Verification follows the name's type size, with a consistent close gap. */
-.verified-name {
-  gap: 4px;
-}
-.verification-badge {
-  width: 0.95em;
-  height: 0.95em;
-}
-.account > .verification-badge {
-  margin-left: 0;
-}
 .profile .verification-badge {
   font-size: inherit;
 }
@@ -800,6 +794,7 @@
   height: 42px;
   flex: none;
   transition: width 280ms var(--ease);
+  transition-timing-function: var(--motion-ease);
 }
 .account-content {
   position: absolute;
@@ -829,6 +824,7 @@
 .site-nav {
   justify-self: center;
   transition: width 280ms var(--ease);
+  transition-timing-function: var(--motion-ease);
 }
 .site-nav-items {
   display: flex;
@@ -855,14 +851,11 @@
 
 /* One mark, proportioned to the account name at every text size. */
 .verification-badge {
-  width: 1em;
-  height: 1em;
   font-size: inherit;
   flex: 0 0 1em;
 }
 .verified-name {
   max-width: 100%;
-  gap: 0.3em;
   vertical-align: baseline;
 }
 .verified-name-text {
@@ -952,6 +945,7 @@
   font-weight: 400;
   text-align: left;
   transition: background 0.12s;
+  transition-timing-function: var(--motion-ease);
 }
 .dtp-field:hover,
 .dtp-field[aria-expanded="true"] {
@@ -962,6 +956,7 @@
   height: 14px;
   color: var(--faint);
   transition: transform 0.2s var(--ease);
+  transition-timing-function: var(--motion-ease);
 }
 .dtp-field[aria-expanded="true"] .icon {
   transform: rotate(180deg);
@@ -977,7 +972,7 @@
   width: max-content;
   max-width: calc(100vw - 32px);
   padding: 14px;
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   background: var(--surface);
   box-shadow:
     var(--shadow-pop),
@@ -1013,6 +1008,7 @@
   background: transparent;
   color: var(--muted);
   transition: background 0.12s;
+  transition-timing-function: var(--motion-ease);
 }
 .dtp-nav:hover {
   background: var(--raised);
@@ -1059,6 +1055,7 @@
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   transition: background 0.12s;
+  transition-timing-function: var(--motion-ease);
 }
 .dtp-day:hover,
 .dtp-column button:hover {
@@ -1073,7 +1070,7 @@
 .dtp-day[aria-selected="true"],
 .dtp-column button[aria-selected="true"] {
   background: var(--brand);
-  color: #fff;
+  color: var(--white);
   font-weight: 700;
   box-shadow: none;
 }
@@ -1122,6 +1119,7 @@
   font-size: 13px;
   font-weight: 600;
   transition: background 0.12s;
+  transition-timing-function: var(--motion-ease);
 }
 .dtp-done:hover {
   background: color-mix(in srgb, var(--ink) 82%, var(--bg));
@@ -1143,19 +1141,12 @@
 }
 
 /* Generic integration: no fixed Send shell or business routes. */
-:root {
-  --brand-strong: var(--brand-hover);
-  --ease: var(--motion-ease);
-  --spring: var(--motion-ease);
-  --inset: 12px;
-  --r-inner: calc(var(--r-lg) - var(--inset));
-}
 .react-select {
   display: flex;
 }
 .react-select .menu-select {
   justify-content: space-between;
-  border-radius: var(--r-sm);
+  border-radius: var(--r-pill);
   background: var(--raised);
   box-shadow: none;
   width: 100%;
@@ -1230,7 +1221,7 @@
   pointer-events: none;
   max-width: min(280px, calc(100vw - 16px));
   padding: 8px 12px;
-  border-radius: 12px;
+  border-radius: var(--r-sm);
   background: var(--surface);
   color: var(--text);
   box-shadow:
@@ -1296,13 +1287,13 @@
   transition:
     background 0.16s,
     color 0.16s;
+  transition-timing-function: var(--motion-ease);
 }
 .segmented button .icon {
   width: 15px;
   height: 15px;
 }
 .segmented button[aria-checked="true"] {
-  background: var(--ink);
   color: var(--on-ink);
 }
 .segmented-fit {
@@ -1402,4 +1393,15 @@
 }
 .react-select .menu-select {
   padding: 0 12px 0 14px;
+}
+/* The same Send menu, promoted natively above clipping ancestors. Its DOM
+   ancestry and inherited tokens stay intact, including inside native dialogs. */
+.menu-panel[popover] {
+  position: fixed;
+  margin: 0;
+  border: 0;
+  right: auto;
+  bottom: auto;
+  color: var(--text);
+  overflow: auto;
 }

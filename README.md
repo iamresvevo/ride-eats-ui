@@ -1,10 +1,12 @@
 # Ride Eats UI
 
+Version 0.9 removes Steps, ScrollArea and Separator. See the [migration notes](docs/migrations-v0.9.md) and [Send / Tools design audit](docs/design-audit.md).
+
 **A complete React UI foundation for Ride Eats tools and internal platforms.**
 
-A React-first UI library extracted from [Ride Eats Send](https://github.com/iamresvevo/ride-eats-send): the animated header and account menu, dropdowns, dialogs, switches, settings rows, date/time picker, skeletons, icons and identity components. Tables, cards, tiles, metrics, inputs, stacked feedback and a 2,015-icon catalog extend the system.
+A React-first UI library extracted from [Ride Eats Send](https://github.com/iamresvevo/ride-eats-send): the animated header and account menu, dropdowns, dialogs, switches, settings rows, date/time picker, skeletons, icons and identity components. Tables, cards, tiles, metrics, inputs, stacked feedback and a bundled Lucide catalog extend the system.
 
-[Live component browser](https://iamresvevo.github.io/ride-eats-ui/) · [Start a working app](docs/implementation.md) · [Component reference](docs/components.md) · [Customization](docs/customization.md) · [Send extraction map](docs/source-map.md)
+[Live component browser](https://iamresvevo.github.io/ride-eats-ui/) · [Start a working app](docs/implementation.md) · [Component reference](docs/components.md) · [Customization](docs/customization.md) · [Send extraction map](docs/source-map.md) · [Full design audit](docs/design-audit.md)
 
 ![Ride Eats UI component browser](docs/preview.jpg)
 
@@ -13,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.8.1
+npm install github:iamresvevo/ride-eats-ui#v0.9.0
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -244,7 +246,7 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 
 ## Built-in icons
 
-**2,015 Lucide icons**, plus Send's original glyphs, under one API. The catalog is bundled with the kit in lazy letter groups; it does not use an external icon CDN or add a runtime icon-package dependency. Artwork attribution and the ISC/Feather notices are included in [the icon notice](react/icons/NOTICE.md).
+**2,015 canonical Lucide glyphs and 277 compatibility names**, plus Send's original glyphs, under one API. The catalog is bundled with the kit in lazy letter groups; it does not use an external icon CDN or add a runtime icon-package dependency. Artwork attribution and the ISC/Feather notices are included in [the icon notice](react/icons/NOTICE.md).
 
 ```jsx
 <Icon name="headset" size={24} strokeWidth={1.7} />
@@ -259,7 +261,7 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 
 ## Native SVG motion and more components
 
-[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) cover all 2,015 catalog names. Catalog glyphs use a visible staggered stroke trace over a faint, steady outline that keeps the icon visible, with a continuous 2.4-second cycle. Arbitrary path scaling and circle/ellipse squashing are removed. Ten bespoke presets add path morphs and purpose-built motion. These are generated SVG animations across the catalog, not 2,015 individually hand-authored choreographies. Hover/focus plays once; `playing` and `loop` control playback. Reduced-motion preferences stop playback. Letter chunks stay lazy-loaded.
+[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) cover all 2,292 supported names. Catalog glyphs use a visible staggered stroke trace over a faint, steady outline that keeps the icon visible, with a continuous 2.4-second cycle. Arbitrary path scaling and circle/ellipse squashing are removed. Ten bespoke presets add path morphs and purpose-built motion. These are generated SVG animations across the catalog, not 2,015 individually hand-authored choreographies. Hover/focus plays once; `playing` and `loop` control playback. Reduced-motion preferences stop playback. Letter chunks stay lazy-loaded.
 
 ```jsx
 <AnimatedIcon name="bell" size={28} />
@@ -269,7 +271,7 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 <AnimatedIcon name="check" playing />
 ```
 
-The library also includes Popover, CommandMenu, Steps, PinInput, ToggleGroup, Rating, ScrollArea and Separator. Component references, workflows and composition recipes are separated in the browser. Its sidebar search stays pinned, and icon size uses a slider while stroke/motion use segmented selectors.
+The library also includes Popover, CommandMenu, PinInput, ToggleGroup, Rating. Component references, workflows and composition recipes are separated in the browser. Its sidebar search stays pinned, and icon size uses a slider while stroke/motion use segmented selectors.
 
 Keep Dialog mounted and use open={false} for the animated exit. useConfirm resolves after the confirmation has closed, so a parent form can then close without competing animations. Dialog is a simple-sheet demo; Stacked Dialogs demonstrates the draft/discard workflow.
 
@@ -314,3 +316,7 @@ Native popovers and contextual menus animate both opening and closing. Context s
 ### Send/Tools motion and floating controls
 
 Use `<StickyBar><Tabs ... /></StickyBar>` for automatic page floaters below Header. It detects the scroll container and progressively fades/blurs the content underneath. Set `offset={0}` in independent scroll regions. The component browser now uses the shared Segmented, Select, Accordion, Card, Field, NumberInput, Switch and CopyButton implementations rather than parallel documentation controls. See [implementation](docs/implementation.md) for solid action tones, circular controls, complete React examples and motion configuration.
+
+## Keeping the system consistent
+
+`css/tokens.css` owns the Send/Tools foundation. Component styles consume its solid palette, pill/circle/panel corners, compact density and shared motion. `npm run design:check` rejects drift and is required in CI. The [full audit](docs/design-audit.md) maps every public API and docs page to its design family and owning references. Single-line controls and toggle selection follow the same pill/ink language as the shared Segmented control. Consumer CSS can override tokens after the library import.

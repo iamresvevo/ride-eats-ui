@@ -1,3 +1,4 @@
+import { sourceForPage } from "./component-source.js";
 import PropsPlayground from "./PropsPlayground.jsx";
 import { platformPages } from "./platform-data.js";
 import PlatformDemos from "./PlatformDemos.jsx";
@@ -770,26 +771,11 @@ function Demo({ id }) {
   }
 }
 function Code({ children }) {
-  const [copied, setCopied] = useState(false);
-  const toast = useToast();
   return (
     <div className="code-wrap">
       <div className="code-top">
         <span>React · JSX</span>
-        <button
-          onClick={async () => {
-            try {
-              await navigator.clipboard.writeText(children);
-              setCopied(true);
-              setTimeout(() => setCopied(false), 1600);
-            } catch {
-              toast("Select and copy the code below");
-            }
-          }}
-        >
-          <Icon name={copied ? "check" : "copy"} />
-          {copied ? "Copied" : "Copy code"}
-        </button>
+        <UI.CopyButton value={children} label="Copy code" />
       </div>
       <pre>
         <code>{children}</code>
@@ -798,7 +784,13 @@ function Code({ children }) {
   );
 }
 const canonicalPage = (id) =>
-  ({ autocomplete: "combobox", collapsible: "accordion" })[id] ||
+  ({
+    autocomplete: "combobox",
+    collapsible: "accordion",
+    steps: "overview",
+    "scroll-area": "sticky-bar",
+    separator: "overview",
+  })[id] ||
   id ||
   "overview";
 function App() {
@@ -837,8 +829,6 @@ function App() {
       className="docs-app"
       style={{
         "--brand": accent,
-        "--brand-hover": accent,
-        "--brand-strong": accent,
       }}
     >
       <div className="docs-shell-header">
@@ -871,7 +861,7 @@ function App() {
           ]}
           activeValue={selected ? "overview" : current}
           onNavigate={(item) => navigate(item.value)}
-          guestContent={<Badge>v0.8.1</Badge>}
+          guestContent={<Badge>v0.9.0</Badge>}
           extras={
             <>
               <a
@@ -995,7 +985,7 @@ function App() {
               </div>
               <a
                 className="source-link"
-                href={`${repo}/tree/main/react`}
+                href={`${repo}/blob/main/${sourceForPage(selected.id)}`}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -1004,8 +994,16 @@ function App() {
             </div>
             <p className="component-description">{selected.detail}</p>
             <div className="preview-bar">
-              <UI.Segmented name="Example view" fit value={mode} onChange={setMode}
-                options={[{value:"preview",label:"Preview",icon:"eye"},{value:"code",label:"Code",icon:"terminal"}]} />
+              <UI.Segmented
+                name="Example view"
+                fit
+                value={mode}
+                onChange={setMode}
+                options={[
+                  { value: "preview", label: "Preview", icon: "eye" },
+                  { value: "code", label: "Code", icon: "terminal" },
+                ]}
+              />
               <div className="preview-meta">
                 <span className="status-dot" />{" "}
                 {selected.group === "Recipes"
@@ -1017,13 +1015,7 @@ function App() {
             </div>
             {mode === "preview" ? (
               <div className={`preview-stage preview-${selected.id}`}>
-                <div className="stage-corner">{selected.name}</div>
                 <Demo key={selected.id} id={selected.id} />
-                <span className="stage-note">
-                  {selected.group === "Recipes"
-                    ? "A recipe built with the shared components."
-                    : "Try it. It’s the real component."}
-                </span>
               </div>
             ) : (
               <Code>{`import { ${
@@ -1056,7 +1048,6 @@ function App() {
             <PropsPlayground id={selected.id} />
             <section className="usage-section">
               <div className="section-label">
-                <span>01</span>
                 <h2>Props</h2>
               </div>
               <div className="props-scroll">
@@ -1085,7 +1076,9 @@ function App() {
               </div>
             </section>
             <div className="component-next">
-              <span>Small pieces. One familiar design.</span>
+              <Button variant="ghost" onClick={() => navigate("installation")}>
+                Implementation guide
+              </Button>
               <Button
                 icon="next"
                 onClick={() =>
@@ -1103,15 +1096,15 @@ function App() {
         ) : current === "installation" ? (
           <>
             <div className="eyebrow">Get started</div>
-            <h1>Make yourself at home.</h1>
+            <h1>Install and integrate</h1>
             <p className="component-description">
               Install from GitHub, add the styles once, and start with a single
               component. React 19 or newer.
             </p>
             <h2 className="doc-heading">1. Install a reviewed version</h2>
-            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.8.1"}</Code>
+            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.9.0"}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
-            <Code>{`import { ThemeProvider, ToastProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ThemeProvider defaultTheme="system">\n      <ToastProvider>\n        <Button variant="primary">Hello, Studio</Button>\n      </ToastProvider>\n    </ThemeProvider>\n  );\n}`}</Code>
+            <Code>{`import { UIProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App() {\n  return (\n    <UIProvider defaultTheme="system">\n      <Button variant="primary">Hello, Studio</Button>\n    </UIProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>
             <p className="component-description">
               Pass your brand, routes and account into Header. Keep API calls
@@ -1217,7 +1210,8 @@ function App() {
                 component pages
               </span>
               <span>
-                <strong>2,015 icons</strong> built in, loaded on demand
+                <strong>2,015 glyphs + aliases</strong> built in, loaded on
+                demand
               </span>
               <span>
                 <strong>Light & dark</strong> considered together
@@ -1238,9 +1232,9 @@ function App() {
             <div className="collection-heading">
               <div>
                 <div className="eyebrow">THE COLLECTION</div>
-                <h2>Small pieces. Thoughtfully made.</h2>
+                <h2>Browse components</h2>
               </div>
-              <span>Live, not screenshots.</span>
+              <span>Imports, props and live examples</span>
             </div>
             <div className="collection-grid">
               {[
@@ -1304,9 +1298,15 @@ function App() {
         )}
         <footer className="docs-footer">
           <span>
-            Ride Eats UI <span className="footer-dot">·</span> Built from the
-            details.
+            Ride Eats UI <span className="footer-dot">·</span> React component
+            reference
           </span>
+          <a
+            href={`${repo}/blob/main/docs/design-audit.md`}
+            className="btn btn-ghost btn-sm"
+          >
+            Design contract
+          </a>
         </footer>
       </main>
     </div>

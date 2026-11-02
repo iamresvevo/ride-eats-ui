@@ -1,3 +1,4 @@
+import { motionEase } from "./hooks/motion.js";
 import React from "react";
 import { useLayoutEffect, useRef } from "react";
 import Menu, { MenuItem, MenuSeparator } from "./ui/Menu.jsx";
@@ -32,7 +33,7 @@ function AccountShell({ children }) {
             },
             { opacity: 1, clipPath: "inset(0 0 0 0 round 24px)" },
           ],
-          { duration: 280, easing: "cubic-bezier(.2,.7,.2,1)" },
+          { duration: 280, easing: motionEase(element) },
         );
       }
     };

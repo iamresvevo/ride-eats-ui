@@ -1,6 +1,6 @@
 {
-  "version": "0.8.1",
-  "capture": "Supported browser tools; desktop viewport; JPEG",
+  "version": "0.9.0",
+  "capture": "Supported browser tools; independent baseline/candidate reloads; JPEG",
   "states": [
     {
       "file": "app-shell-dark.jpg",
@@ -13,9 +13,9 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1457
+        "height": 1470
       },
-      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
+      "state": "Initial demo state; workbench collapsed; sidebar at start."
     },
     {
       "file": "app-shell-light.jpg",
@@ -28,9 +28,39 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1457
+        "height": 1470
       },
-      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
+      "state": "Initial demo state; workbench collapsed; sidebar at start."
+    },
+    {
+      "file": "bottom-sheet-dark.jpg",
+      "page": "bottom-sheet",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1086
+      },
+      "state": "Settings sheet open after its entry settles."
+    },
+    {
+      "file": "bottom-sheet-light.jpg",
+      "page": "bottom-sheet",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1086
+      },
+      "state": "Settings sheet open after its entry settles."
     },
     {
       "file": "data-grid-dark.jpg",
@@ -43,9 +73,9 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1662
+        "height": 1648
       },
-      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
+      "state": "Initial demo state; workbench collapsed; sidebar at start."
     },
     {
       "file": "data-grid-light.jpg",
@@ -58,9 +88,39 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1662
+        "height": 1648
       },
-      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
+      "state": "Initial demo state; workbench collapsed; sidebar at start."
+    },
+    {
+      "file": "dropdown-dark.jpg",
+      "page": "dropdown",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1138
+      },
+      "state": "Actions menu open."
+    },
+    {
+      "file": "dropdown-light.jpg",
+      "page": "dropdown",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1138
+      },
+      "state": "Actions menu open."
     },
     {
       "file": "form-dark.jpg",
@@ -73,9 +133,9 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1131
+        "height": 1116
       },
-      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
+      "state": "Initial demo state; workbench collapsed; sidebar at start."
     },
     {
       "file": "form-light.jpg",
@@ -88,10 +148,70 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1131
+        "height": 1116
       },
-      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
+      "state": "Initial demo state; workbench collapsed; sidebar at start."
+    },
+    {
+      "file": "stacked-dialogs-dark.jpg",
+      "page": "stacked-dialogs",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1086
+      },
+      "state": "Folder draft named Audit folder; Cancel opens stacked discard confirmation."
+    },
+    {
+      "file": "stacked-dialogs-light.jpg",
+      "page": "stacked-dialogs",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1086
+      },
+      "state": "Folder draft named Audit folder; Cancel opens stacked discard confirmation."
+    },
+    {
+      "file": "toggle-group-dark.jpg",
+      "page": "toggle-group",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1086
+      },
+      "state": "Initial demo state; workbench collapsed; sidebar at start."
+    },
+    {
+      "file": "toggle-group-light.jpg",
+      "page": "toggle-group",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1086
+      },
+      "state": "Initial demo state; workbench collapsed; sidebar at start."
     }
   ],
-  "updateReason": "Send/Tools design alignment: solid accent pills, neutral supporting states, circular controls, rounded app shell, shared motion easing and compact implementation workbench after the main example."
+  "updateReason": "Whole-kit Send/Tools audit: canonical foundation, opaque semantic surfaces, pill/circle geometry, readable type, shared control motion and faithful previews. Expanded from six to fourteen states, including menus and stacked/edge overlays."
 }

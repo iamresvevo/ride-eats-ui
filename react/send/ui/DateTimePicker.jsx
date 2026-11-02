@@ -33,7 +33,7 @@ export default function DateTimePicker({
   const root = useRef(null);
   const button = useRef(null);
   const panel = useRef(null);
-  const presence = usePresence(open);
+  const presence = usePresence(open, panel);
   const language = locale || getLanguage();
   // Read once per opening, so the past stays put while the panel is open.
   const [now, setNow] = useState(null);
@@ -187,6 +187,8 @@ export default function DateTimePicker({
         createPortal(
           <div
             ref={panel}
+            inert={presence.closing}
+            aria-hidden={presence.closing || undefined}
             role="dialog"
             aria-label={t(label)}
             className={`dtp-panel ${presence.closing ? "is-closing" : ""}`.trim()}

@@ -1,4 +1,5 @@
 .re-sr-only {
+  inset: 0 auto auto 0;
   position: absolute;
   width: 1px;
   height: 1px;
@@ -34,11 +35,12 @@
   align-items: center;
   gap: 12px;
   background: var(--raised);
-  border-radius: 16px;
+  border-radius: var(--r);
   padding: 12px;
   transition:
     background 180ms,
     box-shadow 180ms;
+  transition-timing-function: var(--motion-ease);
 }
 .re-reorder li[data-dragging] {
   background: var(--brand-soft);
@@ -56,7 +58,7 @@
   height: 32px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   flex: none;
 }
 .re-drag-handle {
@@ -80,10 +82,7 @@
 .re-swipe {
   position: relative;
   width: 100%;
-  max-width: 540px;
   overflow: hidden;
-  border-radius: 18px;
-  background: var(--brand-soft);
 }
 .re-swipe-actions {
   position: absolute;
@@ -97,14 +96,9 @@
   flex: 1;
   min-width: 0;
   border: 0;
-  background: var(--brand-soft);
-  color: var(--brand-ink);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 11px;
 }
 .re-swipe-actions .is-destructive {
   color: var(--bad);
@@ -113,11 +107,8 @@
 .re-swipe-content {
   position: relative;
   background: var(--raised);
-  padding: 20px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  min-height: 88px;
   touch-action: pan-y;
   transition: transform 320ms var(--motion-ease);
   user-select: none;
@@ -137,7 +128,7 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   touch-action: pan-x pan-y;
   cursor: grab;
 }
@@ -170,11 +161,12 @@
   width: 7px;
   height: 7px;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   background: var(--line-strong);
   transition:
     width 240ms,
     background 240ms;
+  transition-timing-function: var(--motion-ease);
 }
 .re-carousel-nav > div button[aria-current] {
   width: 24px;
@@ -197,7 +189,7 @@
   min-width: 0;
   overflow: auto;
   background: var(--raised);
-  border-radius: 18px;
+  border-radius: var(--r);
   padding: 20px;
 }
 .re-split > [role="separator"] {
@@ -205,16 +197,17 @@
   touch-action: none;
   display: grid;
   place-items: center;
-  border-radius: 8px;
+  border-radius: var(--r-sm);
 }
 .re-split > [role="separator"] > span {
   width: 4px;
   height: 32px;
   background: var(--line-strong);
-  border-radius: 4px;
+  border-radius: var(--r-pill);
   transition:
     background 180ms,
     height 180ms;
+  transition-timing-function: var(--motion-ease);
 }
 .re-split > [role="separator"]:hover > span,
 .re-split[data-dragging] > [role="separator"] > span {
@@ -250,7 +243,7 @@
   left: 0;
   right: 0;
   height: 5px;
-  border-radius: 99px;
+  border-radius: var(--r-pill);
   background: linear-gradient(
     to right,
     var(--sunken) var(--low),
@@ -279,7 +272,7 @@
   height: 20px;
   background: var(--surface);
   border: 4px solid var(--brand);
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   pointer-events: auto;
   cursor: grab;
 }
@@ -288,7 +281,7 @@
   height: 14px;
   background: var(--surface);
   border: 4px solid var(--brand);
-  border-radius: 50%;
+  border-radius: var(--r-circle);
   pointer-events: auto;
   cursor: grab;
 }
@@ -302,4 +295,133 @@
   .re-split span {
     transition: none;
   }
+}
+.re-swipe {
+  max-width: 480px;
+  border-radius: var(--r);
+  background: var(--surface);
+}
+.re-swipe-content {
+  min-height: 60px;
+  padding: 10px 12px;
+  gap: 10px;
+  border-radius: var(--r);
+}
+.re-swipe-content > .svg-icon {
+  color: var(--brand-ink);
+  flex: none;
+}
+.re-swipe-content > div {
+  min-width: 0;
+  flex: 1;
+}
+.re-swipe-content strong {
+  display: block;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+}
+.re-swipe-content small {
+  display: block;
+  font-size: 11px;
+  line-height: 16px;
+  margin-top: 2px;
+  color: var(--muted);
+}
+.re-swipe-actions {
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+}
+.re-swipe-actions button {
+  height: 34px;
+  border-radius: var(--r-pill);
+  flex-direction: row;
+  gap: 5px;
+  background: var(--raised);
+  color: var(--text);
+  font-size: 11px;
+  transition:
+    background-color 160ms var(--motion-ease),
+    color 160ms var(--motion-ease),
+    opacity 180ms var(--motion-ease);
+}
+.re-swipe-actions button .svg-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--brand-ink);
+}
+.re-swipe-actions button:hover {
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+}
+.re-swipe-actions button.is-destructive {
+  color: var(--bad);
+  background: var(--bad-soft);
+}
+.re-swipe-actions button.is-destructive .svg-icon {
+  color: var(--bad);
+}
+.re-swipe:not([data-open]) .re-swipe-actions {
+  pointer-events: none;
+}
+@media (pointer: coarse) {
+  .re-swipe-actions button {
+    height: 44px;
+  }
+}
+@media (pointer: coarse) {
+  .re-swipe-content {
+    min-height: 64px;
+  }
+}
+.re-swipe-content > :not(.re-swipe-toggle) {
+  transition: transform 320ms var(--motion-ease);
+}
+.re-swipe[data-open] .re-swipe-content > :not(.re-swipe-toggle) {
+  transform: translateX(var(--swipe-width));
+}
+.re-swipe[data-open] .re-swipe-content > div {
+  max-width: calc(100% - var(--swipe-width) - 60px);
+  overflow: hidden;
+}
+.re-swipe-content strong,
+.re-swipe-content small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.re-swipe-content > svg,
+.re-swipe-actions button svg {
+  color: var(--brand-ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  .re-swipe-content > :not(.re-swipe-toggle) {
+    transition: none;
+  }
+}
+.re-swipe-actions button[data-tone="info"] {
+  background: var(--action-info);
+  color: var(--action-on-color);
+}
+.re-swipe-actions button[data-tone="warning"] {
+  background: var(--action-warning);
+  color: var(--action-on-warning);
+}
+.re-swipe-actions button[data-tone="accent"] {
+  background: var(--brand);
+  color: var(--on-brand);
+}
+.re-swipe-actions button[data-tone="danger"] {
+  background: var(--action-danger);
+  color: var(--action-on-color);
+}
+.re-swipe-actions button[data-tone] svg {
+  color: inherit;
+}
+.re-swipe-actions button[data-tone]:hover {
+  filter: brightness(0.94);
+}
+.re-swipe-actions button[data-tone]:active {
+  filter: brightness(0.86);
 }
