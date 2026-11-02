@@ -1,0 +1,32 @@
+{
+  "version": "0.7.0",
+  "checks": {
+    "componentTests": 19,
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "starterPackedBuild": "passed",
+    "visualComparisons": 6,
+    "starterDevRuntime": "passed after explicit React/ReactDOM dependency prebundling"
+  },
+  "browserChecks": [
+    "DataGrid exact filters and bulk selection",
+    "DataGrid column resizing and visibility",
+    "Virtual scrolling: 1,500 records, approximately 18 DOM rows, fixed 40px rows",
+    "Combobox keyboard selection and removable MultiSelect chips",
+    "Form validation, first-invalid focus and local submission",
+    "BottomSheet drag dismissal",
+    "Nested Popover Escape dismisses one level",
+    "Team local invite and confirmed removal",
+    "Support local reply",
+    "AppShell collapse, command navigation and 390px mobile navigation",
+    "ContextMenu keyboard opening and nested selection",
+    "Packaged platform starter: dev runtime and command navigation to support",
+    "Editable JSON props: live preview and last-valid state on invalid input"
+  ],
+  "limits": [
+    "Physical touch-device feel unverified",
+    "No exhaustive screen-reader or accessibility conformance audit",
+    "Visual candidate capture is manual; six desktop theme baselines are not exhaustive",
+    "No backend service, delivery or persistence is implied by local demos"
+  ]
+}

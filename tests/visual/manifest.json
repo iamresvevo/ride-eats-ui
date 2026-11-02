@@ -1,0 +1,96 @@
+{
+  "version": "0.7.0",
+  "capture": "Supported browser tools; desktop viewport; JPEG",
+  "states": [
+    {
+      "file": "app-shell-dark.jpg",
+      "page": "app-shell",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1473
+      },
+      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+    },
+    {
+      "file": "app-shell-light.jpg",
+      "page": "app-shell",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1473
+      },
+      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+    },
+    {
+      "file": "data-grid-dark.jpg",
+      "page": "data-grid",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1670
+      },
+      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+    },
+    {
+      "file": "data-grid-light.jpg",
+      "page": "data-grid",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1670
+      },
+      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+    },
+    {
+      "file": "form-dark.jpg",
+      "page": "form",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1127
+      },
+      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+    },
+    {
+      "file": "form-light.jpg",
+      "page": "form",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1127
+      },
+      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+    }
+  ]
+}

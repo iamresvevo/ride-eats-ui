@@ -194,3 +194,71 @@ const gestures = (
     <UI.RangeSlider value={[20, 80]} onValueChange={() => {}} />
   </>
 );
+
+const platform = (
+  <>
+    <UI.Form
+      initialValues={{ name: "" }}
+      validate={(values) => ({ name: values.name ? undefined : "Required" })}
+      onSubmit={async (values) => {
+        values.name.toUpperCase();
+      }}
+    >
+      {({ field, errors, submitting }) => (
+        <>
+          <UI.Field label="Name" error={errors.name}>
+            <input {...field("name")} />
+          </UI.Field>
+          <UI.Button type="submit" loading={submitting}>
+            Save
+          </UI.Button>
+        </>
+      )}
+    </UI.Form>
+    <UI.Combobox
+      options={[{ value: "a", label: "Alex" }]}
+      value="a"
+      onValueChange={() => {}}
+    />
+    <UI.MultiSelect options={[]} value={["a"]} onValueChange={() => {}} />
+    <UI.DateRangePicker
+      value={{ start: "", end: "" }}
+      onValueChange={() => {}}
+    />
+    <UI.DataGrid
+      rows={[{ id: "a", name: "Alex" }]}
+      columns={[{ key: "name", render: (value, row) => row.name }]}
+    />
+    <UI.AppShell
+      items={[{ value: "home", label: "Home" }]}
+      value="home"
+      onValueChange={() => {}}
+    >
+      Content
+    </UI.AppShell>
+    <UI.BottomSheet open={false} onClose={() => {}} title="Settings">
+      Fields
+    </UI.BottomSheet>
+    <UI.SettingsPanel
+      sections={[{ id: "a", title: "General", children: "Fields" }]}
+    />
+    <UI.TeamDirectory
+      members={[]}
+      onInvite={async (values) => {
+        values.email.toLowerCase();
+      }}
+    />
+    <UI.FileManager
+      files={[]}
+      onUpload={(files) => files.map((file) => file.name)}
+    />
+    <UI.SupportInbox
+      threads={[]}
+      value=""
+      onValueChange={() => {}}
+      onReply={async (id, text) => {
+        text.trim();
+      }}
+    />
+  </>
+);

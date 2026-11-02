@@ -865,3 +865,310 @@ Hover/focus plays once. `playing` starts playback, `loop` repeats it, and reduce
 | RangeSlider | `value={[low,high]}`, `onValueChange` | Two native range handles, keyboard and formatted labels; bounds cannot cross. |
 
 All accept `className` and `style` and inherit shared tokens. Positional animations respect reduced motion. ReorderList requires stable IDs and is intended for bounded lists. No virtualized, cross-list or cross-column drag-and-drop is bundled. Swipe actions are caller callbacks; library demos do not mutate a backend.
+
+## Compact platform system (v0.7.0)
+
+Import each component from `@ride-eats/ui`. Import styles once and wrap the app in UIProvider. Shared styling props are className and style unless noted. See [platform-system.md](platform-system.md) for composition, density and limitations.
+
+### Textarea
+
+A compact multiline field with associated labels, hints and validation. Native textarea props remain available.
+
+```jsx
+import { Textarea } from '@ride-eats/ui';
+<Textarea label="Description" value={description} onChange={event => setDescription(event.target.value)} hint="Keep it short and useful." />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| label / hint / error | ReactNode | Accessible label and supporting content. |
+| rows / value / onChange / disabled | native textarea props | Defaults to three rows; controlled content stays yours. |
+
+### Form
+
+Validation, async submit state, server errors and first-invalid-field focus in one render-prop form. The demo saves local state.
+
+```jsx
+import { Form, Field, Button } from '@ride-eats/ui';
+<Form initialValues={{name:''}} validate={values => ({name:values.name ? undefined : 'Required'})} onSubmit={save}>
+ {({field,errors,submitting}) => <><Field label="Name" error={errors.name}><input {...field('name')} /></Field><Button type="submit" loading={submitting}>Save</Button></>}
+</Form>
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| initialValues / validate | object / values => errors | Initial values and synchronous validation. |
+| onSubmit | values => void / Promise | Errors become a visible alert; duplicate submissions are prevented. |
+| children | render function | Receives values, errors, submitting, field(name), setValue(name,value), reset(). |
+
+### Combobox
+
+Searchable selection with native top-layer positioning, listbox semantics and keyboard navigation.
+
+```jsx
+import { Combobox } from '@ride-eats/ui';
+<Combobox label="Assignee" options={people} value={person} onValueChange={setPerson} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| options | {value,label,description?,disabled?}[] | Searchable choices. |
+| value / onValueChange | string / callback | Controlled selected option. |
+| label / placeholder / error / hint / disabled | configuration | Labels, validation and availability. |
+
+### Multi Select
+
+Choose multiple options from one searchable field, then remove selections with compact chips.
+
+```jsx
+import { MultiSelect } from '@ride-eats/ui';
+<MultiSelect label="Teams" options={teams} value={selectedTeams} onValueChange={setSelectedTeams} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| options | ComboboxOption[] | Searchable choices. |
+| value / onValueChange | string[] / callback | Controlled selected keys. |
+| label / placeholder / error / hint / disabled | configuration | Labels, validation and availability. |
+
+### Autocomplete
+
+Search existing options or accept a new text value. Enter and the visible custom-value action behave the same.
+
+```jsx
+import { Autocomplete } from '@ride-eats/ui';
+<Autocomplete label="Tag" options={tags} value={tag} onValueChange={setTag} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| options | ComboboxOption[] | Suggested values. |
+| value / onValueChange | string / callback | Existing or custom value. |
+| label / placeholder / error / hint / disabled | configuration | Same compact field API as Combobox. |
+
+### Date Range Picker
+
+Two native date fields with linked minimum and maximum bounds. Values use YYYY-MM-DD without implicit timezone conversion.
+
+```jsx
+import { DateRangePicker } from '@ride-eats/ui';
+<DateRangePicker value={range} onValueChange={setRange} label="Reporting period" />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value / onValueChange | {start,end} / callback | ISO dates or empty strings. |
+| min / max / disabled / label | configuration | Native date constraints and fieldset label. |
+
+### Time Picker
+
+A native time field with a compact label and keyboard input. Time formatting follows the browser locale.
+
+```jsx
+import { TimePicker } from '@ride-eats/ui';
+<TimePicker label="Opening time" value={time} onValueChange={setTime} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value / onValueChange | HH:mm string / callback | Native time value. |
+| min / max / step / disabled / label | configuration | Step is seconds; defaults to one minute. |
+
+### Upload Progress
+
+Compact per-file progress, status, errors, retry and cancellation. The caller owns file transfer and progress; this demo has explicit simulation controls.
+
+```jsx
+import { UploadProgress } from '@ride-eats/ui';
+<UploadProgress files={uploads} onCancel={cancelUpload} onRetry={retryUpload} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| files | {id,name,status,progress?,error?}[] | Status is queued, uploading, done, error or cancelled; progress is 0–100. |
+| onCancel / onRetry | id => void | Caller handles transfer cancellation and retry. |
+
+### DataGrid
+
+A compact table with search, filters, sorting, column visibility and resizing, sticky columns, bulk actions and optional row expansion. Fixed-row virtual scrolling supports larger local datasets.
+
+```jsx
+import { DataGrid } from '@ride-eats/ui';
+<DataGrid rows={members} columns={[{key:'name',label:'Name',pinned:true,width:220},{key:'role',label:'Role'}]} filters={[{key:'role',label:'Role',options:roles}]} bulkActions={[{value:'export',label:'Export',onSelect:exportRows}]} renderExpanded={row => <p>{row.email}</p>} />
+// For fixed-height rows: <DataGrid rows={records} columns={columns} virtual height={320} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| rows / columns / getRowKey | T[] / DataGridColumn<T>[] / function | Stable row IDs are required. Columns accept key, label, width, pinned, sortable, resizable, align, render, searchValue and sortValue. |
+| filters / bulkActions | definition arrays | Exact-value filters and selected-row callbacks. |
+| renderExpanded / rowActions | row => ReactNode | Optional row details and actions. |
+| virtual / height / rowHeight / pageSize | boolean / number | Defaults: false / 320 / 40 / 8. Expansion disables virtualization. Virtual rows must fit the fixed height. |
+| loading / error / onRetry / emptyText / label | configuration | Loading, error, retry and empty states. |
+
+### App Shell
+
+A reusable compact application frame with collapsible navigation, mobile dialog navigation and slots for workspace, search, notifications and account actions.
+
+```jsx
+import { AppShell, WorkspaceSwitcher, NotificationCenter, Card } from '@ride-eats/ui';
+<AppShell brand="Studio" items={navigation} value={view} onValueChange={setView} workspace={<WorkspaceSwitcher items={workspaces} value={workspace} onValueChange={setWorkspace} />} actions={<NotificationCenter items={notifications} />}>
+  <Card title="Overview">Your application</Card>
+</AppShell>
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| items / value / onValueChange | navigation array / string / callback | Navigation items accept value, label, icon, count and disabled. |
+| brand / workspace / search / actions / sidebarFooter / children | ReactNode slots | Supply branding, controls and actual screens. |
+| collapsed / onCollapsedChange | optional controlled state | Leave unset for internal collapse state. Mobile navigation uses a native modal. |
+
+### Workspace Switcher
+
+Compact workspace selection in a native top-layer popover, ready for a header or app sidebar.
+
+```jsx
+import { WorkspaceSwitcher } from '@ride-eats/ui';
+<WorkspaceSwitcher items={workspaces} value={workspace} onValueChange={setWorkspace} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| items | {value,label,description?,icon?,disabled?}[] | Caller-owned workspaces. |
+| value / onValueChange / label | controlled state and label | Selection does not switch a backend session automatically. |
+
+### Notification Center
+
+Unread counts, compact notification rows and caller-owned read state. No polling, push or backend is bundled.
+
+```jsx
+import { NotificationCenter } from '@ride-eats/ui';
+<NotificationCenter items={notifications} onRead={markRead} onReadAll={markAllRead} onSelect={openNotification} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| items | {id,title,description?,time?,read?,icon?}[] | Notification content and read state. |
+| onRead / onReadAll / onSelect / label | callbacks / string | Caller handles persistence and routing. |
+
+### Bottom Sheet
+
+A compact native modal sheet. Drag its handle down to dismiss, press the handle, use Close, or press Escape. It keeps the real dialog mounted through exits.
+
+```jsx
+import { BottomSheet, Button } from '@ride-eats/ui';
+<BottomSheet open={open} onClose={() => setOpen(false)} title="Transfer settings" footer={<Button onClick={save}>Save changes</Button>}>
+  Your settings
+</BottomSheet>
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| open / onClose | controlled state | Keep mounted for animated exits and focus restoration. |
+| title / children / footer | ReactNode | Accessible heading, content and actions. |
+| height | number / CSS length | Defaults to 360px and is constrained by the viewport. |
+
+### Context Menu
+
+Right-click or use Shift+F10 to open compact contextual actions. Nested choices, disabled actions, keyboard movement and Escape are supported.
+
+```jsx
+import { ContextMenu, Card } from '@ride-eats/ui';
+<ContextMenu items={[{value:'open',label:'Open',onSelect:openFile},{value:'sort',label:'Sort',items:[{value:'newest',label:'Newest',onSelect:sortNewest}]}]}>
+  <Card title="Project files" />
+</ContextMenu>
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| items | ContextMenuItem[] | value, label, icon, disabled, destructive, separator, onSelect and nested items. |
+| children / label | ReactNode / string | Context target and accessible action name. |
+
+### Nested Popovers
+
+Native top-layer popovers can hold a second popover without clipping into surrounding cards. Dismissal follows the nested hierarchy.
+
+```jsx
+import { Popover, Button } from '@ride-eats/ui';
+<Popover open={open} onOpenChange={setOpen} label="Share" trigger={props => <Button {...props}>Share</Button>}>
+ <Popover open={details} onOpenChange={setDetails} label="Access" trigger={props => <Button {...props}>Access</Button>}>Access settings</Popover>
+</Popover>
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| open / onOpenChange / trigger | controlled state / render prop | Each popover owns its open state. |
+| label / children / align / width | configuration | Same Popover API; native hierarchy handles outside dismissal. |
+
+### Settings Panel
+
+Compact settings sections with labels, descriptions, control slots and footer actions. Compose real inputs rather than rebuilding layout CSS.
+
+```jsx
+import { SettingsPanel, Field, Button } from '@ride-eats/ui';
+<SettingsPanel title="Workspace settings" sections={[{id:'general',title:'General',description:'Your workspace identity.',children:<Field label="Name"><input value={name} onChange={event => setName(event.target.value)} /></Field>}]} actions={<Button onClick={save}>Save</Button>} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| title / description | ReactNode | Panel heading. |
+| sections | {id,title,description?,children}[] | Responsive sections and caller-owned controls. |
+| actions | ReactNode | Compact footer actions. |
+
+### Team Directory
+
+A complete member table with optional invitation form, editable roles and confirmed removal. All changes are caller-owned callbacks; this demo stores changes locally.
+
+```jsx
+import { TeamDirectory } from '@ride-eats/ui';
+<TeamDirectory members={members} onInvite={inviteMember} onRoleChange={changeRole} onRemove={removeMember} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| members | {id,name,email,role,status?}[] | Caller-owned member records. |
+| onInvite / onRoleChange / onRemove | optional async callbacks | Missing callbacks omit those controls. Rejected promises show errors. |
+| roles | string[] | Defaults to Owner, Editor, Viewer. Use UIProvider for confirmations and toasts. |
+
+### File Manager
+
+A compact file table with native multi-file selection, opening, selected-file download and confirmed deletion. Transfer and storage remain in your application.
+
+```jsx
+import { FileManager } from '@ride-eats/ui';
+<FileManager files={files} onUpload={uploadFiles} onOpen={openFile} onDownload={downloadFiles} onDelete={deleteFile} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| files | {id,name,type?,size?,owner?,updated?}[] | type is file or folder. Display sizes and dates are caller formatted. |
+| onUpload / onOpen / onDownload / onDelete | optional callbacks | Upload receives native File[]. Download receives selected records. Use UIProvider for confirmations. |
+
+### Activity Feed
+
+A dense activity list for audit events, recent changes and workspace updates, with compact icons and timestamps.
+
+```jsx
+import { ActivityFeed } from '@ride-eats/ui';
+<ActivityFeed items={activity} label="Workspace activity" />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| items | {id,title,description?,time?,dateTime?,icon?}[] | Display timestamps and optional machine-readable datetimes. |
+| label / emptyText | string | Accessible heading and empty state. |
+
+### Support Inbox
+
+Conversation list, selected thread and reply composer in one responsive workflow. Reply promises control pending and error states; the caller appends persisted messages.
+
+```jsx
+import { SupportInbox } from '@ride-eats/ui';
+<SupportInbox threads={threads} value={threadId} onValueChange={setThreadId} onReply={sendReply} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| threads | SupportThread[] | id, name, subject, status, time and messages; messages contain id, author, text, time and own. |
+| value / onValueChange | string / callback | Selected conversation ID. |
+| onReply / label | (id,text) => Promise / void / string | Optional reply callback; controls are omitted without it. Draft clears when selecting another thread. |

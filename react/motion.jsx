@@ -244,6 +244,7 @@ export function Popover({
     const node = panel.current;
     if (!node) return;
     if (!open) {
+      if (node.contains(document.activeElement)) button.current?.focus();
       if (node.matches(":popover-open")) node.hidePopover();
       return;
     }
@@ -285,11 +286,17 @@ export function Popover({
         className={`re-popover ${className}`}
         style={{ width, ...style }}
         onToggle={(event) => {
-          if (event.newState === "closed" && open) onOpenChange(false);
+          if (
+            event.target === event.currentTarget &&
+            event.newState === "closed" &&
+            open
+          )
+            onOpenChange(false);
         }}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
             event.preventDefault();
+            event.stopPropagation();
             onOpenChange(false);
             button.current?.focus();
           }

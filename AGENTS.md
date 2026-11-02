@@ -25,3 +25,13 @@ Run npm ci, npm run check, npm run build, npm test. Validate changed interaction
 Use docs/implementation.md and examples/starter for the complete working integration. Build screens with Card, MetricGrid, StatCard, Tile, PageHeader, Toolbar and DataTable instead of reproducing their CSS. DataTable uses caller-owned sorting, selection and rows, with render functions for cells/actions. Wrap the app once in UIProvider; useConfirm supplies Promise-based confirmations that stack over existing dialogs while preserving drafts. Toasts are bounded and deduplicated.
 
 The icon API supports 2,015 vendored Lucide glyphs plus Send paths and custom IconProvider entries. Art remains attributed upstream. Icons load in letter chunks and use optional reduced-motion-aware animation. Regenerate with npm run icons:generate; include the upstream license. Do not claim vendor artwork as original hand-drawn Ride Eats artwork.
+
+## Compact platform components
+
+Default controls are 36px, DataGrid rows 40px and panels 16px. Prefer these defaults. `data-density="comfortable"` opts into larger controls/panels; coarse-pointer menus retain 44px targets. Static content should not animate without purpose.
+
+Use Form/Field/Textarea/Combobox/MultiSelect/Autocomplete/DateRangePicker/TimePicker for forms. DataGrid owns local table view state; rows and backend mutations remain caller-owned. It supports search, exact filters, stable sorting, column visibility/resizing, pinned columns, bulk selection, expansion and optional fixed-height virtualization. `renderExpanded` disables virtualization. Do not put variable-height content in virtual rows.
+
+AppShell, WorkspaceSwitcher, NotificationCenter, BottomSheet and ContextMenu compose platform navigation and overlays. SettingsPanel, TeamDirectory, FileManager, ActivityFeed and SupportInbox are reusable workflows. Use UIProvider for confirmations/toasts. Examples never perform real backend operations. See examples/platform for the complete starter and docs/platform-system.md for API composition.
+
+Visual baselines and the comparison command are described in tests/visual/README.md. Capture candidates with supported browser tooling; automated candidate capture is not configured. Run comparison-engine tests and inspect visual changes before updating baselines.

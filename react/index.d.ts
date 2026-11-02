@@ -776,3 +776,306 @@ export function RangeSlider(
     disabled?: boolean;
   },
 ): React.ReactElement;
+
+export function Textarea(
+  props: React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    label: React.ReactNode;
+    hint?: React.ReactNode;
+    error?: React.ReactNode;
+  },
+): React.ReactElement;
+export function Form<T extends Record<string, unknown>>(
+  props: StylingProps & {
+    initialValues: T;
+    validate?: (values: T) => Partial<Record<keyof T, string | undefined>>;
+    onSubmit: (values: T) => void | Promise<void>;
+    children: (context: {
+      values: T;
+      errors: Partial<Record<keyof T, string | undefined>>;
+      submitting: boolean;
+      field: <K extends keyof T>(
+        name: K,
+      ) => {
+        name: K;
+        value: T[K];
+        onChange: (
+          event: React.ChangeEvent<
+            HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+          >,
+        ) => void;
+        "aria-invalid"?: boolean;
+      };
+      setValue: <K extends keyof T>(name: K, value: T[K]) => void;
+      reset: () => void;
+    }) => React.ReactNode;
+  },
+): React.ReactElement;
+export interface ComboboxOption {
+  value: string;
+  label: string;
+  description?: string;
+  disabled?: boolean;
+}
+export interface ComboboxProps extends StylingProps {
+  options: ComboboxOption[];
+  value: string;
+  onValueChange: (value: string) => void;
+  label?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  error?: React.ReactNode;
+  hint?: React.ReactNode;
+  allowCustom?: boolean;
+}
+export function Combobox(props: ComboboxProps): React.ReactElement;
+export function Autocomplete(props: ComboboxProps): React.ReactElement;
+export function MultiSelect(
+  props: Omit<ComboboxProps, "value" | "onValueChange" | "allowCustom"> & {
+    value: string[];
+    onValueChange: (value: string[]) => void;
+  },
+): React.ReactElement;
+export interface DateRange {
+  start: string;
+  end: string;
+}
+export function DateRangePicker(
+  props: StylingProps & {
+    value: DateRange;
+    onValueChange: (value: DateRange) => void;
+    label?: string;
+    min?: string;
+    max?: string;
+    disabled?: boolean;
+  },
+): React.ReactElement;
+export function TimePicker(
+  props: StylingProps & {
+    value: string;
+    onValueChange: (value: string) => void;
+    label?: string;
+    min?: string;
+    max?: string;
+    step?: number;
+    disabled?: boolean;
+  },
+): React.ReactElement;
+export interface UploadFileState {
+  id: string;
+  name: string;
+  status: "queued" | "uploading" | "done" | "error" | "cancelled";
+  progress?: number;
+  error?: string;
+}
+export function UploadProgress(
+  props: StylingProps & {
+    files: UploadFileState[];
+    onCancel?: (id: string) => void;
+    onRetry?: (id: string) => void;
+  },
+): React.ReactElement;
+export interface DataGridColumn<T> {
+  key: Extract<keyof T, string>;
+  label?: React.ReactNode;
+  width?: number;
+  pinned?: boolean;
+  sortable?: boolean;
+  resizable?: boolean;
+  align?: "left" | "right" | "center";
+  render?: (value: T[keyof T], row: T) => React.ReactNode;
+  searchValue?: (row: T) => string;
+  sortValue?: (row: T) => string | number;
+}
+export function DataGrid<T extends object>(
+  props: StylingProps & {
+    rows: T[];
+    columns: DataGridColumn<T>[];
+    getRowKey?: (row: T) => string | number;
+    label?: string;
+    pageSize?: number;
+    virtual?: boolean;
+    height?: number;
+    rowHeight?: number;
+    filters?: {
+      key: Extract<keyof T, string>;
+      label: string;
+      options: { value: string; label: string }[];
+    }[];
+    bulkActions?: {
+      value: string;
+      label: string;
+      onSelect: (rows: T[]) => void;
+    }[];
+    renderExpanded?: (row: T) => React.ReactNode;
+    rowActions?: (row: T) => React.ReactNode;
+    loading?: boolean;
+    error?: string;
+    onRetry?: () => void;
+    emptyText?: string;
+  },
+): React.ReactElement;
+export function WorkspaceSwitcher(
+  props: StylingProps & {
+    items: {
+      value: string;
+      label: string;
+      description?: string;
+      icon?: string;
+      disabled?: boolean;
+    }[];
+    value: string;
+    onValueChange: (value: string) => void;
+    label?: string;
+  },
+): React.ReactElement;
+export interface NotificationItem {
+  id: string;
+  title: string;
+  description?: string;
+  time?: string;
+  read?: boolean;
+  icon?: string;
+}
+export function NotificationCenter(props: {
+  items: NotificationItem[];
+  onRead?: (id: string) => void;
+  onReadAll?: () => void;
+  onSelect?: (item: NotificationItem) => void;
+  label?: string;
+}): React.ReactElement;
+export function AppShell(
+  props: StylingProps & {
+    brand?: React.ReactNode;
+    items: {
+      value: string;
+      label: string;
+      icon?: string;
+      count?: number;
+      disabled?: boolean;
+    }[];
+    value: string;
+    onValueChange: (value: string) => void;
+    workspace?: React.ReactNode;
+    search?: React.ReactNode;
+    actions?: React.ReactNode;
+    sidebarFooter?: React.ReactNode;
+    children: React.ReactNode;
+    collapsed?: boolean;
+    onCollapsedChange?: (value: boolean) => void;
+  },
+): React.ReactElement;
+export function BottomSheet(
+  props: StylingProps & {
+    open: boolean;
+    onClose: () => void;
+    title: React.ReactNode;
+    children: React.ReactNode;
+    footer?: React.ReactNode;
+    height?: number | string;
+  },
+): React.ReactElement;
+export interface ContextMenuItem {
+  value: string;
+  label?: string;
+  icon?: string;
+  disabled?: boolean;
+  destructive?: boolean;
+  separator?: boolean;
+  onSelect?: () => void;
+  items?: ContextMenuItem[];
+}
+export function ContextMenu(
+  props: StylingProps & {
+    items: ContextMenuItem[];
+    children: React.ReactNode;
+    label?: string;
+  },
+): React.ReactElement;
+export function SettingsPanel(
+  props: StylingProps & {
+    title?: React.ReactNode;
+    description?: React.ReactNode;
+    sections: {
+      id: string;
+      title: React.ReactNode;
+      description?: React.ReactNode;
+      children: React.ReactNode;
+    }[];
+    actions?: React.ReactNode;
+  },
+): React.ReactElement;
+export interface TeamMember {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  status?: string;
+}
+export function TeamDirectory(
+  props: StylingProps & {
+    members: TeamMember[];
+    onInvite?: (values: {
+      name: string;
+      email: string;
+      role: string;
+    }) => void | Promise<void>;
+    onRoleChange?: (id: string, role: string) => void | Promise<void>;
+    onRemove?: (id: string) => void | Promise<void>;
+    roles?: string[];
+  },
+): React.ReactElement;
+export interface ManagedFile {
+  id: string;
+  name: string;
+  type?: "folder" | "file";
+  size?: string;
+  owner?: string;
+  updated?: string;
+}
+export function FileManager(
+  props: StylingProps & {
+    files: ManagedFile[];
+    onUpload?: (files: File[]) => void;
+    onOpen?: (file: ManagedFile) => void;
+    onDownload?: (files: ManagedFile[]) => void;
+    onDelete?: (id: string) => void | Promise<void>;
+  },
+): React.ReactElement;
+export function ActivityFeed(
+  props: StylingProps & {
+    items: {
+      id: string;
+      title: React.ReactNode;
+      description?: React.ReactNode;
+      time?: string;
+      dateTime?: string;
+      icon?: string;
+    }[];
+    label?: string;
+    emptyText?: string;
+  },
+): React.ReactElement;
+export interface SupportMessage {
+  id: string;
+  author: string;
+  text: string;
+  time?: string;
+  own?: boolean;
+}
+export interface SupportThread {
+  id: string;
+  name: string;
+  subject: string;
+  status: string;
+  time?: string;
+  messages: SupportMessage[];
+}
+export function SupportInbox(
+  props: StylingProps & {
+    threads: SupportThread[];
+    value: string;
+    onValueChange: (id: string) => void;
+    onReply?: (id: string, text: string) => void | Promise<void>;
+    label?: string;
+  },
+): React.ReactElement;

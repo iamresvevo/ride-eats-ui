@@ -391,7 +391,8 @@ test("new platform controls expose native interaction semantics", () => {
 test("copyable component examples import existing public exports", async () => {
   const { collectionPages } = await import("../site/collection-data.js");
   const { motionPages } = await import("../site/motion-data.js");
-  for (const page of [...collectionPages, ...motionPages])
+  const { platformPages } = await import("../site/platform-data.js");
+  for (const page of [...collectionPages, ...motionPages, ...platformPages])
     for (const raw of page.imports.split(",")) {
       const name = raw.trim();
       assert.match(name, /^[A-Za-z_$][\w$]*$/, page.id);
@@ -484,4 +485,168 @@ test("gesture controls expose keyboard alternatives and controlled boundaries", 
   assert.match(carousel, /aria-roledescription="carousel"/);
   assert.match(carousel, /aria-label="Next slide"/);
   assert.match(carousel, /inert=""/);
+});
+
+test("DataGrid combines search, exact filters and stable numeric sorting", async () => {
+  const { getGridRows, getWindow } = await import("../react/grid-model.js");
+  const rows = [
+    { id: "a", name: "Alex", role: "Editor", count: 10 },
+    { id: "b", name: "Sam", role: "Viewer", count: 2 },
+    { id: "c", name: "Alex", role: "Editor", count: 10 },
+  ];
+  const columns = [{ key: "name" }, { key: "role" }, { key: "count" }];
+  assert.deepEqual(
+    getGridRows(rows, columns, {
+      query: "alex",
+      filters: { role: "Editor" },
+    }).map((row) => row.id),
+    ["a", "c"],
+  );
+  assert.deepEqual(
+    getGridRows(rows, columns, {
+      sort: { key: "count", direction: "asc" },
+    }).map((row) => row.id),
+    ["b", "a", "c"],
+  );
+  assert.deepEqual(
+    getGridRows(rows, columns, {
+      sort: { key: "count", direction: "desc" },
+    }).map((row) => row.id),
+    ["a", "c", "b"],
+  );
+  assert.equal(getGridRows(rows, columns, { query: "missing" }).length, 0);
+  assert.deepEqual(getWindow(0, 0, 40, 320), { start: 0, end: 0 });
+  const window = getWindow(1500, 2800, 40, 320);
+  assert.equal(window.start, 66);
+  assert.equal(window.end - window.start, 16);
+  assert.ok(window.end < 1500);
+});
+
+test("platform controls render compact semantics, data states and typed composition", () => {
+  const noop = () => {};
+  for (const [name, props] of [
+    [
+      "Textarea",
+      { label: "Notes", value: "Text", onChange: noop, error: "Fix this" },
+    ],
+    [
+      "Form",
+      {
+        initialValues: { name: "" },
+        onSubmit: noop,
+        children: ({ field }) => React.createElement("input", field("name")),
+      },
+    ],
+    [
+      "Combobox",
+      {
+        options: [{ value: "a", label: "Alex" }],
+        value: "a",
+        onValueChange: noop,
+        label: "Assignee",
+      },
+    ],
+    [
+      "MultiSelect",
+      {
+        options: [{ value: "a", label: "Alex" }],
+        value: ["a"],
+        onValueChange: noop,
+      },
+    ],
+    ["Autocomplete", { options: [], value: "Custom", onValueChange: noop }],
+    [
+      "DateRangePicker",
+      {
+        value: { start: "2026-11-02", end: "2026-11-09" },
+        onValueChange: noop,
+      },
+    ],
+    ["TimePicker", { value: "09:00", onValueChange: noop }],
+    [
+      "UploadProgress",
+      {
+        files: [{ id: "1", name: "File", status: "error", error: "Retry" }],
+        onRetry: noop,
+      },
+    ],
+    [
+      "DataGrid",
+      {
+        rows: [],
+        columns: [{ key: "name", label: "Name" }],
+        error: "Could not load",
+        onRetry: noop,
+      },
+    ],
+    [
+      "WorkspaceSwitcher",
+      {
+        items: [{ value: "a", label: "Studio" }],
+        value: "a",
+        onValueChange: noop,
+      },
+    ],
+    ["NotificationCenter", { items: [] }],
+    [
+      "AppShell",
+      {
+        items: [{ value: "a", label: "Home" }],
+        value: "a",
+        onValueChange: noop,
+        children: "App",
+      },
+    ],
+    [
+      "BottomSheet",
+      { open: false, onClose: noop, title: "Sheet", children: "Body" },
+    ],
+    [
+      "ContextMenu",
+      { items: [{ value: "a", label: "Open" }], children: "Target" },
+    ],
+    [
+      "SettingsPanel",
+      { sections: [{ id: "a", title: "General", children: "Fields" }] },
+    ],
+    ["TeamDirectory", { members: [] }],
+    ["FileManager", { files: [] }],
+    ["ActivityFeed", { items: [] }],
+    ["SupportInbox", { threads: [], value: "", onValueChange: noop }],
+  ])
+    assert.ok(render(name, props).length > 0 || name === "BottomSheet", name);
+  assert.match(
+    render("Combobox", { options: [], value: "", onValueChange: noop }),
+    /role="combobox"/,
+  );
+  assert.match(
+    render("MultiSelect", {
+      options: [{ value: "a", label: "Alex" }],
+      value: ["a"],
+      onValueChange: noop,
+    }),
+    /aria-label="Remove Alex"/,
+  );
+  const grid = render("DataGrid", {
+    rows: Array.from({ length: 1500 }, (_, i) => ({
+      id: i,
+      name: "Member " + i,
+    })),
+    columns: [{ key: "name" }],
+    virtual: true,
+  });
+  assert.match(grid, /aria-rowcount="1501"/);
+  assert.ok((grid.match(/aria-rowindex=/g) || []).length <= 16);
+});
+
+test("visual regression comparison detects layout changes while tolerating small encoding noise", async () => {
+  const { comparePixels } = await import("../scripts/compare-visuals.mjs");
+  const image = { width: 100, height: 1, data: new Uint8Array(400).fill(128) };
+  const same = { ...image, data: new Uint8Array(image.data) };
+  same.data[0] += 5;
+  assert.equal(comparePixels(image, same).pass, true);
+  const different = { ...image, data: new Uint8Array(image.data) };
+  different.data[0] = 255;
+  assert.equal(comparePixels(image, different).pass, false);
+  assert.equal(comparePixels(image, { ...image, width: 99 }).pass, false);
 });

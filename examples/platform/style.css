@@ -1,0 +1,5 @@
+body { margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text); }
+#root { max-width:1400px;margin:0 auto;padding:16px; }
+.re-app-shell { min-height:calc(100dvh - 32px); }
+.demo-notice { font-size:11px;color:var(--muted);margin:0 0 18px; }
+@media(max-width:760px) { #root {padding:0;}.re-app-shell {min-height:100dvh;border-radius:0;} }

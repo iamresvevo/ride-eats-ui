@@ -1,0 +1,17 @@
+{
+  "name": "ride-eats-platform-starter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@ride-eats/ui": "github:iamresvevo/ride-eats-ui#v0.7.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}
