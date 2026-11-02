@@ -1,0 +1,23 @@
+# Send extraction map
+
+Source checkout: ride-eats-send, HEAD `2530ac60d257a8440da6c3a93efc254e3f6fb5df`. Extraction also reads the current working files; Send is not modified.
+
+| Library                                              | Send source                                              | Adaptation                                                                                                    |
+| ---------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Button                                               | src/components/ActionButton.jsx                          | Friendly variant prop adapter                                                                                 |
+| Menu / Dropdown / Select                             | src/components/ui/Menu.jsx                               | Send render-prop and compound API preserved; array adapter added                                              |
+| Modal / Dialog                                       | src/components/ui/Modal.jsx                              | Controlled open adapter added                                                                                 |
+| Switch                                               | src/components/ui/Switch.jsx                             | Preserved                                                                                                     |
+| SettingRow                                           | src/components/ui/SettingRow.jsx                         | Preserved                                                                                                     |
+| Skeleton, Bone, BoneText                             | src/components/ui/Skeleton.jsx                           | Preserved; domain skeleton exports remain internal                                                            |
+| Pagination                                           | src/components/ui/Pagination.jsx                         | Page-size adapter                                                                                             |
+| DateTimePicker                                       | src/components/ui/DateTimePicker.jsx                     | Locale from document lang                                                                                     |
+| Avatar, VerificationBadge, VerifiedName              | src/components/AccountAvatar.jsx and identity components | Local initials helper replaces business format module                                                         |
+| Icon                                                 | src/components/Icon.jsx                                  | Preserved                                                                                                     |
+| Header                                               | src/components/Header.jsx                                | Configurable brand, item data, account and callbacks; retained measurement and pill motion                    |
+| AccountMenu                                          | src/components/AccountMenu.jsx                           | Retained AccountShell; removed companies, plans, routes, notification service, language and auth dependencies |
+| Theme, Tabs, Chips, Field, Card, Toast, SearchSelect | Shared Tools / library additions                         | Generic React API; no Send business logic                                                                     |
+
+Translation calls use a small node-preserving text adapter. Pass translated labels from your app. CSS copies only reusable control sections, with integration overrides. No shader, upload, billing, networking, workspace service or credentials are imported.
+
+Tooltips and PageLoading are also extracted from Send’s matching src/components/ui modules. UIProvider combines the generic providers with Send’s global tooltip renderer.

@@ -328,3 +328,13 @@ a.tool-card:hover{background:var(--raised);transform:translateY(-1px)}
 @media(max-width:700px){.split{grid-template-columns:1fr}.tabs{max-width:100%;overflow:auto}.modal{max-height:calc(100dvh - 24px)}}
 
 .search-select-menu{width:100%}.search-select-results{max-height:280px;overflow:auto}.menu-panel:has(.search-select-results){padding:6px}.search-select-input[hidden]{display:none}
+/* React controls */
+.btn{background:var(--raised);color:var(--text)}
+.btn:focus-visible,.tab:focus-visible,.chip:focus-visible,.icon-btn:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+.react-header{background:var(--bg)}.react-header .site-nav .nav-active{background:var(--ink);color:var(--on-ink)}
+.react-header .header-account .btn{height:42px;padding:4px 12px 4px 4px;border-radius:999px;background:var(--surface)}
+.react-submenu{padding-left:12px}.menu-item .menu-tick,.menu-item .menu-arrow{flex:none;color:var(--muted)}
+.react-verified{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#0482ee;color:white;font-size:11px}
+.react-dialog{border:0;color:var(--text);margin:auto;transform:none;padding:0}.react-dialog:not([open]){display:none}.react-dialog::backdrop{background:var(--overlay);backdrop-filter:blur(6px)}
+.react-toasts{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;display:grid;gap:8px}.react-toasts .toast{position:relative;transform:none;left:auto;bottom:auto}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

@@ -1,2 +1,21 @@
-# Instructions for AI developers
-Read README.md and docs/components.md before making changes. This is a browser ES-module library with no build step or runtime dependencies. Use src/index.js and css/index.css together. Call initUI() after body exists and applyTheme() before rendering. Reuse components and tokens; preserve light/dark and narrow-screen behavior. Do not copy app-specific authentication, endpoints, credentials, or business logic into this library. Supply account data and callbacks from the consuming application. Run npm run check and exercise examples/ in a browser after changes. Never claim physical-device or accessibility certification from syntax checks. Header/menu handles must close on unmount; call header.destroy() and searchSelect.destroy(). CSS includes global base styles: integrate deliberately in existing apps. Pin a commit when consuming from GitHub.
+# Ride Eats UI — instructions for AI developers
+
+This is a **React 19+ library extracted from Ride Eats Send**. Start with README.md, docs/components.md and docs/source-map.md. Use `<Header {...props} />`, `<Button />`, `<Dropdown />`, `<Tabs />`, `<Dialog />` and the other exports from `@ride-eats/ui`. Import `@ride-eats/ui/styles.css` once. Do not start a new integration with DOM mounting helpers.
+
+## Structure
+
+- react/index.jsx: public React API, generic primitives and friendly adapters.
+- react/send/: extracted Send components, with app-specific imports removed.
+- css/: shared tokens, components and extracted Send control styles.
+- site/: React component browser with live previews, copyable usage, and prop tables.
+- src/: legacy vanilla implementation, exposed only as @ride-eats/ui/vanilla.
+
+## Rules
+
+Preserve Send’s interaction and motion where components were extracted. Prefer props, children, render props and CSS tokens over hardcoded brands, routes or services. Keep auth, network endpoints, notification integration, billing and workspace logic in consuming apps. Never import credentials or private service configuration.
+
+Use controlled value/onValueChange for library selection components. Send’s Switch and DateTimePicker preserve onChange. Header accepts navigation items, brand, account, loading/signingOut flags and menuContent/extras/guestContent slots. Compound Menu APIs remain available when a Dropdown array is insufficient.
+
+Keep light/dark, keyboard, focus restoration, reduced motion and narrow layouts working. The CSS includes global rules: document integration limits candidly. No physical-device or accessibility conformance claim follows from a build.
+
+Run npm ci, npm run check, npm run build, npm test. Validate changed interactions in the component browser with the available supported browser tools. Update README and component reference if the public API changes. Publish docs through the repository’s GitHub Pages workflow. Keep the source map current when re-extracting from Send. Do not edit Send itself as part of library work. Do not spawn agents unless explicitly requested.

@@ -1,22 +1,49 @@
 {
   "name": "@ride-eats/ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Shared Ride Eats browser UI components and design tokens",
+  "description": "Ride Eats React components and design tokens",
   "exports": {
-    ".": "./src/index.js",
+    ".": {
+      "types": "./react/index.d.ts",
+      "import": "./react/index.jsx",
+      "default": "./react/index.jsx"
+    },
     "./styles.css": "./css/index.css",
-    "./src/*": "./src/*"
+    "./vanilla": "./src/index.js"
   },
   "files": [
+    "react",
     "src",
     "css",
     "docs",
     "README.md"
   ],
   "scripts": {
-    "dev": "python3 -m http.server 4320 --bind 127.0.0.1",
-    "check": "node scripts/check.mjs"
+    "dev": "vite --host 127.0.0.1",
+    "check": "node scripts/check.mjs",
+    "build": "vite build",
+    "test": "node tests/run.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "prettier": "^3.9.10",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^7.0.2",
+    "vite": "^6.0.0"
+  },
+  "types": "./react/index.d.ts",
+  "homepage": "https://iamresvevo.github.io/ride-eats-ui/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamresvevo/ride-eats-ui.git"
   }
 }
