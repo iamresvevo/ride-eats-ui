@@ -1,3 +1,4 @@
+import { iconNames } from "./icons/names.js";
 import { useSvgMotion } from "./icons/useSvgMotion.js";
 import React, {
   useEffect,
@@ -18,20 +19,23 @@ const glyphs = {
   bell: (
     <>
       <g>
-        <path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2" />
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 12 4;18 12 4;-15 12 4;10 12 4;-5 12 4;0 12 4"
+        <path
+          pathLength="1"
+          strokeDasharray="1"
+          d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2"
+        />
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0;0"
           dur=".8s"
           begin="indefinite"
         />
       </g>
-      <path d="M10 21h4" />
+      <path pathLength="1" strokeDasharray="1" d="M10 21h4" />
     </>
   ),
   heart: (
-    <path d={heart}>
+    <path pathLength="1" strokeDasharray="1" d={heart}>
       <animate
         attributeName="d"
         values={`${heart};${expandHeart(1.08)};${heart};${expandHeart(1.04)};${heart}`}
@@ -55,14 +59,13 @@ const glyphs = {
   ),
   upload: (
     <>
-      <path d="M4 16v5h16v-5" />
+      <path pathLength="1" strokeDasharray="1" d="M4 16v5h16v-5" />
       <g>
-        <path d="M12 16V3m-5 5 5-5 5 5" />
-        <animateTransform
-          attributeName="transform"
-          type="translate"
-          values="0 0;0 -3;0 1;0 0"
-          dur=".65s"
+        <path pathLength="1" strokeDasharray="1" d="M12 16V3m-5 5 5-5 5 5" />
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0;0"
+          dur=".8s"
           begin="indefinite"
         />
       </g>
@@ -70,14 +73,13 @@ const glyphs = {
   ),
   download: (
     <>
-      <path d="M4 17v4h16v-4" />
+      <path pathLength="1" strokeDasharray="1" d="M4 17v4h16v-4" />
       <g>
-        <path d="M12 3v13m-5-5 5 5 5-5" />
-        <animateTransform
-          attributeName="transform"
-          type="translate"
-          values="0 0;0 3;0 -1;0 0"
-          dur=".65s"
+        <path pathLength="1" strokeDasharray="1" d="M12 3v13m-5-5 5 5 5-5" />
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0;0"
+          dur=".8s"
           begin="indefinite"
         />
       </g>
@@ -93,26 +95,28 @@ const glyphs = {
           begin="indefinite"
         />
       </circle>
-      <path d="m16 16 5 5" />
+      <path pathLength="1" strokeDasharray="1" d="m16 16 5 5" />
     </>
   ),
   refresh: (
     <g>
-      <path d="M20 7a8 8 0 0 0-13.5-2L3 8m0-5v5h5M4 17a8 8 0 0 0 13.5 2L21 16m0 5v-5h-5" />
-      <animateTransform
-        attributeName="transform"
-        type="rotate"
-        from="0 12 12"
-        to="360 12 12"
-        dur="1s"
+      <path
+        pathLength="1"
+        strokeDasharray="1"
+        d="M20 7a8 8 0 0 0-13.5-2L3 8m0-5v5h5M4 17a8 8 0 0 0 13.5 2L21 16m0 5v-5h-5"
+      />
+      <animate
+        attributeName="stroke-dashoffset"
+        values="1;0;0"
+        dur=".8s"
         begin="indefinite"
       />
     </g>
   ),
   settings: (
     <>
-      <path d="M4 6h16M4 12h16M4 18h16" />
-      <path d="M8 3v6">
+      <path pathLength="1" strokeDasharray="1" d="M4 6h16M4 12h16M4 18h16" />
+      <path pathLength="1" strokeDasharray="1" d="M8 3v6">
         <animate
           attributeName="d"
           values="M8 3v6;M12 3v6;M8 3v6"
@@ -120,7 +124,7 @@ const glyphs = {
           begin="indefinite"
         />
       </path>
-      <path d="M16 9v6">
+      <path pathLength="1" strokeDasharray="1" d="M16 9v6">
         <animate
           attributeName="d"
           values="M16 9v6;M11 9v6;M16 9v6"
@@ -128,7 +132,7 @@ const glyphs = {
           begin="indefinite"
         />
       </path>
-      <path d="M10 15v6">
+      <path pathLength="1" strokeDasharray="1" d="M10 15v6">
         <animate
           attributeName="d"
           values="M10 15v6;M15 15v6;M10 15v6"
@@ -140,8 +144,8 @@ const glyphs = {
   ),
   folder: (
     <>
-      <path d="M3 9v11h18V9" />
-      <path d="M3 9V5h6l2 3h10v1">
+      <path pathLength="1" strokeDasharray="1" d="M3 9v11h18V9" />
+      <path pathLength="1" strokeDasharray="1" d="M3 9V5h6l2 3h10v1">
         <animate
           attributeName="d"
           values="M3 9V5h6l2 3h10v1;M3 9V3h6l2 3h10v3;M3 9V5h6l2 3h10v1"
@@ -153,18 +157,23 @@ const glyphs = {
   ),
   send: (
     <g>
-      <path d="m21 3-7 18-4-8-8-4L21 3ZM10 13 21 3" />
-      <animateTransform
-        attributeName="transform"
-        type="translate"
-        values="0 0;2 -2;-.5 .5;0 0"
-        dur=".7s"
+      <path
+        pathLength="1"
+        strokeDasharray="1"
+        d="m21 3-7 18-4-8-8-4L21 3ZM10 13 21 3"
+      />
+      <animate
+        attributeName="stroke-dashoffset"
+        values="1;0;0"
+        dur=".8s"
         begin="indefinite"
       />
     </g>
   ),
 };
-export const animatedIconNames = Object.keys(glyphs);
+export const animatedIconNames = [
+  ...new Set([...Object.keys(glyphs), ...iconNames]),
+];
 export function AnimatedIcon({
   name,
   size = 24,
@@ -178,6 +187,21 @@ export function AnimatedIcon({
 }) {
   const ref = useRef(null);
   useSvgMotion(ref, { playing, loop, hover: true, name });
+  if (!glyphs[name])
+    return (
+      <Icon
+        {...props}
+        name={name}
+        size={size}
+        strokeWidth={strokeWidth}
+        playing={playing}
+        loop={loop}
+        label={label}
+        className={`re-animated-icon ${className}`}
+        style={style}
+        motion="auto"
+      />
+    );
   return (
     <svg
       {...props}

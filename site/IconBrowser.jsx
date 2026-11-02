@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from "react";
 import {
   Icon,
+  AnimatedIcon,
   iconNames,
   Button,
-  Select,
+  Slider,
   Segmented,
   useToast,
 } from "../react/index.jsx";
@@ -66,15 +67,16 @@ const categories = {
   Media: ["video", "image", "music", "audio", "camera"],
   Systems: ["server", "database", "security", "network", "code", "computer"],
 };
-export default function IconBrowser() {
+export default function IconBrowser({ animated = false }) {
   const [query, setQuery] = useState(""),
     [category, setCategory] = useState("All"),
     [selected, setSelected] = useState("headset"),
     [size, setSize] = useState(24),
-    [motion, setMotion] = useState("none"),
+    [motion, setMotion] = useState("auto"),
     [stroke, setStroke] = useState("1.7"),
     [limit, setLimit] = useState(72);
   const toast = useToast();
+  const PreviewIcon = motion === "auto" ? AnimatedIcon : Icon;
   const filtered = useMemo(() => {
     const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
     const pool =
@@ -97,7 +99,10 @@ export default function IconBrowser() {
       );
     });
   }, [query, category]);
-  const snippet = `<Icon name="${selected}" size={${size}} strokeWidth={${stroke}}${motion !== "none" ? ` motion="${motion}" animateOn="hover"` : ""} />`;
+  const snippet =
+    motion === "auto"
+      ? `<AnimatedIcon name="${selected}" size={${size}} strokeWidth={${stroke}} />`
+      : `<Icon name="${selected}" size={${size}} strokeWidth={${stroke}}${motion !== "none" ? ` motion="${motion}" animateOn="hover"` : ""} />`;
   return (
     <div className="icon-browser">
       <div className="icon-browser-head">
@@ -132,13 +137,14 @@ export default function IconBrowser() {
       </div>
       <div className="icon-workbench">
         <div className="icon-selected">
-          <Icon
+          <PreviewIcon
             key={selected + motion}
             name={selected}
-            size={40}
+            size={size}
             strokeWidth={Number(stroke)}
-            motion={motion}
-            animateOn="always"
+            {...(motion === "auto" ? {} : { motion, animateOn: "always" })}
+            playing={motion === "auto" ? true : undefined}
+            loop={motion === "auto" ? true : undefined}
             label={selected}
           />
           <strong>{selected}</strong>
@@ -146,19 +152,15 @@ export default function IconBrowser() {
         <div className="icon-controls">
           <div className="icon-control-row">
             <div className="icon-choice-field">
-              <span>Size</span>
-              <div className="icon-choice-scroll">
-                <Segmented
-                  name="Icon size"
-                  fit
-                  value={String(size)}
-                  onChange={(value) => setSize(Number(value))}
-                  options={[16, 20, 24, 32, 40, 48].map((value) => ({
-                    value: String(value),
-                    label: value + " px",
-                  }))}
-                />
-              </div>
+              <Slider
+                label="Icon size"
+                min={16}
+                max={64}
+                step={1}
+                value={size}
+                onValueChange={setSize}
+                formatValue={(value) => `${value} px`}
+              />
             </div>
             <div className="icon-choice-field">
               <span>Stroke</span>
@@ -186,19 +188,10 @@ export default function IconBrowser() {
                   value={motion}
                   onChange={setMotion}
                   options={[
-                    "none",
-                    "draw",
-                    "spin",
-                    "pulse",
-                    "bounce",
-                    "rotate",
-                  ].map((value) => ({
-                    value,
-                    label:
-                      value === "none"
-                        ? "Still"
-                        : value[0].toUpperCase() + value.slice(1),
-                  }))}
+                    { value: "auto", label: "Animate" },
+                    { value: "none", label: "Still" },
+                    { value: "draw", label: "Draw" },
+                  ]}
                 />
               </div>
             </div>
@@ -233,12 +226,11 @@ export default function IconBrowser() {
             onClick={() => setSelected(name)}
             aria-label={`Select ${name}`}
           >
-            <Icon
+            <PreviewIcon
               name={name}
               size={size}
               strokeWidth={Number(stroke)}
-              motion={motion}
-              animateOn="hover"
+              {...(motion === "auto" ? {} : { motion, animateOn: "hover" })}
             />
             <span>{name}</span>
           </button>

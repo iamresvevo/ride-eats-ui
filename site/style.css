@@ -1821,9 +1821,7 @@
   flex-direction: column;
   gap: 16px;
 }
-.icon-controls .re-slider {
-  display: none;
-}
+
 .icon-browser-categories {
   overflow-x: auto;
   flex-wrap: nowrap;
@@ -1900,5 +1898,57 @@
   }
   .icon-choice-scroll .segmented button {
     padding: 0 9px;
+  }
+}
+
+/* Compact icon workbench: a fixed preview well beside two aligned control columns. */
+.icon-workbench {
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: 24px;
+  padding: 24px;
+}
+.icon-selected {
+  min-height: 156px;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 16px;
+}
+.icon-control-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px 24px;
+  align-items: start;
+}
+.icon-control-row > .icon-choice-field:first-child {
+  grid-column: 1 / -1;
+}
+.icon-choice-field {
+  min-width: 0;
+}
+.icon-controls .re-slider {
+  width: 100%;
+}
+.icon-choice-scroll .segmented {
+  max-width: 100%;
+}
+.icon-choice-scroll .segmented button {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+.icon-code code {
+  font-size: 12px;
+}
+@media (max-width: 700px) {
+  .icon-workbench {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+  .icon-selected {
+    min-height: 112px;
+  }
+  .icon-control-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }

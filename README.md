@@ -13,7 +13,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.4.0
+npm install github:iamresvevo/ride-eats-ui#v0.5.0
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -248,7 +248,7 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 
 ```jsx
 <Icon name="headset" size={24} strokeWidth={1.7} />
-<Icon name="loader-circle" motion="spin" animateOn="always" />
+<AnimatedIcon name="loader-circle" playing loop />
 <Icon name="check" motion="draw" />
 <IconProvider icons={{ brand: <path d="M4 12 12 4l8 8-8 8Z" /> }}>
   <Icon name="brand" size={32} />
@@ -259,11 +259,13 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 
 ## Native SVG motion and more components
 
-[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) now have a dedicated page. These animate SVG paths, strokes and internal parts with native animate/animateTransform elements, rather than moving a view wrapper. Presets: bell, heart, check, upload, download, search, refresh, settings, folder and send. Hover/focus plays once; playing and loop provide explicit control. Reduced-motion preferences stop playback.
+[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) cover all 2,015 catalog names. Every SVG primitive draws independently with staggered timing; circles, ellipses and rounded rectangles add geometry accents, and paths subtly morph inside the fixed SVG viewport. Ten bespoke presets add path morphs and purpose-built motion. These are generated SVG animations across the catalog, not 2,015 individually hand-authored choreographies. Hover/focus plays once; `playing` and `loop` control playback. Reduced-motion preferences stop playback. Letter chunks stay lazy-loaded.
 
 ```jsx
 <AnimatedIcon name="bell" size={28} />
 <AnimatedIcon name="heart" playing loop />
+<AnimatedIcon name="headset" />
+<AnimatedIcon name="database" playing loop />
 <AnimatedIcon name="check" playing />
 ```
 

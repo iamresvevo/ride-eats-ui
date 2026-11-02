@@ -243,7 +243,7 @@ import { Separator } from '@ride-eats/ui';
 import { Icon, IconProvider } from '@ride-eats/ui';
 
 <Icon name="headset" size={24} strokeWidth={1.7} />
-<Icon name="loader-circle" motion="spin" animateOn="always" />
+<AnimatedIcon name="loader-circle" playing loop />
 <Icon name="check" motion="draw" />
 
 // Your own brand glyphs fit the same API:
@@ -256,7 +256,7 @@ import { Icon, IconProvider } from '@ride-eats/ui';
 | -------------------------- | -------------------------------------------- | ------------------------------------------------------------------ |
 | name                       | string                                       | Catalog slug or a registered custom name.                          |
 | size / strokeWidth / color | number / number / string                     | SVG size, stroke and color; defaults preserve Send control sizing. |
-| motion                     | none / draw / spin / pulse / bounce / rotate | Opt-in movement; honors reduced motion.                            |
+| motion                     | auto / none / draw | Opt-in movement; honors reduced motion.                            |
 | animateOn                  | hover / always                               | Hover/focus or continuous animation.                               |
 | label / title              | string                                       | Accessible meaning for nondecorative icons.                        |
 | IconProvider.icons         | Record<string,ReactNode>                     | Register custom SVG contents or override catalog names.            |
@@ -840,3 +840,15 @@ import {
 | Composition         | children and slots                              | No additional provider or dashboard-specific state. |
 | MetricGrid.minWidth | number                                          | Responsive minimum card width in pixels.            |
 | Card                | title,description,action,footer,variant,padding | High-level API or compound CardHeader/Body/Footer.  |
+
+## AnimatedIcon — full catalog
+
+All 2,015 catalog glyphs support native SVG stroke and geometry animation. Ten presets are bespoke; remaining glyphs use generated per-shape choreography. There are no SVG transform animations. Legacy spin/pulse/bounce/rotate aliases now resolve to geometry animation.
+
+```jsx
+import { AnimatedIcon } from '@ride-eats/ui';
+<AnimatedIcon name="headset" />
+<AnimatedIcon name="database" size={32} playing loop />
+```
+
+Hover/focus plays once. `playing` starts playback, `loop` repeats it, and reduced-motion preferences stop it. Size, strokeWidth, color/style and label remain customizable. Catalog shapes load in letter chunks.

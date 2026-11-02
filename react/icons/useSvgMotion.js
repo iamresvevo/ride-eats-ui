@@ -41,7 +41,14 @@ export function useSvgMotion(
     media.addEventListener("change", preference);
     if (playing) play();
     else stop();
+    // Letter chunks can resolve after the parent layout effect. Start newly mounted SVG nodes.
+    const observer = new MutationObserver(() => {
+      if (playing || host?.matches(":hover") || document.activeElement === host)
+        play();
+    });
+    observer.observe(root, { childList: true, subtree: true });
     return () => {
+      observer.disconnect();
       host?.removeEventListener("pointerleave", leave);
       host?.removeEventListener("blur", blur);
       host?.removeEventListener("pointerenter", play);

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import * as UI from "../react/index.jsx";
+const IconBrowser = lazy(() => import("./IconBrowser.jsx"));
 export default function MotionDemos({ id }) {
   const [open, setOpen] = useState(false),
     [value, setValue] = useState("details"),
@@ -15,55 +16,9 @@ export default function MotionDemos({ id }) {
   switch (id) {
     case "animated-icons":
       return (
-        <div className="animated-icon-demo">
-          <div className="animated-icon-toolbar">
-            <span>Hover a glyph, or play the collection.</span>
-            <UI.Button
-              size="sm"
-              icon="play"
-              onClick={() => {
-                setPlaying(true);
-                setReplay((v) => v + 1);
-              }}
-            >
-              Play animations
-            </UI.Button>
-          </div>
-          <div className="animated-glyph-grid">
-            {UI.animatedIconNames.map((name) => (
-              <button
-                type="button"
-                key={name}
-                aria-label={`Play ${name} animation`}
-                onClick={() => {
-                  setPlaying(true);
-                  setActiveName("*");
-                  setReplay((v) => v + 1);
-                }}
-              >
-                <UI.AnimatedIcon
-                  key={name + replay}
-                  name={name}
-                  size={30}
-                  playing={
-                    playing && (activeName === "*" || activeName === name)
-                  }
-                  loop={loop}
-                />
-                <span>{name}</span>
-              </button>
-            ))}
-          </div>
-          <UI.Switch
-            label="Loop previews"
-            checked={loop}
-            onChange={(v) => {
-              setLoop(v);
-              setPlaying(v);
-              setReplay((t) => t + 1);
-            }}
-          />
-        </div>
+        <Suspense fallback={<UI.Skeleton width="100%" height={300} />}>
+          <IconBrowser animated />
+        </Suspense>
       );
     case "popover":
       return (

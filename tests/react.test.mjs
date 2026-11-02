@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { PassThrough } from "node:stream";
+import { renderToPipeableStream, renderToStaticMarkup } from "react-dom/server";
 import * as UI from "../.test-build/index.js";
 const render = (name, props) =>
   renderToStaticMarkup(React.createElement(UI[name], props));
@@ -283,13 +284,43 @@ test("custom SVG glyphs use the same accessible Icon API", () => {
   assert.match(html, /M4 4h16v16H4Z/);
 });
 
-test("animated icons contain native SVG motion and no animated view wrapper", () => {
+test("animated icons contain native SVG motion and no animated view wrapper", async () => {
+  const html = await new Promise((resolve, reject) => {
+    const output = new PassThrough();
+    let text = "";
+    output.on("data", (chunk) => {
+      text += chunk;
+    });
+    output.on("end", () => resolve(text));
+    const stream = renderToPipeableStream(
+      React.createElement(
+        React.Fragment,
+        null,
+        UI.animatedIconNames.map((name) =>
+          React.createElement(UI.AnimatedIcon, {
+            key: name,
+            name,
+            size: 28,
+            playing: true,
+          }),
+        ),
+      ),
+      {
+        onAllReady() {
+          stream.pipe(output);
+        },
+        onError: reject,
+      },
+    );
+  });
+  assert.ok(html.length > 0);
   for (const name of UI.animatedIconNames) {
-    const html = render("AnimatedIcon", { name, size: 28, playing: true });
+    const html = render("AnimatedIcon", { name, playing: true });
     assert.match(html, /<svg/);
     assert.match(html, /<animate(?:Transform)? /);
     assert.doesNotMatch(html, /<div/);
     assert.doesNotMatch(html, /animation:/);
+    assert.doesNotMatch(html, /animateTransform|attributeName="transform"/);
   }
   assert.match(render("AnimatedIcon", { name: "heart" }), /attributeName="d"/);
   assert.match(
@@ -358,4 +389,40 @@ test("copyable component examples import existing public exports", async () => {
       assert.match(name, /^[A-Za-z_$][\w$]*$/, page.id);
       assert.ok(name in UI, `${page.id}: missing ${name}`);
     }
+});
+
+test("every catalog icon has generated per-shape native SVG animation", async () => {
+  const { loaders } = await import("../react/icons/loaders.js");
+  const { readFile } = await import("node:fs/promises");
+  const source = await readFile(
+    new URL("../react/icons/AnimatedShapes.jsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(source, /attributeName="stroke-dashoffset"/);
+  assert.match(source, /attributeName="r"/);
+  assert.doesNotMatch(source, /<svg|<div|animation:/);
+  const names = new Set(UI.animatedIconNames);
+  for (const name of UI.iconNames) assert.ok(names.has(name), name);
+  let count = 0;
+  for (const loader of Object.values(loaders)) {
+    const { default: icons } = await loader();
+    for (const [name, nodes] of Object.entries(icons)) {
+      assert.ok(nodes.length, name);
+      for (const [tag] of nodes)
+        assert.ok(
+          [
+            "path",
+            "circle",
+            "ellipse",
+            "rect",
+            "line",
+            "polyline",
+            "polygon",
+          ].includes(tag),
+          name + ": " + tag,
+        );
+      count++;
+    }
+  }
+  assert.equal(count, 2015);
 });

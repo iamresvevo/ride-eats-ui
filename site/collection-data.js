@@ -39,7 +39,7 @@ export const collectionPages = [
       ],
       [
         "motion",
-        "none | draw | spin | pulse | bounce | rotate",
+        "auto | none | draw",
         "Opt-in movement; honors reduced motion.",
       ],
       ["animateOn", "hover | always", "Hover/focus or continuous animation."],

@@ -1,3 +1,4 @@
+import { AnimatedShapes } from "../icons/AnimatedShapes.jsx";
 import { useSvgMotion } from "../icons/useSvgMotion.js";
 import React, { lazy, Suspense, useRef } from "react";
 import { loaders } from "../icons/loaders.js";
@@ -10,18 +11,20 @@ function catalogChunk(key) {
       key,
       lazy(() =>
         loaders[key]().then((module) => ({
-          default: ({ name }) =>
-            (
-              module.default[name] || [
-                ["path", { d: "M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" }],
-              ]
-            ).map(([tag, attributes], index) =>
+          default: ({ name, motion }) => {
+            const nodes = module.default[name] || [
+              ["path", { d: "M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" }],
+            ];
+            if (motion === "auto")
+              return <AnimatedShapes nodes={nodes} name={name} />;
+            return nodes.map(([tag, attributes], index) =>
               React.createElement(tag, {
                 ...attributes,
                 pathLength: 1,
                 key: index,
               }),
-            ),
+            );
+          },
         })),
       ),
     );
@@ -106,12 +109,16 @@ export default function Icon({
   title,
   motion = "none",
   animateOn = "hover",
+  playing,
+  loop,
   ...props
 }) {
+  // Legacy movement names resolve to native geometry motion.
+  if (["spin", "pulse", "bounce", "rotate"].includes(motion)) motion = "auto";
   const ref = useRef(null);
   useSvgMotion(ref, {
-    playing: animateOn === "always" && motion !== "none",
-    loop: motion === "spin" || motion === "pulse",
+    playing: playing ?? (animateOn === "always" && motion !== "none"),
+    loop: loop ?? (motion === "spin" || motion === "pulse"),
     hover: animateOn === "hover" && motion !== "none",
     name: motion + ":" + name,
   });
@@ -142,42 +149,6 @@ export default function Icon({
     >
       {title && <title>{title}</title>}
       <g strokeDasharray={motion === "draw" ? 1 : undefined}>
-        {motion === "spin" && (
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            from="0 12 12"
-            to="360 12 12"
-            dur="1.3s"
-            begin="indefinite"
-          />
-        )}
-        {motion === "rotate" && (
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            values="0 12 12;24 12 12;0 12 12"
-            dur=".6s"
-            begin="indefinite"
-          />
-        )}
-        {motion === "bounce" && (
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            values="0 0;0 -4;0 1;0 0"
-            dur=".65s"
-            begin="indefinite"
-          />
-        )}
-        {motion === "pulse" && (
-          <animate
-            attributeName="opacity"
-            values="1;.4;1"
-            dur="1.5s"
-            begin="indefinite"
-          />
-        )}
         {motion === "draw" && (
           <animate
             attributeName="stroke-dashoffset"
@@ -189,10 +160,17 @@ export default function Icon({
         )}
         {custom[name] ||
           (PATHS[name] ? (
-            <path d={PATHS[name]} pathLength="1" />
+            motion === "auto" ? (
+              <AnimatedShapes
+                nodes={[["path", { d: PATHS[name] }]]}
+                name={name}
+              />
+            ) : (
+              <path d={PATHS[name]} pathLength="1" />
+            )
           ) : Glyph ? (
             <Suspense fallback={null}>
-              <Glyph name={name} />
+              <Glyph name={name} motion={motion} />
             </Suspense>
           ) : (
             <path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" />

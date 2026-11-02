@@ -228,7 +228,9 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, "name"> {
   strokeWidth?: number;
   label?: string;
   title?: string;
-  motion?: "none" | "draw" | "spin" | "pulse" | "bounce" | "rotate";
+  playing?: boolean;
+  loop?: boolean;
+  motion?: "auto" | "none" | "draw" | "spin" | "pulse" | "bounce" | "rotate";
   animateOn?: "hover" | "always";
 }
 export function Icon(props: IconProps): React.ReactElement;
@@ -591,17 +593,7 @@ export function Toolbar(
   props: React.HTMLAttributes<HTMLDivElement> & { trailing?: React.ReactNode },
 ): React.ReactElement;
 
-export type AnimatedIconName =
-  | "bell"
-  | "heart"
-  | "check"
-  | "upload"
-  | "download"
-  | "search"
-  | "refresh"
-  | "settings"
-  | "folder"
-  | "send";
+export type AnimatedIconName = string;
 export const animatedIconNames: AnimatedIconName[];
 export function AnimatedIcon(
   props: Omit<React.SVGProps<SVGSVGElement>, "name"> & {
