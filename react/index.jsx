@@ -1,3 +1,4 @@
+import SendIcon from "./send/Icon.jsx";
 import { placeSelection } from "./send/hooks/selection.js";
 export { default as Segmented } from "./send/Segmented.jsx";
 import Tooltips from "./send/ui/Tooltips.jsx";
@@ -493,8 +494,10 @@ export function Select({
           aria-label={label}
           className="menu-select"
         >
-          {options.find((item) => item.value === value)?.label || label}
-          <span aria-hidden="true">⌄</span>
+          <span className="select-label">
+            {options.find((item) => item.value === value)?.label || label}
+          </span>
+          <SendIcon name="select" />
         </Button>
       )}
     >

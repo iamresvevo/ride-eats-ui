@@ -1383,3 +1383,23 @@
     transition: none;
   }
 }
+
+/* Field labels grow; Send’s SVG selection indicator stays at the trailing inset. */
+.react-select .menu-select > .select-label {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.react-select .menu-select > .icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  margin-left: auto;
+  color: var(--faint);
+}
+.react-select .menu-select {
+  padding: 0 12px 0 14px;
+}

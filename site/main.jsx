@@ -861,7 +861,7 @@ function App() {
           <strong>
             Ride Eats <span>UI</span>
           </strong>
-          <Badge>v0.2.1</Badge>
+          <Badge>v0.2.2</Badge>
         </a>
         <div className="top-links">
           <span className="react-tag">
@@ -1101,7 +1101,7 @@ function App() {
               component. React 19 or newer.
             </p>
             <h2 className="doc-heading">1. Install a reviewed version</h2>
-            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.2.1"}</Code>
+            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.2.2"}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
             <Code>{`import { ThemeProvider, ToastProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ThemeProvider defaultTheme="system">\n      <ToastProvider>\n        <Button variant="primary">Hello, Studio</Button>\n      </ToastProvider>\n    </ThemeProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>
