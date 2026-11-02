@@ -786,6 +786,15 @@ function App() {
     [mode, setMode] = useState("preview"),
     [mobile, setMobile] = useState(false),
     [accent, setAccent] = useState("#1fa476");
+  const [compact, setCompact] = useState(
+    () => matchMedia("(max-width: 760px)").matches,
+  );
+  React.useEffect(() => {
+    const media = matchMedia("(max-width: 760px)");
+    const change = () => setCompact(media.matches);
+    media.addEventListener("change", change);
+    return () => media.removeEventListener("change", change);
+  }, []);
   const { theme, setTheme } = useTheme();
   const selected = components.find((c) => c.id === current);
   const navigate = (id) => {
@@ -840,13 +849,19 @@ function App() {
           <button
             className="mobile-toggle"
             aria-label="Toggle navigation"
+            aria-expanded={mobile}
+            aria-controls="component-navigation"
             onClick={() => setMobile(!mobile)}
           >
             <Icon name="list" />
           </button>
         </div>
       </header>
-      <aside className={`docs-sidebar ${mobile ? "is-open" : ""}`}>
+      <aside
+        id="component-navigation"
+        inert={compact && !mobile}
+        className={`docs-sidebar ${mobile ? "is-open" : ""}`}
+      >
         <label className="docs-search">
           <Icon name="search" />
           <input
