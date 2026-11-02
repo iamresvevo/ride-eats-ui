@@ -113,7 +113,7 @@ export default function Modal({
     element.showModal();
     const enterTimer = setTimeout(() => {
       element.dataset.entered = "true";
-    }, 280);
+    }, className.includes("re-bottom-sheet") ? 440 : 380);
     const stopFocus = focusFormOnOpen(element);
     return () => {
       clearTimeout(enterTimer);
@@ -159,21 +159,22 @@ export default function Modal({
     element.style.transition = "none";
     syncStack();
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const sheet = className.includes("re-bottom-sheet");
     const duration = reduced
-      ? 0
+      ? 80
+      : sheet ? 300
       : variant === "dialog" && className.includes("re-drawer")
         ? 220
         : 180;
     const timer = setTimeout(done, duration + 40);
-    if (reduced) done();
-    else {
+    {
       const drawer = className.includes("re-drawer");
-      const offset = drawer
+      const offset = reduced ? "" : sheet ? " translateY(calc(100% + 24px))" : drawer
         ? ` translateX(${className.includes("re-drawer-left") ? "-24" : "24"}px)`
         : " translateY(8px) scale(.98)";
       animation = element.animate(
-        [from, { opacity: 0, transform: from.transform + offset }],
-        { duration, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" },
+        [from, { opacity: sheet && !reduced ? 1 : 0, transform: from.transform + offset }],
+        { duration, easing: current.getPropertyValue("--motion-ease").trim() || "cubic-bezier(.25,1,.3,1)", fill: "forwards" },
       );
       animation.finished.then(done, () => {});
     }

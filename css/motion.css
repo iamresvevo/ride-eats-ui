@@ -19,7 +19,7 @@
   overflow: visible;
 }
 .re-popover:popover-open {
-  animation: re-popover-in 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: re-popover-in 240ms var(--motion-ease);
 }
 @keyframes re-popover-in {
   from {

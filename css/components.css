@@ -5,12 +5,13 @@
    Neutral greys, one green accent. Rounded surfaces never carry borders:
    depth comes from fill steps (bg < surface < raised) and soft shadows. */
 :root{
+  --motion-ease:cubic-bezier(.25,1,.3,1);
   --shadow-card:0 1px 2px rgba(0,0,0,.03),0 4px 16px rgba(0,0,0,.04);
   --tile-quiet:var(--raised);
   --bg:#f4f4f3;--surface:#ffffff;--raised:#f0f0ef;--sunken:#e9e9e7;--hover:#e4e4e2;
   --text:#18181b;--muted:#6b6b72;--faint:#9d9da4;--divider:rgba(0,0,0,.06);
-  --brand:#1fa476;--brand-hover:#1b9169;--brand-soft:rgba(31,164,118,.12);--on-brand:#fff;
-  --good:#1fa476;--good-soft:rgba(31,164,118,.12);
+  --brand:#1fa476;--brand-hover:#1b9169;--brand-soft:var(--raised);--on-brand:#fff;
+  --good:#1fa476;--good-soft:var(--raised);
   --wait:#a16207;--wait-soft:rgba(234,179,8,.16);
   --bad:#c0392b;--bad-soft:rgba(220,38,38,.10);
   --neutral-soft:rgba(0,0,0,.06);
@@ -19,8 +20,8 @@
   --shadow-2:0 24px 64px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.06);
   --overlay:rgba(12,12,14,.45);
   --r-sm:12px;--r:18px;--r-lg:20px;--r-dialog:28px;--r-pill:999px;--on-ink:#ffffff;--line-strong:rgba(0,0,0,.16);
-  --focus:0 0 0 3px rgba(31,164,118,.3);
-  --line:rgba(0,0,0,.07);--shadow-pop:0 10px 30px rgba(0,0,0,.1);--spring-soft:cubic-bezier(.25,1,.3,1);
+  --focus:0 0 0 2px var(--brand);
+  --line:rgba(0,0,0,.07);--shadow-pop:0 10px 30px rgba(0,0,0,.1);--spring-soft:var(--motion-ease);
   color-scheme:light;
 }
 [data-theme="dark"]{
@@ -28,8 +29,8 @@
   --tile-quiet:#121214;
   --bg:#0c0c0d;--surface:#161618;--raised:#1f1f22;--sunken:#1b1b1d;--hover:#28282c;
   --text:#f2f2f3;--muted:#a1a1a8;--faint:#6e6e76;--divider:rgba(255,255,255,.06);
-  --brand:#1fa476;--brand-hover:#23b583;--brand-soft:rgba(31,164,118,.16);--on-brand:#06140e;
-  --good:#1fa476;--good-soft:rgba(31,164,118,.12);
+  --brand:#1fa476;--brand-hover:#23b583;--brand-soft:var(--raised);--on-brand:#06140e;
+  --good:#1fa476;--good-soft:var(--raised);
   --wait:#facc15;--wait-soft:rgba(250,204,21,.12);
   --bad:#f87171;--bad-soft:rgba(248,113,113,.12);
   --neutral-soft:rgba(255,255,255,.07);
@@ -217,7 +218,7 @@ a.tool-card:hover{background:var(--raised);transform:translateY(-1px)}
 #modal-root::before{content:'';position:absolute;inset:0;pointer-events:none;background:var(--overlay);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;transition:opacity .2s}
 #modal-root.open{visibility:visible;transition:none}
 #modal-root.open::before{opacity:1}
-#modal-root>.modal{grid-area:1/1;opacity:0;transform:translateY(10px) scale(.985);transition:transform .2s cubic-bezier(.2,.8,.2,1),opacity .2s,filter .2s}
+#modal-root>.modal{grid-area:1/1;opacity:0;transform:translateY(10px) scale(.985);transition:transform .2s var(--motion-ease),opacity .2s,filter .2s}
 #modal-root>.modal.in{opacity:1;transform:none}
 #modal-root>.modal.in.behind{transform:scale(.96);opacity:.45;filter:brightness(.7);pointer-events:none}
 @media (max-width:900px){#modal-root{padding:12px;align-items:center}}
@@ -258,8 +259,8 @@ a.tool-card:hover{background:var(--raised);transform:translateY(-1px)}
 .sticky-bar.stuck .chips{padding:4px;border-radius:var(--r-pill);background:var(--surface);box-shadow:var(--shadow-card)}
 /* ---- Dropdown menu (port of send.ride-eats.com ui/Menu) ---- */
 .menu{position:relative;display:inline-flex}
-.menu-panel{position:absolute;top:calc(100% + 8px);z-index:40;min-width:210px;max-width:min(300px,calc(100vw - 24px));padding:6px;border-radius:16px;background:var(--surface);box-shadow:var(--shadow-pop),inset 0 0 0 1px var(--line);animation:menu-in .16s cubic-bezier(.2,.8,.2,1) both}
-.menu-panel.is-closing{animation:menu-out .1s ease-in both;pointer-events:none}
+.menu-panel{position:absolute;top:calc(100% + 8px);z-index:40;min-width:210px;max-width:min(300px,calc(100vw - 24px));padding:6px;border-radius:16px;background:var(--surface);box-shadow:var(--shadow-pop),inset 0 0 0 1px var(--line);animation:menu-in .16s var(--motion-ease) both}
+.menu-panel.is-closing{animation:menu-out .1s var(--motion-ease) both;pointer-events:none}
 .menu-end{right:0;transform-origin:top right}
 .menu-start{left:0;transform-origin:top left}
 .menu-up{top:auto;bottom:calc(100% + 8px);transform-origin:bottom right}

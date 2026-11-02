@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import * as UI from "../react/index.jsx";
+import { implementationCode } from "./implementation-code.js";
 const entries = {
   textarea: {
     component: "Textarea",
@@ -69,8 +70,8 @@ export default function PropsPlayground({ id }) {
   return <Editor key={id} entry={entry} />;
 }
 function Editor({ entry }) {
-  const [source, setSource] = useState(JSON.stringify(entry.defaults, null, 2)),
-    [props, setProps] = useState(entry.defaults),
+  const [expanded, setExpanded] = useState(null);
+  const [props, setProps] = useState(entry.defaults),
     [error, setError] = useState(""),
     [value, setValue] = useState(""),
     [values, setValues] = useState([]),
@@ -135,64 +136,36 @@ function Editor({ entry }) {
         </UI.Card>
       ),
     };
-  return (
-    <details className="props-playground">
-      <summary>
-        <UI.Icon name="sliders-horizontal" />
-        Editable props playground<small>JSON · live preview</small>
-      </summary>
-      <div>
-        <div>
-          <label htmlFor={`props-${entry.component}`}>Props</label>
-          <textarea
-            id={`props-${entry.component}`}
-            spellCheck={false}
-            value={source}
-            onChange={(event) => {
-              const text = event.target.value;
-              setSource(text);
-              try {
-                if (text.length > 3000)
-                  throw Error("Keep props under 3,000 characters.");
-                const next = JSON.parse(text);
-                if (!next || Array.isArray(next) || typeof next !== "object")
-                  throw Error("Enter a JSON object.");
-                for (const [key, defaultValue] of Object.entries(
-                  entry.defaults,
-                )) {
-                  if (typeof next[key] !== typeof defaultValue)
-                    throw Error(`${key} must be ${typeof defaultValue}.`);
-                  const bounds = entry.limits?.[key];
-                  if (
-                    bounds &&
-                    (!Number.isFinite(next[key]) ||
-                      next[key] < bounds[0] ||
-                      next[key] > bounds[1])
-                  )
-                    throw Error(`${key} must be ${bounds[0]}–${bounds[1]}.`);
-                }
-                if (Object.keys(next).some((key) => !(key in entry.defaults)))
-                  throw Error("Use the listed props.");
-                if ("min" in next && next.min >= next.max)
-                  throw Error("min must be less than max.");
-                setProps(next);
-                setError("");
-              } catch (reason) {
-                setError(reason.message);
-              }
-            }}
-          />
-          {error && <p role="alert">{error}</p>}
-          <code>{`<${entry.component} {...${JSON.stringify(props)}} />`}</code>
-          <small>
-            Connect value and change callbacks as shown in Usage. This editor
-            applies props without evaluating JavaScript.
-          </small>
-        </div>
-        <div className="props-playground-preview">
+  const code = implementationCode(entry.component, props, controlled);
+  const update = (key, value) => {
+    const next = { ...props, [key]: value };
+    if ("min" in next && next.min >= next.max) { setError("min must be less than max."); return; }
+    setError(""); setProps(next);
+  };
+  const content = (
+    <div className="implementation-workbench">
+      <div className="implementation-controls">
+        <UI.Card title="Props" padding="sm">
+          {Object.entries(entry.defaults).map(([key, initial]) => (
+            typeof initial === "boolean"
+              ? <UI.Switch key={key} label={key} checked={props[key]} onChange={value => update(key,value)} />
+              : typeof initial === "number"
+                ? <UI.NumberInput key={key} label={key} value={props[key]} min={entry.limits?.[key]?.[0]} max={entry.limits?.[key]?.[1]} onValueChange={value => update(key,value)} />
+                : <UI.Field key={key} label={key}><input value={props[key]} onChange={event => update(key,event.target.value)} /></UI.Field>
+          ))}
+          {error && <UI.Alert tone="bad" title={error} />}
+          <UI.Button size="sm" variant="ghost" onClick={() => { setProps(entry.defaults); setError(""); }}>Reset props</UI.Button>
+        </UI.Card>
+        <UI.Card title="Live component" padding="sm" className="implementation-live">
           <Component {...props} {...controlled} />
-        </div>
+        </UI.Card>
       </div>
-    </details>
+      <UI.Card title="React implementation" description="Includes the data, state and callbacks used above." padding="sm" action={<UI.CopyButton value={code} label="Copy JSX" />}>
+        <pre className="implementation-code"><code>{code}</code></pre>
+      </UI.Card>
+    </div>
   );
+  return <UI.Accordion className="props-playground" label="Component implementation"
+    value={expanded} onValueChange={setExpanded}
+    items={[{value:"props",title:"Implementation workbench",icon:"code",content}]} />;
 }

@@ -1,0 +1,15 @@
+{
+  "version": "0.8.1",
+  "checks": { "componentTests": 22, "typecheck": "passed", "productionBuild": "passed", "packedPlatformBuild": "passed", "visualComparisons": 6 },
+  "browserChecks": [
+    "Reproduced native Combobox pointer-focus opening then immediate dismissal; verified fix keeps list open, filters Sam, selects Sam Chen, and reopens",
+    "Context target and child card both have 20px radius",
+    "Swipe Archive and Favorite use solid blue/amber with 999px pill radii",
+    "MultiSelect selected chip uses solid rgb(31,164,118) and 999px radius; input is pill-shaped",
+    "DataGrid Role uses shared Send Select; Editor filter and selection work with neutral bulk/selected surfaces",
+    "BottomSheet computed entrance is re-sheet-in, 420ms, soft settling cubic curve; close unmounts",
+    "Implementation workbench copies complete MultiSelect imports, options, useState, value and onValueChange; all ten generated examples parse in tests",
+    "StickyBar detects independent scroll root, reaches floating=true and progress=1, with layered 12px blur while controls remain sharp"
+  ],
+  "limits": [ "Physical touch feel unverified", "No exhaustive screen-reader conformance audit", "Backdrop blur/discrete native-popover transitions depend on browser support", "Six desktop theme visual captures are manual, not exhaustive", "Demo state is local and does not imply backend persistence" ]
+}

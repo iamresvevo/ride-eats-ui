@@ -1,6 +1,6 @@
 {
   "name": "@ride-eats/ui",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "private": true,
   "type": "module",
   "description": "Ride Eats React components and design tokens",

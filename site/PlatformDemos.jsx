@@ -640,6 +640,8 @@ export default function PlatformDemos({ id }) {
           </div>
         </UI.ContextMenu>
       );
+    case "sticky-bar":
+      return <StickyDemo />;
     case "nested-popovers":
       return (
         <UI.Popover
@@ -818,4 +820,13 @@ export default function PlatformDemos({ id }) {
     default:
       return null;
   }
+}
+
+function StickyDemo() {
+  const [tab, setTab] = useState("payments");
+  return <div className="floater-demo" role="region" aria-label="Scrollable floating toolbar example" tabIndex={0}>
+    <UI.PageHeader title="Workspace" description="Scroll to see Tools’ floating controls and progressive fade." />
+    <UI.StickyBar offset={0}><UI.Tabs value={tab} onValueChange={setTab} items={[{value:"payments",label:"Payments",count:8},{value:"activity",label:"Activity"}]} /></UI.StickyBar>
+    <div className="floater-demo-rows">{Array.from({length:12},(_,i)=><UI.Card key={i} padding="sm"><UI.SettingRow label={tab === "payments" ? `Transfer ${i+1}` : `Workspace update ${i+1}`} hint="Content stays behind the floating controls."><UI.Badge tone="good">Ready</UI.Badge></UI.SettingRow></UI.Card>)}</div>
+  </div>;
 }

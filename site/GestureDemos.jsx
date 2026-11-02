@@ -35,12 +35,14 @@ export default function GestureDemos({ id }) {
             {
               value: "archive",
               label: "Archive",
+              tone: "info",
               icon: "archive",
               onSelect: () => toast("Archived in this demo"),
             },
             {
               value: "star",
               label: "Favorite",
+              tone: "warning",
               icon: "star",
               onSelect: () => toast("Added to favorites", { tone: "good" }),
             },

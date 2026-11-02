@@ -719,6 +719,7 @@ export function SwipeActions(
       label: string;
       icon?: string;
       destructive?: boolean;
+      tone?: "neutral" | "accent" | "info" | "warning" | "danger";
       onSelect?: () => void;
     }[];
     label?: string;
@@ -1056,3 +1057,10 @@ export function SupportInbox(
     label?: string;
   },
 ): React.ReactElement;
+export function StickyBar(props: StylingProps & {
+  children: React.ReactNode;
+  offset?: number | string;
+  fade?: boolean;
+  blur?: boolean;
+  label?: string;
+}): React.ReactElement;

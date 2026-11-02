@@ -71,12 +71,13 @@
   color: var(--muted);
 }
 .re-combobox-input {
+  border-radius: var(--r-pill);
   display: flex;
   align-items: center;
   gap: 8px;
   background: var(--raised);
-  border-radius: 12px;
-  padding: 0 10px;
+  border-radius: var(--r-pill);
+  padding: 0 12px;
   height: var(--ui-control);
 }
 .re-combobox-input:focus-within {
@@ -163,11 +164,11 @@
   align-items: center;
   gap: 6px;
   border: 0;
-  border-radius: 8px;
-  padding: 5px 8px;
+  border-radius: var(--r-pill);
+  padding: 5px 10px;
   font-size: 11px;
-  background: var(--brand-soft);
-  color: var(--brand-ink);
+  background: var(--brand);
+  color: var(--on-brand);
 }
 .re-date-range {
   border: 0;
@@ -328,7 +329,7 @@
   padding: 0 14px 12px;
   flex-wrap: wrap;
 }
-.re-grid-filters label {
+.re-grid-filter {
   display: flex;
   align-items: center;
   gap: 7px;
@@ -405,7 +406,7 @@
   overflow-wrap: anywhere;
 }
 .re-grid tr[data-selected] td {
-  background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+  background: var(--raised);
 }
 .re-grid .is-pinned {
   position: sticky;
@@ -421,7 +422,7 @@
 .re-grid .re-check-box {
   width: 17px;
   height: 17px;
-  border-radius: 5px;
+  border-radius: 50%;
 }
 .re-grid-cell-fixed {
   overflow: hidden;
@@ -756,7 +757,8 @@
   padding-top: 12px;
 }
 .re-context-target {
-  border-radius: 14px;
+  border-radius: var(--r-lg);
+  overflow: clip;
 }
 .re-context-menu {
   border: 0;
@@ -794,7 +796,7 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows 340ms var(--spring-soft), opacity 200ms ease;
+  transition: grid-template-rows 340ms var(--spring-soft), opacity 200ms var(--motion-ease);
 }
 .re-context-sub.is-open { grid-template-rows: 1fr; opacity: 1; }
 .re-context-sub > div { min-height: 0; overflow: hidden; }
@@ -1160,7 +1162,7 @@
 }
 .re-bottom-sheet.dialog {
   max-width: min(560px, 100%);
-  transition: translate 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: translate 280ms var(--motion-ease);
 }
 .re-bottom-sheet.is-dragging {
   transition: none;
@@ -1227,8 +1229,8 @@
 .re-context-menu,
 .re-combobox-options {
   transition:
-    opacity 160ms ease,
-    translate 180ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 160ms var(--motion-ease),
+    translate 180ms var(--motion-ease);
 }
 @starting-style {
   .re-context-menu:popover-open,

@@ -721,3 +721,27 @@ test("command search ranks multi-term queries and preserves nested scope paths",
     false,
   );
 });
+
+test('implementation workbench emits complete parsable controlled React examples', async () => {
+  const { implementationCode } = await import('../site/implementation-code.js');
+  const { transformWithEsbuild } = await import('vite');
+  const examples = [
+    ['Textarea', {label:'Notes'}, {value:'', onChange(){}}],
+    ['Combobox', {label:'Assignee'}, {options:[{value:'a',label:'Alex'}],value:'a',onValueChange(){}}],
+    ['MultiSelect', {label:'People'}, {options:[{value:'a',label:'Alex'}],value:['a'],onValueChange(){}}],
+    ['TimePicker', {}, {value:'09:00',onValueChange(){}}],
+    ['DateRangePicker', {}, {value:{start:'',end:''},onValueChange(){}}],
+    ['Rating', {max:5}, {value:3,onValueChange(){}}],
+    ['RangeSlider', {min:0,max:100}, {value:[20,80],onValueChange(){}}],
+    ['SplitPane', {}, {value:40,first:'Navigation',second:'Content',onValueChange(){}}],
+    ['DataGrid', {label:'Records'}, {rows:[{id:'1',name:'Alex'}],columns:[{key:'name',label:'Name'}]}],
+    ['AppShell', {brand:'Studio'}, {items:[{value:'home',label:'Home'}],value:'home',onValueChange(){}}],
+  ];
+  for (const [component,props,controlled] of examples) {
+    const source=implementationCode(component,props,controlled);
+    await transformWithEsbuild(source,'example.jsx',{loader:'jsx'});
+    assert.match(source,/export default function Example/);
+    if ('value' in controlled) { assert.match(source,/useState\(/); assert.match(source,component==='Textarea'?/onChange=/:/onValueChange=/); }
+    for(const key of ['options','rows','columns','items']) if(key in controlled) assert.ok(source.includes(`const ${key} =`));
+  }
+});

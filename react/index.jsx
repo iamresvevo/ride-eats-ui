@@ -640,3 +640,4 @@ export * from "./forms.jsx";
 export { DataGrid } from "./DataGrid.jsx";
 export * from "./platform.jsx";
 export * from "./workflows.jsx";
+export { StickyBar } from './StickyBar.jsx';

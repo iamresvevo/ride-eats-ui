@@ -460,12 +460,12 @@ Actions. Drag a row left to reveal actions, or use its action button. Actions on
 
 ```jsx
 import { SwipeActions } from '@ride-eats/ui';
-<SwipeActions actions={[{value:'archive', label:'Archive', icon:'archive', onSelect:archive}]}><strong>Project files</strong></SwipeActions>
+<SwipeActions actions={[{value:'archive', label:'Archive', icon:'archive', tone:'info', onSelect:archive}]}><strong>Project files</strong></SwipeActions>
 ```
 
 | Prop | Type | Behavior |
 | --- | --- | --- |
-| actions | {value,label,icon?,destructive?,onSelect?}[] | Up to three visible actions. Revealing never executes them. |
+| actions | {value,label,icon?,tone?,destructive?,onSelect?}[] | Up to three visible actions. Revealing never executes them. |
 | children / label | ReactNode / string | Row content and action region name. |
 
 ## Carousel
@@ -958,3 +958,19 @@ import { SupportInbox } from '@ride-eats/ui';
 | threads | SupportThread[] | id, name, subject, status, time and messages; messages contain id, author, text, time and own. |
 | value / onValueChange | string / callback | Selected conversation ID. |
 | onReply / label | (id,text) => Promise \| void / string | Optional reply callback; controls are omitted without it. Draft clears when selecting another thread. |
+
+## Sticky Bar
+
+Layout. Tools’ automatic floating page controls. Scroll depth progressively fades and blurs the content beneath while controls remain sharp. The header offset is measured automatically when used with Header.
+
+```jsx
+import { StickyBar, Tabs } from '@ride-eats/ui';
+<StickyBar><Tabs items={tabs} value={tab} onValueChange={setTab} /></StickyBar>
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| children | ReactNode | Tabs, chips, search or action controls. |
+| offset | number \| CSS length | Defaults to the nearest inherited --header-height. Set 0 for an independent scroll container. |
+| fade / blur | boolean | Progressive neutral fade and layered backdrop blur, both enabled by default. |
+| label / className / style | styling and accessibility | The parent defines the sticky scroll boundary; use a labelled scroll region for keyboard scrolling. |

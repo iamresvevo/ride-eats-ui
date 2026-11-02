@@ -13,7 +13,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.8.0
+npm install github:iamresvevo/ride-eats-ui#v0.8.1
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -299,7 +299,7 @@ Use gestures where they make the task easier. Static content remains stable. Red
 
 The browser separates reusable primitives from workflows and recipes. New components cover forms (Form, Textarea, Combobox, MultiSelect, DateRangePicker, TimePicker, UploadProgress), advanced DataGrid tables, AppShell, WorkspaceSwitcher, NotificationCenter, BottomSheet, ContextMenu and reusable SettingsPanel, TeamDirectory, FileManager, ActivityFeed and SupportInbox workflows.
 
-Defaults are compact: 36px controls, 40px DataGrid rows and 16px panel padding. Use `data-density="comfortable"` for larger controls/panels, and `rowHeight={52}` for roomier DataGrid rows. Eleven pages include editable JSON props playgrounds. Examples use local state; application endpoints, authentication and persistence belong in caller callbacks.
+Defaults are compact: 36px controls, 40px DataGrid rows and 16px panel padding. Use `data-density="comfortable"` for larger controls/panels, and `rowHeight={52}` for roomier DataGrid rows. Selected pages include a compact implementation workbench with prop controls and complete copyable React examples. Examples use local state; application endpoints, authentication and persistence belong in caller callbacks.
 
 DataGrid includes local search/filter/sort, column visibility/resizing, pinned columns, bulk selection, expandable rows and optional fixed-row virtualization. Use DataTable for fully caller-controlled server table state. Native overlays support nested popovers, keyboard dismissal and focus restoration. See the implementation guide for browser support and integration limits.
 
@@ -310,3 +310,7 @@ The icon browser plays the selected glyph once immediately, with Replay and opti
 Use the [component audit](docs/component-audit.md) to choose the right primitive and the [migration guide](docs/migrations-v0.8.md) when upgrading. Four duplicate public APIs were removed. CommandMenu now provides grouped, nested command search with recent actions, keyboard shortcuts and async error recovery; its demo performs local workspace actions. WorkspaceSwitcher uses the shared Send menu.
 
 Native popovers and contextual menus animate both opening and closing. Context submenus unfold with the same motion as Dropdown. SwipeActions uses compact pill buttons and preserves item identity while revealing actions. Selected icon previews play immediately, with Replay and opt-in Loop. Reduced motion disables nonessential movement. Static content stays steady.
+
+### Send/Tools motion and floating controls
+
+Use `<StickyBar><Tabs ... /></StickyBar>` for automatic page floaters below Header. It detects the scroll container and progressively fades/blurs the content underneath. Set `offset={0}` in independent scroll regions. The component browser now uses the shared Segmented, Select, Accordion, Card, Field, NumberInput, Switch and CopyButton implementations rather than parallel documentation controls. See [implementation](docs/implementation.md) for solid action tones, circular controls, complete React examples and motion configuration.

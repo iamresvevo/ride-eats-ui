@@ -172,6 +172,7 @@ export function SwipeActions({
             key={action.value}
             type="button"
             className={action.destructive ? "is-destructive" : ""}
+            data-tone={action.destructive ? "danger" : action.tone || "neutral"}
             onClick={() => {
               toggle.current?.focus();
               action.onSelect?.();

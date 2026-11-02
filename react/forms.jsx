@@ -123,6 +123,7 @@ export function Combobox({
   const id = useId(),
     input = useRef(null),
     panel = useRef(null),
+    pointerFocus = useRef(false),
     [open, setOpen] = useState(false),
     [query, setQuery] = useState(""),
     [active, setActive] = useState(0);
@@ -138,7 +139,7 @@ export function Combobox({
       if (node.matches(":popover-open")) node.hidePopover();
       return;
     }
-    node.showPopover();
+    if (!node.matches(":popover-open")) node.showPopover();
     const place = () => {
       const b = input.current.getBoundingClientRect();
       node.style.width = Math.min(b.width, innerWidth - 16) + "px";
@@ -231,7 +232,16 @@ export function Combobox({
                 ? ""
                 : selected?.label || (allowCustom ? value || "" : "")
           }
+          onPointerDown={() => { pointerFocus.current = true; }}
+          onPointerCancel={() => { pointerFocus.current = false; }}
+          onBlur={() => { pointerFocus.current = false; }}
+          onClick={() => {
+            pointerFocus.current = false;
+            if (!open) { setQuery(""); setActive(0); setOpen(true); }
+          }}
           onFocus={() => {
+            // Pointer focus precedes native light-dismiss; open on click instead.
+            if (pointerFocus.current) return;
             setOpen(true);
             setQuery("");
             setActive(0);
@@ -287,7 +297,7 @@ export function Combobox({
         aria-multiselectable={multiple || undefined}
         className="re-combobox-options"
         onToggle={(event) => {
-          if (event.newState === "closed") setOpen(false);
+          if (event.newState === "closed" && !event.currentTarget.matches(":popover-open")) setOpen(false);
         }}
       >
         {matches.map((option, index) => (

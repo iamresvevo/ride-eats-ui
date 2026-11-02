@@ -1,5 +1,5 @@
 {
-  "version": "0.8.0",
+  "version": "0.8.1",
   "capture": "Supported browser tools; desktop viewport; JPEG",
   "states": [
     {
@@ -13,9 +13,9 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1473
+        "height": 1457
       },
-      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
     },
     {
       "file": "app-shell-light.jpg",
@@ -28,9 +28,9 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1473
+        "height": 1457
       },
-      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
     },
     {
       "file": "data-grid-dark.jpg",
@@ -43,9 +43,9 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1670
+        "height": 1662
       },
-      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
     },
     {
       "file": "data-grid-light.jpg",
@@ -58,9 +58,9 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1670
+        "height": 1662
       },
-      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
     },
     {
       "file": "form-dark.jpg",
@@ -73,9 +73,9 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1127
+        "height": 1131
       },
-      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
     },
     {
       "file": "form-light.jpg",
@@ -88,10 +88,10 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1127
+        "height": 1131
       },
-      "state": "Initial demo state after reload; playground collapsed; sidebar at start."
+      "state": "Initial demo state after reload; implementation workbench collapsed; sidebar at start."
     }
   ],
-  "updateReason": "Intentional v0.8 audit: stronger compact sidebar typography, shared workspace menu, separated recipe/workflow navigation, and consistent interaction motion."
+  "updateReason": "Send/Tools design alignment: solid accent pills, neutral supporting states, circular controls, rounded app shell, shared motion easing and compact implementation workbench after the main example."
 }

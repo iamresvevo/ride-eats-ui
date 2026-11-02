@@ -1,10 +1,10 @@
 # Build a compact platform
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.8.0
+npm install github:iamresvevo/ride-eats-ui#v0.8.1
 ```
 
-Import `@ride-eats/ui/styles.css` once and wrap the app in UIProvider. The complete runnable example is [examples/platform](../examples/platform/README.md). Component references, workflows and recipes have live examples, imports and prop tables; selected primitives also have an editable JSON props playground with no code evaluation.
+Import `@ride-eats/ui/styles.css` once and wrap the app in UIProvider. The complete runnable example is [examples/platform](../examples/platform/README.md). Component references, workflows and recipes have live examples, imports and prop tables; selected primitives also have an implementation workbench built from shared prop controls, live components and complete copyable React examples.
 
 ## Defaults
 
@@ -69,4 +69,4 @@ The starter uses local React state and explicitly labels this. Wire callbacks to
 
 Run check, typecheck, test and build. Browser checks cover key interactions at desktop and a 390px viewport, with both themes reviewed. Visual baselines and `npm run visual:compare` help catch spacing and density regressions; candidate capture is manual, not an automated CI browser job. Physical-device gesture feel, exhaustive screen-reader behavior and accessibility conformance remain unverified.
 
-For remote option lookup, use the existing SearchSelect `load(query)` callback and handle authentication/cancellation in your application. Combobox/MultiSelect are intended for already-loaded option lists. The JSON playground only edits its listed, validated props; it does not execute arbitrary JSX. Full custom render functions belong in your application code.
+For remote option lookup, use the existing SearchSelect `load(query)` callback and handle authentication/cancellation in your application. Combobox/MultiSelect are intended for already-loaded option lists. The implementation workbench edits listed props and emits imports, option data, controlled state and callbacks; it does not execute arbitrary JSX. Full custom render functions belong in your application code.

@@ -2,7 +2,7 @@ import { Popover } from "./motion.jsx";
 import React, { useState, useRef, useMemo } from "react";
 import Icon from "./send/Icon.jsx";
 import { Checkbox } from "./collection.jsx";
-import { Button } from "./index.jsx";
+import { Button, Select } from "./index.jsx";
 import { getGridRows, getWindow } from "./grid-model.js";
 
 const defaultRowKey = (row) => row.id;
@@ -137,23 +137,12 @@ export function DataGrid({
       {filterDefinitions.length > 0 && (
         <div className="re-grid-filters">
           {filterDefinitions.map((filter) => (
-            <label key={filter.key}>
-              {filter.label}
-              <select
-                value={filters[filter.key] || ""}
-                onChange={(e) => {
-                  setFilters({ ...filters, [filter.key]: e.target.value });
-                  reset();
-                }}
-              >
-                <option value="">All</option>
-                {filter.options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div key={filter.key} className="re-grid-filter">
+              <span>{filter.label}</span>
+              <Select label={filter.label} value={filters[filter.key] || ""}
+                options={[{value:"",label:"All"},...filter.options]}
+                onValueChange={value => { setFilters({...filters,[filter.key]:value}); reset(); }} />
+            </div>
           ))}
         </div>
       )}

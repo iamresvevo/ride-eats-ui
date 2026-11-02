@@ -28,7 +28,7 @@ The icon API supports 2,015 vendored Lucide glyphs plus Send paths and custom Ic
 
 ## Compact platform components
 
-Default controls are 36px, DataGrid rows 40px and panels 16px. Prefer these defaults. `data-density="comfortable"` opts into larger controls/panels; coarse-pointer menus retain 44px targets. Static content should not animate without purpose. Use css/interaction-motion.css for shared native-popover enter/exit transitions; submenu content stays mounted and inert while collapsed. See docs/component-audit.md and docs/migrations-v0.8.md for canonical APIs.
+Use solid accent fills without translucent green variants. Use circular compact controls, rounded surfaces and pill actions throughout; never introduce square-corner cards or preview targets. Default controls are 36px, DataGrid rows 40px and panels 16px. Prefer these defaults. `data-density="comfortable"` opts into larger controls/panels; coarse-pointer menus retain 44px targets. Static content should not animate without purpose. Use css/interaction-motion.css for shared native-popover enter/exit transitions; submenu content stays mounted and inert while collapsed. See docs/component-audit.md and docs/migrations-v0.8.md for canonical APIs.
 
 Use Form/Field/Textarea/Combobox/MultiSelect/DateRangePicker/TimePicker for forms. DataGrid owns local table view state; rows and backend mutations remain caller-owned. It supports search, exact filters, stable sorting, column visibility/resizing, pinned columns, bulk selection, expansion and optional fixed-height virtualization. `renderExpanded` disables virtualization. Do not put variable-height content in virtual rows.
 

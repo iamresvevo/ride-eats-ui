@@ -15,7 +15,7 @@ The starter is a complete React/Vite app. Search, sorting, row selection, folder
 ## Install in an existing app
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.8.0
+npm install github:iamresvevo/ride-eats-ui#v0.8.1
 ```
 
 ```jsx
@@ -112,3 +112,28 @@ Alternatively, use `beforeClose={async () => await confirm(options)}` to guard b
 Tabs and Segmented use Send's measured moving selection surface. Menus retain inline subgroup motion. Dialogs use a shared first backdrop and depth transitions; drawers use the same native stack. Toasts use Send's bounded depth stack, with repeated string messages merged and at most three visible by default. `maxVisible` is configurable on ToastProvider, and `duration`/`id` are per message. Reduced motion is honored.
 
 This is a substantial **web application UI foundation**, not every possible platform feature. Rich text editing, maps, full calendar scheduling, virtualization and domain-specific workflows are not included. Extend the components through props, slots, native elements and your own application code instead of assuming those systems exist.
+
+## Swipe action tones
+
+Use `tone: "info"` for blue, `warning` for amber, `accent` for the brand green, or `neutral` for a quiet action. Set `destructive: true` for red destructive actions. For example: `<SwipeActions actions={[{value:'archive',label:'Archive',icon:'archive',tone:'info',onSelect:archive}]}>{row}</SwipeActions>`. Action colors use the overridable `--action-info`, `--action-warning`, `--action-danger`, and `--action-on-color` tokens. Neutral surfaces retain the shared rounded shape tokens.
+
+## Design and motion
+
+The library follows Send/Tools: pill actions, circular compact controls, rounded content panels and solid accents. Supporting surfaces are neutral rather than translucent green. `--motion-ease` uses Send's soft settling curve `cubic-bezier(.25,1,.3,1)`; transitions share it, while spinners remain linear. BottomSheet enters from the bottom edge over 420ms and exits downward over 300ms. Reduced motion uses a short fade.
+
+The implementation workbench follows the primary example and uses Accordion, Card, Field, NumberInput, Switch, Button and CopyButton from the kit. Its copyable JSX includes data, state and callbacks matching the preview.
+
+## Automatic floating controls
+
+```jsx
+<Header brand={brand} items={navigation} activeValue={page} onNavigate={setPage} />
+<main>
+  <PageHeader title="Payments" />
+  <StickyBar>
+    <Tabs items={tabs} value={tab} onValueChange={setTab} />
+  </StickyBar>
+  <DataGrid rows={rows} columns={columns} />
+</main>
+```
+
+StickyBar follows Tools' sentinel behavior, discovers the nearest scroll container, and inherits Header's measured `--header-height` from their shared ancestor. Content scrolls beneath sharp controls with a scroll-driven neutral fade and layered 2/6/12px backdrop blur. Use `offset={0}` inside an independent scroll area, `blur={false}` for fade only, or `fade={false}` for no overlay. Keep it in the content parent whose boundary should stop it. Header also applies its progressive neutral fade/blur as scrolling begins. Blur support depends on the browser; the neutral gradient is the fallback.

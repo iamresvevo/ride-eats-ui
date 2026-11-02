@@ -1,7 +1,7 @@
 /* Send's site header (send.ride-eats.com src/styles/style.css), ported 1:1 for core/site-header.js.
    Values are Send's; only token names map onto this app's (--r-pill, --shadow-card, --ink, --on-ink). */
 :root{--content:1132px}
-.site-header-scope{--r-pill:999px;--ease:cubic-bezier(.2,.7,.2,1);--shadow-card:0 1px 2px rgba(0,0,0,.03),0 4px 16px rgba(0,0,0,.04);--ink:#111113;--on-ink:#fff}
+.site-header-scope{--r-pill:999px;--ease:var(--motion-ease);--shadow-card:0 1px 2px rgba(0,0,0,.03),0 4px 16px rgba(0,0,0,.04);--ink:#111113;--on-ink:#fff}
 [data-theme="dark"] .site-header-scope{--shadow-card:none;--ink:#f2f2f3;--on-ink:#0c0c0d}
 
 /* Three columns, so the tabs sit in the centre of the screen whatever is beside them. */
