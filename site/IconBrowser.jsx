@@ -5,6 +5,7 @@ import {
   iconNames,
   Button,
   Slider,
+  Switch,
   Segmented,
   useToast,
 } from "../react/index.jsx";
@@ -74,7 +75,9 @@ export default function IconBrowser({ animated = false }) {
     [size, setSize] = useState(24),
     [motion, setMotion] = useState("auto"),
     [stroke, setStroke] = useState("1.7"),
-    [limit, setLimit] = useState(72);
+    [limit, setLimit] = useState(72),
+    [replay, setReplay] = useState(0),
+    [loop, setLoop] = useState(false);
   const toast = useToast();
   const PreviewIcon = motion === "auto" ? AnimatedIcon : Icon;
   const filtered = useMemo(() => {
@@ -101,8 +104,8 @@ export default function IconBrowser({ animated = false }) {
   }, [query, category]);
   const snippet =
     motion === "auto"
-      ? `<AnimatedIcon name="${selected}" size={${size}} strokeWidth={${stroke}} />`
-      : `<Icon name="${selected}" size={${size}} strokeWidth={${stroke}}${motion !== "none" ? ` motion="${motion}" animateOn="hover"` : ""} />`;
+      ? `<AnimatedIcon name="${selected}" size={${size}} strokeWidth={${stroke}} playing${loop ? " loop" : ""} />`
+      : `<Icon name="${selected}" size={${size}} strokeWidth={${stroke}}${motion !== "none" ? ` motion="${motion}" playing${loop ? " loop" : ""}` : ""} />`;
   return (
     <div className="icon-browser">
       <div className="icon-browser-head">
@@ -138,13 +141,13 @@ export default function IconBrowser({ animated = false }) {
       <div className="icon-workbench">
         <div className="icon-selected">
           <PreviewIcon
-            key={selected + motion}
+            key={selected + motion + replay}
             name={selected}
             size={size}
             strokeWidth={Number(stroke)}
             {...(motion === "auto" ? {} : { motion, animateOn: "always" })}
-            playing={false}
-            loop={false}
+            playing={motion !== "none"}
+            loop={loop}
             label={selected}
           />
           <strong>{selected}</strong>
@@ -197,6 +200,27 @@ export default function IconBrowser({ animated = false }) {
             </div>
           </div>
         </div>
+      </div>
+      <div className="icon-playback">
+        <Button
+          size="sm"
+          variant="ghost"
+          icon="play"
+          disabled={motion === "none"}
+          onClick={() => setReplay((value) => value + 1)}
+        >
+          Replay animation
+        </Button>
+        <Switch
+          label="Loop preview"
+          checked={loop}
+          onChange={setLoop}
+          disabled={motion === "none"}
+        />
+        <small>Select an icon to play. Hover any glyph to replay it.</small>
+        <small className="icon-reduced-note">
+          Your system reduces motion; animations are paused.
+        </small>
       </div>
       <div className="icon-code">
         <code>{snippet}</code>

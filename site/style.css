@@ -2091,17 +2091,126 @@
     padding-inline: 14px;
   }
 }
-.props-playground { margin:20px 0;border-radius:14px;background:var(--surface); }
-.props-playground>summary { list-style:none;cursor:pointer;padding:12px 14px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:550; }
-.props-playground>summary>.icon { color:var(--brand-ink);width:14px;height:14px; }
-.props-playground>summary>small { margin-left:auto;font-size:10px;font-weight:400;color:var(--muted); }
-.props-playground>div { padding:0 14px 14px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px; }
-.props-playground>div>div:first-child { display:grid;gap:8px; }
-.props-playground label { font-size:11px;color:var(--muted); }
-.props-playground textarea { width:100%;min-height:180px;padding:10px;background:var(--raised);border:0;border-radius:10px;font:11px/1.7 monospace;resize:vertical; }
-.props-playground p { font-size:11px;color:var(--bad);line-height:1.5; }
-.props-playground code { overflow-wrap:anywhere;font-size:10px;line-height:1.6; }
-.props-playground small { font-size:10px;color:var(--muted);line-height:1.6; }
-.props-playground-preview { min-width:0;display:flex;align-items:center;justify-content:center;padding:16px;background:var(--raised);border-radius:12px; }
-.props-playground-preview>* { width:100%; }
-@media(max-width:900px) { .props-playground>div { grid-template-columns:1fr; } }
+.props-playground {
+  margin: 20px 0;
+  border-radius: 14px;
+  background: var(--surface);
+}
+.props-playground > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 550;
+}
+.props-playground > summary > .icon {
+  color: var(--brand-ink);
+  width: 14px;
+  height: 14px;
+}
+.props-playground > summary > small {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.props-playground > div {
+  padding: 0 14px 14px;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 20px;
+}
+.props-playground > div > div:first-child {
+  display: grid;
+  gap: 8px;
+}
+.props-playground label {
+  font-size: 11px;
+  color: var(--muted);
+}
+.props-playground textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 10px;
+  background: var(--raised);
+  border: 0;
+  border-radius: 10px;
+  font: 11px/1.7 monospace;
+  resize: vertical;
+}
+.props-playground p {
+  font-size: 11px;
+  color: var(--bad);
+  line-height: 1.5;
+}
+.props-playground code {
+  overflow-wrap: anywhere;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.props-playground small {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.props-playground-preview {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: var(--raised);
+  border-radius: 12px;
+}
+.props-playground-preview > * {
+  width: 100%;
+}
+@media (max-width: 900px) {
+  .props-playground > div {
+    grid-template-columns: 1fr;
+  }
+}
+/* Compact is about spacing, not faint or undersized navigation labels. */
+.sidebar-group button {
+  font-size: 14px;
+  line-height: 20px;
+  padding: 8px 13px;
+  color: color-mix(in srgb, var(--text) 82%, var(--bg));
+}
+.sidebar-group > span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.sidebar-group button:hover {
+  color: var(--text);
+}
+.sidebar-group button.selected {
+  color: var(--brand-ink);
+}
+.icon-playback {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+.icon-playback .setting-row {
+  min-height: 32px;
+  padding: 0;
+}
+.icon-playback small {
+  font-size: 11px;
+  color: var(--muted);
+}
+.icon-playback .icon-reduced-note {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .icon-playback .icon-reduced-note {
+    display: block;
+    color: var(--brand-ink);
+  }
+}

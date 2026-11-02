@@ -34,7 +34,6 @@ export { default as Switch } from "./send/ui/Switch.jsx";
 export { default as SettingRow } from "./send/ui/SettingRow.jsx";
 export { default as Skeleton, Bone, BoneText } from "./send/ui/Skeleton.jsx";
 export { default as DateTimePicker } from "./send/ui/DateTimePicker.jsx";
-export { default as Modal } from "./send/ui/Modal.jsx";
 export {
   default as Menu,
   MenuItem,
@@ -414,23 +413,6 @@ export function SearchSelect({
   );
 }
 
-export function Stat({
-  label,
-  value,
-  hint,
-  tone = "",
-  className = "",
-  ...props
-}) {
-  return (
-    <div {...props} className={`stat ${tone} ${className}`}>
-      <span className="stat-label">{label}</span>
-      <strong className="stat-value">{value}</strong>
-      {hint && <span className="stat-hint">{hint}</span>}
-    </div>
-  );
-}
-
 export function Button({
   variant = "secondary",
   size,
@@ -557,6 +539,10 @@ export function Dialog({
   size = "md",
   dismissible = true,
   beforeClose,
+  label,
+  labelledBy,
+  onAfterClose,
+  closeOnBackdrop = true,
   className,
   style,
 }) {
@@ -573,6 +559,10 @@ export function Dialog({
   return (
     <SendModal
       open={open}
+      label={label}
+      labelledBy={labelledBy}
+      onAfterClose={onAfterClose}
+      closeOnBackdrop={closeOnBackdrop}
       title={title}
       className={className}
       style={style}

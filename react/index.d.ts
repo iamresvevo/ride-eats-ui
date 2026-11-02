@@ -183,23 +183,13 @@ export function Dialog(props: {
   size?: "sm" | "md" | "lg";
   dismissible?: boolean;
   beforeClose?: () => boolean | Promise<boolean>;
+  label?: string;
+  labelledBy?: string;
+  onAfterClose?: () => void;
+  closeOnBackdrop?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }): React.ReactElement | null;
-export function Modal(props: {
-  open?: boolean;
-  onAfterClose?: () => void;
-  size?: "sm" | "lg";
-  className?: string;
-  title?: React.ReactNode;
-  label?: string;
-  labelledBy?: string;
-  dismissable?: boolean;
-  closeOnBackdrop?: boolean;
-  onClose: () => void;
-  children?: React.ReactNode;
-  footer?: React.ReactNode;
-}): React.ReactElement;
 export function Skeleton(props: {
   label: string;
   className?: string;
@@ -243,14 +233,6 @@ export function Badge(
   props: React.HTMLAttributes<HTMLSpanElement> & {
     tone?: "neutral" | "good" | "wait" | "bad";
     children?: React.ReactNode;
-  },
-): React.ReactElement;
-export function Stat(
-  props: React.HTMLAttributes<HTMLDivElement> & {
-    label: React.ReactNode;
-    value: React.ReactNode;
-    hint?: React.ReactNode;
-    tone?: "good" | "bad" | "";
   },
 ): React.ReactElement;
 export function Card(
@@ -620,14 +602,6 @@ export function Popover(
     width?: number;
   },
 ): React.ReactElement;
-export function Collapsible(
-  props: StylingProps & {
-    open: boolean;
-    onOpenChange: (value: boolean) => void;
-    title: React.ReactNode;
-    children?: React.ReactNode;
-  },
-): React.ReactElement;
 export function Steps(
   props: StylingProps & {
     items: {
@@ -704,19 +678,23 @@ export function Separator(
     orientation?: "horizontal" | "vertical";
   },
 ): React.ReactElement;
+export interface CommandItem {
+  value: string;
+  label: string;
+  description?: string;
+  group?: string;
+  icon?: string;
+  keywords?: string;
+  shortcut?: string;
+  disabled?: boolean;
+  onSelect?: () => void | Promise<void>;
+  items?: CommandItem[];
+}
 export function CommandMenu(
   props: StylingProps & {
     open: boolean;
-    onOpenChange: (value: boolean) => void;
-    items: {
-      value: string;
-      label: string;
-      icon?: string;
-      keywords?: string;
-      shortcut?: string;
-      disabled?: boolean;
-      onSelect?: () => void;
-    }[];
+    onOpenChange: (open: boolean) => void;
+    items: CommandItem[];
     label?: string;
     placeholder?: string;
     shortcut?: boolean;
@@ -828,7 +806,6 @@ export interface ComboboxProps extends StylingProps {
   allowCustom?: boolean;
 }
 export function Combobox(props: ComboboxProps): React.ReactElement;
-export function Autocomplete(props: ComboboxProps): React.ReactElement;
 export function MultiSelect(
   props: Omit<ComboboxProps, "value" | "onValueChange" | "allowCustom"> & {
     value: string[];

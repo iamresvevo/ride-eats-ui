@@ -320,22 +320,6 @@ export default function PlatformDemos({ id }) {
           />
         </div>
       );
-    case "autocomplete":
-      return (
-        <div className="platform-form-demo">
-          <UI.Autocomplete
-            label="Project tag"
-            options={[
-              { value: "Design", label: "Design" },
-              { value: "Engineering", label: "Engineering" },
-              { value: "Support", label: "Support" },
-            ]}
-            value={tag}
-            onValueChange={setTag}
-            hint="Choose a suggestion or enter your own tag."
-          />
-        </div>
-      );
     case "date-range-picker":
       return (
         <div className="platform-form-demo">

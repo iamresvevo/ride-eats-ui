@@ -15,7 +15,7 @@ The starter is a complete React/Vite app. Search, sorting, row selection, folder
 ## Install in an existing app
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.7.0
+npm install github:iamresvevo/ride-eats-ui#v0.8.0
 ```
 
 ```jsx

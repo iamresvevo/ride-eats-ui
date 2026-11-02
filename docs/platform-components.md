@@ -1,249 +1,15 @@
-# Platform component reference
+# Extended React component reference
 
-See [implementation](implementation.md) for a complete starter and integration rules. Every component is exported from `@ride-eats/ui`.
-
-## Animated Icons
-
-Ten purpose-built SVG motions: a ringing bell, beating heart, drawing check, moving upload/download arrows, searching lens, refreshing arrows, adjusting sliders, opening folder and flying send glyph. Hover, click, or replay the collection.
-
-```jsx
-import { AnimatedIcon, Button } from '@ride-eats/ui';
-
-<AnimatedIcon name="bell" size={28} />
-<AnimatedIcon name="check" playing />
-<AnimatedIcon name="refresh" playing loop />
-// Hover/focus on a parent button also triggers the icon.
-<Button><AnimatedIcon name="send" /> Send files</Button>
-```
-
-| Prop                       | Type                                                                                   | Purpose                                            |
-| -------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| name                       | bell / heart / check / upload / download / search / refresh / settings / folder / send | A motion designed for that glyph.                  |
-| playing / loop             | boolean                                                                                | Play explicitly or repeat. Hover/focus also plays. |
-| size / strokeWidth / label | number / number / string                                                               | SVG appearance and accessibility.                  |
-
-## Popover
-
-A floating, native top-layer panel for small forms and contextual details. It positions beside its trigger, escapes clipping, and dismisses on outside click or Escape.
-
-```jsx
-import { useState } from "react";
-import { Popover, Button } from "@ride-eats/ui";
-
-const [open, setOpen] = useState(false);
-<Popover
-  open={open}
-  onOpenChange={setOpen}
-  label="Share settings"
-  trigger={(props) => <Button {...props}>Share settings</Button>}
->
-  <p>Anyone with the link can view this transfer.</p>
-  <Button onClick={() => setOpen(false)}>Done</Button>
-</Popover>;
-```
-
-| Prop                             | Type                       | Purpose                                                     |
-| -------------------------------- | -------------------------- | ----------------------------------------------------------- |
-| open / onOpenChange              | boolean / callback         | Controlled native popover.                                  |
-| trigger                          | (buttonProps) => ReactNode | Spread the supplied ref and handlers.                       |
-| label / children / width / align | content and placement      | Dialog label, panel body, pixel width, start/end alignment. |
-
-## Command Menu
-
-Keyboard-first actions with filtering, arrow navigation and a native dialog. Enable the optional Ctrl/⌘K shortcut for a global launcher.
-
-```jsx
-import { useState } from 'react';
-import { CommandMenu, Button } from '@ride-eats/ui';
-
-const [open, setOpen] = useState(false);
-<Button onClick={() => setOpen(true)}>Quick actions</Button>
-<CommandMenu open={open} onOpenChange={setOpen} shortcut
-  items={[
-    { value:'new',label:'New transfer',icon:'plus',onSelect:createTransfer },
-    { value:'team',label:'Open team',icon:'team',keywords:'people members',onSelect:openTeam },
-  ]} />
-```
-
-| Prop                | Type               | Purpose                                                        |
-| ------------------- | ------------------ | -------------------------------------------------------------- |
-| open / onOpenChange | boolean / callback | Controlled launcher.                                           |
-| items               | CommandItem[]      | value, label, icon, keywords, shortcut, disabled and onSelect. |
-| shortcut            | boolean            | Optionally register Ctrl/⌘K.                                   |
-
-## Collapsible
-
-One expandable section, with a rotating chevron and animated content height. Use it for optional settings and extra details.
-
-```jsx
-import { useState } from "react";
-import { Collapsible } from "@ride-eats/ui";
-
-const [open, setOpen] = useState(false);
-<Collapsible title="Advanced settings" open={open} onOpenChange={setOpen}>
-  <YourSettings />
-</Collapsible>;
-```
-
-| Prop                | Type               | Purpose              |
-| ------------------- | ------------------ | -------------------- |
-| open / onOpenChange | boolean / callback | Expanded state.      |
-| title / children    | ReactNode          | Trigger and content. |
-
-## Steps
-
-A compact wizard progress rail with completed, current and upcoming steps. Supports horizontal or vertical layouts and optional step navigation.
-
-```jsx
-import { useState } from "react";
-import { Steps } from "@ride-eats/ui";
-
-const [step, setStep] = useState("details");
-<Steps
-  value={step}
-  onValueChange={setStep}
-  items={[
-    { value: "details", label: "Details", description: "Name your transfer" },
-    { value: "files", label: "Files", description: "Choose what to share" },
-    { value: "review", label: "Review", description: "Ready to send" },
-  ]}
-/>;
-```
-
-| Prop                  | Type                         | Purpose                               |
-| --------------------- | ---------------------------- | ------------------------------------- |
-| items                 | {value,label,description?}[] | Ordered steps.                        |
-| value / onValueChange | string / optional callback   | Current step and optional navigation. |
-| orientation           | horizontal / vertical        | Layout direction.                     |
-
-## PIN Input
-
-One real input with individual visual cells, so pasting, numeric keyboards and one-time-code autofill work naturally.
-
-```jsx
-import { useState } from "react";
-import { PinInput } from "@ride-eats/ui";
-
-const [code, setCode] = useState("");
-<PinInput
-  label="Verification code"
-  value={code}
-  onValueChange={setCode}
-  length={6}
-  onComplete={(code) => verifyCode(code)}
-/>;
-```
-
-| Prop                      | Type                      | Purpose                                     |
-| ------------------------- | ------------------------- | ------------------------------------------- |
-| value / onValueChange     | string / callback         | Digits only, controlled.                    |
-| length / label / disabled | number / string / boolean | Cell count and field configuration.         |
-| onComplete                | (code) => void            | Called when a new complete code is entered. |
-
-## Toggle Group
-
-A compact toolbar for one or several independent selections, with native pressed states and soft selection transitions.
-
-```jsx
-import { useState } from "react";
-import { ToggleGroup } from "@ride-eats/ui";
-
-const [format, setFormat] = useState(["bold"]);
-<ToggleGroup
-  label="Text formatting"
-  multiple
-  value={format}
-  onValueChange={setFormat}
-  items={[
-    { value: "bold", label: "Bold", icon: "bold" },
-    { value: "italic", label: "Italic", icon: "italic" },
-  ]}
-/>;
-```
-
-| Prop                  | Type                                 | Purpose                          |
-| --------------------- | ------------------------------------ | -------------------------------- |
-| items                 | {value,label,icon?,disabled?}[]      | Toggle controls.                 |
-| value / onValueChange | string / null or string[] / callback | Single or multiple selection.    |
-| multiple / disabled   | boolean                              | Selection mode and availability. |
-
-## Rating
-
-A small, keyboard-accessible star rating with native radio behavior and a restrained hover lift.
-
-```jsx
-import { useState } from "react";
-import { Rating } from "@ride-eats/ui";
-
-const [rating, setRating] = useState(4);
-<Rating
-  label="How was your experience?"
-  value={rating}
-  onValueChange={setRating}
-  max={5}
-/>;
-```
-
-| Prop                   | Type              | Purpose                                        |
-| ---------------------- | ----------------- | ---------------------------------------------- |
-| value / onValueChange  | number / callback | Chosen rating, 1-based.                        |
-| max / label / readOnly | configuration     | Star count, group label and display-only mode. |
-
-## Scroll Area
-
-A contained, keyboard-scrollable region with a sticky header for search, filters or section labels.
-
-```jsx
-import { ScrollArea } from "@ride-eats/ui";
-
-<ScrollArea
-  height={240}
-  label="Team members"
-  header={
-    <input
-      type="search"
-      placeholder="Find a member…"
-      aria-label="Find a member"
-    />
-  }
->
-  {members.map((member) => (
-    <YourRow key={member.id} member={member} />
-  ))}
-</ScrollArea>;
-```
-
-| Prop                      | Type                      | Purpose                              |
-| ------------------------- | ------------------------- | ------------------------------------ |
-| height                    | number or CSS length      | Maximum region height.               |
-| header / children         | ReactNode                 | Sticky header and scrolling content. |
-| label / className / style | accessibility and styling | Region name and appearance.          |
-
-## Separator
-
-A quiet dividing line with an optional label, in horizontal or vertical layouts.
-
-```jsx
-import { Separator } from '@ride-eats/ui';
-
-<Separator label="or continue with" />
-<Separator orientation="vertical" />
-```
-
-| Prop        | Type                  | Purpose              |
-| ----------- | --------------------- | -------------------- |
-| label       | ReactNode             | Optional line label. |
-| orientation | horizontal / vertical | Divider direction.   |
+See [canonical API audit](component-audit.md) and [migration guide](migrations-v0.8.md). Import styles once. Workflows and recipes are composition examples.
 
 ## Icon Library
 
-2,015 bundled Lucide icons plus Send’s own glyphs. Search by name or purpose, adjust size and stroke, preview motion, and copy the exact React code.
+Display. 2,015 bundled Lucide icons plus Send’s own glyphs. Search by name or purpose, adjust size and stroke, preview motion, and copy the exact React code.
 
 ```jsx
 import { Icon, IconProvider } from '@ride-eats/ui';
-
 <Icon name="headset" size={24} strokeWidth={1.7} />
-<AnimatedIcon name="loader-circle" playing loop />
+<Icon name="loader-circle" motion="spin" animateOn="always" />
 <Icon name="check" motion="draw" />
 
 // Your own brand glyphs fit the same API:
@@ -252,74 +18,56 @@ import { Icon, IconProvider } from '@ride-eats/ui';
 </IconProvider>
 ```
 
-| Prop                       | Type                                         | Purpose                                                            |
-| -------------------------- | -------------------------------------------- | ------------------------------------------------------------------ |
-| name                       | string                                       | Catalog slug or a registered custom name.                          |
-| size / strokeWidth / color | number / number / string                     | SVG size, stroke and color; defaults preserve Send control sizing. |
-| motion                     | auto / none / draw | Opt-in movement; honors reduced motion.                            |
-| animateOn                  | hover / always                               | Hover/focus or continuous animation.                               |
-| label / title              | string                                       | Accessible meaning for nondecorative icons.                        |
-| IconProvider.icons         | Record<string,ReactNode>                     | Register custom SVG contents or override catalog names.            |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| name | string | Catalog slug or a registered custom name. |
+| size / strokeWidth / color | number / number / string | SVG size, stroke and color; defaults preserve Send control sizing. |
+| motion | auto \| none \| draw | Opt-in movement; honors reduced motion. |
+| animateOn | hover \| always | Hover/focus or continuous animation. |
+| label / title | string | Accessible meaning for nondecorative icons. |
+| IconProvider.icons | Record<string,ReactNode> | Register custom SVG contents or override catalog names. |
 
 ## Data Table
 
-A real working table: custom cells, sortable columns, selection, row actions, loading and empty states. Keep data fetching and sorting in your application.
+Display. A real working table: custom cells, sortable columns, selection, row actions, loading and empty states. Keep data fetching and sorting in your application.
 
 ```jsx
-import { useState } from "react";
-import { DataTable, Badge, Button } from "@ride-eats/ui";
-
-const [sort, setSort] = useState({ key: "name", direction: "asc" });
+import { DataTable, Badge, Button } from '@ride-eats/ui';
+const [sort, setSort] = useState({ key: 'name', direction: 'asc' });
 const [selected, setSelected] = useState([]);
-const rows = [...people].sort(
-  (a, b) =>
-    String(a[sort.key]).localeCompare(String(b[sort.key])) *
-    (sort.direction === "asc" ? 1 : -1),
+const rows = [...people].sort((a, b) =>
+  String(a[sort.key]).localeCompare(String(b[sort.key])) * (sort.direction === 'asc' ? 1 : -1)
 );
 
 <DataTable
-  caption="Team members"
-  rows={rows}
-  rowKey="id"
+  caption="Team members" rows={rows} rowKey="id"
   columns={[
-    { key: "name", label: "Name", sortable: true },
-    { key: "email", label: "Email" },
-    {
-      key: "status",
-      label: "Status",
-      render: (value) => <Badge tone="good">{value}</Badge>,
-    },
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'email', label: 'Email' },
+    { key: 'status', label: 'Status', render: value => <Badge tone="good">{value}</Badge> },
   ]}
-  sort={sort}
-  onSortChange={setSort}
-  selectedKeys={selected}
-  onSelectionChange={setSelected}
-  rowActions={(row) => (
-    <Button size="sm" onClick={() => openProfile(row)}>
-      View
-    </Button>
-  )}
-/>;
+  sort={sort} onSortChange={setSort}
+  selectedKeys={selected} onSelectionChange={setSelected}
+  rowActions={row => <Button size="sm" onClick={() => openProfile(row)}>View</Button>}
+/>
 ```
 
-| Prop                             | Type                  | Purpose                                                     |
-| -------------------------------- | --------------------- | ----------------------------------------------------------- |
-| columns                          | Column[]              | key, label, render(value,row), sortable, width, align.      |
-| rows / rowKey                    | T[] / key or function | Your records and stable identifiers.                        |
-| sort / onSortChange              | Sort / callback       | Controlled sort; your app orders/fetches rows.              |
-| selectedKeys / onSelectionChange | Key[] / callback      | Optional selection with select-all and indeterminate state. |
-| rowActions / onRowClick          | render / callback     | Custom actions or accessible first-cell button.             |
-| loading / emptyContent / caption | boolean / ReactNode   | Status and semantic table context.                          |
-| className / style / density      | styling hooks         | compact or comfortable rows.                                |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| columns | Column[] | key, label, render(value,row), sortable, width, align. |
+| rows / rowKey | T[] / key or function | Your records and stable identifiers. |
+| sort / onSortChange | Sort / callback | Controlled sort; your app orders/fetches rows. |
+| selectedKeys / onSelectionChange | Key[] / callback | Optional selection with select-all and indeterminate state. |
+| rowActions / onRowClick | render / callback | Custom actions or accessible first-cell button. |
+| loading / emptyContent / caption | boolean / ReactNode | Status and semantic table context. |
+| className / style / density | styling hooks | compact or comfortable rows. |
 
 ## Stacked Dialogs
 
-Keep the form mounted while a confirmation opens above it. One backdrop, depth transitions, focus restoration and a preserved draft.
+Recipes. Keep the form mounted while a confirmation opens above it. One backdrop, depth transitions, focus restoration and a preserved draft.
 
 ```jsx
-import { useState } from 'react';
 import { Button, Dialog, Field, useConfirm } from '@ride-eats/ui';
-
 const confirm = useConfirm();
 const [open, setOpen] = useState(false);
 const [name, setName] = useState('');
@@ -339,374 +87,256 @@ const requestClose = async () => {
 // Wrap your app in UIProvider once.
 ```
 
-| Prop               | Type                             | Purpose                                                                       |
-| ------------------ | -------------------------------- | ----------------------------------------------------------------------------- |
-| useConfirm()       | (options) => Promise<boolean>    | title, message, confirmLabel, cancelLabel and danger.                         |
-| Dialog.beforeClose | () => boolean / Promise<boolean> | Optional dismissal guard; external open state remains yours.                  |
-| Native stack       | automatic                        | Underlying form is inert, scaled and preserved; only the first backdrop dims. |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| useConfirm() | (options) => Promise<boolean> | title, message, confirmLabel, cancelLabel and danger. |
+| Dialog.beforeClose | () => boolean \| Promise<boolean> | Optional dismissal guard; external open state remains yours. |
+| Native stack | automatic | Underlying form is inert, scaled and preserved; only the first backdrop dims. |
 
 ## Accordion
 
-Quiet disclosure rows with an animated height, rotating chevrons and controlled state.
+Layout. Quiet disclosure rows with an animated height, rotating chevrons and controlled state.
 
 ```jsx
-import { useState } from "react";
-import { Accordion } from "@ride-eats/ui";
-
-const [open, setOpen] = useState("delivery");
-<Accordion
-  value={open}
-  onValueChange={setOpen}
-  items={[
-    {
-      value: "delivery",
-      title: "How does delivery work?",
-      content: "Your recipient gets a secure download link.",
-    },
-    {
-      value: "expiry",
-      title: "Can I change the expiry?",
-      content: "Choose a date in transfer settings.",
-    },
-  ]}
-/>;
+import { Accordion } from '@ride-eats/ui';
+const [open, setOpen] = useState('delivery');
+<Accordion value={open} onValueChange={setOpen} items={[
+  { value: 'delivery', title: 'How does delivery work?', content: 'Your recipient gets a secure download link.' },
+  { value: 'expiry', title: 'Can I change the expiry?', content: 'Choose a date in transfer settings.' },
+]} />
 ```
 
-| Prop                  | Type                          | Purpose                         |
-| --------------------- | ----------------------------- | ------------------------------- |
-| items                 | {value,title,content,icon?}[] | Content and optional row icons. |
-| value / onValueChange | string / null / callback      | Open item or null.              |
-| className / style     | styling hooks                 | Customize the outer layout.     |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| items | {value,title,content,icon?}[] | Content and optional row icons. |
+| value / onValueChange | string \| null / callback | Open item or null. |
+| className / style | styling hooks | Customize the outer layout. |
 
 ## Alert
 
-An inline message with a small status mark, optional action and dismissal.
+Feedback. An inline message with a small status mark, optional action and dismissal.
 
 ```jsx
-import { Alert, Button } from "@ride-eats/ui";
-
-<Alert
-  tone="good"
-  title="Your files are ready"
+import { Alert, Button } from '@ride-eats/ui';
+<Alert tone="good" title="Your files are ready"
   onDismiss={() => setVisible(false)}
-  action={
-    <Button size="sm" onClick={openTransfer}>
-      View transfer
-    </Button>
-  }
->
+  action={<Button size="sm" onClick={openTransfer}>View transfer</Button>}>
   A secure link is ready to share with your team.
-</Alert>;
+</Alert>
 ```
 
-| Prop                      | Type                 | Purpose                                 |
-| ------------------------- | -------------------- | --------------------------------------- |
-| tone                      | neutral / good / bad | Semantic styling and alert/status role. |
-| title / children / action | ReactNode            | Message, detail and optional action.    |
-| onDismiss                 | () => void           | Optional dismissal control.             |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| tone | neutral \| good \| bad | Semantic styling and alert/status role. |
+| title / children / action | ReactNode | Message, detail and optional action. |
+| onDismiss | () => void | Optional dismissal control. |
 
 ## Checkbox
 
-A compact check with a soft scale transition, a real native input and indeterminate support.
+Inputs. A compact check with a soft scale transition, a real native input and indeterminate support.
 
 ```jsx
-import { useState } from "react";
-import { Checkbox } from "@ride-eats/ui";
-
-const files = [
-  { id: "brief", name: "Campaign brief.pdf" },
-  { id: "assets", name: "Brand assets.zip" },
-];
-const [selected, setSelected] = useState(["brief"]);
+import { Checkbox } from '@ride-eats/ui';
+const files = [{ id: 'brief', name: 'Campaign brief.pdf' }, { id: 'assets', name: 'Brand assets.zip' }];
+const [selected, setSelected] = useState(['brief']);
 const all = selected.length === files.length;
 const mixed = selected.length > 0 && !all;
 
-<Checkbox
-  label="Select all files"
-  checked={all}
-  indeterminate={mixed}
-  onCheckedChange={(checked) =>
-    setSelected(checked ? files.map((file) => file.id) : [])
-  }
-/>;
-{
-  files.map((file) => (
-    <Checkbox
-      key={file.id}
-      label={file.name}
-      checked={selected.includes(file.id)}
-      onCheckedChange={(checked) =>
-        setSelected((current) =>
-          checked
-            ? [...current, file.id]
-            : current.filter((id) => id !== file.id),
-        )
-      }
-    />
-  ));
-}
+<Checkbox label="Select all files" checked={all} indeterminate={mixed}
+  onCheckedChange={checked => setSelected(checked ? files.map(file => file.id) : [])} />
+{files.map(file => <Checkbox key={file.id} label={file.name}
+  checked={selected.includes(file.id)}
+  onCheckedChange={checked => setSelected(current => checked
+    ? [...current, file.id] : current.filter(id => id !== file.id))} />)}
 ```
 
-| Prop                      | Type               | Purpose                       |
-| ------------------------- | ------------------ | ----------------------------- |
-| checked / onCheckedChange | boolean / callback | Controlled native checkbox.   |
-| label / hint              | ReactNode          | Label and explanation.        |
-| indeterminate / disabled  | boolean            | Mixed state and availability. |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| checked / onCheckedChange | boolean / callback | Controlled native checkbox. |
+| label / hint | ReactNode | Label and explanation. |
+| indeterminate / disabled | boolean | Mixed state and availability. |
 
 ## Radio Group
 
-Selectable option rows with a quiet border, animated dot and supporting text.
+Inputs. Selectable option rows with a quiet border, animated dot and supporting text.
 
 ```jsx
-import { useState } from "react";
-import { RadioGroup } from "@ride-eats/ui";
-
-const [access, setAccess] = useState("private");
-<RadioGroup
-  label="Who can access this?"
-  value={access}
-  onValueChange={setAccess}
+import { RadioGroup } from '@ride-eats/ui';
+const [access, setAccess] = useState('private');
+<RadioGroup label="Who can access this?" value={access} onValueChange={setAccess}
   options={[
-    {
-      value: "private",
-      label: "Only invited people",
-      description: "A private space for your team.",
-    },
-    {
-      value: "public",
-      label: "Anyone with the link",
-      description: "Easy to share, no account needed.",
-    },
-  ]}
-/>;
+    { value: 'private', label: 'Only invited people', description: 'A private space for your team.' },
+    { value: 'public', label: 'Anyone with the link', description: 'Easy to share, no account needed.' },
+  ]} />
 ```
 
-| Prop                    | Type              | Purpose                                           |
-| ----------------------- | ----------------- | ------------------------------------------------- |
-| options                 | Option[]          | value, label, description, trailing and disabled. |
-| value / onValueChange   | string / callback | Native radio behavior, controlled state.          |
-| label / name / disabled | string / boolean  | Group context and form identity.                  |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| options | Option[] | value, label, description, trailing and disabled. |
+| value / onValueChange | string / callback | Native radio behavior, controlled state. |
+| label / name / disabled | string / boolean | Group context and form identity. |
 
 ## Slider
 
-A smooth value track with a precise native range input and a readable live value.
+Inputs. A smooth value track with a precise native range input and a readable live value.
 
 ```jsx
-import { useState } from "react";
-import { Slider } from "@ride-eats/ui";
-
+import { Slider } from '@ride-eats/ui';
 const [volume, setVolume] = useState(64);
-<Slider
-  label="Volume"
-  value={volume}
-  onValueChange={setVolume}
-  min={0}
-  max={100}
-  step={1}
-  formatValue={(value) => value + "%"}
-/>;
+<Slider label="Volume" value={volume} onValueChange={setVolume}
+  min={0} max={100} step={1} formatValue={value => value + '%'} />
 ```
 
-| Prop                  | Type              | Purpose                            |
-| --------------------- | ----------------- | ---------------------------------- |
-| value / onValueChange | number / callback | Controlled value.                  |
-| min / max / step      | number            | Native range bounds.               |
-| formatValue           | (value) => string | Visible and accessible value text. |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value / onValueChange | number / callback | Controlled value. |
+| min / max / step | number | Native range bounds. |
+| formatValue | (value) => string | Visible and accessible value text. |
 
 ## Progress
 
-A measured progress bar with a soft fill transition, or a restrained indeterminate state.
+Feedback. A measured progress bar with a soft fill transition, or a restrained indeterminate state.
 
 ```jsx
-import { useState } from 'react';
 import { Progress, Button } from '@ride-eats/ui';
-
 const [progress, setProgress] = useState(64);
 <Progress label="Uploading campaign assets" value={progress} hint="6.4 MB of 10 MB" />
 <Button onClick={() => setProgress(value => Math.min(100, value + 12))}>Advance</Button>
 ```
 
-| Prop          | Type    | Purpose                                        |
-| ------------- | ------- | ---------------------------------------------- |
-| value / max   | number  | Current and maximum values.                    |
-| label / hint  | string  | Task and supporting context.                   |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value / max | number | Current and maximum values. |
+| label / hint | string | Task and supporting context. |
 | indeterminate | boolean | Unknown duration with reduced-motion fallback. |
 
 ## Password Input
 
-A labeled password field with an integrated reveal control and native input props.
+Inputs. A labeled password field with an integrated reveal control and native input props.
 
 ```jsx
-import { PasswordInput } from "@ride-eats/ui";
-
-<PasswordInput
-  label="Password"
-  placeholder="Enter your password"
-  autoComplete="current-password"
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-  hint="Use at least 12 characters."
-/>;
+import { PasswordInput } from '@ride-eats/ui';
+<PasswordInput label="Password" placeholder="Enter your password"
+  autoComplete="current-password" value={password}
+  onChange={e => setPassword(e.target.value)}
+  hint="Use at least 12 characters." />
 ```
 
-| Prop          | Type                    | Purpose                                                  |
-| ------------- | ----------------------- | -------------------------------------------------------- |
-| label / hint  | ReactNode               | Field context.                                           |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| label / hint | ReactNode | Field context. |
 | ...inputProps | native input attributes | value, onChange, name, required, disabled, autoComplete. |
 
 ## Number Input
 
-Increment and decrement controls around a directly editable number.
+Inputs. Increment and decrement controls around a directly editable number.
 
 ```jsx
-import { useState } from "react";
-import { NumberInput } from "@ride-eats/ui";
-
+import { NumberInput } from '@ride-eats/ui';
 const [quantity, setQuantity] = useState(2);
-<NumberInput
-  label="Copies"
-  value={quantity}
-  onValueChange={setQuantity}
-  min={1}
-  max={20}
-/>;
+<NumberInput label="Copies" value={quantity} onValueChange={setQuantity} min={1} max={20} />
 ```
 
-| Prop                  | Type              | Purpose                      |
-| --------------------- | ----------------- | ---------------------------- |
-| value / onValueChange | number / callback | Controlled quantity.         |
-| min / max / step      | number            | Bounds and increment.        |
-| label / disabled      | string / boolean  | Field name and availability. |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value / onValueChange | number / callback | Controlled quantity. |
+| min / max / step | number | Bounds and increment. |
+| label / disabled | string / boolean | Field name and availability. |
 
 ## Breadcrumbs
 
-A compact path through the app, with a clear current page and real links.
+Navigation. A compact path through the app, with a clear current page and real links.
 
 ```jsx
-import { Breadcrumbs } from "@ride-eats/ui";
-
-<Breadcrumbs
-  items={[
-    { label: "Workspace", href: "/" },
-    { label: "Transfers", href: "/transfers" },
-    { label: "Campaign assets" },
-  ]}
-/>;
+import { Breadcrumbs } from '@ride-eats/ui';
+<Breadcrumbs items={[
+  { label: 'Workspace', href: '/' },
+  { label: 'Transfers', href: '/transfers' },
+  { label: 'Campaign assets' },
+]} />
 ```
 
-| Prop  | Type            | Purpose                        |
-| ----- | --------------- | ------------------------------ |
+| Prop | Type | Behavior |
+| --- | --- | --- |
 | items | {label,href?}[] | Last item is the current page. |
-| label | string          | Accessible navigation name.    |
+| label | string | Accessible navigation name. |
 
 ## Avatar Group
 
-Overlapping team identities with a measured hover lift and overflow count.
+Display. Overlapping team identities with a measured hover lift and overflow count.
 
 ```jsx
-import { AvatarGroup } from "@ride-eats/ui";
-
-<AvatarGroup
-  max={4}
-  people={[
-    { id: "alex", name: "Alex Rivera", src: "/alex.jpg" },
-    { id: "sam", name: "Sam Chen" },
-    { id: "jordan", name: "Jordan Lee" },
-  ]}
-/>;
+import { AvatarGroup } from '@ride-eats/ui';
+<AvatarGroup max={4} people={[
+  { id: 'alex', name: 'Alex Rivera', src: '/alex.jpg' },
+  { id: 'sam', name: 'Sam Chen' },
+  { id: 'jordan', name: 'Jordan Lee' },
+]} />
 ```
 
-| Prop   | Type              | Purpose                       |
-| ------ | ----------------- | ----------------------------- |
+| Prop | Type | Behavior |
+| --- | --- | --- |
 | people | {id?,name,src?}[] | Images fall back to initials. |
-| max    | number            | Visible identities before +N. |
-| label  | string            | Group accessible name.        |
+| max | number | Visible identities before +N. |
+| label | string | Group accessible name. |
 
 ## Copy Button
 
-Copy a value, then show a quiet checked confirmation. Failures stay visible.
+Actions. Copy a value, then show a quiet checked confirmation. Failures stay visible.
 
 ```jsx
-import { CopyButton } from "@ride-eats/ui";
-
-<CopyButton
-  value="https://example.com/shared/abc"
-  label="Copy link"
-  copiedLabel="Link copied"
-  onCopy={() => console.log("Copied")}
-/>;
+import { CopyButton } from '@ride-eats/ui';
+<CopyButton value="https://example.com/shared/abc" label="Copy link"
+  copiedLabel="Link copied" onCopy={() => console.log('Copied')} />
 ```
 
-| Prop                | Type      | Purpose                      |
-| ------------------- | --------- | ---------------------------- |
-| value               | string    | Clipboard text.              |
-| label / copiedLabel | string    | Idle and confirmed labels.   |
-| onCopy / onError    | callbacks | Optional integration events. |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value | string | Clipboard text. |
+| label / copiedLabel | string | Idle and confirmed labels. |
+| onCopy / onError | callbacks | Optional integration events. |
 
 ## File Dropzone
 
-A compact upload target with drag feedback, keyboard selection, size checks and file-type validation. Your app handles uploading.
+Inputs. A compact upload target with drag feedback, keyboard selection, size checks and file-type validation. Your app handles uploading.
 
 ```jsx
-import { FileDropzone } from "@ride-eats/ui";
-
-<FileDropzone
-  accept="image/*,.pdf"
-  maxSize={10 * 1024 * 1024}
-  multiple
-  onFiles={(files) => setFiles(files)}
-  label="Drop your files here"
-  description="or browse from your device"
-/>;
+import { FileDropzone } from '@ride-eats/ui';
+<FileDropzone accept="image/*,.pdf" maxSize={10 * 1024 * 1024} multiple
+  onFiles={files => setFiles(files)}
+  label="Drop your files here" description="or browse from your device" />
 ```
 
-| Prop                           | Type                     | Purpose                                    |
-| ------------------------------ | ------------------------ | ------------------------------------------ |
-| onFiles                        | (files: File[]) => void  | Validated files; upload with your own API. |
-| accept / multiple / maxSize    | string / boolean / bytes | Type, count and size constraints.          |
-| label / description / disabled | props                    | Content and availability.                  |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| onFiles | (files: File[]) => void | Validated files; upload with your own API. |
+| accept / multiple / maxSize | string / boolean / bytes | Type, count and size constraints. |
+| label / description / disabled | props | Content and availability. |
 
 ## Timeline
 
-A compact activity trail, connected with fine lines and familiar Send icons.
+Display. A compact activity trail, connected with fine lines and familiar Send icons.
 
 ```jsx
-import { Timeline } from "@ride-eats/ui";
-
-<Timeline
-  items={[
-    { id: 1, title: "Transfer created", time: "Just now", icon: "plus" },
-    {
-      id: 2,
-      title: "Files uploaded",
-      description: "12 files · 48 MB",
-      time: "2 minutes ago",
-      icon: "upload",
-    },
-    {
-      id: 3,
-      title: "Delivered to Alex",
-      time: "5 minutes ago",
-      icon: "check",
-      tone: "good",
-    },
-  ]}
-/>;
+import { Timeline } from '@ride-eats/ui';
+<Timeline items={[
+  { id: 1, title: 'Transfer created', time: 'Just now', icon: 'plus' },
+  { id: 2, title: 'Files uploaded', description: '12 files · 48 MB', time: '2 minutes ago', icon: 'upload' },
+  { id: 3, title: 'Delivered to Alex', time: '5 minutes ago', icon: 'check', tone: 'good' },
+]} />
 ```
 
-| Prop  | Type           | Purpose                                            |
-| ----- | -------------- | -------------------------------------------------- |
+| Prop | Type | Behavior |
+| --- | --- | --- |
 | items | TimelineItem[] | title, description, time, dateTime, icon and tone. |
-| label | string         | Accessible activity-list name.                     |
+| label | string | Accessible activity-list name. |
 
 ## Drawer
 
-A side panel built on the same native modal stack: smooth entry, focus management and Escape.
+Layout. A side panel built on the same native modal stack: smooth entry, focus management and Escape.
 
 ```jsx
-import { useState } from 'react';
 import { Drawer, Button } from '@ride-eats/ui';
-
 const [open, setOpen] = useState(false);
 <Button onClick={() => setOpen(true)}>View details</Button>
 <Drawer open={open} onOpenChange={setOpen} title="Transfer details"
@@ -715,19 +345,18 @@ const [open, setOpen] = useState(false);
 </Drawer>
 ```
 
-| Prop                      | Type               | Purpose                |
-| ------------------------- | ------------------ | ---------------------- |
-| open / onOpenChange       | boolean / callback | Controlled visibility. |
-| title / children / footer | ReactNode          | Panel structure.       |
-| side                      | right / left       | Slide-in direction.    |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| open / onOpenChange | boolean / callback | Controlled visibility. |
+| title / children / footer | ReactNode | Panel structure. |
+| side | right \| left | Slide-in direction. |
 
 ## Stat Cards
 
-The Tools dashboard metrics, with default, compact, inline and hero layouts. Optional sparklines, trends and progress.
+Display. The Tools dashboard metrics, with default, compact, inline and hero layouts. Optional sparklines, trends and progress.
 
 ```jsx
 import { MetricGrid, StatCard } from '@ride-eats/ui';
-
 <MetricGrid minWidth={180}>
   <StatCard label="Payments" value="153" hint="1 open" />
   <StatCard label="Paid" value="5" hint="Available from Drop 1" tone="good" />
@@ -738,141 +367,313 @@ import { MetricGrid, StatCard } from '@ride-eats/ui';
   chart={[12,18,15,30,24,40,48,52]} />
 ```
 
-| Prop                         | Type                              | Purpose                     |
-| ---------------------------- | --------------------------------- | --------------------------- |
-| label / value / hint         | ReactNode                         | Metric hierarchy.           |
-| variant                      | default / compact / inline / hero | Surface and type scale.     |
-| chart / trend / progress     | number[] / text / percentage      | Optional secondary data.    |
-| tone / icon                  | semantic tone / icon name         | Meaning and visual context. |
-| className / style / ...props | section attributes                | App-specific layout.        |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| label / value / hint | ReactNode | Metric hierarchy. |
+| variant | default \| compact \| inline \| hero | Surface and type scale. |
+| chart / trend / progress | number[] / text / percentage | Optional secondary data. |
+| tone / icon | semantic tone / icon name | Meaning and visual context. |
+| className / style / ...props | section attributes | App-specific layout. |
 
 ## Tiles
 
-The Tools launcher shape: a contained icon, a clear name, a short explanation and a natural next step.
+Layout. The Tools launcher shape: a contained icon, a clear name, a short explanation and a natural next step.
 
 ```jsx
-import { Tile, MetricGrid } from "@ride-eats/ui";
-
+import { Tile, MetricGrid } from '@ride-eats/ui';
 <MetricGrid minWidth={220}>
-  <Tile
-    icon="files"
-    title="My transfers"
-    description="Everything you have shared."
-    meta="24 files"
-    href="/transfers"
-    footer="View transfers"
-  />
-  <Tile
-    icon="team"
-    title="Team workspace"
-    description="Share a space with your people."
-    onClick={() => setTeamOpen(true)}
-    footer="Open workspace"
-  />
-</MetricGrid>;
+  <Tile icon="files" title="My transfers" description="Everything you have shared."
+    meta="24 files" href="/transfers" footer="View transfers" />
+  <Tile icon="team" title="Team workspace" description="Share a space with your people."
+    onClick={() => setTeamOpen(true)} footer="Open workspace" />
+</MetricGrid>
 ```
 
-| Prop                                | Type             | Purpose                                          |
-| ----------------------------------- | ---------------- | ------------------------------------------------ |
-| title / description / meta / footer | ReactNode        | Tile content and supporting context.             |
-| icon / image                        | name / image URL | Visual identity.                                 |
-| href / onClick                      | link / callback  | Choose link, button or static article semantics. |
-| disabled / className / ...props     | customization    | Interaction and layout.                          |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| title / description / meta / footer | ReactNode | Tile content and supporting context. |
+| icon / image | name / image URL | Visual identity. |
+| href / onClick | link / callback | Choose link, button or static article semantics. |
+| disabled / className / ...props | customization | Interaction and layout. |
 
 ## Page Header
 
-Tools-style page titles with an app icon, context, description and natural-size actions.
+Layout. Tools-style page titles with an app icon, context, description and natural-size actions.
 
 ```jsx
-import { PageHeader, Button } from "@ride-eats/ui";
-
-<PageHeader
-  title="Payments"
-  icon="storage"
-  description="Shared across your admin devices."
-  actions={<Button onClick={refresh}>Check connection</Button>}
-/>;
+import { PageHeader, Button } from '@ride-eats/ui';
+<PageHeader title="Payments" icon="storage" description="Shared across your admin devices."
+  actions={<Button onClick={refresh}>Check connection</Button>} />
 ```
 
-| Prop                          | Type            | Purpose                                       |
-| ----------------------------- | --------------- | --------------------------------------------- |
-| title / description / eyebrow | ReactNode       | Page hierarchy.                               |
-| icon / image                  | icon name / URL | Optional app identity.                        |
-| actions / children            | ReactNode       | Natural-size controls and additional content. |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| title / description / eyebrow | ReactNode | Page hierarchy. |
+| icon / image | icon name / URL | Optional app identity. |
+| actions / children | ReactNode | Natural-size controls and additional content. |
 
 ## Dashboard Layout
 
-Compose a working screen from page headers, metric cards, tabs, tool tiles and tables. The same building blocks as Tools.
+Recipes. Compose a working screen from page headers, metric cards, tabs, tool tiles and tables. The same building blocks as Tools.
 
 ```jsx
-import {
-  PageHeader,
-  MetricGrid,
-  StatCard,
-  Tabs,
-  Card,
-  DataTable,
-} from "@ride-eats/ui";
-
+import { PageHeader,MetricGrid,StatCard,Tabs,Card,DataTable } from '@ride-eats/ui';
 <div className="stack">
-  <PageHeader
-    title="Payments"
-    icon="storage"
-    description="Shared across admin devices."
-  />
+  <PageHeader title="Payments" icon="storage" description="Shared across admin devices." />
   <MetricGrid>
     <StatCard label="Payments" value="153" hint="1 open" />
     <StatCard label="Paid" value="5" tone="good" />
     <StatCard label="Scenarios passed" value="44 / 48" progress={92} />
   </MetricGrid>
   <Tabs value={tab} onValueChange={setTab} items={tabs} />
-  <Card
-    title="Recent payments"
-    description="A shared view of the latest activity."
-  >
+  <Card title="Recent payments" description="A shared view of the latest activity.">
     <DataTable columns={columns} rows={payments} />
   </Card>
-</div>;
+</div>
 ```
 
-| Prop                | Type                                            | Purpose                                             |
-| ------------------- | ----------------------------------------------- | --------------------------------------------------- |
-| Composition         | children and slots                              | No additional provider or dashboard-specific state. |
-| MetricGrid.minWidth | number                                          | Responsive minimum card width in pixels.            |
-| Card                | title,description,action,footer,variant,padding | High-level API or compound CardHeader/Body/Footer.  |
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| Composition | children and slots | No additional provider or dashboard-specific state. |
+| MetricGrid.minWidth | number | Responsive minimum card width in pixels. |
+| Card | title,description,action,footer,variant,padding | High-level API or compound CardHeader/Body/Footer. |
 
-## AnimatedIcon — full catalog
+## Reorder List
 
-All 2,015 catalog glyphs support native SVG stroke and geometry animation. Ten presets are bespoke; remaining glyphs use generated per-shape stroke accents. There are no SVG transform animations. Legacy spin/pulse/bounce/rotate aliases now resolve to geometry animation.
+Layout. Drag handles to reorder rows with animated position changes. Arrow keys on the handle and move buttons provide equivalent controls.
 
 ```jsx
-import { AnimatedIcon } from '@ride-eats/ui';
-<AnimatedIcon name="headset" />
-<AnimatedIcon name="database" size={32} playing loop />
+import { ReorderList } from '@ride-eats/ui';
+const [items, setItems] = useState([{id:'a',label:'Design'}, {id:'b',label:'Build'}, {id:'c',label:'Review'}]);
+<ReorderList items={items} onReorder={setItems} />
 ```
 
-Hover/focus plays once. `playing` starts playback, `loop` repeats it, and reduced-motion preferences stop it. Size, strokeWidth, color/style and label remain customizable. Catalog shapes load in letter chunks.
-
-## Gesture components
-
-| Component | Minimal API | Interaction |
+| Prop | Type | Behavior |
 | --- | --- | --- |
-| Rating | `value`, `onValueChange` | Drag across stars, hover preview, native radio keys; pointer cancellation restores the starting rating. |
-| ReorderList | `items`, `onReorder` | Drag handles, arrow keys, move buttons. Defaults to `item.id` and `item.label`; customize with `getItemKey` / `renderItem`. |
-| SwipeActions | `actions`, `children` | Drag left or press Show actions. Actions run only on explicit press. |
-| Carousel | `items`, `renderItem` | Native touch scroll, mouse drag, arrow keys, previous/next and dots. |
-| SplitPane | `value`, `onValueChange`, `first`, `second` | Drag divider; arrows resize, Shift uses larger steps, Home/End reach bounds. |
-| RangeSlider | `value={[low,high]}`, `onValueChange` | Two native range handles, keyboard and formatted labels; bounds cannot cross. |
+| items / onReorder | T[] / callback | Caller-owned ordered items. Stable IDs preserve state. |
+| getItemKey / renderItem | (item) => key / (item, index) => ReactNode | Customize identity and row content. Defaults to item.id and item.label. |
+| disabled / label | boolean / string | Disable movement or name the list. |
 
-All accept `className` and `style` and inherit shared tokens. Positional animations respect reduced motion. ReorderList requires stable IDs and is intended for bounded lists. No virtualized, cross-list or cross-column drag-and-drop is bundled. Swipe actions are caller callbacks; library demos do not mutate a backend.
+## Swipe Actions
 
-## Compact platform system (v0.7.0)
+Actions. Drag a row left to reveal actions, or use its action button. Actions only run when explicitly pressed.
 
-Import each component from `@ride-eats/ui`. Import styles once and wrap the app in UIProvider. Shared styling props are className and style unless noted. See [platform-system.md](platform-system.md) for composition, density and limitations.
+```jsx
+import { SwipeActions } from '@ride-eats/ui';
+<SwipeActions actions={[{value:'archive', label:'Archive', icon:'archive', onSelect:archive}]}><strong>Project files</strong></SwipeActions>
+```
 
-### Textarea
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| actions | {value,label,icon?,destructive?,onSelect?}[] | Up to three visible actions. Revealing never executes them. |
+| children / label | ReactNode / string | Row content and action region name. |
 
-A compact multiline field with associated labels, hints and validation. Native textarea props remain available.
+## Carousel
+
+Display. Touch scrolling, mouse dragging, keyboard arrows and navigation buttons share one scroll-snap carousel. Reduced motion removes animated scrolling.
+
+```jsx
+import { Carousel, Card } from '@ride-eats/ui';
+<Carousel items={cards} renderItem={card => <Card title={card.title}>{card.description}</Card>} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| items / renderItem | T[] / (item,index) => ReactNode | Content is yours. Item IDs provide stable keys. |
+| label | string | Accessible carousel name. |
+
+## Split Pane
+
+Layout. Drag the divider to resize two panels. Arrow keys adjust by 2%, Shift by 10%, and Home/End jump to bounds.
+
+```jsx
+import { SplitPane } from '@ride-eats/ui';
+const [split, setSplit] = useState(40);
+<SplitPane value={split} onValueChange={setSplit} first={<p>Navigation</p>} second={<p>Workspace</p>} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value / onValueChange | number / callback | First-panel width as a percentage. |
+| min / max | number | Allowed percentages; defaults 20–80. |
+| first / second / label | ReactNode / ReactNode / string | Panel content and separator name. |
+
+## Range Slider
+
+Inputs. Two native range handles with a shared accent track. Drag either handle or use keyboard arrows; the bounds cannot cross.
+
+```jsx
+import { RangeSlider } from '@ride-eats/ui';
+const [range, setRange] = useState([20,80]);
+<RangeSlider label="Budget" value={range} onValueChange={setRange} formatValue={value => '$' + value} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value / onValueChange | [number,number] / callback | Controlled minimum and maximum. |
+| min / max / step | number | Bounds and native stepping. |
+| label / formatValue / disabled | string / function / boolean | Label, value formatting and availability. |
+
+## Animated Icons
+
+Motion. Native SVG animation for the complete 2,015-icon catalog. Visible stroke tracing keeps a faint, steady outline underneath. Selection plays immediately; Replay and Loop preview make playback explicit. Ten bespoke presets add path morphs and purpose-built motion. Search any icon, hover to play, and copy one React component.
+
+```jsx
+import { AnimatedIcon, Button } from '@ride-eats/ui';
+<AnimatedIcon name="bell" size={28} />
+<AnimatedIcon name="check" playing />
+<AnimatedIcon name="refresh" playing loop />
+// Hover/focus on a parent button also triggers the icon.
+<Button><AnimatedIcon name="send" /> Send files</Button>
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| name | string — any catalog name | All 2,015 catalog names, plus refresh. Ten bespoke presets; remaining glyphs use native SVG stroke tracing. |
+| playing / loop | boolean | Play explicitly or repeat. Hover/focus also plays. |
+| size / strokeWidth / label | number / number / string | SVG appearance and accessibility. |
+
+## Popover
+
+Feedback. A floating, native top-layer panel for small forms and contextual details. It positions beside its trigger, escapes clipping, and dismisses on outside click or Escape.
+
+```jsx
+import { Popover, Button } from '@ride-eats/ui';
+const [open, setOpen] = useState(false);
+<Popover open={open} onOpenChange={setOpen} label="Share settings"
+  trigger={props => <Button {...props}>Share settings</Button>}>
+  <p>Anyone with the link can view this transfer.</p>
+  <Button onClick={() => setOpen(false)}>Done</Button>
+</Popover>
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| open / onOpenChange | boolean / callback | Controlled native popover. |
+| trigger | (buttonProps) => ReactNode | Spread the supplied ref and handlers. |
+| label / children / width / align | content and placement | Dialog label, panel body, pixel width, start/end alignment. |
+
+## Command Menu
+
+Navigation. A workspace command palette: grouped ranked search, nested scopes, recent commands, modifier shortcuts, async execution and error recovery. The demo performs real local navigation and creates drafts.
+
+```jsx
+import { CommandMenu } from '@ride-eats/ui';
+<CommandMenu open={open} onOpenChange={setOpen} shortcut items={[{value:'new',label:'New transfer',group:'Create',description:'Create a draft',shortcut:'Alt+N',onSelect:createDraft},{value:'settings',label:'Settings',group:'Navigate',items:settingsCommands}]} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| open / onOpenChange | controlled state | Open with a visible launcher or optional Ctrl/⌘K. |
+| items | CommandItem[] | Unique value, label, description, group, icon, keywords, modifier shortcut, disabled, onSelect and nested items. |
+| onSelect | void \| Promise | Successful commands close the palette; rejected commands show an error and stay open. |
+| label / placeholder / shortcut | configuration | Accessible scope name, search prompt and global launcher shortcut. Recent IDs stay in memory for the lifetime of this instance. |
+
+## Steps
+
+Navigation. A compact wizard progress rail with completed, current and upcoming steps. Supports horizontal or vertical layouts and optional step navigation.
+
+```jsx
+import { Steps } from '@ride-eats/ui';
+const [step, setStep] = useState('details');
+<Steps value={step} onValueChange={setStep} items={[
+  {value:'details',label:'Details',description:'Name your transfer'},
+  {value:'files',label:'Files',description:'Choose what to share'},
+  {value:'review',label:'Review',description:'Ready to send'},
+]} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| items | {value,label,description?}[] | Ordered steps. |
+| value / onValueChange | string / optional callback | Current step and optional navigation. |
+| orientation | horizontal \| vertical | Layout direction. |
+
+## PIN Input
+
+Inputs. One real input with individual visual cells, so pasting, numeric keyboards and one-time-code autofill work naturally.
+
+```jsx
+import { PinInput } from '@ride-eats/ui';
+const [code, setCode] = useState('');
+<PinInput label="Verification code" value={code} onValueChange={setCode}
+  length={6} onComplete={code => verifyCode(code)} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value / onValueChange | string / callback | Digits only, controlled. |
+| length / label / disabled | number / string / boolean | Cell count and field configuration. |
+| onComplete | (code) => void | Called when a new complete code is entered. |
+
+## Toggle Group
+
+Inputs. A compact toolbar for one or several independent selections, with native pressed states and soft selection transitions.
+
+```jsx
+import { ToggleGroup } from '@ride-eats/ui';
+const [format, setFormat] = useState(['bold']);
+<ToggleGroup label="Text formatting" multiple value={format} onValueChange={setFormat}
+  items={[{value:'bold',label:'Bold',icon:'bold'},{value:'italic',label:'Italic',icon:'italic'}]} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| items | {value,label,icon?,disabled?}[] | Toggle controls. |
+| value / onValueChange | string\|null or string[] / callback | Single or multiple selection. |
+| multiple / disabled | boolean | Selection mode and availability. |
+
+## Rating
+
+Inputs. Drag across stars to choose a rating, preview on hover, or use native radio keyboard controls. Touch cancellation restores the previous value.
+
+```jsx
+import { Rating } from '@ride-eats/ui';
+const [rating, setRating] = useState(4);
+<Rating label="How was your experience?" value={rating} onValueChange={setRating} max={5} />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| value / onValueChange | number / callback | Chosen rating, 1-based. |
+| max / label / readOnly | configuration | Star count, group label and display-only mode. |
+
+## Scroll Area
+
+Layout. A contained, keyboard-scrollable region with a sticky header for search, filters or section labels.
+
+```jsx
+import { ScrollArea } from '@ride-eats/ui';
+<ScrollArea height={240} label="Team members"
+  header={<input type="search" placeholder="Find a member…" aria-label="Find a member" />}>
+  {members.map(member => <YourRow key={member.id} member={member} />)}
+</ScrollArea>
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| height | number or CSS length | Maximum region height. |
+| header / children | ReactNode | Sticky header and scrolling content. |
+| label / className / style | accessibility and styling | Region name and appearance. |
+
+## Separator
+
+Layout. A quiet dividing line with an optional label, in horizontal or vertical layouts.
+
+```jsx
+import { Separator } from '@ride-eats/ui';
+<Separator label="or continue with" />
+<Separator orientation="vertical" />
+```
+
+| Prop | Type | Behavior |
+| --- | --- | --- |
+| label | ReactNode | Optional line label. |
+| orientation | horizontal \| vertical | Divider direction. |
+
+## Textarea
+
+Inputs. A compact multiline field with associated labels, hints and validation. Native textarea props remain available.
 
 ```jsx
 import { Textarea } from '@ride-eats/ui';
@@ -884,9 +685,9 @@ import { Textarea } from '@ride-eats/ui';
 | label / hint / error | ReactNode | Accessible label and supporting content. |
 | rows / value / onChange / disabled | native textarea props | Defaults to three rows; controlled content stays yours. |
 
-### Form
+## Form
 
-Validation, async submit state, server errors and first-invalid-field focus in one render-prop form. The demo saves local state.
+Inputs. Validation, async submit state, server errors and first-invalid-field focus in one render-prop form. The demo saves local state.
 
 ```jsx
 import { Form, Field, Button } from '@ride-eats/ui';
@@ -898,12 +699,12 @@ import { Form, Field, Button } from '@ride-eats/ui';
 | Prop | Type | Behavior |
 | --- | --- | --- |
 | initialValues / validate | object / values => errors | Initial values and synchronous validation. |
-| onSubmit | values => void / Promise | Errors become a visible alert; duplicate submissions are prevented. |
+| onSubmit | values => void \| Promise | Errors become a visible alert; duplicate submissions are prevented. |
 | children | render function | Receives values, errors, submitting, field(name), setValue(name,value), reset(). |
 
-### Combobox
+## Combobox
 
-Searchable selection with native top-layer positioning, listbox semantics and keyboard navigation.
+Inputs. Searchable selection with native top-layer positioning, listbox semantics and keyboard navigation.
 
 ```jsx
 import { Combobox } from '@ride-eats/ui';
@@ -916,9 +717,9 @@ import { Combobox } from '@ride-eats/ui';
 | value / onValueChange | string / callback | Controlled selected option. |
 | label / placeholder / error / hint / disabled | configuration | Labels, validation and availability. |
 
-### Multi Select
+## Multi Select
 
-Choose multiple options from one searchable field, then remove selections with compact chips.
+Inputs. Choose multiple options from one searchable field, then remove selections with compact chips.
 
 ```jsx
 import { MultiSelect } from '@ride-eats/ui';
@@ -931,24 +732,9 @@ import { MultiSelect } from '@ride-eats/ui';
 | value / onValueChange | string[] / callback | Controlled selected keys. |
 | label / placeholder / error / hint / disabled | configuration | Labels, validation and availability. |
 
-### Autocomplete
+## Date Range Picker
 
-Search existing options or accept a new text value. Enter and the visible custom-value action behave the same.
-
-```jsx
-import { Autocomplete } from '@ride-eats/ui';
-<Autocomplete label="Tag" options={tags} value={tag} onValueChange={setTag} />
-```
-
-| Prop | Type | Behavior |
-| --- | --- | --- |
-| options | ComboboxOption[] | Suggested values. |
-| value / onValueChange | string / callback | Existing or custom value. |
-| label / placeholder / error / hint / disabled | configuration | Same compact field API as Combobox. |
-
-### Date Range Picker
-
-Two native date fields with linked minimum and maximum bounds. Values use YYYY-MM-DD without implicit timezone conversion.
+Inputs. Two native date fields with linked minimum and maximum bounds. Values use YYYY-MM-DD without implicit timezone conversion.
 
 ```jsx
 import { DateRangePicker } from '@ride-eats/ui';
@@ -960,9 +746,9 @@ import { DateRangePicker } from '@ride-eats/ui';
 | value / onValueChange | {start,end} / callback | ISO dates or empty strings. |
 | min / max / disabled / label | configuration | Native date constraints and fieldset label. |
 
-### Time Picker
+## Time Picker
 
-A native time field with a compact label and keyboard input. Time formatting follows the browser locale.
+Inputs. A native time field with a compact label and keyboard input. Time formatting follows the browser locale.
 
 ```jsx
 import { TimePicker } from '@ride-eats/ui';
@@ -974,9 +760,9 @@ import { TimePicker } from '@ride-eats/ui';
 | value / onValueChange | HH:mm string / callback | Native time value. |
 | min / max / step / disabled / label | configuration | Step is seconds; defaults to one minute. |
 
-### Upload Progress
+## Upload Progress
 
-Compact per-file progress, status, errors, retry and cancellation. The caller owns file transfer and progress; this demo has explicit simulation controls.
+Feedback. Compact per-file progress, status, errors, retry and cancellation. The caller owns file transfer and progress; this demo has explicit simulation controls.
 
 ```jsx
 import { UploadProgress } from '@ride-eats/ui';
@@ -988,9 +774,9 @@ import { UploadProgress } from '@ride-eats/ui';
 | files | {id,name,status,progress?,error?}[] | Status is queued, uploading, done, error or cancelled; progress is 0–100. |
 | onCancel / onRetry | id => void | Caller handles transfer cancellation and retry. |
 
-### DataGrid
+## DataGrid
 
-A compact table with search, filters, sorting, column visibility and resizing, sticky columns, bulk actions and optional row expansion. Fixed-row virtual scrolling supports larger local datasets.
+Display. A compact table with search, filters, sorting, column visibility and resizing, sticky columns, bulk actions and optional row expansion. Fixed-row virtual scrolling supports larger local datasets.
 
 ```jsx
 import { DataGrid } from '@ride-eats/ui';
@@ -1006,9 +792,9 @@ import { DataGrid } from '@ride-eats/ui';
 | virtual / height / rowHeight / pageSize | boolean / number | Defaults: false / 320 / 40 / 8. Expansion disables virtualization. Virtual rows must fit the fixed height. |
 | loading / error / onRetry / emptyText / label | configuration | Loading, error, retry and empty states. |
 
-### App Shell
+## App Shell
 
-A reusable compact application frame with collapsible navigation, mobile dialog navigation and slots for workspace, search, notifications and account actions.
+Layout. A reusable compact application frame with collapsible navigation, mobile dialog navigation and slots for workspace, search, notifications and account actions.
 
 ```jsx
 import { AppShell, WorkspaceSwitcher, NotificationCenter, Card } from '@ride-eats/ui';
@@ -1023,9 +809,9 @@ import { AppShell, WorkspaceSwitcher, NotificationCenter, Card } from '@ride-eat
 | brand / workspace / search / actions / sidebarFooter / children | ReactNode slots | Supply branding, controls and actual screens. |
 | collapsed / onCollapsedChange | optional controlled state | Leave unset for internal collapse state. Mobile navigation uses a native modal. |
 
-### Workspace Switcher
+## Workspace Switcher
 
-Compact workspace selection in a native top-layer popover, ready for a header or app sidebar.
+Navigation. Compact workspace selection using the shared Send menu, ready for a header or app sidebar.
 
 ```jsx
 import { WorkspaceSwitcher } from '@ride-eats/ui';
@@ -1037,9 +823,9 @@ import { WorkspaceSwitcher } from '@ride-eats/ui';
 | items | {value,label,description?,icon?,disabled?}[] | Caller-owned workspaces. |
 | value / onValueChange / label | controlled state and label | Selection does not switch a backend session automatically. |
 
-### Notification Center
+## Notification Center
 
-Unread counts, compact notification rows and caller-owned read state. No polling, push or backend is bundled.
+Feedback. Unread counts, compact notification rows and caller-owned read state. No polling, push or backend is bundled.
 
 ```jsx
 import { NotificationCenter } from '@ride-eats/ui';
@@ -1051,9 +837,9 @@ import { NotificationCenter } from '@ride-eats/ui';
 | items | {id,title,description?,time?,read?,icon?}[] | Notification content and read state. |
 | onRead / onReadAll / onSelect / label | callbacks / string | Caller handles persistence and routing. |
 
-### Bottom Sheet
+## Bottom Sheet
 
-A compact native modal sheet. Drag its handle down to dismiss, press the handle, use Close, or press Escape. It keeps the real dialog mounted through exits.
+Feedback. A compact native modal sheet. Drag its handle down to dismiss, press the handle, use Close, or press Escape. It keeps the real dialog mounted through exits.
 
 ```jsx
 import { BottomSheet, Button } from '@ride-eats/ui';
@@ -1066,11 +852,11 @@ import { BottomSheet, Button } from '@ride-eats/ui';
 | --- | --- | --- |
 | open / onClose | controlled state | Keep mounted for animated exits and focus restoration. |
 | title / children / footer | ReactNode | Accessible heading, content and actions. |
-| height | number / CSS length | Defaults to 360px and is constrained by the viewport. |
+| height | number \| CSS length | Defaults to 360px and is constrained by the viewport. |
 
-### Context Menu
+## Context Menu
 
-Right-click or use Shift+F10 to open compact contextual actions. Nested choices, disabled actions, keyboard movement and Escape are supported.
+Actions. Right-click or use Shift+F10 to open compact contextual actions. Nested choices, disabled actions, keyboard movement and Escape are supported.
 
 ```jsx
 import { ContextMenu, Card } from '@ride-eats/ui';
@@ -1084,9 +870,9 @@ import { ContextMenu, Card } from '@ride-eats/ui';
 | items | ContextMenuItem[] | value, label, icon, disabled, destructive, separator, onSelect and nested items. |
 | children / label | ReactNode / string | Context target and accessible action name. |
 
-### Nested Popovers
+## Nested Popovers
 
-Native top-layer popovers can hold a second popover without clipping into surrounding cards. Dismissal follows the nested hierarchy.
+Recipes. Native top-layer popovers can hold a second popover without clipping into surrounding cards. Dismissal follows the nested hierarchy.
 
 ```jsx
 import { Popover, Button } from '@ride-eats/ui';
@@ -1100,9 +886,9 @@ import { Popover, Button } from '@ride-eats/ui';
 | open / onOpenChange / trigger | controlled state / render prop | Each popover owns its open state. |
 | label / children / align / width | configuration | Same Popover API; native hierarchy handles outside dismissal. |
 
-### Settings Panel
+## Settings Panel
 
-Compact settings sections with labels, descriptions, control slots and footer actions. Compose real inputs rather than rebuilding layout CSS.
+Layout. Compact settings sections with labels, descriptions, control slots and footer actions. Compose real inputs rather than rebuilding layout CSS.
 
 ```jsx
 import { SettingsPanel, Field, Button } from '@ride-eats/ui';
@@ -1115,9 +901,9 @@ import { SettingsPanel, Field, Button } from '@ride-eats/ui';
 | sections | {id,title,description?,children}[] | Responsive sections and caller-owned controls. |
 | actions | ReactNode | Compact footer actions. |
 
-### Team Directory
+## Team Directory
 
-A complete member table with optional invitation form, editable roles and confirmed removal. All changes are caller-owned callbacks; this demo stores changes locally.
+Workflows. A complete member table with optional invitation form, editable roles and confirmed removal. All changes are caller-owned callbacks; this demo stores changes locally.
 
 ```jsx
 import { TeamDirectory } from '@ride-eats/ui';
@@ -1130,9 +916,9 @@ import { TeamDirectory } from '@ride-eats/ui';
 | onInvite / onRoleChange / onRemove | optional async callbacks | Missing callbacks omit those controls. Rejected promises show errors. |
 | roles | string[] | Defaults to Owner, Editor, Viewer. Use UIProvider for confirmations and toasts. |
 
-### File Manager
+## File Manager
 
-A compact file table with native multi-file selection, opening, selected-file download and confirmed deletion. Transfer and storage remain in your application.
+Workflows. A compact file table with native multi-file selection, opening, selected-file download and confirmed deletion. Transfer and storage remain in your application.
 
 ```jsx
 import { FileManager } from '@ride-eats/ui';
@@ -1144,9 +930,9 @@ import { FileManager } from '@ride-eats/ui';
 | files | {id,name,type?,size?,owner?,updated?}[] | type is file or folder. Display sizes and dates are caller formatted. |
 | onUpload / onOpen / onDownload / onDelete | optional callbacks | Upload receives native File[]. Download receives selected records. Use UIProvider for confirmations. |
 
-### Activity Feed
+## Activity Feed
 
-A dense activity list for audit events, recent changes and workspace updates, with compact icons and timestamps.
+Display. A dense activity list for audit events, recent changes and workspace updates, with compact icons and timestamps.
 
 ```jsx
 import { ActivityFeed } from '@ride-eats/ui';
@@ -1158,9 +944,9 @@ import { ActivityFeed } from '@ride-eats/ui';
 | items | {id,title,description?,time?,dateTime?,icon?}[] | Display timestamps and optional machine-readable datetimes. |
 | label / emptyText | string | Accessible heading and empty state. |
 
-### Support Inbox
+## Support Inbox
 
-Conversation list, selected thread and reply composer in one responsive workflow. Reply promises control pending and error states; the caller appends persisted messages.
+Workflows. Conversation list, selected thread and reply composer in one responsive workflow. Reply promises control pending and error states; the caller appends persisted messages.
 
 ```jsx
 import { SupportInbox } from '@ride-eats/ui';
@@ -1171,4 +957,4 @@ import { SupportInbox } from '@ride-eats/ui';
 | --- | --- | --- |
 | threads | SupportThread[] | id, name, subject, status, time and messages; messages contain id, author, text, time and own. |
 | value / onValueChange | string / callback | Selected conversation ID. |
-| onReply / label | (id,text) => Promise / void / string | Optional reply callback; controls are omitted without it. Draft clears when selecting another thread. |
+| onReply / label | (id,text) => Promise \| void / string | Optional reply callback; controls are omitted without it. Draft clears when selecting another thread. |

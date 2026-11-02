@@ -334,10 +334,6 @@ export function Combobox({
 export function MultiSelect(props) {
   return <Combobox {...props} multiple />;
 }
-export function Autocomplete(props) {
-  return <Combobox {...props} allowCustom />;
-}
-
 export function DateRangePicker({
   value,
   onValueChange,

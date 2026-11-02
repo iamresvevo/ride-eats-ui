@@ -98,26 +98,6 @@ export const platformPages = [
     "MultiSelect",
   ),
   page(
-    "autocomplete",
-    "Autocomplete",
-    "Inputs",
-    "Search existing options or accept a new text value. Enter and the visible custom-value action behave the same.",
-    `<Autocomplete label="Tag" options={tags} value={tag} onValueChange={setTag} />`,
-    [
-      ["options", "ComboboxOption[]", "Suggested values."],
-      [
-        "value / onValueChange",
-        "string / callback",
-        "Existing or custom value.",
-      ],
-      [
-        "label / placeholder / error / hint / disabled",
-        "configuration",
-        "Same compact field API as Combobox.",
-      ],
-    ],
-  ),
-  page(
     "date-range-picker",
     "Date Range Picker",
     "Inputs",
@@ -241,7 +221,7 @@ export const platformPages = [
     "workspace-switcher",
     "Workspace Switcher",
     "Navigation",
-    "Compact workspace selection in a native top-layer popover, ready for a header or app sidebar.",
+    "Compact workspace selection using the shared Send menu, ready for a header or app sidebar.",
     `<WorkspaceSwitcher items={workspaces} value={workspace} onValueChange={setWorkspace} />`,
     [
       [
@@ -325,7 +305,7 @@ export const platformPages = [
   page(
     "nested-popovers",
     "Nested Popovers",
-    "Feedback",
+    "Recipes",
     "Native top-layer popovers can hold a second popover without clipping into surrounding cards. Dismissal follows the nested hierarchy.",
     `<Popover open={open} onOpenChange={setOpen} label="Share" trigger={props => <Button {...props}>Share</Button>}>\n <Popover open={details} onOpenChange={setDetails} label="Access" trigger={props => <Button {...props}>Access</Button>}>Access settings</Popover>\n</Popover>`,
     [
@@ -362,7 +342,7 @@ export const platformPages = [
   page(
     "team-directory",
     "Team Directory",
-    "Layout",
+    "Workflows",
     "A complete member table with optional invitation form, editable roles and confirmed removal. All changes are caller-owned callbacks; this demo stores changes locally.",
     `<TeamDirectory members={members} onInvite={inviteMember} onRoleChange={changeRole} onRemove={removeMember} />`,
     [
@@ -387,7 +367,7 @@ export const platformPages = [
   page(
     "file-manager",
     "File Manager",
-    "Layout",
+    "Workflows",
     "A compact file table with native multi-file selection, opening, selected-file download and confirmed deletion. Transfer and storage remain in your application.",
     `<FileManager files={files} onUpload={uploadFiles} onOpen={openFile} onDownload={downloadFiles} onDelete={deleteFile} />`,
     [
@@ -423,7 +403,7 @@ export const platformPages = [
   page(
     "support-inbox",
     "Support Inbox",
-    "Layout",
+    "Workflows",
     "Conversation list, selected thread and reply composer in one responsive workflow. Reply promises control pending and error states; the caller appends persisted messages.",
     `<SupportInbox threads={threads} value={threadId} onValueChange={setThreadId} onReply={sendReply} />`,
     [

@@ -140,7 +140,7 @@ Select uses Send’s menu and a check mark for the selected option. SearchSelect
 
 These retain Send’s original props. DateTimePicker uses Unix **seconds**, local dates, quarter-hour choices and the document’s language; `future` blocks past choices. Its portal stays inside an enclosing dialog. Switch accepts `className`; setting rows accept arbitrary controls through children.
 
-## Dialog / Modal
+## Dialog
 
 ```jsx
 <Dialog
@@ -163,7 +163,7 @@ These retain Send’s original props. DateTimePicker uses Unix **seconds**, loca
 
 Sizes: `sm`, `md`, `lg`. Uses Send’s native dialog with focus management, scroll lock, backdrop, Escape and exit animation. The parent updates `open` in `onOpenChange`.
 
-For the lower-level API, keep Modal mounted and pass open for a React-managed exit. The legacy conditional mount API closes immediately on unmount: `{open && <Modal title="…" onClose={() => setOpen(false)} dismissable={!saving} footer={actions}>…</Modal>}`. Note the original spelling **dismissable** on Modal; the controlled Dialog adapter uses **dismissible**. Modal also accepts `label`, `labelledBy`, `className`, `closeOnBackdrop`, `variant` and `size`; use the default dialog variant in the library (Send’s full-screen viewer styles are not included).
+Keep Dialog mounted and change `open` for its animated exit. Use `onOpenChange`, `dismissible`, `label`, `labelledBy`, `onAfterClose` and `closeOnBackdrop` as needed. The native modal engine is internal; see [v0.8 migration](migrations-v0.8.md).
 
 ## Skeleton and identity
 
@@ -185,7 +185,7 @@ Skeleton accepts `label`, `className`, `children`. Bone shapes include `bone-ava
 ```jsx
 <Card title="Overview" className="my-layout">
   <Badge tone="good">Delivered</Badge>
-  <Stat label="Transfers" value="1,284" hint="This month" tone="good" />
+  <StatCard variant="inline" label="Transfers" value="1,284" hint="This month" tone="good" />
 </Card>
 <EmptyState icon="files" title="No files yet" description="Start with an upload."
   action={<Button onClick={upload}>Upload</Button>} />

@@ -46,7 +46,7 @@ export default function GestureDemos({ id }) {
             },
           ]}
         >
-          <UI.Icon name="folder" size={28} />
+          <UI.Icon name="folder" size={20} />
           <div>
             <strong>Brand assets</strong>
             <small>12 files · Updated today</small>

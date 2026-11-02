@@ -38,7 +38,6 @@ const {
   Icon,
   Pagination,
   Field,
-  Stat,
   EmptyState,
   ThemeProvider,
   ToastProvider,
@@ -373,20 +372,13 @@ const components = [
   },
   {
     id: "badge",
-    name: "Badge & Stat",
+    name: "Badge",
     group: "Display",
     description: "The useful details, at a glance.",
     detail:
-      "Compact status and summary primitives from the shared design. Semantic color tokens carry the meaning in light and dark themes.",
-    code: `<Badge tone="good">Delivered</Badge>\n<Stat label="Total transfers" value="1,284" hint="This month" />`,
-    props: [
-      ["Badge: tone", "neutral | good | wait | bad", "Semantic status tone."],
-      [
-        "Stat: label / value / hint",
-        "ReactNode",
-        "Summary figures and context.",
-      ],
-    ],
+      "Compact semantic status labels. Use StatCard for numeric summaries.",
+    code: `<Badge tone="good">Delivered</Badge>`,
+    props: [["tone", "neutral | good | wait | bad", "Semantic status tone."]],
   },
   {
     id: "empty",
@@ -741,7 +733,6 @@ function Demo({ id }) {
             <Badge tone="wait">Pending</Badge>
             <Badge tone="bad">Expired</Badge>
           </div>
-          <Stat label="Total transfers" value="1,284" hint="This month" />
         </div>
       );
     case "empty":
@@ -806,9 +797,13 @@ function Code({ children }) {
     </div>
   );
 }
+const canonicalPage = (id) =>
+  ({ autocomplete: "combobox", collapsible: "accordion" })[id] ||
+  id ||
+  "overview";
 function App() {
-  const [current, setCurrent] = useState(
-      () => location.hash.slice(1) || "overview",
+  const [current, setCurrent] = useState(() =>
+      canonicalPage(location.hash.slice(1)),
     ),
     [query, setQuery] = useState(""),
     [mode, setMode] = useState("preview"),
@@ -833,7 +828,7 @@ function App() {
     window.scrollTo(0, 0);
   };
   React.useEffect(() => {
-    const change = () => setCurrent(location.hash.slice(1) || "overview");
+    const change = () => setCurrent(canonicalPage(location.hash.slice(1)));
     addEventListener("hashchange", change);
     return () => removeEventListener("hashchange", change);
   }, []);
@@ -876,7 +871,7 @@ function App() {
           ]}
           activeValue={selected ? "overview" : current}
           onNavigate={(item) => navigate(item.value)}
-          guestContent={<Badge>v0.7.0</Badge>}
+          guestContent={<Badge>v0.8.0</Badge>}
           extras={
             <>
               <a
@@ -947,6 +942,8 @@ function App() {
             "Feedback",
             "Display",
             "Layout",
+            "Workflows",
+            "Recipes",
           ].map((group) => (
             <div className="sidebar-group" key={group}>
               <span>{group}</span>
@@ -1023,7 +1020,12 @@ function App() {
                 </button>
               </div>
               <div className="preview-meta">
-                <span className="status-dot" /> Interactive React component
+                <span className="status-dot" />{" "}
+                {selected.group === "Recipes"
+                  ? "Composition recipe"
+                  : selected.group === "Workflows"
+                    ? "Reusable workflow"
+                    : "Interactive React component"}
               </div>
             </div>
             {mode === "preview" ? (
@@ -1031,7 +1033,9 @@ function App() {
                 <div className="stage-corner">{selected.name}</div>
                 <Demo key={selected.id} id={selected.id} />
                 <span className="stage-note">
-                  Try it. It’s the real component.
+                  {selected.group === "Recipes"
+                    ? "A recipe built with the shared components."
+                    : "Try it. It’s the real component."}
                 </span>
               </div>
             ) : (
@@ -1050,7 +1054,7 @@ function App() {
                           : selected.id === "settings"
                             ? "SettingRow, Select"
                             : selected.id === "badge"
-                              ? "Badge, Stat"
+                              ? "Badge"
                               : selected.id === "date-time"
                                 ? "DateTimePicker"
                                 : selected.id === "search-select"
@@ -1117,7 +1121,7 @@ function App() {
               component. React 19 or newer.
             </p>
             <h2 className="doc-heading">1. Install a reviewed version</h2>
-            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.7.0"}</Code>
+            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.8.0"}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
             <Code>{`import { ThemeProvider, ToastProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ThemeProvider defaultTheme="system">\n      <ToastProvider>\n        <Button variant="primary">Hello, Studio</Button>\n      </ToastProvider>\n    </ThemeProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>
@@ -1215,7 +1219,14 @@ function App() {
             </div>
             <div className="intro-facts">
               <span>
-                <strong>{components.length}</strong> component pages
+                <strong>
+                  {
+                    components.filter(
+                      (page) => !["Recipes", "Workflows"].includes(page.group),
+                    ).length
+                  }
+                </strong>{" "}
+                component pages
               </span>
               <span>
                 <strong>2,015 icons</strong> built in, loaded on demand

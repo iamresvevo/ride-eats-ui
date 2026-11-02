@@ -1,3 +1,4 @@
+import CommandDemo from "./CommandDemo.jsx";
 import GestureDemos from "./GestureDemos.jsx";
 import React, { lazy, Suspense, useState } from "react";
 import * as UI from "../react/index.jsx";
@@ -64,69 +65,7 @@ export default function MotionDemos({ id }) {
         </UI.Popover>
       );
     case "command-menu":
-      return (
-        <>
-          <UI.Button
-            icon="terminal"
-            variant="primary"
-            onClick={() => setOpen(true)}
-          >
-            Quick actions <kbd>⌘ K</kbd>
-          </UI.Button>
-          <UI.CommandMenu
-            open={open}
-            onOpenChange={setOpen}
-            shortcut
-            items={[
-              {
-                value: "new",
-                label: "New transfer",
-                icon: "plus",
-                shortcut: "N",
-                onSelect: () => toast("Create a transfer"),
-              },
-              {
-                value: "files",
-                label: "Browse files",
-                icon: "files",
-                keywords: "storage documents",
-                onSelect: () => toast("Open files"),
-              },
-              {
-                value: "team",
-                label: "Open team",
-                icon: "team",
-                keywords: "people members",
-                onSelect: () => toast("Open team"),
-              },
-              {
-                value: "settings",
-                label: "Workspace settings",
-                icon: "settings",
-                onSelect: () => toast("Open settings"),
-              },
-            ]}
-          />
-        </>
-      );
-    case "collapsible":
-      return (
-        <UI.Collapsible
-          title="Advanced settings"
-          open={open}
-          onOpenChange={setOpen}
-        >
-          <UI.Switch
-            label="Require approval"
-            hint="You decide who gets access."
-            checked={loop}
-            onChange={setLoop}
-          />
-          <UI.SettingRow label="Link expires">
-            <UI.Badge>7 days</UI.Badge>
-          </UI.SettingRow>
-        </UI.Collapsible>
-      );
+      return <CommandDemo />;
     case "steps":
       return (
         <div className="demo-stack" style={{ width: "100%" }}>

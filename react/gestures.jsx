@@ -155,10 +155,11 @@ export function SwipeActions({
     [dragging, setDragging] = useState(false),
     start = useRef(null),
     toggle = useRef(null);
-  const width = Math.min(actions.length * 76, 228);
+  const width = Math.min(actions.length * 96 + 16, 304);
   return (
     <div
       className={`re-swipe ${className}`}
+      data-open={open || undefined}
       style={{ "--swipe-width": `${width}px`, ...style }}
     >
       <div

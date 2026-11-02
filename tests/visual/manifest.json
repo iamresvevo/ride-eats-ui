@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0",
+  "version": "0.8.0",
   "capture": "Supported browser tools; desktop viewport; JPEG",
   "states": [
     {
@@ -92,5 +92,6 @@
       },
       "state": "Initial demo state after reload; playground collapsed; sidebar at start."
     }
-  ]
+  ],
+  "updateReason": "Intentional v0.8 audit: stronger compact sidebar typography, shared workspace menu, separated recipe/workflow navigation, and consistent interaction motion."
 }

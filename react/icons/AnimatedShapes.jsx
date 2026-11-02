@@ -9,7 +9,7 @@ export function AnimatedShapes({ nodes }) {
       <animate
         key="accent"
         attributeName="stroke-dashoffset"
-        values="0;0;.08;0;0"
+        values="0;0;.55;0;0"
         keyTimes={`0;${phase || 0.001};${0.28 + phase};${0.6 + phase};1`}
         dur="2.4s"
         begin="indefinite"
@@ -17,16 +17,24 @@ export function AnimatedShapes({ nodes }) {
         keySplines="0 0 1 1;.4 0 .2 1;.4 0 .2 1;0 0 1 1"
       />,
     ];
-    return React.createElement(
-      tag,
-      {
-        ...attributes,
-        key: index,
-        pathLength: 1,
-        strokeDasharray: "1",
-        strokeDashoffset: 0,
-      },
-      children,
+    return (
+      <g key={index} data-svg-trace="true">
+        {React.createElement(tag, {
+          ...attributes,
+          strokeOpacity: 0.24,
+          "aria-hidden": true,
+        })}
+        {React.createElement(
+          tag,
+          {
+            ...attributes,
+            pathLength: 1,
+            strokeDasharray: "1",
+            strokeDashoffset: 0,
+          },
+          children,
+        )}
+      </g>
     );
   });
 }

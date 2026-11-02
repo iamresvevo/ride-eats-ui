@@ -8,7 +8,7 @@ const MenuContext = createContext({ close() {}, sub: null, setSub() {} });
 
 // Rows that can take focus: shown, enabled, and not inside a collapsed group.
 const visibleItems = (root) =>
-  [...root.querySelectorAll('[role="menuitem"]:not(:disabled)')].filter(
+  [...root.querySelectorAll('[role^="menuitem"]:not(:disabled)')].filter(
     (item) => item.offsetParent && !item.closest("[inert]"),
   );
 
@@ -90,6 +90,7 @@ export default function Menu({
   const close = () => {
     setSub(null);
     setOpen(false);
+    button.current?.focus();
   };
   return (
     <div ref={root} className={`menu ${className}`.trim()} style={style}>
@@ -104,6 +105,8 @@ export default function Menu({
           ref={panel}
           className={`menu-panel menu-${align} ${up ? "menu-up" : ""} ${presence.closing ? "is-closing" : ""}`.trim()}
           role="menu"
+          inert={presence.closing}
+          aria-hidden={presence.closing || undefined}
           data-sub={sub || undefined}
           onAnimationEnd={presence.onAnimationEnd}
         >
@@ -131,7 +134,8 @@ export function MenuItem({
   return (
     <button
       type="button"
-      role="menuitem"
+      role={typeof checked === "boolean" ? "menuitemradio" : "menuitem"}
+      aria-checked={typeof checked === "boolean" ? checked : undefined}
       className={danger ? "menu-item menu-item-danger" : "menu-item"}
       disabled={disabled}
       onClick={() => {

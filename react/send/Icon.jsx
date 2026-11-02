@@ -15,7 +15,7 @@ function catalogChunk(key) {
             const nodes = module.default[name] || [
               ["path", { d: "M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" }],
             ];
-            if (motion === "auto")
+            if (motion === "auto" || motion === "draw")
               return <AnimatedShapes nodes={nodes} name={name} />;
             return nodes.map(([tag, attributes], index) =>
               React.createElement(tag, {
@@ -148,18 +148,18 @@ export default function Icon({
       aria-hidden={accessible ? undefined : true}
     >
       {title && <title>{title}</title>}
-      <g strokeDasharray={motion === "draw" ? 1 : undefined}>
-        {motion === "draw" && (
+      <g strokeDasharray={custom[name] && motion === "draw" ? 1 : undefined}>
+        {custom[name] && motion === "draw" && (
           <animate
             attributeName="stroke-dashoffset"
-            values="0;.18;0;0"
+            values="0;.55;0;0"
             dur="2.4s"
             begin="indefinite"
           />
         )}
         {custom[name] ||
           (PATHS[name] ? (
-            motion === "auto" ? (
+            motion === "auto" || motion === "draw" ? (
               <AnimatedShapes
                 nodes={[["path", { d: PATHS[name] }]]}
                 name={name}

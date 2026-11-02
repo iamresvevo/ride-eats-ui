@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Icon from "./send/Icon.jsx";
 import Modal from "./send/ui/Modal.jsx";
+import Menu, { MenuItem } from "./send/ui/Menu.jsx";
 import { Popover } from "./motion.jsx";
 import { Button } from "./index.jsx";
 
@@ -12,14 +13,10 @@ export function WorkspaceSwitcher({
   className = "",
   style,
 }) {
-  const [open, setOpen] = useState(false);
   const selected = items.find((item) => item.value === value);
   return (
-    <Popover
-      open={open}
-      onOpenChange={setOpen}
-      label={label}
-      width={248}
+    <Menu
+      align="start"
       className={`re-workspace-menu ${className}`}
       style={style}
       trigger={(props) => (
@@ -32,30 +29,25 @@ export function WorkspaceSwitcher({
             )}
           </span>
           <span>{selected?.label || label}</span>
-          <Icon name="select" size={13} />
+          <Icon name="select" size={12} />
         </button>
       )}
     >
-      <div className="re-platform-menu-label">Switch workspace</div>
       {items.map((item) => (
-        <button
-          type="button"
+        <MenuItem
           key={item.value}
+          icon={item.icon}
+          checked={value === item.value}
           disabled={item.disabled}
-          aria-pressed={value === item.value}
-          onClick={() => {
-            onValueChange(item.value);
-            setOpen(false);
-          }}
+          onSelect={() => onValueChange(item.value)}
         >
-          <span>
-            {item.label}
+          <span className="re-workspace-option-copy">
+            <span>{item.label}</span>
             {item.description && <small>{item.description}</small>}
           </span>
-          {value === item.value && <Icon name="check" />}
-        </button>
+        </MenuItem>
       ))}
-    </Popover>
+    </Menu>
   );
 }
 export function NotificationCenter({
@@ -323,10 +315,8 @@ export function ContextMenu({
     node.style.top =
       Math.max(8, Math.min(position.y, innerHeight - node.offsetHeight - 8)) +
       "px";
-    (submenu
-      ? node.querySelector(".re-context-sub button:not(:disabled)")
-      : node.querySelector("button:not(:disabled)")
-    )?.focus();
+    if (submenu) node.querySelector(".re-context-sub.is-open button:not(:disabled)")?.focus();
+    else if (!node.contains(document.activeElement)) node.querySelector("button:not(:disabled)")?.focus();
   }, [position, submenu]);
   const close = () => {
     panel.current?.hidePopover();
@@ -360,9 +350,10 @@ export function ContextMenu({
             <span>{item.label}</span>
             {item.items && <Icon name="chevron" />}
           </button>
-          {item.items && submenu === item.value && (
-            <div role="menu" aria-label={item.label} className="re-context-sub">
-              {render(item.items)}
+          {item.items && (
+            <div className={`re-context-sub ${submenu === item.value ? "is-open" : ""}`}
+              inert={submenu !== item.value} aria-hidden={submenu !== item.value}>
+              <div role="menu" aria-label={item.label}>{render(item.items)}</div>
             </div>
           )}
         </React.Fragment>
@@ -407,16 +398,24 @@ export function ContextMenu({
           }
         }}
         onKeyDown={(event) => {
-          if (event.key === "Escape") {
+          if ((event.key === "Escape" || event.key === "ArrowLeft") && submenu) {
+            event.preventDefault();
+            const parent = panel.current.querySelector('[aria-expanded="true"]');
+            setSubmenu(null);
+            requestAnimationFrame(() => parent?.focus());
+          } else if (event.key === "Escape") {
             event.preventDefault();
             close();
+          } else if (event.key === "ArrowRight" && event.target.getAttribute("aria-haspopup") === "menu") {
+            event.preventDefault();
+            event.target.click();
           } else if (
             ["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)
           ) {
             event.preventDefault();
             const buttons = [
                 ...panel.current.querySelectorAll("button:not(:disabled)"),
-              ],
+              ].filter((button) => !button.closest("[inert]")),
               current = buttons.indexOf(document.activeElement),
               next =
                 event.key === "Home"

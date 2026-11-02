@@ -1,10 +1,10 @@
 # Build a compact platform
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.7.0
+npm install github:iamresvevo/ride-eats-ui#v0.8.0
 ```
 
-Import `@ride-eats/ui/styles.css` once and wrap the app in UIProvider. The complete runnable example is [examples/platform](../examples/platform/README.md). All 76 component pages have live examples, imports and prop tables; selected primitives also have an editable JSON props playground with no code evaluation.
+Import `@ride-eats/ui/styles.css` once and wrap the app in UIProvider. The complete runnable example is [examples/platform](../examples/platform/README.md). Component references, workflows and recipes have live examples, imports and prop tables; selected primitives also have an editable JSON props playground with no code evaluation.
 
 ## Defaults
 
@@ -26,7 +26,7 @@ Controls are 36px, small actions 32px, DataGrid rows 40px and panel padding 16px
 
 `field(name)` returns native name/value/onChange props. `setValue(name,value)` connects non-native controls such as MultiSelect. `reset()` returns to the initial values. Form focuses the first invalid field and displays rejected submit errors. Validation must be synchronous; server checks belong in onSubmit. Initial values are read on mount; remount with a new key when switching records. Do not rely on client validation for server authorization or data integrity.
 
-Combobox selects existing options; MultiSelect stores string arrays; Autocomplete also accepts custom text. Arrow keys move, Enter selects, Escape closes, and selected chips are removable. Options use `{value,label,description?,disabled?}`. DateRangePicker uses `{start,end}` ISO dates, TimePicker uses native time strings. Native date/time interfaces vary by browser. UploadProgress displays caller-supplied status and progress and never creates a transfer itself.
+Combobox selects existing options and accepts custom text with allowCustom; MultiSelect stores string arrays. Arrow keys move, Enter selects, Escape closes, and selected chips are removable. Options use `{value,label,description?,disabled?}`. DateRangePicker uses `{start,end}` ISO dates, TimePicker uses native time strings. Native date/time interfaces vary by browser. UploadProgress displays caller-supplied status and progress and never creates a transfer itself.
 
 ## Tables
 
@@ -51,7 +51,7 @@ For larger already-loaded datasets use `virtual height={320} rowHeight={40}`. Th
 
 AppShell accepts navigation items, value/onValueChange and slots for brand, workspace, search, actions, sidebarFooter and children. Desktop navigation collapses to icons; mobile navigation uses a native modal with focus restoration. Compose CommandMenu into the search slot for Cmd/Ctrl+K navigation. WorkspaceSwitcher and NotificationCenter never create backend sessions, subscriptions or polling.
 
-Keep BottomSheet mounted and control open so its native modal can animate exits. Drag its handle down more than 100px to dismiss; pressing the handle or Close and Escape provide alternatives. Modal handles stacking and focus. ContextMenu opens on right-click or Shift+F10, supports nested items, disabled actions and keyboard movement. For touch-first actions, provide a visible button or Dropdown rather than relying on long press.
+Keep BottomSheet mounted and control open so its native modal can animate exits. Drag its handle down more than 100px to dismiss; pressing the handle or Close and Escape provide alternatives. The internal native dialog engine handles stacking and focus. ContextMenu opens on right-click or Shift+F10, supports nested items, disabled actions and keyboard movement. For touch-first actions, provide a visible button or Dropdown rather than relying on long press.
 
 Popover supports nesting. Closing an inner popover leaves its parent open; Escape dismisses one level at a time. Native top-layer APIs require a modern browser.
 

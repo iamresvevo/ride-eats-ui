@@ -1,0 +1,32 @@
+{
+  "version": "0.8.0",
+  "checks": {
+    "cleanInstall": "passed",
+    "componentTests": 21,
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "packedPlatformBuild": "passed",
+    "packedStarterBuild": "passed",
+    "packedPlatformDevRuntime": "passed; command palette opened without console errors",
+    "visualComparisons": 6
+  },
+  "browserChecks": [
+    "Command search filters, Enter opens actual local draft form, creation adds a draft",
+    "Failed readiness command remains open with recipient error",
+    "Nested settings/appearance scopes and Escape back",
+    "Workspace shared Send menu: 36px trigger, menu-in animation, radio selection and restored focus",
+    "Context submenu: persistent collapsed content, inert/aria-hidden, ArrowLeft restores parent focus, Escape restores context target",
+    "Context menu computed styles include discrete display/overlay exit transitions",
+    "Compact swipe row reveals separate pill actions while preserving item identity",
+    "Selected catalog SVG trace has a steady base outline and animated dash overlay; viewport transform is none",
+    "Six light/dark baseline/candidate pairs captured through browser from independent reloads"
+  ],
+  "limits": [
+    "Physical touch-device gesture feel unverified",
+    "No exhaustive screen-reader or accessibility conformance audit",
+    "Reduced-motion behavior implemented in CSS/SVG hooks; not separately OS-tested this release",
+    "Native popover animated exit requires modern discrete-transition support",
+    "Visual candidate capture is manual, not automated CI browser coverage",
+    "Local workspace examples do not persist data to a backend"
+  ]
+}

@@ -1,0 +1,59 @@
+/* Shared surface lifecycle: native popovers retain the top layer through exit.
+   State changes animate; static reading surfaces remain steady. */
+.re-context-menu,
+.re-combobox-options,
+.re-popover {
+  animation: none;
+  opacity: 0;
+  transform: translateY(-4px) scale(.98);
+  transform-origin: top center;
+  transition: opacity 160ms ease, transform 200ms var(--ease),
+    display 200ms allow-discrete, overlay 200ms allow-discrete;
+}
+.re-context-menu:popover-open,
+.re-combobox-options:popover-open,
+.re-popover:popover-open { opacity: 1; transform: none; translate: none; }
+@starting-style {
+  .re-context-menu:popover-open,
+  .re-combobox-options:popover-open,
+  .re-popover:popover-open { opacity: 0; transform: translateY(-4px) scale(.98); }
+}
+.re-context-menu button,
+.re-tab,
+.re-toggle-group button,
+.re-radio,
+.re-checkbox,
+.re-data-table tbody tr,
+.re-app-sidebar nav > button,
+.re-app-mobile-nav nav > button {
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.re-swipe { max-width: 480px; border-radius: 14px; background: var(--surface); }
+.re-swipe-content { min-height: 60px; padding: 10px 12px; gap: 10px; border-radius: 14px; }
+.re-swipe-content > .svg-icon { color: var(--brand-ink); flex: none; }
+.re-swipe-content > div { min-width: 0; flex: 1; }
+.re-swipe-content strong { display: block; font-size: 13px; line-height: 18px; font-weight: 600; }
+.re-swipe-content small { display: block; font-size: 11px; line-height: 16px; margin-top: 2px; color: var(--muted); }
+.re-swipe-actions { align-items: center; gap: 6px; padding: 8px; }
+.re-swipe-actions button {
+  height: 34px; border-radius: 999px; flex-direction: row; gap: 5px;
+  background: var(--raised); color: var(--text); font-size: 11px;
+  transition: background-color 160ms ease, color 160ms ease, opacity 180ms ease;
+}
+.re-swipe-actions button .svg-icon { width: 14px; height: 14px; color: var(--brand-ink); }
+.re-swipe-actions button:hover { background: var(--brand-soft); color: var(--brand-ink); }
+.re-swipe-actions button.is-destructive { color: var(--bad); background: var(--bad-soft); }
+.re-swipe-actions button.is-destructive .svg-icon { color: var(--bad); }
+.re-swipe:not([data-open]) .re-swipe-actions { pointer-events: none; }
+@media (pointer: coarse) { .re-swipe-actions button { height: 44px; } .re-swipe-content { min-height: 64px; } }
+@media (prefers-reduced-motion: reduce) {
+  .re-context-menu, .re-combobox-options, .re-popover { transition: none; transform: none; }
+  .re-context-sub { transition: none; }
+}
+/* Keep the item identity readable while its trailing actions are revealed. */
+.re-swipe-content > :not(.re-swipe-toggle) { transition: transform 320ms cubic-bezier(.22,1,.36,1); }
+.re-swipe[data-open] .re-swipe-content > :not(.re-swipe-toggle) { transform: translateX(var(--swipe-width)); }
+.re-swipe[data-open] .re-swipe-content > div { max-width: calc(100% - var(--swipe-width) - 60px); overflow: hidden; }
+.re-swipe-content strong, .re-swipe-content small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.re-swipe-content > svg, .re-swipe-actions button svg { color: var(--brand-ink); }
+@media (prefers-reduced-motion: reduce) { .re-swipe-content > :not(.re-swipe-toggle) { transition: none; } }

@@ -18,14 +18,6 @@ const entries = {
     component: "MultiSelect",
     defaults: { label: "Teams", placeholder: "Choose teams…", disabled: false },
   },
-  autocomplete: {
-    component: "Autocomplete",
-    defaults: {
-      label: "Tag",
-      placeholder: "Choose or create…",
-      disabled: false,
-    },
-  },
   "time-picker": {
     component: "TimePicker",
     defaults: { label: "Opening time", step: 60, disabled: false },
@@ -90,7 +82,7 @@ function Editor({ entry }) {
   let controlled = {};
   if (entry.component === "Textarea")
     controlled = { value, onChange: (event) => setValue(event.target.value) };
-  if (["Combobox", "Autocomplete"].includes(entry.component))
+  if (entry.component === "Combobox")
     controlled = { options, value, onValueChange: setValue };
   if (entry.component === "MultiSelect")
     controlled = { options, value: values, onValueChange: setValues };

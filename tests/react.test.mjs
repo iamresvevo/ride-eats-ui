@@ -352,15 +352,6 @@ test("new platform controls expose native interaction semantics", () => {
         children: "Content",
       },
     ],
-    [
-      "Collapsible",
-      {
-        open: false,
-        onOpenChange: noop,
-        title: "Details",
-        children: "Content",
-      },
-    ],
     ["Steps", { items: [{ value: "a", label: "Details" }], value: "a" }],
     ["PinInput", { value: "123", onValueChange: noop }],
     [
@@ -408,8 +399,9 @@ test("every catalog icon has generated per-shape native SVG animation", async ()
     "utf8",
   );
   assert.match(source, /attributeName="stroke-dashoffset"/);
-  assert.match(source, /values="0;0;.08;0;0"/);
+  assert.match(source, /values="0;0;.55;0;0"/);
   assert.match(source, /dur="2.4s"/);
+  assert.match(source, /strokeOpacity:\s*0?\.24/);
   assert.doesNotMatch(
     source,
     /breathePath|attributeName="r"|attributeName="ry"/,
@@ -554,7 +546,7 @@ test("platform controls render compact semantics, data states and typed composit
         onValueChange: noop,
       },
     ],
-    ["Autocomplete", { options: [], value: "Custom", onValueChange: noop }],
+
     [
       "DateRangePicker",
       {
@@ -649,4 +641,83 @@ test("visual regression comparison detects layout changes while tolerating small
   different.data[0] = 255;
   assert.equal(comparePixels(image, different).pass, false);
   assert.equal(comparePixels(image, { ...image, width: 99 }).pass, false);
+});
+
+test("audit removes duplicate APIs and preserves canonical equivalents", () => {
+  for (const name of ["Autocomplete", "Collapsible", "Stat", "Modal"])
+    assert.equal(name in UI, false, name);
+  assert.match(
+    render("Combobox", {
+      options: [],
+      value: "Custom",
+      allowCustom: true,
+      onValueChange: () => {},
+    }),
+    /Custom/,
+  );
+  assert.match(
+    render("Accordion", {
+      items: [{ value: "details", title: "Details", content: "Content" }],
+      value: "details",
+      onValueChange: () => {},
+    }),
+    /aria-expanded="true"/,
+  );
+  assert.match(
+    render("StatCard", { variant: "inline", label: "Files", value: 24 }),
+    /re-stat-inline/,
+  );
+});
+
+test("command search ranks multi-term queries and preserves nested scope paths", async () => {
+  const { searchCommands, matchesCommandShortcut } =
+    await import("../react/command-model.js");
+  const items = [
+    {
+      value: "files",
+      label: "Files",
+      group: "Navigate",
+      description: "Browse team documents",
+    },
+    {
+      value: "settings",
+      label: "Settings",
+      items: [
+        {
+          value: "appearance",
+          label: "Appearance",
+          items: [
+            {
+              value: "dark",
+              label: "Dark theme",
+              description: "Use a dark interface",
+            },
+          ],
+        },
+      ],
+    },
+    { value: "disabled", label: "Disabled", disabled: true },
+  ];
+  assert.deepEqual(
+    searchCommands(items, "team documents").map((item) => item.value),
+    ["files"],
+  );
+  const dark = searchCommands(items, "dark")[0];
+  assert.equal(dark.value, "dark");
+  assert.deepEqual(dark.path, ["settings", "appearance"]);
+  assert.deepEqual(dark.trail, ["Settings", "Appearance"]);
+  assert.equal(searchCommands(items, "disabled").length, 0);
+  assert.equal(
+    matchesCommandShortcut({ key: "n", altKey: true }, "Alt+N"),
+    true,
+  );
+  assert.equal(matchesCommandShortcut({ key: "n" }, "N"), false);
+  assert.equal(
+    matchesCommandShortcut({ key: "1", metaKey: true }, "Mod+1"),
+    true,
+  );
+  assert.equal(
+    matchesCommandShortcut({ key: "n", ctrlKey: true }, "Alt+N"),
+    false,
+  );
 });

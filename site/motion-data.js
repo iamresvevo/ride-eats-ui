@@ -23,13 +23,13 @@ export const motionPages = [
     "animated-icons",
     "Animated Icons",
     "Motion",
-    "Native SVG animation for the complete 2,015-icon catalog. Subtle stroke accents keep every glyph readable. Motion runs once on hover/focus at a calm pace. Ten bespoke presets add path morphs and purpose-built motion. Search any icon, hover to play, and copy one React component.",
+    "Native SVG animation for the complete 2,015-icon catalog. Visible stroke tracing keeps a faint, steady outline underneath. Selection plays immediately; Replay and Loop preview make playback explicit. Ten bespoke presets add path morphs and purpose-built motion. Search any icon, hover to play, and copy one React component.",
     `<AnimatedIcon name="bell" size={28} />\n<AnimatedIcon name="check" playing />\n<AnimatedIcon name="refresh" playing loop />\n// Hover/focus on a parent button also triggers the icon.\n<Button><AnimatedIcon name="send" /> Send files</Button>`,
     [
       [
         "name",
         "string — any catalog name",
-        "All 2,015 catalog names, plus refresh. Ten bespoke presets; remaining glyphs use geometry-based SVG motion.",
+        "All 2,015 catalog names, plus refresh. Ten bespoke presets; remaining glyphs use native SVG stroke tracing.",
       ],
       [
         "playing / loop",
@@ -73,29 +73,31 @@ export const motionPages = [
     "command-menu",
     "Command Menu",
     "Navigation",
-    "Keyboard-first actions with filtering, arrow navigation and a native dialog. Enable the optional Ctrl/⌘K shortcut for a global launcher.",
-    `const [open, setOpen] = useState(false);\n<Button onClick={() => setOpen(true)}>Quick actions</Button>\n<CommandMenu open={open} onOpenChange={setOpen} shortcut\n  items={[\n    { value:'new',label:'New transfer',icon:'plus',onSelect:createTransfer },\n    { value:'team',label:'Open team',icon:'team',keywords:'people members',onSelect:openTeam },\n  ]} />`,
+    "A workspace command palette: grouped ranked search, nested scopes, recent commands, modifier shortcuts, async execution and error recovery. The demo performs real local navigation and creates drafts.",
+    `<CommandMenu open={open} onOpenChange={setOpen} shortcut items={[{value:'new',label:'New transfer',group:'Create',description:'Create a draft',shortcut:'Alt+N',onSelect:createDraft},{value:'settings',label:'Settings',group:'Navigate',items:settingsCommands}]} />`,
     [
-      ["open / onOpenChange", "boolean / callback", "Controlled launcher."],
+      [
+        "open / onOpenChange",
+        "controlled state",
+        "Open with a visible launcher or optional Ctrl/⌘K.",
+      ],
       [
         "items",
         "CommandItem[]",
-        "value, label, icon, keywords, shortcut, disabled and onSelect.",
+        "Unique value, label, description, group, icon, keywords, modifier shortcut, disabled, onSelect and nested items.",
       ],
-      ["shortcut", "boolean", "Optionally register Ctrl/⌘K."],
+      [
+        "onSelect",
+        "void | Promise",
+        "Successful commands close the palette; rejected commands show an error and stay open.",
+      ],
+      [
+        "label / placeholder / shortcut",
+        "configuration",
+        "Accessible scope name, search prompt and global launcher shortcut. Recent IDs stay in memory for the lifetime of this instance.",
+      ],
     ],
-    "CommandMenu, Button",
-  ),
-  page(
-    "collapsible",
-    "Collapsible",
-    "Layout",
-    "One expandable section, with a rotating chevron and animated content height. Use it for optional settings and extra details.",
-    `const [open, setOpen] = useState(false);\n<Collapsible title="Advanced settings" open={open} onOpenChange={setOpen}>\n  <YourSettings />\n</Collapsible>`,
-    [
-      ["open / onOpenChange", "boolean / callback", "Expanded state."],
-      ["title / children", "ReactNode", "Trigger and content."],
-    ],
+    "CommandMenu",
   ),
   page(
     "steps",

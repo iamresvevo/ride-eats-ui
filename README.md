@@ -13,7 +13,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.7.0
+npm install github:iamresvevo/ride-eats-ui#v0.8.0
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -194,8 +194,8 @@ Override CSS variables after importing the stylesheet:
 | Navigation         | `Header`, `AccountMenu`, `Menu`, `Dropdown`, `Tabs`, `Segmented`, `Chips`, `Pagination`      |
 | Actions            | `Button`, `Icon`                                                                             |
 | Inputs             | `Field`, `Select`, `SearchSelect`, `Switch`, `DateTimePicker`                                |
-| Feedback           | `Dialog`, `Modal`, `Skeleton`, `Bone`, `BoneText`, `EmptyState`, `ToastProvider`, `useToast` |
-| Display and layout | `Card`, `Stat`, `Badge`, `SettingRow`, `Avatar`, `VerifiedName`, `VerificationBadge`         |
+| Feedback           | `Dialog`, `Skeleton`, `Bone`, `BoneText`, `EmptyState`, `ToastProvider`, `useToast` |
+| Display and layout | `Card`, `StatCard`, `Badge`, `SettingRow`, `Avatar`, `VerifiedName`, `VerificationBadge`         |
 | Theme              | `ThemeProvider`, `useTheme`                                                                  |
 
 See [props and examples](docs/components.md). Preview every component on the [documentation site](https://iamresvevo.github.io/ride-eats-ui/).
@@ -259,7 +259,7 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 
 ## Native SVG motion and more components
 
-[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) cover all 2,015 catalog names. Catalog glyphs use a subtle staggered stroke accent that keeps the icon visible, with a continuous 2.4-second cycle. Arbitrary path scaling and circle/ellipse squashing are removed. Ten bespoke presets add path morphs and purpose-built motion. These are generated SVG animations across the catalog, not 2,015 individually hand-authored choreographies. Hover/focus plays once; `playing` and `loop` control playback. Reduced-motion preferences stop playback. Letter chunks stay lazy-loaded.
+[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) cover all 2,015 catalog names. Catalog glyphs use a visible staggered stroke trace over a faint, steady outline that keeps the icon visible, with a continuous 2.4-second cycle. Arbitrary path scaling and circle/ellipse squashing are removed. Ten bespoke presets add path morphs and purpose-built motion. These are generated SVG animations across the catalog, not 2,015 individually hand-authored choreographies. Hover/focus plays once; `playing` and `loop` control playback. Reduced-motion preferences stop playback. Letter chunks stay lazy-loaded.
 
 ```jsx
 <AnimatedIcon name="bell" size={28} />
@@ -269,9 +269,9 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 <AnimatedIcon name="check" playing />
 ```
 
-The library also includes Popover, CommandMenu, Collapsible, Steps, PinInput, ToggleGroup, Rating, ScrollArea and Separator. The component browser has 76 pages. Its sidebar search stays pinned, and icon size uses a slider while stroke/motion use segmented selectors.
+The library also includes Popover, CommandMenu, Steps, PinInput, ToggleGroup, Rating, ScrollArea and Separator. Component references, workflows and composition recipes are separated in the browser. Its sidebar search stays pinned, and icon size uses a slider while stroke/motion use segmented selectors.
 
-Keep Dialog/Modal mounted and use open={false} for the animated exit. useConfirm resolves after the confirmation has closed, so a parent form can then close without competing animations. Dialog is a simple-sheet demo; Stacked Dialogs demonstrates the draft/discard workflow.
+Keep Dialog mounted and use open={false} for the animated exit. useConfirm resolves after the confirmation has closed, so a parent form can then close without competing animations. Dialog is a simple-sheet demo; Stacked Dialogs demonstrates the draft/discard workflow.
 
 Selected ratings, checkboxes, radio options, toggle groups, steps and sliders use `--brand` / `--brand-soft`. Override those tokens to customize the accent. `--brand-ink` supplies readable accent text in both themes.
 
@@ -297,8 +297,16 @@ Use gestures where they make the task easier. Static content remains stable. Red
 
 [Platform implementation guide](docs/platform-system.md) · [Complete starter](examples/platform/README.md) · [Visual regression checks](tests/visual/README.md)
 
-The browser now includes 76 component pages. New components cover forms (Form, Textarea, Combobox, MultiSelect, Autocomplete, DateRangePicker, TimePicker, UploadProgress), advanced DataGrid tables, AppShell, WorkspaceSwitcher, NotificationCenter, BottomSheet, ContextMenu and reusable SettingsPanel, TeamDirectory, FileManager, ActivityFeed and SupportInbox workflows.
+The browser separates reusable primitives from workflows and recipes. New components cover forms (Form, Textarea, Combobox, MultiSelect, DateRangePicker, TimePicker, UploadProgress), advanced DataGrid tables, AppShell, WorkspaceSwitcher, NotificationCenter, BottomSheet, ContextMenu and reusable SettingsPanel, TeamDirectory, FileManager, ActivityFeed and SupportInbox workflows.
 
 Defaults are compact: 36px controls, 40px DataGrid rows and 16px panel padding. Use `data-density="comfortable"` for larger controls/panels, and `rowHeight={52}` for roomier DataGrid rows. Eleven pages include editable JSON props playgrounds. Examples use local state; application endpoints, authentication and persistence belong in caller callbacks.
 
 DataGrid includes local search/filter/sort, column visibility/resizing, pinned columns, bulk selection, expandable rows and optional fixed-row virtualization. Use DataTable for fully caller-controlled server table state. Native overlays support nested popovers, keyboard dismissal and focus restoration. See the implementation guide for browser support and integration limits.
+
+The icon browser plays the selected glyph once immediately, with Replay and optional Loop preview controls. Copied JSX includes `playing` (and `loop` when selected) to match the preview. Catalog thumbnails remain hover-driven. Sidebar labels use 14px text with stronger neutral contrast while rows stay compact.
+
+## v0.8 API and interaction audit
+
+Use the [component audit](docs/component-audit.md) to choose the right primitive and the [migration guide](docs/migrations-v0.8.md) when upgrading. Four duplicate public APIs were removed. CommandMenu now provides grouped, nested command search with recent actions, keyboard shortcuts and async error recovery; its demo performs local workspace actions. WorkspaceSwitcher uses the shared Send menu.
+
+Native popovers and contextual menus animate both opening and closing. Context submenus unfold with the same motion as Dropdown. SwipeActions uses compact pill buttons and preserves item identity while revealing actions. Selected icon previews play immediately, with Replay and opt-in Loop. Reduced motion disables nonessential movement. Static content stays steady.

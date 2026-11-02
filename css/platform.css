@@ -514,31 +514,6 @@
   color: var(--muted);
   padding: 6px 8px 10px;
 }
-.re-workspace-menu > button {
-  border: 0;
-  background: none;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 9px 8px;
-  border-radius: 8px;
-  text-align: left;
-  font-size: 12px;
-}
-.re-workspace-menu > button:hover {
-  background: var(--surface);
-}
-.re-workspace-menu > button[aria-pressed="true"] {
-  color: var(--brand-ink);
-  background: var(--brand-soft);
-}
-.re-workspace-menu small {
-  display: block;
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 4px;
-}
 .re-notifications-trigger {
   position: relative;
   border: 0;
@@ -816,8 +791,14 @@
   color: var(--bad);
 }
 .re-context-sub {
-  padding: 2px 0 4px 20px;
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 340ms var(--spring-soft), opacity 200ms ease;
 }
+.re-context-sub.is-open { grid-template-rows: 1fr; opacity: 1; }
+.re-context-sub > div { min-height: 0; overflow: hidden; }
+.re-context-sub button { padding-left: 30px; }
 .re-context-menu hr {
   margin: 5px 8px;
   border: 0;
@@ -1271,4 +1252,81 @@
   .re-combobox-options {
     transition: none;
   }
+}
+.re-app-sidebar nav > button,
+.re-app-mobile-nav nav > button {
+  font-size: 14px;
+  color: color-mix(in srgb, var(--text) 82%, var(--bg));
+}
+.re-app-sidebar nav > button[aria-current],
+.re-app-mobile-nav nav > button[aria-current] {
+  color: var(--brand-ink);
+}
+/* One workspace selector, using Send's actual menu and presence animation. */
+.menu.re-workspace-menu {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+}
+.re-workspace-trigger {
+  height: 36px;
+  padding: 4px 8px;
+  gap: 8px;
+  border-radius: 10px;
+}
+.re-workspace-trigger .re-workspace-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+}
+.re-workspace-trigger .re-workspace-mark > .icon {
+  width: 14px;
+  height: 14px;
+}
+.re-workspace-menu > .menu-panel {
+  width: 248px;
+  min-width: 220px;
+  padding: 5px;
+  border-radius: 14px;
+}
+.re-workspace-menu .menu-item {
+  height: 36px;
+  padding: 0 9px;
+  font-size: 12px;
+  border-radius: 9px;
+  gap: 8px;
+}
+.re-workspace-menu .re-workspace-option-copy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.re-workspace-menu .re-workspace-option-copy > span {
+  min-width: 0;
+}
+.re-workspace-menu .re-workspace-option-copy > small {
+  display: block;
+  margin: 0;
+  white-space: nowrap;
+  flex: none;
+  color: var(--muted);
+  font-size: 10px;
+}
+@media (pointer: coarse) {
+  .re-workspace-menu .menu-item {
+    min-height: 44px;
+  }
+}
+.menu.re-workspace-menu > .re-workspace-trigger {
+  height: 36px;
+  min-height: 36px;
+  padding: 4px 8px;
+  background: var(--raised);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: 12px;
+}
+.menu.re-workspace-menu > .re-workspace-trigger:hover {
+  background: var(--hover);
 }
