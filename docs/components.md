@@ -138,7 +138,7 @@ Select uses Send’s menu and a check mark for the selected option. SearchSelect
 <DateTimePicker value={unixSeconds} onChange={setUnixSeconds} future />
 ```
 
-These retain Send’s original props. DateTimePicker uses Unix **seconds**, local dates, quarter-hour choices and the document’s language; `future` blocks past choices. Its portal stays inside an enclosing dialog. Switch accepts `className`; setting rows accept arbitrary controls through children.
+These retain Send’s original props. DateTimePicker uses Unix **seconds**, local dates, quarter-hour choices and the document’s language; `future` blocks past choices. Its portal stays inside an enclosing dialog. `dateOnly` reuses that calendar without the time columns; `min`/`max` are Unix seconds, and `locale` controls formatting. DateRangePicker composes this same calendar for both local ISO date endpoints. Switch accepts `className`; setting rows accept arbitrary controls through children.
 
 ## Dialog
 

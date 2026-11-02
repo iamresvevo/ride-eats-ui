@@ -717,7 +717,7 @@ import { MultiSelect } from '@ride-eats/ui';
 
 ## Date Range Picker
 
-Inputs. Two native date fields with linked minimum and maximum bounds. Values use YYYY-MM-DD without implicit timezone conversion.
+Inputs. Send’s custom calendar for both range endpoints, with linked bounds, circular day controls and animated opening and closing. Values stay local YYYY-MM-DD dates.
 
 ```jsx
 import { DateRangePicker } from '@ride-eats/ui';
@@ -728,7 +728,7 @@ import { DateRangePicker } from '@ride-eats/ui';
 | Prop | Type | Behavior |
 | --- | --- | --- |
 | value / onValueChange | {start,end} / callback | ISO dates or empty strings. |
-| min / max / disabled / label | configuration | Native date constraints and fieldset label. |
+| min / max / disabled / label / locale | configuration | Shared calendar bounds and fieldset label. |
 
 ## Time Picker
 

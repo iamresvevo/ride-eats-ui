@@ -176,6 +176,12 @@ export function DateTimePicker(
     disabled?: boolean;
     value: number;
     future?: boolean;
+    dateOnly?: boolean;
+    min?: number;
+    max?: number;
+    empty?: boolean;
+    onClear?: () => void;
+    id?: string;
     onChange: (unixSeconds: number) => void;
   },
 ): React.ReactElement;
@@ -800,6 +806,7 @@ export function DateRangePicker(
     value: DateRange;
     onValueChange: (value: DateRange) => void;
     label?: string;
+    locale?: string;
     min?: string;
     max?: string;
     disabled?: boolean;

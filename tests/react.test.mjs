@@ -827,3 +827,24 @@ test("compatibility icon names resolve real upstream geometry", async () => {
   }
   assert.ok(!JSON.stringify(icons.bold).includes("M9 9a3 3"));
 });
+
+test("date ranges use shared custom calendar triggers instead of native browser date fields", () => {
+  const html = render("DateRangePicker", {
+    value: { start: "2026-11-02", end: "2026-11-09" },
+    label: "Period",
+    locale: "en-GB",
+    onValueChange() {},
+  });
+  assert.doesNotMatch(html, /type="date"/);
+  assert.equal((html.match(/class="dtp-field"/g) || []).length, 2);
+  assert.match(html, /aria-label="Period: From"/);
+  assert.match(html, /aria-label="Period: Until"/);
+  assert.match(html, /2 Nov 2026/);
+  const disabled = render("DateRangePicker", {
+    value: { start: "", end: "" },
+    disabled: true,
+    onValueChange() {},
+  });
+  assert.equal((disabled.match(/disabled=""/g) || []).length, 3);
+  assert.match(disabled, /Choose date/);
+});

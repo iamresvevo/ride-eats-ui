@@ -46,3 +46,5 @@ StickyBar ports the sentinel and captured-scroll behavior from Tools public/js/c
 ## v0.9 system audit
 
 The full [design audit](design-audit.md) and [inventory](design-audit.json) supersede isolated visual-fix notes. Source fingerprints and all public API families are in design/contract.json. css/tokens.css now owns palette, shapes, density and easing; CSS modules own their component rules. JS motion reads the same easing helper. Docs no longer recolor component surfaces. Catalog generation also includes upstream SVG compatibility names, including Bold.
+
+DateRangePicker composes the same extracted Send DateTimePicker in date-only mode. Its linked ISO bounds are converted in local time; it does not open a native browser calendar.

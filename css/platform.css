@@ -1395,3 +1395,8 @@
 .re-combobox-options [aria-selected="true"] > .icon {
   color: var(--brand);
 }
+
+.re-date-range .dtp-field {
+  width: 100%;
+  min-width: 0;
+}

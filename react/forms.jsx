@@ -1,5 +1,6 @@
 import React, { useId, useRef, useState, useLayoutEffect } from "react";
 import Icon from "./send/Icon.jsx";
+import DateTimePicker from "./send/ui/DateTimePicker.jsx";
 import { Field, Button } from "./index.jsx";
 import { Progress } from "./collection.jsx";
 
@@ -232,12 +233,22 @@ export function Combobox({
                 ? ""
                 : selected?.label || (allowCustom ? value || "" : "")
           }
-          onPointerDown={() => { pointerFocus.current = true; }}
-          onPointerCancel={() => { pointerFocus.current = false; }}
-          onBlur={() => { pointerFocus.current = false; }}
+          onPointerDown={() => {
+            pointerFocus.current = true;
+          }}
+          onPointerCancel={() => {
+            pointerFocus.current = false;
+          }}
+          onBlur={() => {
+            pointerFocus.current = false;
+          }}
           onClick={() => {
             pointerFocus.current = false;
-            if (!open) { setQuery(""); setActive(0); setOpen(true); }
+            if (!open) {
+              setQuery("");
+              setActive(0);
+              setOpen(true);
+            }
           }}
           onFocus={() => {
             // Pointer focus precedes native light-dismiss; open on click instead.
@@ -297,7 +308,11 @@ export function Combobox({
         aria-multiselectable={multiple || undefined}
         className="re-combobox-options"
         onToggle={(event) => {
-          if (event.newState === "closed" && !event.currentTarget.matches(":popover-open")) setOpen(false);
+          if (
+            event.newState === "closed" &&
+            !event.currentTarget.matches(":popover-open")
+          )
+            setOpen(false);
         }}
       >
         {matches.map((option, index) => (
@@ -344,17 +359,27 @@ export function Combobox({
 export function MultiSelect(props) {
   return <Combobox {...props} multiple />;
 }
+// Parse and serialize calendar dates in local time; UTC parsing shifts dates west of Greenwich.
+const dateSeconds = (value) =>
+  value ? new Date(value + "T12:00:00").getTime() / 1000 : undefined;
+const calendarDate = (seconds) => {
+  const date = new Date(seconds * 1000);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+};
 export function DateRangePicker({
   value,
   onValueChange,
   label = "Date range",
   min,
   max,
+  locale,
   disabled = false,
   className = "",
   style,
 }) {
   const id = useId();
+  const upper = [max, value.end].filter(Boolean).sort()[0];
+  const lower = [min, value.start].filter(Boolean).sort().at(-1);
   return (
     <fieldset
       className={`re-date-range ${className}`}
@@ -365,25 +390,39 @@ export function DateRangePicker({
       <div>
         <label htmlFor={`${id}-start`}>
           From
-          <input
+          <DateTimePicker
             id={`${id}-start`}
-            type="date"
-            min={min}
-            max={value.end || max}
-            value={value.start || ""}
-            onChange={(e) => onValueChange({ ...value, start: e.target.value })}
+            label={`${label}: From`}
+            dateOnly
+            locale={locale}
+            disabled={disabled}
+            empty={!value.start}
+            value={dateSeconds(value.start) ?? Date.now() / 1000}
+            min={dateSeconds(min)}
+            max={dateSeconds(upper)}
+            onChange={(seconds) =>
+              onValueChange({ ...value, start: calendarDate(seconds) })
+            }
+            onClear={() => onValueChange({ ...value, start: "" })}
           />
         </label>
         <Icon name="arrow-right" />
         <label htmlFor={`${id}-end`}>
           Until
-          <input
+          <DateTimePicker
             id={`${id}-end`}
-            type="date"
-            min={value.start || min}
-            max={max}
-            value={value.end || ""}
-            onChange={(e) => onValueChange({ ...value, end: e.target.value })}
+            label={`${label}: Until`}
+            dateOnly
+            locale={locale}
+            disabled={disabled}
+            empty={!value.end}
+            value={dateSeconds(value.end) ?? Date.now() / 1000}
+            min={dateSeconds(lower)}
+            max={dateSeconds(max)}
+            onChange={(seconds) =>
+              onValueChange({ ...value, end: calendarDate(seconds) })
+            }
+            onClear={() => onValueChange({ ...value, end: "" })}
           />
         </label>
       </div>

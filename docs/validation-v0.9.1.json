@@ -1,0 +1,6 @@
+{
+ "version":"0.9.1",
+ "change":"DateRangePicker composes the shared Send DateTimePicker in date-only mode rather than native date inputs.",
+ "checks":["module and import checks","design contract","TypeScript","25 tests","production build","browser selection and local date serialization","linked range bounds","clear and empty reopening","arrow-key selection and focus restoration","390px calendar viewport bounds"],
+ "limits":["Physical-device feel and exhaustive cross-browser or screen-reader validation remain unverified","TimePicker remains a native time input"]
+}

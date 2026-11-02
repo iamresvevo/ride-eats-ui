@@ -1405,3 +1405,18 @@
   color: var(--text);
   overflow: auto;
 }
+
+.dtp-date-only {
+  grid-template-columns: auto;
+}
+
+.dtp-date-only .dtp-foot {
+  gap: 8px;
+}
+
+.dtp-date-only .dtp-calendar {
+  width: min(266px, calc(100vw - 60px));
+}
+.dtp-date-only .dtp-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}

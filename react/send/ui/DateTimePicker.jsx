@@ -18,6 +18,12 @@ const MINUTES = [0, 15, 30, 45];
 export default function DateTimePicker({
   value,
   future = false,
+  dateOnly = false,
+  min: minimum,
+  max: maximum,
+  empty = false,
+  onClear,
+  id,
   onChange,
   label = "Date and time",
   locale,
@@ -39,8 +45,13 @@ export default function DateTimePicker({
   const [now, setNow] = useState(null);
   // Inside a dialog the panel must live in it too, or the dialog's top layer would cover it.
   const [host, setHost] = useState(null);
-  const min = future && now ? Math.floor(now / 1000) : null;
-  const earliest = min ? new Date(min * 1000) : null;
+  const min = Math.max(
+    minimum ?? -Infinity,
+    future && now ? Math.floor(now / 1000) : -Infinity,
+  );
+  const max = maximum ?? Infinity;
+  const earliest = Number.isFinite(min) ? new Date(min * 1000) : null;
+  const latest = Number.isFinite(max) ? new Date(max * 1000) : null;
 
   useEffect(() => {
     if (!open) return;
@@ -53,6 +64,11 @@ export default function DateTimePicker({
           item.parentElement.offsetTop -
           (item.parentElement.clientHeight - item.offsetHeight) / 2;
       });
+    (
+      panel.current.querySelector(
+        '.dtp-day[aria-selected="true"]:not(:disabled)',
+      ) || panel.current.querySelector(".dtp-day:not(:disabled)")
+    )?.focus({ preventScroll: true });
     const onPointer = (event) => {
       if (
         !root.current.contains(event.target) &&
@@ -61,6 +77,10 @@ export default function DateTimePicker({
         setOpen(false);
     };
     const onKey = (event) => {
+      if (event.key === "Tab" && !panel.current?.contains(event.target)) {
+        setOpen(false);
+        return;
+      }
       if (event.key !== "Escape") return;
       setOpen(false);
       button.current?.focus();
@@ -84,7 +104,7 @@ export default function DateTimePicker({
       const below =
         box.bottom + 8 + el.offsetHeight <= innerHeight - 8 ||
         box.top < el.offsetHeight + 16;
-      el.style.top = `${below ? box.bottom + 8 : box.top - 8 - el.offsetHeight}px`;
+      el.style.top = `${Math.max(8, Math.min(below ? box.bottom + 8 : box.top - 8 - el.offsetHeight, innerHeight - el.offsetHeight - 8))}px`;
       el.style.left = `${Math.max(8, Math.min(box.left, innerWidth - el.offsetWidth - 8))}px`;
       el.style.transformOrigin = below ? "top left" : "bottom left";
     };
@@ -101,7 +121,8 @@ export default function DateTimePicker({
     if (!open) {
       setNow(Date.now());
       setHost(button.current.closest("dialog") ?? document.body);
-      setMonth(new Date(chosen.getFullYear(), chosen.getMonth(), 1));
+      const anchor = new Date(Math.min(max, Math.max(min, value)) * 1000);
+      setMonth(new Date(anchor.getFullYear(), anchor.getMonth(), 1));
     }
     setOpen(!open);
   };
@@ -109,7 +130,15 @@ export default function DateTimePicker({
   // Keeps the time when the day changes and the day when the time changes; never earlier than `min`.
   const pick = (date) => {
     const next = Math.floor(date.getTime() / 1000);
-    onChange(min && next < min ? Math.ceil(min / 900) * 900 : next);
+    const bounded = Math.min(
+      max,
+      next < min ? (dateOnly ? min : Math.ceil(min / 900) * 900) : next,
+    );
+    onChange(bounded);
+    if (dateOnly) {
+      setOpen(false);
+      button.current?.focus();
+    }
   };
   const withDay = (day) =>
     pick(
@@ -133,7 +162,8 @@ export default function DateTimePicker({
     );
 
   // Six weeks from the Monday (or the locale's first day) on or before the 1st.
-  const firstDay = new Intl.Locale(language).getWeekInfo?.().firstDay % 7 || 1;
+  const firstDay =
+    (new Intl.Locale(language).getWeekInfo?.().firstDay ?? 1) % 7;
   const lead = (month.getDay() - firstDay + 7) % 7;
   const days = Array.from(
     { length: 42 },
@@ -150,6 +180,8 @@ export default function DateTimePicker({
   const canGoBack =
     !earliest ||
     month > new Date(earliest.getFullYear(), earliest.getMonth(), 1);
+  const canGoForward =
+    !latest || month < new Date(latest.getFullYear(), latest.getMonth(), 1);
   const tooEarly = (hours, minutes) =>
     earliest &&
     new Date(
@@ -160,10 +192,22 @@ export default function DateTimePicker({
       minutes,
     ) < new Date(earliest.getTime() - 899000);
 
+  const tooLate = (hours, minutes) =>
+    latest &&
+    new Date(
+      chosen.getFullYear(),
+      chosen.getMonth(),
+      chosen.getDate(),
+      hours,
+      minutes,
+    ) > latest;
+
   return (
     <div ref={root} className={`dtp ${className}`} style={style}>
       <button
         ref={button}
+        id={id}
+        aria-label={label}
         type="button"
         className="dtp-field"
         disabled={disabled}
@@ -172,13 +216,24 @@ export default function DateTimePicker({
         onClick={toggle}
       >
         <span>
-          {chosen.toLocaleString(language, {
-            weekday: "short",
-            day: "numeric",
-            month: "long",
-            hour: "numeric",
-            minute: "2-digit",
-          })}
+          {empty
+            ? "Choose date"
+            : chosen.toLocaleString(
+                language,
+                dateOnly
+                  ? {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    }
+                  : {
+                      weekday: "short",
+                      day: "numeric",
+                      month: "long",
+                      hour: "numeric",
+                      minute: "2-digit",
+                    },
+              )}
         </span>
         <Icon name="chevron" />
       </button>
@@ -191,10 +246,27 @@ export default function DateTimePicker({
             aria-hidden={presence.closing || undefined}
             role="dialog"
             aria-label={t(label)}
-            className={`dtp-panel ${presence.closing ? "is-closing" : ""}`.trim()}
+            className={`dtp-panel ${dateOnly ? "dtp-date-only" : ""} ${presence.closing ? "is-closing" : ""}`.trim()}
             onAnimationEnd={presence.onAnimationEnd}
           >
-            <div className="dtp-calendar">
+            <div
+              className="dtp-calendar"
+              onKeyDown={(event) => {
+                if (!event.target.matches(".dtp-day")) return;
+                const movement = {
+                  ArrowLeft: -1,
+                  ArrowRight: 1,
+                  ArrowUp: -7,
+                  ArrowDown: 7,
+                };
+                if (!(event.key in movement)) return;
+                event.preventDefault();
+                const buttons = [...panel.current.querySelectorAll(".dtp-day")];
+                const target =
+                  buttons[buttons.indexOf(event.target) + movement[event.key]];
+                if (target && !target.disabled) target.focus();
+              }}
+            >
               <div className="dtp-head">
                 <strong>
                   {month.toLocaleDateString(language, {
@@ -219,6 +291,7 @@ export default function DateTimePicker({
                   type="button"
                   className="dtp-nav dtp-next"
                   aria-label={t("Next month")}
+                  disabled={!canGoForward}
                   onClick={() =>
                     setMonth(
                       new Date(month.getFullYear(), month.getMonth() + 1, 1),
@@ -239,8 +312,17 @@ export default function DateTimePicker({
                     key={day.getTime()}
                     type="button"
                     className={`dtp-day ${day.getMonth() !== month.getMonth() ? "is-outside" : ""} ${sameDay(day, today) ? "is-today" : ""}`.trim()}
-                    aria-selected={sameDay(day, chosen)}
-                    disabled={Boolean(earliest) && day < startOfDay(earliest)}
+                    aria-label={day.toLocaleDateString(language, {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                    aria-selected={!empty && sameDay(day, chosen)}
+                    disabled={
+                      (Boolean(earliest) && day < startOfDay(earliest)) ||
+                      (Boolean(latest) && day > startOfDay(latest))
+                    }
                     onClick={() => withDay(day)}
                   >
                     {day.getDate()}
@@ -248,41 +330,64 @@ export default function DateTimePicker({
                 ))}
               </div>
             </div>
-            <div className="dtp-times">
-              <div className="dtp-column" role="listbox" aria-label={t("Hour")}>
-                {Array.from({ length: 24 }, (_, hour) => (
-                  <button
-                    key={hour}
-                    type="button"
-                    role="option"
-                    aria-selected={chosen.getHours() === hour}
-                    disabled={tooEarly(hour, 45)}
-                    onClick={() => withTime(hour, chosen.getMinutes())}
-                  >
-                    {hourLabel(hour)}
-                  </button>
-                ))}
+            {!dateOnly && (
+              <div className="dtp-times">
+                <div
+                  className="dtp-column"
+                  role="listbox"
+                  aria-label={t("Hour")}
+                >
+                  {Array.from({ length: 24 }, (_, hour) => (
+                    <button
+                      key={hour}
+                      type="button"
+                      role="option"
+                      aria-selected={chosen.getHours() === hour}
+                      disabled={tooEarly(hour, 45) || tooLate(hour, 0)}
+                      onClick={() => withTime(hour, chosen.getMinutes())}
+                    >
+                      {hourLabel(hour)}
+                    </button>
+                  ))}
+                </div>
+                <div
+                  className="dtp-column"
+                  role="listbox"
+                  aria-label={t("Minute")}
+                >
+                  {MINUTES.map((minutes) => (
+                    <button
+                      key={minutes}
+                      type="button"
+                      role="option"
+                      aria-selected={chosen.getMinutes() === minutes}
+                      disabled={
+                        tooEarly(chosen.getHours(), minutes) ||
+                        tooLate(chosen.getHours(), minutes)
+                      }
+                      onClick={() => withTime(chosen.getHours(), minutes)}
+                    >
+                      :{String(minutes).padStart(2, "0")}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div
-                className="dtp-column"
-                role="listbox"
-                aria-label={t("Minute")}
-              >
-                {MINUTES.map((minutes) => (
-                  <button
-                    key={minutes}
-                    type="button"
-                    role="option"
-                    aria-selected={chosen.getMinutes() === minutes}
-                    disabled={tooEarly(chosen.getHours(), minutes)}
-                    onClick={() => withTime(chosen.getHours(), minutes)}
-                  >
-                    :{String(minutes).padStart(2, "0")}
-                  </button>
-                ))}
-              </div>
-            </div>
+            )}
             <div className="dtp-foot">
+              {onClear && (
+                <button
+                  type="button"
+                  className="dtp-done"
+                  disabled={empty}
+                  onClick={() => {
+                    onClear();
+                    setOpen(false);
+                    button.current?.focus();
+                  }}
+                >
+                  Clear
+                </button>
+              )}
               <button
                 type="button"
                 className="dtp-done"

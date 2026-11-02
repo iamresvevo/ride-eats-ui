@@ -101,7 +101,7 @@ export const platformPages = [
     "date-range-picker",
     "Date Range Picker",
     "Inputs",
-    "Two native date fields with linked minimum and maximum bounds. Values use YYYY-MM-DD without implicit timezone conversion.",
+    "Send’s custom calendar for both range endpoints, with linked bounds, circular day controls and animated opening and closing. Values stay local YYYY-MM-DD dates.",
     `<DateRangePicker value={range} onValueChange={setRange} label="Reporting period" />`,
     [
       [
@@ -110,9 +110,9 @@ export const platformPages = [
         "ISO dates or empty strings.",
       ],
       [
-        "min / max / disabled / label",
+        "min / max / disabled / label / locale",
         "configuration",
-        "Native date constraints and fieldset label.",
+        "Shared calendar bounds and fieldset label.",
       ],
     ],
     "DateRangePicker",
@@ -426,13 +426,29 @@ export const platformPages = [
     "SupportInbox",
   ),
   page(
-    "sticky-bar", "Sticky Bar", "Layout",
+    "sticky-bar",
+    "Sticky Bar",
+    "Layout",
     "Tools’ automatic floating page controls. Scroll depth progressively fades and blurs the content beneath while controls remain sharp. The header offset is measured automatically when used with Header.",
     `<StickyBar><Tabs items={tabs} value={tab} onValueChange={setTab} /></StickyBar>`,
-    [["children", "ReactNode", "Tabs, chips, search or action controls."],
-     ["offset", "number | CSS length", "Defaults to the nearest inherited --header-height. Set 0 for an independent scroll container."],
-     ["fade / blur", "boolean", "Progressive neutral fade and layered backdrop blur, both enabled by default."],
-     ["label / className / style", "styling and accessibility", "The parent defines the sticky scroll boundary; use a labelled scroll region for keyboard scrolling."]],
+    [
+      ["children", "ReactNode", "Tabs, chips, search or action controls."],
+      [
+        "offset",
+        "number | CSS length",
+        "Defaults to the nearest inherited --header-height. Set 0 for an independent scroll container.",
+      ],
+      [
+        "fade / blur",
+        "boolean",
+        "Progressive neutral fade and layered backdrop blur, both enabled by default.",
+      ],
+      [
+        "label / className / style",
+        "styling and accessibility",
+        "The parent defines the sticky scroll boundary; use a labelled scroll region for keyboard scrolling.",
+      ],
+    ],
     "StickyBar, Tabs",
   ),
 ];

@@ -26,7 +26,7 @@ Controls are 36px, small actions 32px, DataGrid rows 40px and panel padding 16px
 
 `field(name)` returns native name/value/onChange props. `setValue(name,value)` connects non-native controls such as MultiSelect. `reset()` returns to the initial values. Form focuses the first invalid field and displays rejected submit errors. Validation must be synchronous; server checks belong in onSubmit. Initial values are read on mount; remount with a new key when switching records. Do not rely on client validation for server authorization or data integrity.
 
-Combobox selects existing options and accepts custom text with allowCustom; MultiSelect stores string arrays. Arrow keys move, Enter selects, Escape closes, and selected chips are removable. Options use `{value,label,description?,disabled?}`. DateRangePicker uses `{start,end}` ISO dates, TimePicker uses native time strings. Native date/time interfaces vary by browser. UploadProgress displays caller-supplied status and progress and never creates a transfer itself.
+Combobox selects existing options and accepts custom text with allowCustom; MultiSelect stores string arrays. Arrow keys move, Enter selects, Escape closes, and selected chips are removable. Options use `{value,label,description?,disabled?}`. DateRangePicker uses Send’s custom calendar and `{start,end}` local ISO dates, with linked min/max bounds and optional locale. TimePicker uses native time strings; that time input varies by browser. UploadProgress displays caller-supplied status and progress and never creates a transfer itself.
 
 ## Tables
 
