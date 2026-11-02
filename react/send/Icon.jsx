@@ -152,9 +152,8 @@ export default function Icon({
         {motion === "draw" && (
           <animate
             attributeName="stroke-dashoffset"
-            from="1"
-            to="0"
-            dur=".7s"
+            values="0;.18;0;0"
+            dur="2.4s"
             begin="indefinite"
           />
         )}

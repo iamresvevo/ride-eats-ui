@@ -26,8 +26,8 @@ const glyphs = {
         />
         <animate
           attributeName="stroke-dashoffset"
-          values="1;0;0"
-          dur=".8s"
+          values="0;.12;0;0"
+          dur="2.4s"
           begin="indefinite"
         />
       </g>
@@ -38,8 +38,8 @@ const glyphs = {
     <path pathLength="1" strokeDasharray="1" d={heart}>
       <animate
         attributeName="d"
-        values={`${heart};${expandHeart(1.08)};${heart};${expandHeart(1.04)};${heart}`}
-        dur=".7s"
+        values={`${heart};${expandHeart(1.025)};${heart};${expandHeart(1.015)};${heart}`}
+        dur="2.4s"
         begin="indefinite"
       />
     </path>
@@ -50,8 +50,8 @@ const glyphs = {
       <path pathLength="1" strokeDasharray="1" d="m7.5 12 3 3 6-6">
         <animate
           attributeName="stroke-dashoffset"
-          values="1;0"
-          dur=".6s"
+          values="0;.18;0;0"
+          dur="2.4s"
           begin="indefinite"
         />
       </path>
@@ -64,8 +64,8 @@ const glyphs = {
         <path pathLength="1" strokeDasharray="1" d="M12 16V3m-5 5 5-5 5 5" />
         <animate
           attributeName="stroke-dashoffset"
-          values="1;0;0"
-          dur=".8s"
+          values="0;.12;0;0"
+          dur="2.4s"
           begin="indefinite"
         />
       </g>
@@ -78,8 +78,8 @@ const glyphs = {
         <path pathLength="1" strokeDasharray="1" d="M12 3v13m-5-5 5 5 5-5" />
         <animate
           attributeName="stroke-dashoffset"
-          values="1;0;0"
-          dur=".8s"
+          values="0;.12;0;0"
+          dur="2.4s"
           begin="indefinite"
         />
       </g>
@@ -90,8 +90,8 @@ const glyphs = {
       <circle cx="10.5" cy="10.5" r="6.5">
         <animate
           attributeName="r"
-          values="6.5;7.3;6.5"
-          dur=".7s"
+          values="6.5;6.8;6.5"
+          dur="2.4s"
           begin="indefinite"
         />
       </circle>
@@ -107,8 +107,8 @@ const glyphs = {
       />
       <animate
         attributeName="stroke-dashoffset"
-        values="1;0;0"
-        dur=".8s"
+        values="0;.12;0;0"
+        dur="2.4s"
         begin="indefinite"
       />
     </g>
@@ -120,7 +120,7 @@ const glyphs = {
         <animate
           attributeName="d"
           values="M8 3v6;M12 3v6;M8 3v6"
-          dur=".7s"
+          dur="2.4s"
           begin="indefinite"
         />
       </path>
@@ -128,7 +128,7 @@ const glyphs = {
         <animate
           attributeName="d"
           values="M16 9v6;M11 9v6;M16 9v6"
-          dur=".7s"
+          dur="2.4s"
           begin="indefinite"
         />
       </path>
@@ -136,7 +136,7 @@ const glyphs = {
         <animate
           attributeName="d"
           values="M10 15v6;M15 15v6;M10 15v6"
-          dur=".7s"
+          dur="2.4s"
           begin="indefinite"
         />
       </path>
@@ -149,7 +149,7 @@ const glyphs = {
         <animate
           attributeName="d"
           values="M3 9V5h6l2 3h10v1;M3 9V3h6l2 3h10v3;M3 9V5h6l2 3h10v1"
-          dur=".7s"
+          dur="2.4s"
           begin="indefinite"
         />
       </path>
@@ -164,8 +164,8 @@ const glyphs = {
       />
       <animate
         attributeName="stroke-dashoffset"
-        values="1;0;0"
-        dur=".8s"
+        values="0;.12;0;0"
+        dur="2.4s"
         begin="indefinite"
       />
     </g>

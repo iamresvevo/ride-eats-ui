@@ -143,8 +143,8 @@ export default function IconBrowser({ animated = false }) {
             size={size}
             strokeWidth={Number(stroke)}
             {...(motion === "auto" ? {} : { motion, animateOn: "always" })}
-            playing={motion === "auto" ? true : undefined}
-            loop={motion === "auto" ? true : undefined}
+            playing={false}
+            loop={false}
             label={selected}
           />
           <strong>{selected}</strong>

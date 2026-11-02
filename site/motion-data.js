@@ -21,7 +21,7 @@ export const motionPages = [
     "animated-icons",
     "Animated Icons",
     "Motion",
-    "Native SVG animation for the complete 2,015-icon catalog. Individual shapes draw in sequence, paths morph and geometry breathes. Ten bespoke presets add path morphs and purpose-built motion. Search any icon, hover to play, and copy one React component.",
+    "Native SVG animation for the complete 2,015-icon catalog. Subtle stroke accents keep every glyph readable. Motion runs once on hover/focus at a calm pace. Ten bespoke presets add path morphs and purpose-built motion. Search any icon, hover to play, and copy one React component.",
     `<AnimatedIcon name="bell" size={28} />\n<AnimatedIcon name="check" playing />\n<AnimatedIcon name="refresh" playing loop />\n// Hover/focus on a parent button also triggers the icon.\n<Button><AnimatedIcon name="send" /> Send files</Button>`,
     [
       [

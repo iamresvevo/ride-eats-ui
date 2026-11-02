@@ -1769,31 +1769,23 @@
   padding: 0 8px;
   font-size: 11px;
 }
+/* Search stays outside the scrolling navigation, so items cannot pass above it. */
+.docs-sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 .docs-search {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  isolation: isolate;
+  flex-shrink: 0;
+  margin-bottom: 24px;
 }
-.docs-search:before {
-  content: "";
-  position: absolute;
-  inset: -14px -4px -10px;
-  z-index: -1;
-  background: var(--bg);
-}
-.docs-search:after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--raised);
-  border-radius: inherit;
-  z-index: -1;
-}
-.docs-search input,
-.docs-search > .icon {
-  position: relative;
-  z-index: 1;
+.sidebar-scroll {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding-bottom: 12px;
 }
 .icon-choice-field > span {
   display: block;
@@ -1951,4 +1943,20 @@
     grid-template-columns: 1fr;
     gap: 16px;
   }
+}
+/* Use the shared accent to identify active navigation and inspected glyphs. */
+.sidebar-group button.selected {
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+}
+.sidebar-group button.selected small {
+  color: var(--brand-ink);
+}
+.icon-selected > svg {
+  color: var(--brand-ink);
+}
+.icon-grid > button.is-selected {
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 30%, transparent);
 }

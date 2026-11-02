@@ -843,7 +843,7 @@ import {
 
 ## AnimatedIcon — full catalog
 
-All 2,015 catalog glyphs support native SVG stroke and geometry animation. Ten presets are bespoke; remaining glyphs use generated per-shape choreography. There are no SVG transform animations. Legacy spin/pulse/bounce/rotate aliases now resolve to geometry animation.
+All 2,015 catalog glyphs support native SVG stroke and geometry animation. Ten presets are bespoke; remaining glyphs use generated per-shape stroke accents. There are no SVG transform animations. Legacy spin/pulse/bounce/rotate aliases now resolve to geometry animation.
 
 ```jsx
 import { AnimatedIcon } from '@ride-eats/ui';

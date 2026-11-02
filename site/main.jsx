@@ -870,7 +870,7 @@ function App() {
           ]}
           activeValue={selected ? "overview" : current}
           onNavigate={(item) => navigate(item.value)}
-          guestContent={<Badge>v0.5.0</Badge>}
+          guestContent={<Badge>v0.5.1</Badge>}
           extras={
             <>
               <a
@@ -915,65 +915,67 @@ function App() {
             onChange={(e) => setQuery(e.target.value)}
           />
         </label>
-        <div className="sidebar-group">
-          <span>Get started</span>
-          {[
-            ["overview", "Introduction"],
-            ["installation", "Installation"],
-            ["customization", "Customization"],
-          ].map(([id, name]) => (
-            <button
-              key={id}
-              onClick={() => navigate(id)}
-              className={current === id ? "selected" : ""}
-            >
-              {name}
-              {id === "overview" && <Icon name="next" />}
-            </button>
-          ))}
-        </div>
-        {[
-          "Motion",
-          "Navigation",
-          "Actions",
-          "Inputs",
-          "Feedback",
-          "Display",
-          "Layout",
-        ].map((group) => (
-          <div className="sidebar-group" key={group}>
-            <span>{group}</span>
-            {components
-              .filter(
-                (c) =>
-                  c.group === group &&
-                  c.name.toLowerCase().includes(query.toLowerCase()),
-              )
-              .map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => navigate(c.id)}
-                  className={current === c.id ? "selected" : ""}
-                >
-                  {c.name}
-                  {["header", "dropdown", "dialog"].includes(c.id) && (
-                    <small>Send</small>
-                  )}
-                </button>
-              ))}
+        <div className="sidebar-scroll">
+          <div className="sidebar-group">
+            <span>Get started</span>
+            {[
+              ["overview", "Introduction"],
+              ["installation", "Installation"],
+              ["customization", "Customization"],
+            ].map(([id, name]) => (
+              <button
+                key={id}
+                onClick={() => navigate(id)}
+                className={current === id ? "selected" : ""}
+              >
+                {name}
+                {id === "overview" && <Icon name="next" />}
+              </button>
+            ))}
           </div>
-        ))}
-        <a
-          className="sidebar-footer"
-          href={`${repo}/blob/main/AGENTS.md`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Icon name="terminal" />
-          <span>
-            Building with AI?<small>Start with AGENTS.md ↗</small>
-          </span>
-        </a>
+          {[
+            "Motion",
+            "Navigation",
+            "Actions",
+            "Inputs",
+            "Feedback",
+            "Display",
+            "Layout",
+          ].map((group) => (
+            <div className="sidebar-group" key={group}>
+              <span>{group}</span>
+              {components
+                .filter(
+                  (c) =>
+                    c.group === group &&
+                    c.name.toLowerCase().includes(query.toLowerCase()),
+                )
+                .map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => navigate(c.id)}
+                    className={current === c.id ? "selected" : ""}
+                  >
+                    {c.name}
+                    {["header", "dropdown", "dialog"].includes(c.id) && (
+                      <small>Send</small>
+                    )}
+                  </button>
+                ))}
+            </div>
+          ))}
+          <a
+            className="sidebar-footer"
+            href={`${repo}/blob/main/AGENTS.md`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Icon name="terminal" />
+            <span>
+              Building with AI?<small>Start with AGENTS.md ↗</small>
+            </span>
+          </a>
+        </div>
       </aside>
       <main className="docs-main">
         {selected ? (
@@ -1108,7 +1110,7 @@ function App() {
               component. React 19 or newer.
             </p>
             <h2 className="doc-heading">1. Install a reviewed version</h2>
-            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.5.0"}</Code>
+            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.5.1"}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
             <Code>{`import { ThemeProvider, ToastProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App() {\n  return (\n    <ThemeProvider defaultTheme="system">\n      <ToastProvider>\n        <Button variant="primary">Hello, Studio</Button>\n      </ToastProvider>\n    </ThemeProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>

@@ -1,37 +1,45 @@
 import { useLayoutEffect } from "react";
-// Native SVG animation, with no animated HTML/view wrapper.
+// Finish hover gestures smoothly. Pointer + focus must never restart an active cycle.
 export function useSvgMotion(
   ref,
   { playing = false, loop = false, hover = true, name },
 ) {
   useLayoutEffect(() => {
     const root = ref.current;
-    if (!root) return;
-    if (!playing && !hover) return;
+    if (!root || (!playing && !hover)) return;
     const media = matchMedia("(prefers-reduced-motion: reduce)");
-    const animations = () => root.querySelectorAll("animate,animateTransform");
-    const stop = () =>
+    let active = false,
+      timer;
+    const animations = () => root.querySelectorAll("animate");
+    const stop = () => {
+      clearTimeout(timer);
+      active = false;
       animations().forEach((animation) => {
         try {
           animation.endElement();
         } catch {}
       });
+    };
     const play = () => {
-      if (media.matches) return;
-      animations().forEach((animation) => {
+      if (media.matches || active) return;
+      const nodes = [...animations()];
+      if (!nodes.length) return;
+      active = true;
+      nodes.forEach((animation) => {
         animation.setAttribute("repeatCount", loop ? "indefinite" : "1");
         animation.beginElement?.();
       });
+      if (!loop)
+        timer = setTimeout(
+          () => {
+            active = false;
+          },
+          Math.max(
+            ...nodes.map((node) => parseFloat(node.getAttribute("dur")) || 2.4),
+          ) * 1000,
+        );
     };
     const host = hover ? root.closest("button,a") || root : null;
-    const leave = () => {
-      if (!playing && document.activeElement !== host) stop();
-    };
-    const blur = () => {
-      if (!playing && !host?.matches(":hover")) stop();
-    };
-    host?.addEventListener("pointerleave", leave);
-    host?.addEventListener("blur", blur);
     host?.addEventListener("pointerenter", play);
     host?.addEventListener("focus", play);
     const preference = () => {
@@ -40,8 +48,6 @@ export function useSvgMotion(
     };
     media.addEventListener("change", preference);
     if (playing) play();
-    else stop();
-    // Letter chunks can resolve after the parent layout effect. Start newly mounted SVG nodes.
     const observer = new MutationObserver(() => {
       if (playing || host?.matches(":hover") || document.activeElement === host)
         play();
@@ -49,8 +55,6 @@ export function useSvgMotion(
     observer.observe(root, { childList: true, subtree: true });
     return () => {
       observer.disconnect();
-      host?.removeEventListener("pointerleave", leave);
-      host?.removeEventListener("blur", blur);
       host?.removeEventListener("pointerenter", play);
       host?.removeEventListener("focus", play);
       media.removeEventListener("change", preference);

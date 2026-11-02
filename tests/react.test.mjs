@@ -321,6 +321,14 @@ test("animated icons contain native SVG motion and no animated view wrapper", as
     assert.doesNotMatch(html, /<div/);
     assert.doesNotMatch(html, /animation:/);
     assert.doesNotMatch(html, /animateTransform|attributeName="transform"/);
+    for (const match of html.matchAll(/<animate\s[^>]*values="([^"]+)"/g)) {
+      const values = match[1].split(";");
+      assert.equal(
+        values[0],
+        values.at(-1),
+        `${name}: loop must return to the same state`,
+      );
+    }
   }
   assert.match(render("AnimatedIcon", { name: "heart" }), /attributeName="d"/);
   assert.match(
@@ -399,7 +407,12 @@ test("every catalog icon has generated per-shape native SVG animation", async ()
     "utf8",
   );
   assert.match(source, /attributeName="stroke-dashoffset"/);
-  assert.match(source, /attributeName="r"/);
+  assert.match(source, /values="0;0;.08;0;0"/);
+  assert.match(source, /dur="2.4s"/);
+  assert.doesNotMatch(
+    source,
+    /breathePath|attributeName="r"|attributeName="ry"/,
+  );
   assert.doesNotMatch(source, /<svg|<div|animation:/);
   const names = new Set(UI.animatedIconNames);
   for (const name of UI.iconNames) assert.ok(names.has(name), name);

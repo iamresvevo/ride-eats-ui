@@ -13,7 +13,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.5.0
+npm install github:iamresvevo/ride-eats-ui#v0.5.1
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -259,7 +259,7 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 
 ## Native SVG motion and more components
 
-[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) cover all 2,015 catalog names. Every SVG primitive draws independently with staggered timing; circles, ellipses and rounded rectangles add geometry accents, and paths subtly morph inside the fixed SVG viewport. Ten bespoke presets add path morphs and purpose-built motion. These are generated SVG animations across the catalog, not 2,015 individually hand-authored choreographies. Hover/focus plays once; `playing` and `loop` control playback. Reduced-motion preferences stop playback. Letter chunks stay lazy-loaded.
+[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) cover all 2,015 catalog names. Catalog glyphs use a subtle staggered stroke accent that keeps the icon visible, with a continuous 2.4-second cycle. Arbitrary path scaling and circle/ellipse squashing are removed. Ten bespoke presets add path morphs and purpose-built motion. These are generated SVG animations across the catalog, not 2,015 individually hand-authored choreographies. Hover/focus plays once; `playing` and `loop` control playback. Reduced-motion preferences stop playback. Letter chunks stay lazy-loaded.
 
 ```jsx
 <AnimatedIcon name="bell" size={28} />
@@ -272,3 +272,5 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 The library also includes Popover, CommandMenu, Collapsible, Steps, PinInput, ToggleGroup, Rating, ScrollArea and Separator. The component browser has 51 pages. Its sidebar search stays pinned, and icon size/stroke/motion choices are segmented selectors.
 
 Keep Dialog/Modal mounted and use open={false} for the animated exit. useConfirm resolves after the confirmation has closed, so a parent form can then close without competing animations. Dialog is a simple-sheet demo; Stacked Dialogs demonstrates the draft/discard workflow.
+
+Selected ratings, checkboxes, radio options, toggle groups, steps and sliders use `--brand` / `--brand-soft`. Override those tokens to customize the accent. `--brand-ink` supplies readable accent text in both themes.
