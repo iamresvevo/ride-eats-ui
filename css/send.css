@@ -1360,7 +1360,9 @@
   z-index: 1;
   transition: color 160ms var(--motion-ease);
 }
-.tabs .tab.active {
+/* Only animated tabs replace the selected button fill with a separate pill.
+   The public vanilla tabs keep the base ink background. */
+.tabs:has(> .tabs-selection) .tab.active {
   background: transparent;
 }
 @media (prefers-reduced-motion: reduce) {
