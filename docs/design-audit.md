@@ -1,4 +1,4 @@
-# Send / Tools audit. v0.11
+# Send / Tools audit. v0.12
 
 This audit covers every public React API and documentation page, including workflows and composition recipes. The machine-readable inventory is [design-audit.json](design-audit.json); family ownership is in [design/contract.json](../design/contract.json). Nonvisual hooks, providers and icon-name lists are counted as APIs, not additional visual components.
 
@@ -186,3 +186,5 @@ In 0.9.14, ScrollArea returns with substantive panel behavior: independently bou
 ## Composable controls in 0.11
 
 ColorPicker owns color conversion, editable drafts, swatches and pointer shade selection. It composes the existing Segmented and Popover controls, retaining shared motion, focus restoration and reduced-motion handling. Its native ranges provide keyboard equivalents. InputGroup preserves native form and Field associations, with a disabled fieldset covering adjacent actions. ButtonGroup composes existing Button and Dropdown children without creating a second selection or action system. All three use foundation tokens; no extra package, service or product workflow is introduced.
+
+The 0.12 purpose/motion pass is recorded in [component-audit.md](component-audit.md#purpose-and-motion-audit-012). Source geometry and key/pointer editing stay direct; press feedback is independent of existing transforms. Full-edge surfaces remain opaque throughout travel.

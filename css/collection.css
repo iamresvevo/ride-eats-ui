@@ -144,7 +144,7 @@
   transform: scale(0.6);
   transition:
     opacity 150ms,
-    transform 220ms var(--motion-ease);
+    transform 260ms var(--spring);
 }
 .re-check input:checked + .re-check-box,
 .re-check input:indeterminate + .re-check-box {
@@ -245,7 +245,7 @@
   border-radius: var(--r-circle);
   background: var(--text);
   transform: scale(0);
-  transition: transform 220ms var(--motion-ease);
+  transition: transform 260ms var(--spring);
 }
 .re-radio-option.is-selected .re-radio-dot {
   box-shadow: inset 0 0 0 1.5px var(--text);
@@ -447,7 +447,7 @@
   transition-timing-function: var(--motion-ease);
 }
 .re-number button:active {
-  transform: scale(0.94);
+  background: var(--sunken);
 }
 .re-number button:disabled {
   opacity: 0.3;
@@ -539,7 +539,7 @@
   border-color: var(--brand);
 }
 .re-dropzone.is-dragging {
-  transform: scale(1.015);
+  transform: none;
 }
 .re-drop-icon {
   display: grid;
@@ -550,7 +550,7 @@
   background: var(--raised);
   color: var(--muted);
   margin-bottom: 9px;
-  transition: transform 220ms var(--motion-ease);
+  transition: transform 260ms var(--spring);
 }
 .re-drop-icon .icon {
   width: 19px;
@@ -698,10 +698,7 @@
   margin-top: auto;
 }
 .dialog.re-drawer[open][data-entered="false"]:not(.dialog-closing) {
-  animation: re-drawer-in 360ms var(--motion-ease) both;
-}
-.dialog.re-drawer.dialog-closing[open] {
-  animation: re-drawer-out 220ms var(--motion-ease) both;
+  animation: re-drawer-in 420ms var(--motion-ease) both;
 }
 .re-drawer-left {
   --drawer-direction: -1;
@@ -711,18 +708,12 @@
 }
 @keyframes re-drawer-in {
   from {
-    opacity: 0;
-    transform: translateX(calc(var(--drawer-direction) * 32px));
+    opacity: 1;
+    transform: translateX(calc(var(--drawer-direction) * (100% + 24px)));
   }
   to {
     opacity: 1;
     transform: translateX(0);
-  }
-}
-@keyframes re-drawer-out {
-  to {
-    opacity: 0;
-    transform: translateX(calc(var(--drawer-direction) * 24px));
   }
 }
 .re-data-table {
@@ -1091,14 +1082,14 @@
   font: inherit;
   transition:
     background 180ms,
-    transform 220ms var(--motion-ease);
+    transform 260ms var(--spring);
 }
 .re-tile.is-interactive:hover {
   background: var(--raised);
-  transform: translateY(-2px);
+  transform: none;
 }
 .re-tile.is-interactive:active {
-  transform: translateY(0) scale(0.99);
+  transform: none;
 }
 .re-tile-top {
   display: flex;
@@ -1320,6 +1311,35 @@
   padding: 0;
   line-height: 1;
 }
+.re-number-value {
+  position: relative;
+  min-width: 0;
+  height: 32px;
+  overflow: clip;
+}
+.re-number-value > input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  color: transparent;
+  caret-color: var(--text);
+}
+.re-number-display {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.re-number-value > input:focus {
+  color: var(--text);
+}
+.re-number-value > input:focus + .re-number-display {
+  opacity: 0;
+}
 .re-number button > .icon {
   width: 15px;
   height: 15px;
@@ -1433,9 +1453,13 @@ button.re-avatar-more:hover {
   background: var(--surface);
 }
 .re-scroll-area-header {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 12px;
   padding-bottom: 12px;
 }
 .re-scroll-area-footer {
+  border-top: 1px solid var(--line);
+  margin-top: 12px;
   padding-top: 12px;
 }
 .re-scroll-area-body {
@@ -1478,7 +1502,20 @@ button.re-avatar-more:hover {
 .re-workbench > .re-flex-column > :not(:first-child) {
   flex: none;
 }
+.re-workbench[data-dividers] > :first-child {
+  border-inline-end: 1px solid var(--line);
+  padding-inline-end: 12px;
+}
+.re-workbench[data-dividers] > :last-child {
+  border-inline-start: 1px solid var(--line);
+  padding-inline-start: 12px;
+}
 @media (max-width: 1000px) {
+  .re-workbench[data-dividers] > :first-child,
+  .re-workbench[data-dividers] > :last-child {
+    border-inline: 0;
+    padding-inline: 0;
+  }
   .re-workbench {
     height: auto;
     grid-template-columns: minmax(0, 1fr);
@@ -1531,9 +1568,25 @@ button.re-avatar-more:hover {
 }
 .re-tile-row[data-density="compact"],
 .re-layout-grid[data-density="compact"] .re-tile-row {
-  min-height: 48px;
-  padding: 8px;
+  min-height: 44px;
+  padding: 6px 8px;
   gap: 8px;
+}
+
+.re-tile-row[data-density="compact"] .re-tile-icon,
+.re-layout-grid[data-density="compact"] .re-tile-row .re-tile-icon {
+  width: var(--tile-image-size, 28px);
+  height: var(--tile-image-size, 28px);
+}
+.re-tile-row[data-density="compact"] .re-tile-copy {
+  gap: 2px;
+}
+.re-tile-row[data-density="compact"] .re-tile-copy strong {
+  font-size: 12px;
+  line-height: 1.35;
+}
+.re-tile-row[data-density="compact"] .re-tile-copy > span {
+  line-height: 1.3;
 }
 
 .re-tile[data-density="default"] {
@@ -1621,21 +1674,37 @@ button.re-avatar-more:hover {
   align-self: flex-start;
 }
 
-.re-scroll-area-body {
+/* Shared native panel scrolling: slim neutral thumbs, rounded ends and no fake overlay. */
+.re-scroll-area-body,
+.dialog-contained > .dialog-body,
+.re-support-thread > ol,
+.re-support aside [role="list"] {
   scrollbar-width: thin;
   scrollbar-color: var(--line-strong) transparent;
 }
-.re-scroll-area-body::-webkit-scrollbar {
+.re-scroll-area-body::-webkit-scrollbar,
+.dialog-contained > .dialog-body::-webkit-scrollbar,
+.re-support-thread > ol::-webkit-scrollbar,
+.re-support aside [role="list"]::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-.re-scroll-area-body::-webkit-scrollbar-track {
+.re-scroll-area-body::-webkit-scrollbar-track,
+.dialog-contained > .dialog-body::-webkit-scrollbar-track,
+.re-support-thread > ol::-webkit-scrollbar-track,
+.re-support aside [role="list"]::-webkit-scrollbar-track {
   background: transparent;
 }
-.re-scroll-area-body::-webkit-scrollbar-thumb {
+.re-scroll-area-body::-webkit-scrollbar-thumb,
+.dialog-contained > .dialog-body::-webkit-scrollbar-thumb,
+.re-support-thread > ol::-webkit-scrollbar-thumb,
+.re-support aside [role="list"]::-webkit-scrollbar-thumb {
   background: var(--line-strong);
   border-radius: var(--r-pill);
 }
-.re-scroll-area-body::-webkit-scrollbar-thumb:hover {
+.re-scroll-area-body::-webkit-scrollbar-thumb:hover,
+.dialog-contained > .dialog-body::-webkit-scrollbar-thumb:hover,
+.re-support-thread > ol::-webkit-scrollbar-thumb:hover,
+.re-support aside [role="list"]::-webkit-scrollbar-thumb:hover {
   background: var(--muted);
 }

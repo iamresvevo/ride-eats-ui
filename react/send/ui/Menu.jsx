@@ -55,12 +55,14 @@ export default function Menu({
     const place = () => {
       const box = button.current.getBoundingClientRect();
       const matchWidth = root.current.matches(".react-select, .menu-block");
-      if (matchWidth) {
-        node.style.width = Math.min(box.width, innerWidth - 16) + "px";
-        node.style.minWidth = node.style.width;
-      }
+      // A field sets the minimum, not a hard width. Intrinsic options include
+      // their trailing checkmarks, and long labels wrap at the viewport cap.
+      node.style.width = "max-content";
+      node.style.minWidth =
+        Math.min(matchWidth ? box.width : 210, innerWidth - 16) + "px";
       node.style.maxWidth =
-        (matchWidth ? innerWidth - 16 : Math.min(300, innerWidth - 16)) + "px";
+        Math.min(Math.max(matchWidth ? box.width : 0, 360), innerWidth - 16) +
+        "px";
       node.style.maxHeight = Math.max(80, innerHeight - 16) + "px";
       const above =
         box.bottom + node.offsetHeight + 8 > innerHeight &&

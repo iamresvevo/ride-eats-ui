@@ -1,3 +1,4 @@
+import Segmented from "./send/Segmented.jsx";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   normalizeShortcut,
@@ -51,6 +52,9 @@ export function ShortcutRecorder({
   return (
     <section
       className={`re-shortcut-recorder ${className}`}
+      data-phase={phase}
+      data-issue={issue?.kind}
+      data-disabled={disabled || undefined}
       style={style}
       aria-label={label}
       onKeyDown={(event) => {
@@ -92,15 +96,31 @@ export function ShortcutRecorder({
     >
       <header>
         <strong>{label}</strong>
-        <span>
-          {phase === "recording"
-            ? "Recording"
-            : phase === "review"
-              ? "Review combination"
-              : current.length
-                ? "Assigned"
-                : "Not assigned"}
-        </span>
+        <div className="re-shortcut-status">
+          <span>
+            {phase === "recording"
+              ? "Recording"
+              : phase === "review"
+                ? "Review combination"
+                : current.length
+                  ? "Assigned"
+                  : "Not assigned"}
+          </span>
+          {phase === "idle" && (
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              aria-label="Clear shortcut"
+              disabled={disabled || !current.length}
+              onClick={() => {
+                onValueChange([]);
+                setMessage("Shortcut cleared.");
+              }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
       </header>
       <button
         ref={record}
@@ -119,7 +139,7 @@ export function ShortcutRecorder({
           keys.map((key, i) => (
             <React.Fragment key={`${key}-${i}`}>
               {i > 0 && <span aria-hidden="true">+</span>}
-              <kbd>{key === "Control" ? "Ctrl" : key}</kbd>
+              <kbd data-key={key}>{key === "Control" ? "Ctrl" : key}</kbd>
             </React.Fragment>
           ))
         ) : (
@@ -134,49 +154,38 @@ export function ShortcutRecorder({
         {issue?.message ||
           message ||
           (phase === "recording"
-            ? "Escape cancels. Modifier keys alone are not saved."
+            ? "Press a combination. Escape cancels."
             : phase === "review"
-              ? "Save this combination or record another."
-              : "Keyboard shortcuts are saved only when you confirm.")}
+              ? "Save this shortcut or record again."
+              : "Click the keys to record a shortcut.")}
       </p>
-      <footer>
-        {phase === "review" ? (
-          <>
-            <button type="button" className="btn btn-outline" onClick={start}>
-              Record again
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              disabled={!!blocked || disabled}
-              onClick={() => {
-                onValueChange(candidate);
-                setPhase("idle");
-                setMessage("Shortcut saved.");
-              }}
-            >
-              Save shortcut
-            </button>
-          </>
-        ) : null}
-        {phase !== "idle" ? (
+      {phase !== "idle" && (
+        <footer key={phase}>
+          {phase === "review" && (
+            <>
+              <button type="button" className="btn btn-outline" onClick={start}>
+                Record again
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                disabled={!!blocked || disabled}
+                onClick={() => {
+                  onValueChange(candidate);
+                  setPhase("idle");
+                  setMessage("Shortcut saved.");
+                  record.current?.focus();
+                }}
+              >
+                Save shortcut
+              </button>
+            </>
+          )}
           <button type="button" className="btn btn-ghost" onClick={cancel}>
             Cancel
           </button>
-        ) : (
-          <button
-            type="button"
-            className="btn btn-ghost"
-            disabled={disabled || !current.length}
-            onClick={() => {
-              onValueChange([]);
-              setMessage("Shortcut cleared.");
-            }}
-          >
-            Clear shortcut
-          </button>
-        )}
-      </footer>
+        </footer>
+      )}
     </section>
   );
 }
@@ -282,24 +291,15 @@ export function TextDiffViewer({
         </div>
         <div>
           {onViewChange && (
-            <div role="group" aria-label="Diff layout">
-              <button
-                type="button"
-                className="btn btn-ghost"
-                aria-pressed={view === "split"}
-                onClick={() => onViewChange("split")}
-              >
-                Split
-              </button>
-              <button
-                type="button"
-                className="btn btn-ghost"
-                aria-pressed={view === "unified"}
-                onClick={() => onViewChange("unified")}
-              >
-                Unified
-              </button>
-            </div>
+            <Segmented
+              name="Diff layout"
+              value={view}
+              onChange={onViewChange}
+              options={[
+                { value: "split", label: "Split" },
+                { value: "unified", label: "Unified" },
+              ]}
+            />
           )}
           <button
             type="button"

@@ -373,9 +373,29 @@ export const platformPages = [
     `<SupportInbox threads={threads} value={threadId} onValueChange={setThreadId} onReply={sendReply} />`,
     [
       [
+        "template / density",
+        "bubbles | channel / default | compact",
+        "Conversation bubbles or avatar-based channel rows; optional compact spacing.",
+      ],
+      [
+        "showAvatars / groupConsecutive / groupWindow",
+        "boolean / boolean / milliseconds",
+        "Author avatars and time-bounded consecutive-message grouping.",
+      ],
+      [
+        "showSidebar / sidebarWidth / height",
+        "boolean / number / CSS height",
+        "Embed a full inbox or a single conversation; control panel sizing.",
+      ],
+      [
+        "renderThread / renderHeader / renderMessage / renderMessageActions / renderComposer",
+        "render callbacks",
+        "Customize content while caller-owned sending and per-thread drafts stay intact.",
+      ],
+      [
         "threads",
         "SupportThread[]",
-        "id, name, subject, status, time and messages; messages contain id, author, text, time and own.",
+        "id, name, optional kind/group/participants/avatar/unread/subject/status/time and messages. Messages support authorId, avatar, dateTime, system entries and explicit grouping.",
       ],
       [
         "value / onValueChange",

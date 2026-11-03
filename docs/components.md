@@ -331,3 +331,24 @@ Compose a heading and its content with `Flex direction="column" gap={12}`. Use a
 ```
 
 SectionNav marks the current anchor with `aria-current="location"`, a bold accent label and accent underline. Hover and keyboard focus remain distinct. Counts inherit the selected label color. Scroll tracking and native anchor behavior are retained.
+
+## Motion and editor updates in 0.12
+
+The shared action family animates painted labels and icons on press and release while native hitboxes stay fixed. Tabs and Segmented retain measured sliding selection; independent formatting toggles use separate pill controls. NumberInput animates changed values in their direction, skips initial placement and active typing, and cancels interrupted animations. ShortcutRecorder uses a compact keyboard capture row with key arrival and recording-only feedback, rather than an upload-style dropzone. PIN entries and tree disclosures have local state motion. All added movement respects reduced motion. Static reading surfaces remain stable.
+
+Drawer and BottomSheet use full-edge travel with opaque panels: 420ms entry and 300ms exit. Drawer follows `side`; BottomSheet follows its bottom edge. Reduced motion removes that travel without introducing a panel fade. Backdrop dimming remains separate from panel movement.
+
+Workbench adds `dividers={true}` (default) for subtle structural boundaries between desktop panels; stacked layouts remove the side dividers. ScrollArea separates fixed headers/footers from scroll content, and shares slim native scrollbars with contained modal bodies. Compact row Tiles now use approximately 44px height for two short lines, with 28px default icon/image slots; an explicit `imageSize` still wins. Modal footers share the neutral top divider.
+
+The editor demo uses caller-owned SVG artwork and real in-memory selection, filters, transforms, colors, reset and draft/cancel callbacks. None of those product behaviors are built into Workbench itself.
+
+Menus use intrinsic option width, with the trigger as a minimum and a viewport-safe maximum. Long labels wrap rather than competing with trailing checkmarks. Select triggers remain constrained to their layout width. The catalog includes compact-trigger and long-option cases for checking this behavior.
+
+TextDiffViewer uses a quiet toolbar, plain pane headings and text-style context disclosure controls. It keeps line alignment and bounded matching without an enclosing card frame or animated code rows.
+
+
+SupportInbox keeps direct, group and channel conversations in one component. Choose `template="bubbles"` or `template="channel"`, set `density`, `showAvatars`, `sidebarWidth`, `height` and `showSidebar`, and supply participants and message avatars. Consecutive messages group by author and chronology; system entries interrupt grouping. Conversation rows have 8px separation, or 4px in compact mode, and message text has a separate gap beneath the author.
+
+Use `renderThread`, `renderHeader`, `renderMessage`, `renderMessageActions` and `renderComposer` for application content. The custom composer receives its per-thread draft, pending/error state and `onSend`. `onReply` remains caller-owned; the library performs no network requests. Drafts survive thread switching, failed sends preserve text, and new text typed during a pending send is preserved.
+
+Header and AppShell navigation items accept `count` (including zero) or a custom React `badge`. Custom badge content takes precedence.

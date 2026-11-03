@@ -33,7 +33,7 @@ export default function ActionButton({
       ) : (
         <>
           {icon && <Icon name={icon} />}
-          {t(children)}
+          {children != null && <span className="btn-label">{t(children)}</span>}
         </>
       )}
     </button>

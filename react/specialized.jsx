@@ -224,9 +224,7 @@ export function TreeView({
                 toggle(node);
               }}
             >
-              <Icon
-                name={expanded.has(node.id) ? "chevron-down" : "chevron-right"}
-              />
+              <Icon name="chevron-right" />
             </button>
           ) : (
             <span className="re-tree-spacer" />

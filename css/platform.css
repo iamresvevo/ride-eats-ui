@@ -987,8 +987,8 @@
 .re-support {
   width: 100%;
   display: grid;
-  grid-template-columns: 244px minmax(0, 1fr);
-  height: 400px;
+  grid-template-columns: var(--support-sidebar, 244px) minmax(0, 1fr);
+  height: var(--support-height, 400px);
   background: var(--surface);
   border-radius: var(--r-lg);
   overflow: hidden;
@@ -1023,6 +1023,18 @@
 .re-support aside [role="list"] {
   overflow: auto;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.re-support-group-title {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 12px 8px 8px;
+  font-weight: 700;
+}
+.re-support-group-title:first-child {
+  margin-top: 8px;
 }
 .re-support aside button {
   width: 100%;
@@ -1033,7 +1045,7 @@
   padding: 10px;
   display: flex;
   gap: 10px;
-  align-items: flex-start;
+  align-items: center;
   color: var(--text);
   transition: background var(--motion-fast) var(--motion-ease);
 }
@@ -1138,17 +1150,36 @@
   overscroll-behavior: contain;
 }
 .re-support-thread > ol > li {
+  display: flex;
+  gap: 10px;
+  max-width: 85%;
+  align-self: flex-start;
+  padding: 0;
+  background: transparent;
+  animation: re-support-message-in var(--motion-enter) var(--motion-ease) both;
+}
+.re-support-message-body {
+  min-width: 0;
   background: var(--raised);
   padding: 10px 12px;
   border-radius: var(--r-lg);
-  max-width: 85%;
-  align-self: flex-start;
-  animation: re-support-message-in var(--motion-enter) var(--motion-ease) both;
 }
-.re-support-thread > ol > li[data-own] {
+.re-support-message-avatar {
+  flex: none;
+  align-self: flex-start;
+}
+.re-support-message-avatar[data-hidden] {
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+}
+.re-support[data-template="bubbles"] .re-support-thread > ol > li[data-own] {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+.re-support[data-template="bubbles"] li[data-own] .re-support-message-body {
   background: var(--ink);
   color: var(--on-ink);
-  align-self: flex-end;
 }
 .re-support-message-meta {
   display: flex;
@@ -1157,18 +1188,93 @@
   gap: 16px;
 }
 .re-support-message-meta strong {
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 650;
 }
-.re-support-thread li[data-own] time {
+.re-support[data-template="bubbles"] .re-support-thread li[data-own] time {
   color: inherit;
 }
 .re-support-thread li p {
   font-size: 13px;
-  margin: 6px 0 0;
-  line-height: 1.5;
+  margin: 4px 0 0;
+  line-height: 1.55;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+.re-support:not([data-sidebar]) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.re-support-channel-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-circle);
+  background: var(--raised);
+  color: var(--muted);
+  flex: none;
+}
+.re-support[data-template="channel"] .re-support-thread > ol {
+  gap: 12px;
+}
+.re-support[data-template="channel"] .re-support-thread > ol > li {
+  max-width: 100%;
+  align-self: stretch;
+}
+.re-support[data-template="channel"] .re-support-message-body {
+  background: transparent;
+  color: var(--text);
+  padding: 0;
+  flex: 1;
+}
+.re-support[data-template="channel"] .re-support-message-meta {
+  justify-content: flex-start;
+  gap: 8px;
+  align-items: baseline;
+}
+.re-support[data-template="channel"] li[data-grouped] {
+  margin-top: -8px;
+}
+.re-support[data-template="channel"] li[data-grouped] p {
+  margin: 0;
+}
+.re-support-thread > ol > li.re-support-system {
+  align-self: center;
+  max-width: 100%;
+  color: var(--muted);
+  font-size: 11px;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 0;
+}
+.re-support-message-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+.re-support[data-density="compact"] aside [role="list"] {
+  gap: 4px;
+}
+.re-support[data-density="compact"] aside button {
+  padding: 8px;
+}
+.re-support[data-density="compact"] .re-support-thread > ol {
+  gap: 8px;
+  padding: 12px;
+}
+.re-support[data-density="compact"][data-template="channel"] li[data-grouped] {
+  margin-top: -4px;
+}
+.re-support[data-density="compact"] .re-support-message-body {
+  padding: 8px 10px;
+}
+.re-support[data-density="compact"][data-template="channel"]
+  .re-support-message-body {
+  padding: 0;
+}
+.re-support-custom-composer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--line);
 }
 .re-support-thread > form {
   padding: 10px 16px 12px;
@@ -1286,8 +1392,12 @@
     border-bottom: 1px solid var(--line);
   }
   .re-support aside [role="list"] {
+    flex-direction: row;
     display: flex;
     overflow: auto;
+  }
+  .re-support-group-title {
+    display: none;
   }
   .re-support aside [role="listitem"] {
     min-width: 220px;

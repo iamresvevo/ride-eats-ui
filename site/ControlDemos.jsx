@@ -60,7 +60,7 @@ export function ControlDemo({ id }) {
     return (
       <Flex
         direction="column"
-        gap={16}
+        gap={12}
         style={{ width: 360, maxWidth: "100%" }}
       >
         <Field
@@ -103,6 +103,7 @@ export function ControlDemo({ id }) {
               <Button
                 variant="ghost"
                 size="sm"
+                className="btn-icon"
                 aria-label={visible ? "Hide password" : "Show password"}
                 onClick={() => setVisible(!visible)}
               >

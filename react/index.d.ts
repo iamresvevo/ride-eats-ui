@@ -10,6 +10,8 @@ export interface NavItem {
   label: string;
   href: string;
   icon?: string;
+  count?: number;
+  badge?: React.ReactNode;
 }
 export interface Account {
   name: string;
@@ -647,7 +649,7 @@ export function Popover(
     children?: React.ReactNode;
     label?: string;
     align?: "start" | "end";
-    width?: number;
+    width?: number | string;
   },
 ): React.ReactElement;
 export function PinInput(
@@ -974,6 +976,7 @@ export function AppShell(
       label: string;
       icon?: string;
       count?: number;
+      badge?: React.ReactNode;
       disabled?: boolean;
     }[];
     value: string;
@@ -1065,20 +1068,44 @@ export function FileManager(
     onDelete?: (id: string) => void | Promise<void>;
   },
 ): React.ReactElement;
+export interface SupportParticipant {
+  id: string;
+  name: string;
+  avatar?: string;
+}
 export interface SupportMessage {
   id: string;
   author: string;
+  authorId?: string;
+  avatar?: string;
   text: string;
   time?: string;
+  dateTime?: string;
   own?: boolean;
+  type?: "message" | "system";
+  groupWithPrevious?: boolean;
 }
 export interface SupportThread {
   id: string;
   name: string;
-  subject: string;
-  status: string;
+  subject?: string;
+  description?: string;
+  status?: string;
   time?: string;
+  avatar?: string;
+  kind?: "direct" | "group" | "channel";
+  group?: string;
+  unread?: number;
+  participants?: SupportParticipant[];
   messages: SupportMessage[];
+}
+export interface SupportComposerContext {
+  thread: SupportThread;
+  value: string;
+  onValueChange: (value: string) => void;
+  onSend: () => Promise<void>;
+  pending: boolean;
+  error: string;
 }
 export function SupportInbox(
   props: StylingProps & {
@@ -1087,6 +1114,30 @@ export function SupportInbox(
     onValueChange: (id: string) => void;
     onReply?: (id: string, text: string) => void | Promise<void>;
     label?: string;
+    template?: "bubbles" | "channel";
+    density?: "default" | "compact";
+    showAvatars?: boolean;
+    groupConsecutive?: boolean;
+    groupWindow?: number;
+    showSidebar?: boolean;
+    sidebarWidth?: number;
+    height?: React.CSSProperties["height"];
+    composerPlaceholder?: string;
+    composerHint?: React.ReactNode;
+    renderThread?: (
+      thread: SupportThread,
+      context: { selected: boolean },
+    ) => React.ReactNode;
+    renderHeader?: (thread: SupportThread) => React.ReactNode;
+    renderMessage?: (
+      message: SupportMessage,
+      context: { thread: SupportThread; grouped: boolean },
+    ) => React.ReactNode;
+    renderMessageActions?: (
+      message: SupportMessage,
+      thread: SupportThread,
+    ) => React.ReactNode;
+    renderComposer?: (context: SupportComposerContext) => React.ReactNode;
   },
 ): React.ReactElement;
 export function StickyBar(
@@ -1113,6 +1164,7 @@ export function Workbench(
     trailingWidth?: number;
     height?: string;
     gap?: number;
+    dividers?: boolean;
   },
 ): React.ReactElement;
 

@@ -1,3 +1,4 @@
+import NavBadge from "../NavBadge.jsx";
 import React from "react";
 import { useLayoutEffect, useRef } from "react";
 import AccountMenu from "./AccountMenu.jsx";
@@ -188,6 +189,7 @@ export default function Header({
               }}
             >
               {item.icon && <Icon name={item.icon} />} {item.label}
+              <NavBadge count={item.count} badge={item.badge} />
             </a>
           ))}
         </div>

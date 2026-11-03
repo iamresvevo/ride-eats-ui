@@ -345,3 +345,15 @@
 .re-color-track input:disabled {
   cursor: default;
 }
+
+.re-input-group > .re-input-addon:last-child:has(> .btn) {
+  margin-inline-end: -8px;
+}
+.re-input-group > .re-input-addon:first-child:has(> .btn) {
+  margin-inline-start: -8px;
+}
+.re-input-addon > .btn-icon {
+  width: 30px;
+  padding: 0;
+  border-radius: var(--r-circle);
+}

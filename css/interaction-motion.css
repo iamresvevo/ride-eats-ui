@@ -81,3 +81,60 @@
   transition-duration: var(--motion-fast);
   transition-timing-function: var(--motion-ease);
 }
+
+/* Feedback moves the painted label/icon, never the native hit target. */
+@media (prefers-reduced-motion: no-preference) {
+  :is(
+      .btn,
+      .chip,
+      .icon-btn,
+      .tab,
+      .segmented button,
+      .menu-item,
+      .re-toggle-group button,
+      .re-number button,
+      .re-swipe-actions button,
+      .re-color-swatches button,
+      .re-shortcut-capture,
+      .re-tree-row > button,
+      .re-context-menu button,
+      .re-workspace-trigger,
+      .re-notifications-trigger,
+      .re-notifications-list > button,
+      .re-selected-chips > button,
+      .re-combobox-options [role="option"],
+      .search-select-option,
+      .re-color-trigger,
+      .re-command-list [role="option"]
+    )
+    > :is(span, svg) {
+    transition: scale var(--motion-press) var(--spring);
+  }
+  :is(
+      .btn,
+      .chip,
+      .icon-btn,
+      .tab,
+      .segmented button,
+      .menu-item,
+      .re-toggle-group button,
+      .re-number button,
+      .re-swipe-actions button,
+      .re-color-swatches button,
+      .re-shortcut-capture,
+      .re-tree-row > button,
+      .re-context-menu button,
+      .re-workspace-trigger,
+      .re-notifications-trigger,
+      .re-notifications-list > button,
+      .re-selected-chips > button,
+      .re-combobox-options [role="option"],
+      .search-select-option,
+      .re-color-trigger,
+      .re-command-list [role="option"]
+    ):active:not(:disabled):not([aria-disabled="true"])
+    > :is(span, svg) {
+    scale: 0.96;
+    transition-duration: 80ms;
+  }
+}

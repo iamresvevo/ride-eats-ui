@@ -1,4 +1,4 @@
-# Canonical React component reference, 0.11
+# Canonical React component reference, 0.12
 
 See [the migration guide](migrations-v0.10.md) for removed wrappers and preserved defaults. Import styles once and use UIProvider for theme and feedback.
 
@@ -203,6 +203,7 @@ import { Workbench, ScrollArea, CardHeader, Card, Flex, Button } from '@ride-eat
 
 | Prop | Type | Description |
 | --- | --- | --- |
+| dividers | boolean | Neutral panel boundaries on desktop, enabled by default. |
 | leadingWidth / trailingWidth | number | Preferred side panel widths in pixels. |
 | height | string | Bounded desktop height; defaults to min(66dvh, 760px). |
 | ScrollArea header / footer | ReactNode | Persistent controls outside the labelled native scroll region. |
@@ -1203,7 +1204,11 @@ import { SupportInbox } from '@ride-eats/ui';
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| threads | SupportThread[] | id, name, subject, status, time and messages; messages contain id, author, text, time and own. |
+| template / density | bubbles \| channel / default \| compact | Conversation bubbles or avatar-based channel rows; optional compact spacing. |
+| showAvatars / groupConsecutive / groupWindow | boolean / boolean / milliseconds | Author avatars and time-bounded consecutive-message grouping. |
+| showSidebar / sidebarWidth / height | boolean / number / CSS height | Embed a full inbox or a single conversation; control panel sizing. |
+| renderThread / renderHeader / renderMessage / renderMessageActions / renderComposer | render callbacks | Customize content while caller-owned sending and per-thread drafts stay intact. |
+| threads | SupportThread[] | id, name, optional kind/group/participants/avatar/unread/subject/status/time and messages. Messages support authorId, avatar, dateTime, system entries and explicit grouping. |
 | value / onValueChange | string / callback | Selected conversation ID. |
 | onReply / label | (id,text) => Promise \| void / string | Optional reply callback; controls are omitted without it. Drafts are retained per conversation during the mounted session. Search filters names and subjects. |
 

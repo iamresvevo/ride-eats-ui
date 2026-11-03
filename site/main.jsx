@@ -87,7 +87,11 @@ const components = [
         "{ name, href?, logoLight?, logoDark? }",
         "Brand label and optional theme logos.",
       ],
-      ["items", "{ value, label, href, icon? }[]", "Navigation destinations."],
+      [
+        "items",
+        "{ value, label, href, icon?, count?, badge? }[]",
+        "Destinations with optional numeric counts or custom badge content.",
+      ],
       ["activeValue", "string", "Current destination."],
       [
         "onNavigate",
@@ -495,12 +499,14 @@ function Demo({ id }) {
               {
                 value: "files",
                 label: "Files",
+                count: 24,
                 icon: "files",
                 href: "#header",
               },
               {
                 value: "activity",
                 label: "Activity",
+                badge: <Badge>New</Badge>,
                 icon: "chart",
                 href: "#header",
               },
@@ -631,18 +637,37 @@ function Demo({ id }) {
       );
     case "select":
       return (
-        <div style={{ width: 230 }}>
-          <Select
-            label="Status"
-            value={status}
-            onValueChange={setStatus}
-            options={[
-              { value: "active", label: "Active" },
-              { value: "draft", label: "Draft" },
-              { value: "archived", label: "Archived" },
-            ]}
-          />
-        </div>
+        <UI.Flex direction="column" gap={16}>
+          <div style={{ width: 230, maxWidth: "100%" }}>
+            <Select
+              label="Status"
+              value={status}
+              onValueChange={setStatus}
+              options={[
+                { value: "active", label: "Active" },
+                { value: "draft", label: "Draft" },
+                { value: "archived", label: "Archived" },
+              ]}
+            />
+          </div>
+          <UI.Flex gap={12}>
+            <Select
+              label="Visibility"
+              style={{ width: "fit-content" }}
+              value={view === "files" ? "public" : view}
+              onValueChange={setView}
+              options={[
+                { value: "private", label: "Private" },
+                { value: "public", label: "Public" },
+                {
+                  value: "invited",
+                  label:
+                    "Only people invited to this workspace can open this item",
+                },
+              ]}
+            />
+          </UI.Flex>
+        </UI.Flex>
       );
     case "search-select":
       return (
@@ -776,6 +801,8 @@ function Demo({ id }) {
           }
         />
       );
+    case "card":
+      return <CardsDemo />;
     default:
       return null;
   }

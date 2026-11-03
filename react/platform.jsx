@@ -1,3 +1,4 @@
+import NavBadge from "./NavBadge.jsx";
 import { shouldDismissSheet } from "./sheet-motion.js";
 import React, { useRef, useState, useEffect } from "react";
 import Icon from "./send/Icon.jsx";
@@ -159,7 +160,7 @@ export function AppShell({
       >
         {item.icon && <Icon name={item.icon} />}
         <span>{item.label}</span>
-        {item.count != null && <small>{item.count}</small>}
+        <NavBadge count={item.count} badge={item.badge} />
       </button>
     ));
   return (

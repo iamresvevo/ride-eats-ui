@@ -58,7 +58,8 @@
   --motion-ease: cubic-bezier(0.25, 1, 0.3, 1);
   --ease: var(--motion-ease);
   --spring-soft: var(--motion-ease);
-  --spring: var(--motion-ease);
+  --spring: linear(0, 0.18 10%, 0.54 25%, 0.86 42%, 1.025 65%, 1.01 82%, 1);
+  --motion-press: 280ms;
   --motion-fast: 160ms;
   --motion-enter: 240ms;
   --motion-exit: 180ms;

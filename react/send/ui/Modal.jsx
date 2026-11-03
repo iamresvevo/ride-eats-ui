@@ -1,3 +1,4 @@
+import { modalExitMotion } from "../hooks/modal-motion.js";
 import { motionEase } from "../hooks/motion.js";
 import React, { useLayoutEffect, useRef, useState, useId } from "react";
 import { createPortal } from "react-dom";
@@ -119,7 +120,7 @@ export default function Modal({
       () => {
         element.dataset.entered = "true";
       },
-      className.includes("re-bottom-sheet") ? 440 : 380,
+      /re-bottom-sheet|re-drawer/.test(className) ? 440 : 380,
     );
     const stopFocus = focusFormOnOpen(element);
     return () => {
@@ -166,29 +167,14 @@ export default function Modal({
     element.style.transition = "none";
     syncStack();
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const sheet = className.includes("re-bottom-sheet");
-    const duration = reduced
-      ? 80
-      : sheet
-        ? 300
-        : variant === "dialog" && className.includes("re-drawer")
-          ? 220
-          : 180;
+    const { duration, opacity, offset } = modalExitMotion(className, reduced);
     const timer = setTimeout(done, duration + 40);
     {
-      const drawer = className.includes("re-drawer");
-      const offset = reduced
-        ? ""
-        : sheet
-          ? " translateY(calc(100% + 24px))"
-          : drawer
-            ? ` translateX(${className.includes("re-drawer-left") ? "-24" : "24"}px)`
-            : " translateY(8px) scale(.98)";
       animation = element.animate(
         [
           from,
           {
-            opacity: sheet && !reduced ? 1 : 0,
+            opacity,
             transform: from.transform + offset,
           },
         ],

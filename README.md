@@ -1,6 +1,6 @@
 # Ride Eats UI
 
-Version 0.11 adds customizable ColorPicker, InputGroup and ButtonGroup primitives. Version 0.10 consolidated duplicate APIs and preserved their behavior in canonical components. See the [0.10 migration guide](docs/migrations-v0.10.md) and [component audit](docs/component-audit.md).
+Version 0.12 improves motion, distinguishes control purposes, and fixes catalog/drag/editor behavior. Version 0.11 added customizable ColorPicker, InputGroup and ButtonGroup primitives. Version 0.10 consolidated duplicate APIs and preserved their behavior in canonical components. See the [0.10 migration guide](docs/migrations-v0.10.md) and [component audit](docs/component-audit.md).
 
 **A complete React UI foundation for Ride Eats tools and internal platforms.**
 
@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.11.1
+npm install github:iamresvevo/ride-eats-ui#v0.12.0
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.

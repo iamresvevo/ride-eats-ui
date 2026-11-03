@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import Icon from "./send/Icon.jsx";
+import { useValueMotion } from "./hooks/value-motion.js";
 import Avatar from "./send/AccountAvatar.jsx";
 import Modal from "./send/ui/Modal.jsx";
 import ActionButton from "./send/ActionButton.jsx";
@@ -298,7 +299,8 @@ export function NumberInput({
   className = "",
   style,
 }) {
-  const id = useId();
+  const id = useId(),
+    valueMotion = useValueMotion(value);
   const [draft, setDraft] = useState(String(value));
   useLayoutEffect(() => setDraft(String(value)), [value]);
   const clamp = (number) => Math.min(max, Math.max(min, number));
@@ -318,31 +320,40 @@ export function NumberInput({
         >
           <Icon name="minus" />
         </button>
-        <input
-          id={id}
-          type="number"
-          value={draft}
-          step={step}
-          min={Number.isFinite(min) ? min : undefined}
-          max={Number.isFinite(max) ? max : undefined}
-          disabled={disabled}
-          onBlur={() => {
-            const next = Number(draft);
-            const safe =
-              draft.trim() !== "" && Number.isFinite(next)
-                ? clamp(next)
-                : value;
-            setDraft(String(safe));
-            if (safe !== value) onValueChange(safe);
-          }}
-          onChange={(e) => {
-            setDraft(e.target.value);
-            if (e.target.value !== "") {
-              const next = Number(e.target.value);
-              if (Number.isFinite(next)) onValueChange(clamp(next));
-            }
-          }}
-        />
+        <div className="re-number-value">
+          <input
+            id={id}
+            type="number"
+            value={draft}
+            step={step}
+            min={Number.isFinite(min) ? min : undefined}
+            max={Number.isFinite(max) ? max : undefined}
+            disabled={disabled}
+            onBlur={() => {
+              const next = Number(draft);
+              const safe =
+                draft.trim() !== "" && Number.isFinite(next)
+                  ? clamp(next)
+                  : value;
+              setDraft(String(safe));
+              if (safe !== value) onValueChange(safe);
+            }}
+            onChange={(e) => {
+              setDraft(e.target.value);
+              if (e.target.value !== "") {
+                const next = Number(e.target.value);
+                if (Number.isFinite(next)) onValueChange(clamp(next));
+              }
+            }}
+          />
+          <span
+            ref={valueMotion}
+            className="re-number-display"
+            aria-hidden="true"
+          >
+            {draft}
+          </span>
+        </div>
         <button
           type="button"
           aria-label={`Increase ${label.toLowerCase()}`}
@@ -1276,6 +1287,7 @@ export function Workbench({
   trailingWidth = 300,
   height = "min(66dvh, 760px)",
   gap = 16,
+  dividers = true,
   className = "",
   style,
   ...props
@@ -1284,6 +1296,7 @@ export function Workbench({
     <div
       {...props}
       className={`re-workbench ${className}`}
+      data-dividers={dividers || undefined}
       style={{
         "--workbench-leading": `${leadingWidth}px`,
         "--workbench-trailing": `${trailingWidth}px`,

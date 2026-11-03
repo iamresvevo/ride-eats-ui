@@ -62,3 +62,9 @@ DateRangePicker composes the same extracted Send DateTimePicker in date-only mod
 ## Composable controls in 0.11
 
 `react/controls.jsx` owns ColorPicker, InputGroup and ButtonGroup. These generic additions compose existing Segmented, Popover, Button and Dropdown behavior. `react/color-model.js` owns format conversion and validation; `css/controls.css` owns presentation. They contain no Send service integration.
+
+## Purpose and motion updates in 0.12
+
+`react/hooks/value-motion.js` owns interrupted-safe numeric feedback. `react/send/hooks/modal-motion.js` shares full-edge, opaque exit rules between Drawer and BottomSheet. Menu's popup sizing now uses intrinsic content with a field-width minimum, viewport caps and wrapping labels. Shared action feedback remains in `css/interaction-motion.css`; component-specific key, disclosure, shape and panel styles stay in their owning modules. `site/WorkbenchDemo.jsx` is a caller-owned demonstration, not another public editor component.
+
+`react/SupportInbox.jsx` owns the canonical conversation workflow, re-exported by `react/workflows.jsx`; `react/conversation-model.js` owns chronological grouping. `site/SupportInboxDemo.jsx` demonstrates caller-owned messages and reactions. `react/NavBadge.jsx` is the internal shared badge slot for Header and AppShell. No additional public component family is introduced.

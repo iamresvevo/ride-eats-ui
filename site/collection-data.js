@@ -308,6 +308,11 @@ const [expanded,setExpanded] = useState(["artwork"]);
 </Workbench>`,
     [
       [
+        "dividers",
+        "boolean",
+        "Neutral panel boundaries on desktop, enabled by default.",
+      ],
+      [
         "leadingWidth / trailingWidth",
         "number",
         "Preferred side panel widths in pixels.",

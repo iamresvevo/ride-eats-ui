@@ -1444,3 +1444,76 @@ test('section headings keep their semantic hierarchy and section navigation mark
  assert.match(nav,/<a href="#share" aria-current="location"/);
  assert.doesNotMatch(nav,/<a href="#send" aria-current/);
 });
+
+test('every core catalog entry has a render route, including the Card regression', async()=>{
+ const fs=await import('node:fs');
+ const source=fs.readFileSync(new URL('../site/main.jsx',import.meta.url),'utf8');
+ const core=source.slice(source.indexOf('const components = ['),source.indexOf('function Demo'));
+ const ids=[...core.matchAll(/^    id: "([^"]+)"/gm)].map(match=>match[1]);
+ const demo=source.slice(source.indexOf('function Demo'),source.indexOf('function Code'));
+ for(const id of ids)assert.ok(demo.includes(`case "${id}":`),`Missing core preview: ${id}`);
+ assert.ok(demo.includes('return <CardsDemo />;'));
+});
+test('split re-grabs use rendered geometry while preserving both drag directions', async()=>{
+ const {renderedSplit}=await import('../react/split-motion.js');
+ assert.deepEqual(renderedSplit({left:100,width:1016},{left:500,width:16}),{value:40,width:1000});
+ const start=renderedSplit({left:100,width:1016},{left:500,width:16});
+ assert.equal(start.value+(-100/start.width)*100,30);
+ assert.equal(start.value+(100/start.width)*100,50);
+ assert.equal(renderedSplit({left:0,width:16},{left:0,width:16}).width,1);
+});
+test('stepper value motion is directional, cancellable, and absent for typing or reduced motion', async()=>{
+ const fs=await import('node:fs');
+ const {build}=await import('vite');
+ const output=await build({configFile:false,logLevel:'silent',build:{ssr:'react/hooks/value-motion.js',write:false,rollupOptions:{external:['react']}}});
+ const js=output.output.find(file=>file.type==='chunk').code;
+ const temp=new URL('../.test-build/value-motion.mjs',import.meta.url);fs.writeFileSync(temp,js);
+ const {animateValue}=await import(temp.href);
+ const before=globalThis.matchMedia;
+ let reduced=false,cancelled=false,calls=[];
+ globalThis.matchMedia=()=>({matches:reduced});
+ const node={ownerDocument:{activeElement:null},animate:(frames,options)=>{calls.push({frames,options});return{cancel:()=>cancelled=true};}};
+ try{
+  const up=animateValue(node,1,2);assert.match(calls[0].frames[0].transform,/6px/);assert.equal(calls[0].options.duration,240);up.cancel();assert.equal(cancelled,true);
+  animateValue(node,2,1);assert.match(calls[1].frames[0].transform,/-6px/);
+  assert.equal(animateValue(node,1,1),null);
+  node.ownerDocument.activeElement=node;assert.equal(animateValue(node,1,2),null);
+  node.ownerDocument.activeElement=null;reduced=true;assert.equal(animateValue(node,1,2),null);
+  assert.equal(calls.length,2);
+ }finally{if(before===undefined)delete globalThis.matchMedia;else globalThis.matchMedia=before;}
+});
+
+test('drawer and sheet exits stay opaque and travel a full edge distance',async()=>{
+ const {modalExitMotion}=await import('../react/send/hooks/modal-motion.js');
+ for(const className of ['re-drawer re-drawer-left','re-drawer re-drawer-right','re-bottom-sheet']){
+  const exit=modalExitMotion(className);assert.equal(exit.opacity,1);assert.equal(exit.duration,300);assert.match(exit.offset,/100%/);
+  const reduced=modalExitMotion(className,true);assert.equal(reduced.opacity,1);assert.equal(reduced.duration,0);assert.equal(reduced.offset,'');
+ }
+ assert.match(modalExitMotion('re-drawer re-drawer-left').offset,/-100% - 24px/);
+ assert.match(modalExitMotion('re-drawer re-drawer-right').offset,/100% \+ 24px/);
+ assert.match(modalExitMotion('re-bottom-sheet').offset,/translateY/);
+ assert.equal(modalExitMotion('dialog').opacity,0);
+});
+
+test('Header and AppShell expose numeric and caller-owned navigation badges',()=>{
+ const header=render('Header',{brand:{name:'Studio'},items:[{value:'files',label:'Files',href:'/files',count:0},{value:'activity',label:'Activity',href:'/activity',badge:React.createElement('strong',{},'New')}],activeValue:'files'});
+ assert.match(header,/class="nav-badge">0/);assert.match(header,/nav-badge-slot/);assert.match(header,/<strong>New<\/strong>/);
+ const shell=render('AppShell',{brand:'Studio',items:[{value:'room',label:'Room',count:3,badge:React.createElement('span',{},'Live')}],value:'room',onValueChange:()=>{}});
+ assert.match(shell,/nav-badge-slot/);assert.match(shell,/>Live</);
+});
+test('conversation grouping respects authors, chronology, system entries and explicit breaks',async()=>{
+ const {groupMessages}=await import('../react/conversation-model.js');
+ const base={id:'a',author:'Alex',authorId:'alex',text:'One',time:'10:00'};
+ const cases=[base,{...base,id:'b',time:'10:02'},{...base,id:'c',time:'10:08'},{...base,id:'d',authorId:'sam',time:'10:09'},{...base,id:'e',type:'system',time:'10:10'},{...base,id:'f',time:'10:11'},{...base,id:'g',time:'10:12',groupWithPrevious:false},{...base,id:'h',time:'10:13',own:true}];
+ assert.deepEqual(groupMessages(cases).map(x=>x.grouped),[false,true,false,false,false,false,false,false]);
+ assert.equal(groupMessages([base,{...base,id:'b',time:'unknown',groupWithPrevious:true}])[1].grouped,true);
+ assert.equal(groupMessages([{...base,dateTime:'2026-11-03T10:00:00Z'},{...base,id:'b',dateTime:'2026-11-03T10:01:00Z'}])[1].grouped,true);
+ assert.equal(groupMessages([base,{...base,id:'b',time:'09:59'}])[1].grouped,false);
+});
+test('channel templates keep avatars, grouped text and custom content in one inbox API',()=>{
+ const messages=[{id:'a',author:'Alex',authorId:'alex',text:'One',time:'10:00'},{id:'b',author:'Alex',authorId:'alex',text:'Two',time:'10:01'}];
+ const thread={id:'room',kind:'channel',group:'Channels',name:'general',participants:[{id:'alex',name:'Alex',avatar:'/alex.png'}],messages};
+ const html=render('SupportInbox',{threads:[thread],value:'room',onValueChange:()=>{},template:'channel',onReply:()=>{},renderMessage:message=>React.createElement('em',{},message.text),renderComposer:context=>React.createElement('button',{type:'button'},`Send to ${context.thread.name}`)});
+ assert.match(html,/data-template="channel"/);assert.match(html,/data-grouped="true"/);assert.match(html,/src="\/alex.png"/);assert.match(html,/<em>Two<\/em>/);assert.match(html,/Send to general/);assert.match(html,/Channels/);
+ const embedded=render('SupportInbox',{threads:[thread],value:'room',onValueChange:()=>{},showSidebar:false,showAvatars:false});assert.doesNotMatch(embedded,/<aside>/);assert.doesNotMatch(embedded,/re-support-message-avatar/);
+});

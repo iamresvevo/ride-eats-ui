@@ -100,7 +100,10 @@ export function PinInput({
 }) {
   const id = useId();
   return (
-    <div className={`re-pin ${className}`} style={style}>
+    <div
+      className={`re-pin ${className}`}
+      style={{ "--pin-length": length, ...style }}
+    >
       <label htmlFor={id}>{label}</label>
       <div className="re-pin-control">
         <input
@@ -120,6 +123,7 @@ export function PinInput({
           {Array.from({ length }, (_, i) => (
             <span
               key={i}
+              data-filled={!!value[i] || undefined}
               data-active={
                 i === Math.min(value.length, length - 1) || undefined
               }

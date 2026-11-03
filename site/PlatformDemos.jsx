@@ -1,3 +1,4 @@
+import SupportInboxDemo from "./SupportInboxDemo.jsx";
 import React, { useState } from "react";
 import * as UI from "../react/index.jsx";
 const people = [
@@ -41,45 +42,6 @@ const records = Array.from({ length: 1500 }, (_, index) => ({
   role: ["Owner", "Editor", "Viewer"][index % 3],
   status: index % 4 ? "Active" : "Invited",
 }));
-const initialThreads = [
-  {
-    id: "1",
-    name: "Alex Rivera",
-    subject: "Help with a shared link",
-    status: "Open",
-    time: "5m",
-    messages: [
-      {
-        id: "a",
-        author: "Alex Rivera",
-        text: "Can I update the expiry date after sharing?",
-        time: "10:14",
-      },
-      {
-        id: "b",
-        author: "You",
-        text: "Yes. Open the transfer and choose its expiry date.",
-        own: true,
-        time: "10:16",
-      },
-    ],
-  },
-  {
-    id: "2",
-    name: "Sam Chen",
-    subject: "Workspace invitation",
-    status: "Open",
-    time: "12m",
-    messages: [
-      {
-        id: "c",
-        author: "Sam Chen",
-        text: "Where can I invite a teammate?",
-        time: "09:42",
-      },
-    ],
-  },
-];
 const workspaces = [
   {
     value: "studio",
@@ -160,8 +122,6 @@ export default function PlatformDemos({ id }) {
         updated: "Nov 1",
       },
     ]),
-    [threads, setThreads] = useState(initialThreads),
-    [thread, setThread] = useState("1"),
     [notify, setNotify] = useState([
       {
         id: "1",
@@ -653,6 +613,7 @@ export default function PlatformDemos({ id }) {
               open={access}
               onOpenChange={setAccess}
               label="Access settings"
+              width="max-content"
               trigger={(props) => (
                 <UI.Button {...props} size="sm" variant="ghost">
                   Access settings
@@ -782,36 +743,7 @@ export default function PlatformDemos({ id }) {
         </div>
       );
     case "support-inbox":
-      return (
-        <div className="platform-wide-demo">
-          <UI.SupportInbox
-            threads={threads}
-            value={thread}
-            onValueChange={setThread}
-            onReply={(id, text) =>
-              setThreads((old) =>
-                old.map((thread) =>
-                  thread.id === id
-                    ? {
-                        ...thread,
-                        messages: [
-                          ...thread.messages,
-                          {
-                            id: crypto.randomUUID(),
-                            author: "You",
-                            text,
-                            own: true,
-                            time: "Now",
-                          },
-                        ],
-                      }
-                    : thread,
-                ),
-              )
-            }
-          />
-        </div>
-      );
+      return <SupportInboxDemo />;
     default:
       return null;
   }

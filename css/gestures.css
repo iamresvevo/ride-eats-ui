@@ -205,11 +205,27 @@
   padding: 20px;
 }
 .re-split > [role="separator"] {
+  position: relative;
   cursor: col-resize;
   touch-action: none;
   display: grid;
   place-items: center;
   border-radius: var(--r-sm);
+}
+.re-split > [role="separator"]::before {
+  content: "";
+  position: absolute;
+  inset: 0 -6px;
+  z-index: 1;
+}
+.re-split > [role="separator"]:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: -2px;
+}
+@media (pointer: coarse) {
+  .re-split > [role="separator"]::before {
+    inset-inline: -14px;
+  }
 }
 .re-split > [role="separator"] > span {
   width: 4px;

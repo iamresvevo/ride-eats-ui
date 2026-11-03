@@ -48,6 +48,7 @@ export function sourceForPage(id) {
   if (id === "icons") return "react/send/Icon.jsx";
   if (id === "stacked-dialogs" || id === "toast") return "react/Feedback.jsx";
   if (forms.has(id)) return "react/forms.jsx";
+  if (id === "support-inbox") return "react/SupportInbox.jsx";
   if (workflows.has(id)) return "react/workflows.jsx";
   if (collectionPages.some((p) => p.id === id)) return "react/collection.jsx";
   if (gesturePages.some((p) => p.id === id)) return "react/gestures.jsx";

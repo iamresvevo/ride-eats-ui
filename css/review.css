@@ -1,8 +1,8 @@
 .re-shortcut-recorder {
   width: 100%;
   min-width: 0;
-  padding: 20px;
-  border: 1px solid var(--line);
+  padding: 16px;
+  border: 0;
   border-radius: var(--r-lg);
   background: var(--surface);
 }
@@ -14,7 +14,7 @@
   gap: 8px;
   font-size: 13px;
 }
-.re-shortcut-recorder > header > span {
+.re-shortcut-status > span {
   font-size: 11px;
   color: var(--muted);
 }
@@ -25,18 +25,16 @@
   flex-wrap: wrap;
   gap: 8px;
   width: 100%;
-  min-height: 104px;
-  margin-top: 16px;
-  padding: 20px;
-  border: 1px dashed var(--line-strong);
+  min-height: 72px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 0;
   border-radius: var(--r);
-  background: var(--raised);
+  background: transparent;
   color: var(--muted);
   font-size: 13px;
 }
 .re-shortcut-capture[aria-pressed="true"] {
-  border-color: var(--brand);
-  border-style: solid;
   color: var(--text);
   box-shadow: var(--focus);
 }
@@ -47,13 +45,13 @@
     600 14px ui-monospace,
     monospace;
   color: var(--text);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-bottom-width: 3px;
-  border-radius: var(--r-sm);
+  background: var(--raised);
+  border: 0;
+  box-shadow: none;
+  border-radius: var(--r-pill);
 }
 .re-shortcut-hint {
-  min-height: 32px;
+  min-height: 18px;
   font-size: 12px;
   line-height: 1.5;
   color: var(--muted);
@@ -69,9 +67,9 @@
 .re-diff {
   width: 100%;
   min-width: 0;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: transparent;
   overflow: hidden;
 }
 .re-diff-toolbar {
@@ -80,7 +78,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 8px 0 12px;
   border-bottom: 1px solid var(--line);
 }
 .re-diff-toolbar > div {
@@ -96,10 +94,6 @@
   font-size: 11px;
   color: var(--muted);
 }
-.re-diff-toolbar [aria-pressed="true"] {
-  background: var(--ink);
-  color: var(--on-ink);
-}
 .re-diff-split {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -112,13 +106,15 @@
 }
 .re-diff-pane h3 {
   font-size: 11px;
-  font-weight: 600;
-  padding: 10px 16px;
-  background: var(--raised);
+  font-weight: 500;
+  color: var(--muted);
+  padding: 8px 12px;
+  background: transparent;
   border-bottom: 1px solid var(--line);
   margin: 0;
 }
 .re-diff-scroll {
+  background: var(--surface);
   max-height: var(--diff-height, 360px);
   overflow: auto;
   overscroll-behavior: contain;
@@ -141,7 +137,7 @@
 }
 .re-diff td,
 .re-diff th {
-  height: 24px;
+  height: 22px;
   padding: 0 8px;
   text-align: left;
   border: 0;
@@ -184,15 +180,15 @@
 }
 .re-diff-fold {
   width: 100%;
-  min-height: 28px;
+  min-height: 24px;
   padding: 2px 12px;
   border: 0;
-  border-radius: var(--r-pill);
-  background: var(--raised);
+  border-radius: var(--r-sm);
+  background: transparent;
   color: var(--muted);
   font-family: inherit;
-  font-size:11px;
-  line-height:24px;
+  font-size: 11px;
+  line-height: 24px;
   text-align: center;
   cursor: pointer;
   white-space: nowrap;
@@ -215,4 +211,70 @@
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
+}
+
+.re-shortcut-recorder[data-disabled] {
+  opacity: 0.5;
+}
+.re-shortcut-recorder[data-phase="recording"] .re-shortcut-status > span {
+  color: var(--brand-ink);
+}
+.re-shortcut-recorder[data-phase="recording"]
+  .re-shortcut-status
+  > span::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-circle);
+  background: var(--brand);
+  margin-inline-end: 6px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .re-shortcut-capture kbd {
+    animation: re-key-arrive 220ms var(--spring) both;
+  }
+  .re-shortcut-recorder[data-phase="recording"]
+    .re-shortcut-status
+    > span::before {
+    animation: re-record-listening 1400ms var(--motion-ease) infinite;
+  }
+  .re-shortcut-recorder > footer {
+    animation: re-review-actions 220ms var(--motion-ease) both;
+  }
+}
+@keyframes re-key-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes re-record-listening {
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes re-review-actions {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.re-shortcut-recorder[data-issue] .re-shortcut-hint {
+  color: var(--bad);
+}
+
+.re-shortcut-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

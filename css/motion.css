@@ -7,14 +7,12 @@
   position: fixed;
   inset: auto;
   margin: 0;
-  padding: 18px;
+  padding: 16px;
   border: 0;
   border-radius: var(--r);
   background: var(--surface);
   color: var(--text);
-  box-shadow:
-    var(--shadow-pop),
-    inset 0 0 0 1px var(--line);
+  box-shadow: var(--shadow-pop);
   max-width: calc(100vw - 16px);
   overflow: visible;
 }
@@ -39,6 +37,11 @@
 }
 .re-pin-control {
   position: relative;
+  width: max-content;
+  max-width: 100%;
+  min-height: 44px;
+  display: grid;
+  align-items: center;
 }
 .re-pin-control > input {
   position: absolute;
@@ -50,44 +53,47 @@
   cursor: text;
 }
 .re-pin-cells {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(var(--pin-length, 6), minmax(0, 1fr));
   gap: 8px;
+  width: calc(var(--pin-length, 6) * 44px + (var(--pin-length, 6) - 1) * 8px);
+  max-width: 100%;
+  padding-block: 3px;
 }
 .re-pin-cells > span {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 48px;
+  width: 100%;
+  aspect-ratio: 1;
   background: var(--raised);
-  border-radius: var(--r-pill);
+  border-radius: var(--r-circle);
   font-size: 20px;
-  font-weight: 550;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
-  box-shadow: inset 0 0 0 1px var(--line);
+  box-shadow: none;
   transition:
-    box-shadow 0.2s,
-    background 0.2s;
-  transition-timing-function: var(--motion-ease);
+    background-color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease);
 }
 .re-pin-control:focus-within [data-active] {
-  box-shadow: inset 0 0 0 1.5px var(--text);
+  box-shadow: var(--focus);
   background: var(--surface);
 }
 .re-pin-control:has(input:disabled) {
   opacity: 0.4;
 }
 .re-toggle-group {
-  border-radius: var(--r-pill);
+  border-radius: var(--r);
   display: inline-flex;
   gap: 4px;
-  background: var(--raised);
-  padding: 4px;
+  background: transparent;
+  padding: 0;
 }
 .re-toggle-group > button {
   display: flex;
   align-items: center;
   gap: 7px;
-  background: transparent;
+  background: var(--raised);
   border: 0;
   border-radius: var(--r-pill);
   font-size: 12px;
@@ -108,7 +114,7 @@
   color: var(--on-ink);
 }
 .re-toggle-group > button:active {
-  transform: scale(0.96);
+  opacity: 0.85;
 }
 .re-toggle-group > button:disabled {
   opacity: 0.4;
@@ -406,4 +412,20 @@
 }
 .re-command-footer {
   padding-block: 8px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .re-pin-cells > span[data-filled] {
+    animation: re-pin-enter 200ms var(--spring);
+  }
+}
+@keyframes re-pin-enter {
+  from {
+    opacity: 0.4;
+    scale: 0.94;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
 }

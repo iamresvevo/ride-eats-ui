@@ -355,3 +355,34 @@
 .header-blur {
   mask-image: linear-gradient(#000 45%, transparent);
 }
+
+.nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--r-pill);
+  background: var(--raised);
+  color: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+.nav-badge-slot {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+.nav-active .nav-badge,
+.re-app-sidebar button[aria-current="page"] .nav-badge {
+  background: var(--on-ink);
+  color: var(--ink);
+}
+.re-app-sidebar .nav-badge,
+.re-app-sidebar .nav-badge-slot {
+  margin-inline-start: auto;
+}

@@ -1,4 +1,4 @@
-import { elasticSplit } from "./split-motion.js";
+import { elasticSplit, renderedSplit } from "./split-motion.js";
 import { motionEase } from "./send/hooks/motion.js";
 import React, { useId, useLayoutEffect, useRef, useState } from "react";
 import Icon from "./send/Icon.jsx";
@@ -421,6 +421,8 @@ export function SplitPane({
   const update = (event) => {
     const active = drag.current;
     if (!active || active.pointer !== event.pointerId) return;
+    if (Math.abs(event.clientX - active.x) > 1) active.moved = true;
+    if (!active.moved) return;
     const raw =
       active.value + ((event.clientX - active.x) / active.width) * 100;
     setPreview(elasticSplit(raw, min, max));
@@ -433,10 +435,10 @@ export function SplitPane({
   const finish = (event, cancelled = false) => {
     const active = drag.current;
     if (!active || active.pointer !== event.pointerId) return;
-    if (!cancelled) update(event);
+    if (!cancelled && active.moved) update(event);
     drag.current = null;
     setPreview(null);
-    if (cancelled) onValueChange(active.value);
+    if (cancelled) onValueChange(active.committed);
     if (event.currentTarget.hasPointerCapture(event.pointerId))
       event.currentTarget.releasePointerCapture(event.pointerId);
   };
@@ -478,16 +480,25 @@ export function SplitPane({
           }
         }}
         onPointerDown={(event) => {
-          if (event.button !== 0 || !event.isPrimary) return;
+          if (event.button !== 0 || !event.isPrimary || drag.current || stacked)
+            return;
+          event.preventDefault();
+          event.currentTarget.focus({ preventScroll: true });
+          const rendered = renderedSplit(
+            root.current.getBoundingClientRect(),
+            event.currentTarget.getBoundingClientRect(),
+          );
           event.currentTarget.setPointerCapture(event.pointerId);
           drag.current = {
             pointer: event.pointerId,
             x: event.clientX,
-            value: bounded,
+            value: rendered.value,
+            committed: bounded,
             last: bounded,
-            width: Math.max(1, root.current.clientWidth - 16),
+            moved: false,
+            width: rendered.width,
           };
-          setPreview(bounded);
+          setPreview(rendered.value);
         }}
         onPointerMove={update}
         onPointerUp={(event) => finish(event)}

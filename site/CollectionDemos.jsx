@@ -1,3 +1,4 @@
+import WorkbenchDemo from "./WorkbenchDemo.jsx";
 import { ControlDemo } from "./ControlDemos.jsx";
 import { ReviewDemo } from "./ReviewDemos.jsx";
 import { SpecializedDemo } from "./SpecializedDemos.jsx";
@@ -298,7 +299,8 @@ export function CollectionDemo({ id }) {
     [open, setOpen] = useState(false),
     [files, setFiles] = useState([]),
     [alert, setAlert] = useState(true),
-    [tab, setTab] = useState("payments");
+    [tab, setTab] = useState("payments"),
+    [drawerSide, setDrawerSide] = useState("right");
   const toast = useToast();
   switch (id) {
     case "color-picker":
@@ -543,10 +545,29 @@ export function CollectionDemo({ id }) {
     case "drawer":
       return (
         <>
-          <Button variant="primary" icon="list" onClick={() => setOpen(true)}>
-            View details
-          </Button>
+          <UI.ButtonGroup label="Drawer placement">
+            <Button
+              variant="primary"
+              icon="panel-right"
+              onClick={() => {
+                setDrawerSide("right");
+                setOpen(true);
+              }}
+            >
+              Open right drawer
+            </Button>
+            <Button
+              icon="panel-left"
+              onClick={() => {
+                setDrawerSide("left");
+                setOpen(true);
+              }}
+            >
+              Open left drawer
+            </Button>
+          </UI.ButtonGroup>
           <UI.Drawer
+            side={drawerSide}
             open={open}
             onOpenChange={setOpen}
             title="Transfer details"
@@ -991,91 +1012,6 @@ export function SimpleDialogDemo() {
           <Badge>Anyone with the link</Badge>
         </UI.SettingRow>
       </Dialog>
-    </>
-  );
-}
-
-function WorkbenchDemo() {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <Button onClick={() => setOpen(true)}>Open editor layout</Button>
-      <UI.Dialog
-        open={open}
-        onOpenChange={setOpen}
-        title="Editor workspace"
-        style={{ width: "min(1400px,96vw)", maxWidth: "none" }}
-        toolbar={
-          <UI.Toolbar>
-            <UI.Field label="Workspace name">
-              <input defaultValue="Autumn artwork" />
-            </UI.Field>
-            <Button>Preview</Button>
-          </UI.Toolbar>
-        }
-        footer={
-          <>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
-            <Button variant="primary" onClick={() => setOpen(false)}>
-              Done
-            </Button>
-          </>
-        }
-      >
-        <UI.Workbench leadingWidth={240} trailingWidth={260}>
-          <UI.ScrollArea
-            label="Object catalogue"
-            header={
-              <UI.Flex direction="column">
-                <UI.CardHeader title="Objects" />
-                <UI.Tabs
-                  value="all"
-                  onValueChange={() => {}}
-                  items={[
-                    { value: "all", label: "All objects" },
-                    { value: "saved", label: "Saved" },
-                  ]}
-                />
-              </UI.Flex>
-            }
-          >
-            <UI.Flex direction="column">
-              {Array.from({ length: 30 }, (_, i) => (
-                <UI.Tile
-                  key={i}
-                  variant="row"
-                  title={`Object ${i + 1}`}
-                  description="Select an object"
-                  onClick={() => {}}
-                />
-              ))}
-            </UI.Flex>
-          </UI.ScrollArea>
-          <UI.Flex direction="column">
-            <UI.Card title="Canvas preview">
-              <p>The centre stays in place while either panel scrolls.</p>
-            </UI.Card>
-            <UI.Toolbar>
-              <Button>Move</Button>
-              <Button>Rotate</Button>
-              <Button>Scale</Button>
-            </UI.Toolbar>
-          </UI.Flex>
-          <UI.ScrollArea
-            label="Object options"
-            header={<UI.CardHeader title="Object options" />}
-            footer={<Button>Reset options</Button>}
-          >
-            <UI.Flex direction="column">
-              {Array.from({ length: 20 }, (_, i) => (
-                <UI.Field key={i} label={`Option ${i + 1}`}>
-                  <input defaultValue="Value" />
-                </UI.Field>
-              ))}
-            </UI.Flex>
-          </UI.ScrollArea>
-        </UI.Workbench>
-      </UI.Dialog>
     </>
   );
 }
