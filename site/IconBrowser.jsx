@@ -159,9 +159,9 @@ export default function IconBrowser({ animated = false }) {
           <strong>{selected}</strong>
           <small>2× preview · exported at {size}px</small>
           <small>
-            {motionFamily(selected) === "detail"
-              ? "Gentle emphasis · general treatment"
-              : `${motionFamily(selected)} motion`}
+            {geometryMotionNames.includes(selected)
+              ? "Explicit SVG choreography"
+              : "Static · animation pending"}
           </small>
         </div>
         <div className="icon-controls">

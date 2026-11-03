@@ -333,7 +333,10 @@ test("animated icons contain native SVG motion and no animated view wrapper", as
   for (const name of UI.animatedIconNames) {
     const html = render("AnimatedIcon", { name, playing: true });
     assert.match(html, /<svg/);
-    assert.match(html, /<animate(?:Transform)? /);
+    const { geometryMotionNames } =
+      await import("../react/icons/motion-names.js");
+    if (geometryMotionNames.includes(name)) assert.match(html, /<animate /);
+    else assert.doesNotMatch(html, /<animate /);
     assert.doesNotMatch(html, /<div/);
     assert.doesNotMatch(html, /animation:/);
     assert.doesNotMatch(html, /animateTransform|attributeName="transform"/);
@@ -346,8 +349,11 @@ test("animated icons contain native SVG motion and no animated view wrapper", as
       );
     }
   }
-  assert.match(render("AnimatedIcon", { name: "heart" }), /attributeName="d"/);
-  assert.match(render("AnimatedIcon", { name: "check" }), /attributeName="d"/);
+  assert.match(render("AnimatedIcon", { name: "upload" }), /attributeName="d"/);
+  assert.match(
+    render("AnimatedIcon", { name: "download" }),
+    /attributeName="d"/,
+  );
   assert.match(
     render("Icon", { name: "check", motion: "draw" }),
     /attributeName="stroke-dashoffset"/,

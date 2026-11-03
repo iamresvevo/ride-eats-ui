@@ -1,3 +1,4 @@
+import { authoredMotion } from "../icons/authored-motion.js";
 import { AnimatedShapes } from "../icons/AnimatedShapes.jsx";
 import { useSvgMotion } from "../icons/useSvgMotion.js";
 import React, { lazy, Suspense, useRef } from "react";
@@ -137,18 +138,22 @@ export default function Icon({
   const accessible = label || props["aria-label"] || title;
   const preferCatalog =
     motion === "auto" &&
-    [
-      "bell",
-      "heart",
-      "upload",
-      "download",
-      "search",
-      "settings",
-      "users",
-      "file",
-      "trash",
-      "trash-2",
-    ].includes(name);
+    (authoredMotion[name] ||
+      [
+        "eye",
+        "mail",
+        "lock",
+        "bell",
+        "heart",
+        "upload",
+        "download",
+        "search",
+        "settings",
+        "users",
+        "file",
+        "trash",
+        "trash-2",
+      ].includes(name));
   const Glyph =
     (!PATHS[name] || preferCatalog) && !custom[name]
       ? catalogChunk(String(name || "")[0])

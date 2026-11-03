@@ -542,7 +542,7 @@ const [range, setRange] = useState([20,80]);
 
 ## Animated Icons
 
-Motion. 435 icon names with native SVG geometry motion, including authored headset and folder treatments and shared family treatments. Complete glyphs stay visible. Replay and Loop preview expose playback; the enlarged preview exports your actual selected size. The full catalog remains available separately with gentle emphasis for other names.
+Motion. 29 explicit SVG animations with complete visible glyphs, smooth easing and a resting pause. Unfinished catalog icons remain static. Replay, loop and copy the exact React usage.
 
 ```jsx
 import { AnimatedIcon, Button } from '@ride-eats/ui';
@@ -556,7 +556,7 @@ import { AnimatedIcon, Button } from '@ride-eats/ui';
 
 | Prop | Type | Behavior |
 | --- | --- | --- |
-| name | string — any catalog name | Any catalog name. The animated browser lists geometry treatments; other names use gentle emphasis. |
+| name | string — any catalog name | Any catalog name. The animated browser lists geometry treatments; other names remain static. |
 | playing / loop | boolean | Play explicitly or repeat. Hover/focus also plays. |
 | size / strokeWidth / label | number / number / string | SVG appearance and accessibility. |
 

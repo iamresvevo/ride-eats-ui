@@ -1,5 +1,5 @@
 import React from "react";
-import { shapeMotion } from "./motion-profiles.js";
+import { authoredMotion } from "./authored-motion.js";
 const settle = "0.25 1 0.3 1";
 function Motion({ attributeName, values, phase = 0 }) {
   const [start, peak, end] = values.split(";");
@@ -63,6 +63,21 @@ export function AnimatedShapes({
 }) {
   if (name === "headset" && motion !== "draw") return <Headset />;
   if (name === "folder" && motion !== "draw") return <Folder />;
+  if (motion === "auto" && authoredMotion[name]) {
+    return nodes.map(([tag, attributes], index) => {
+      const part = authoredMotion[name].parts[index];
+      return React.createElement(
+        tag,
+        { ...attributes, key: index },
+        part ? (
+          <Motion
+            attributeName={part.attributeName}
+            values={`${attributes[part.attributeName]};${part.peak};${attributes[part.attributeName]}`}
+          />
+        ) : null,
+      );
+    });
+  }
   return nodes.map(([tag, attributes], index) => {
     if (motion === "draw")
       return (
@@ -98,11 +113,6 @@ export function AnimatedShapes({
           )}
         </g>
       );
-    const profile = shapeMotion(name, tag, attributes, index, nodes);
-    return React.createElement(
-      tag,
-      { ...attributes, key: index, "data-svg-detail": profile.attributeName },
-      <Motion {...profile} phase={Math.min(index * 0.025, 0.12)} />,
-    );
+    return React.createElement(tag, { ...attributes, key: index });
   });
 }
