@@ -732,7 +732,7 @@ import { DateRangePicker } from '@ride-eats/ui';
 
 ## Time Picker
 
-Inputs. A native time field with a compact label and keyboard input. Time formatting follows the browser locale.
+Inputs. A compact custom time picker with rounded hour and minute choices, solid accent selection and keyboard navigation. Displays local time and returns HH:mm.
 
 ```jsx
 import { TimePicker } from '@ride-eats/ui';
@@ -742,8 +742,8 @@ import { TimePicker } from '@ride-eats/ui';
 
 | Prop | Type | Behavior |
 | --- | --- | --- |
-| value / onValueChange | HH:mm string / callback | Native time value. |
-| min / max / step / disabled / label | configuration | Step is seconds; defaults to one minute. |
+| value / onValueChange | HH:mm string / callback | Controlled HH:mm value. |
+| min / max / step / disabled / label | configuration | Step is seconds, rounded to whole minutes (minimum 60); defaults to one minute. |
 
 ## Upload Progress
 

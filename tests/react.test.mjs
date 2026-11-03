@@ -992,3 +992,13 @@ test("audited literal core icons render explicit SVG motion", async () => {
     );
   }
 });
+
+test("TimePicker uses the shared custom popup and keeps empty/disabled semantics", () => {
+  const html = render("TimePicker", {value: "09:30", onValueChange() {}, label: "Opening time"});
+  assert.match(html, /aria-haspopup="dialog"/);
+  assert.match(html, /dtp-time/);
+  assert.doesNotMatch(html, /type="time"/);
+  const empty = render("TimePicker", {value: "", disabled: true, onValueChange() {}});
+  assert.match(empty, /Choose time/);
+  assert.match(empty, /disabled/);
+});

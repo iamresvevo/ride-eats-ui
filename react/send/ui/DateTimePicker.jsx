@@ -19,6 +19,8 @@ export default function DateTimePicker({
   value,
   future = false,
   dateOnly = false,
+  timeOnly = false,
+  minuteStep = 15,
   min: minimum,
   max: maximum,
   empty = false,
@@ -67,7 +69,12 @@ export default function DateTimePicker({
     (
       panel.current.querySelector(
         '.dtp-day[aria-selected="true"]:not(:disabled)',
-      ) || panel.current.querySelector(".dtp-day:not(:disabled)")
+      ) ||
+      panel.current.querySelector(".dtp-day:not(:disabled)") ||
+      panel.current.querySelector(
+        '.dtp-column [aria-selected="true"]:not(:disabled)',
+      ) ||
+      panel.current.querySelector(".dtp-column button:not(:disabled)")
     )?.focus({ preventScroll: true });
     const onPointer = (event) => {
       if (
@@ -132,7 +139,12 @@ export default function DateTimePicker({
     const next = Math.floor(date.getTime() / 1000);
     const bounded = Math.min(
       max,
-      next < min ? (dateOnly ? min : Math.ceil(min / 900) * 900) : next,
+      next < min
+        ? dateOnly
+          ? min
+          : Math.ceil(min / (timeOnly ? minuteStep * 60 : 900)) *
+            (timeOnly ? minuteStep * 60 : 900)
+        : next,
     );
     onChange(bounded);
     if (dateOnly) {
@@ -173,9 +185,16 @@ export default function DateTimePicker({
     .slice(0, 7)
     .map((day) => day.toLocaleDateString(language, { weekday: "narrow" }));
   const today = new Date();
-  const minuteChoices = [...new Set([...MINUTES, chosen.getMinutes()])].sort(
-    (a, b) => a - b,
-  );
+  const minuteChoices = [
+    ...new Set([
+      ...(timeOnly
+        ? Array.from({ length: 60 }, (_, i) => i).filter(
+            (i) => i % minuteStep === 0,
+          )
+        : MINUTES),
+      chosen.getMinutes(),
+    ]),
+  ].sort((a, b) => a - b);
   const hourLabel = (hour) =>
     new Date(2000, 0, 1, hour).toLocaleTimeString(language, {
       hour: "numeric",
@@ -193,7 +212,7 @@ export default function DateTimePicker({
       chosen.getDate(),
       hours,
       minutes,
-    ) < new Date(earliest.getTime() - 899000);
+    ) < new Date(earliest.getTime() - (timeOnly ? 0 : 899000));
 
   const tooLate = (hours, minutes) =>
     latest &&
@@ -206,7 +225,11 @@ export default function DateTimePicker({
     ) > latest;
 
   return (
-    <div ref={root} className={`dtp ${className}`} style={style}>
+    <div
+      ref={root}
+      className={`dtp ${timeOnly ? "dtp-time" : ""} ${className}`}
+      style={style}
+    >
       <button
         ref={button}
         id={id}
@@ -220,22 +243,26 @@ export default function DateTimePicker({
       >
         <span>
           {empty
-            ? "Choose date"
+            ? timeOnly
+              ? "Choose time"
+              : "Choose date"
             : chosen.toLocaleString(
                 language,
-                dateOnly
-                  ? {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    }
-                  : {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "long",
-                      hour: "numeric",
-                      minute: "2-digit",
-                    },
+                timeOnly
+                  ? { hour: "2-digit", minute: "2-digit" }
+                  : dateOnly
+                    ? {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    : {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "long",
+                        hour: "numeric",
+                        minute: "2-digit",
+                      },
               )}
         </span>
         <Icon name="chevron" />
@@ -249,94 +276,124 @@ export default function DateTimePicker({
             aria-hidden={presence.closing || undefined}
             role="dialog"
             aria-label={t(label)}
-            className={`dtp-panel ${dateOnly ? "dtp-date-only" : ""} ${presence.closing ? "is-closing" : ""}`.trim()}
+            className={`dtp-panel ${dateOnly ? "dtp-date-only" : ""} ${timeOnly ? "dtp-time-only" : ""} ${presence.closing ? "is-closing" : ""}`.trim()}
             onAnimationEnd={presence.onAnimationEnd}
           >
-            <div
-              className="dtp-calendar"
-              onKeyDown={(event) => {
-                if (!event.target.matches(".dtp-day")) return;
-                const movement = {
-                  ArrowLeft: -1,
-                  ArrowRight: 1,
-                  ArrowUp: -7,
-                  ArrowDown: 7,
-                };
-                if (!(event.key in movement)) return;
-                event.preventDefault();
-                const buttons = [...panel.current.querySelectorAll(".dtp-day")];
-                const target =
-                  buttons[buttons.indexOf(event.target) + movement[event.key]];
-                if (target && !target.disabled) target.focus();
-              }}
-            >
-              <div className="dtp-head">
-                <strong>
-                  {month.toLocaleDateString(language, {
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </strong>
-                <button
-                  type="button"
-                  className="dtp-nav dtp-prev"
-                  aria-label={t("Previous month")}
-                  disabled={!canGoBack}
-                  onClick={() =>
-                    setMonth(
-                      new Date(month.getFullYear(), month.getMonth() - 1, 1),
-                    )
-                  }
-                >
-                  <Icon name="chevron" />
-                </button>
-                <button
-                  type="button"
-                  className="dtp-nav dtp-next"
-                  aria-label={t("Next month")}
-                  disabled={!canGoForward}
-                  onClick={() =>
-                    setMonth(
-                      new Date(month.getFullYear(), month.getMonth() + 1, 1),
-                    )
-                  }
-                >
-                  <Icon name="chevron" />
-                </button>
-              </div>
-              <div className="dtp-grid" role="grid">
-                {weekdays.map((name, i) => (
-                  <span key={`w${i}`} className="dtp-weekday">
-                    {name}
-                  </span>
-                ))}
-                {days.map((day) => (
-                  <button
-                    key={day.getTime()}
-                    type="button"
-                    className={`dtp-day ${day.getMonth() !== month.getMonth() ? "is-outside" : ""} ${sameDay(day, today) ? "is-today" : ""}`.trim()}
-                    aria-label={day.toLocaleDateString(language, {
-                      weekday: "long",
-                      year: "numeric",
+            {!timeOnly && (
+              <div
+                className="dtp-calendar"
+                onKeyDown={(event) => {
+                  if (!event.target.matches(".dtp-day")) return;
+                  const movement = {
+                    ArrowLeft: -1,
+                    ArrowRight: 1,
+                    ArrowUp: -7,
+                    ArrowDown: 7,
+                  };
+                  if (!(event.key in movement)) return;
+                  event.preventDefault();
+                  const buttons = [
+                    ...panel.current.querySelectorAll(".dtp-day"),
+                  ];
+                  const target =
+                    buttons[
+                      buttons.indexOf(event.target) + movement[event.key]
+                    ];
+                  if (target && !target.disabled) target.focus();
+                }}
+              >
+                <div className="dtp-head">
+                  <strong>
+                    {month.toLocaleDateString(language, {
                       month: "long",
-                      day: "numeric",
+                      year: "numeric",
                     })}
-                    aria-selected={!empty && sameDay(day, chosen)}
-                    disabled={
-                      (Boolean(earliest) && day < startOfDay(earliest)) ||
-                      (Boolean(latest) && day > startOfDay(latest))
+                  </strong>
+                  <button
+                    type="button"
+                    className="dtp-nav dtp-prev"
+                    aria-label={t("Previous month")}
+                    disabled={!canGoBack}
+                    onClick={() =>
+                      setMonth(
+                        new Date(month.getFullYear(), month.getMonth() - 1, 1),
+                      )
                     }
-                    onClick={() => withDay(day)}
                   >
-                    {day.getDate()}
+                    <Icon name="chevron" />
                   </button>
-                ))}
+                  <button
+                    type="button"
+                    className="dtp-nav dtp-next"
+                    aria-label={t("Next month")}
+                    disabled={!canGoForward}
+                    onClick={() =>
+                      setMonth(
+                        new Date(month.getFullYear(), month.getMonth() + 1, 1),
+                      )
+                    }
+                  >
+                    <Icon name="chevron" />
+                  </button>
+                </div>
+                <div className="dtp-grid" role="grid">
+                  {weekdays.map((name, i) => (
+                    <span key={`w${i}`} className="dtp-weekday">
+                      {name}
+                    </span>
+                  ))}
+                  {days.map((day) => (
+                    <button
+                      key={day.getTime()}
+                      type="button"
+                      className={`dtp-day ${day.getMonth() !== month.getMonth() ? "is-outside" : ""} ${sameDay(day, today) ? "is-today" : ""}`.trim()}
+                      aria-label={day.toLocaleDateString(language, {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                      aria-selected={!empty && sameDay(day, chosen)}
+                      disabled={
+                        (Boolean(earliest) && day < startOfDay(earliest)) ||
+                        (Boolean(latest) && day > startOfDay(latest))
+                      }
+                      onClick={() => withDay(day)}
+                    >
+                      {day.getDate()}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
             {!dateOnly && (
               <div className="dtp-times">
                 <div
                   className="dtp-column"
+                  onKeyDown={(event) => {
+                    const keys = ["ArrowDown", "ArrowUp", "Home", "End"];
+                    if (!keys.includes(event.key)) return;
+                    event.preventDefault();
+                    const items = [
+                      ...event.currentTarget.querySelectorAll(
+                        "button:not(:disabled)",
+                      ),
+                    ];
+                    const index = items.indexOf(event.target);
+                    const next =
+                      event.key === "Home"
+                        ? 0
+                        : event.key === "End"
+                          ? items.length - 1
+                          : Math.max(
+                              0,
+                              Math.min(
+                                items.length - 1,
+                                index + (event.key === "ArrowDown" ? 1 : -1),
+                              ),
+                            );
+                    items[next]?.focus();
+                  }}
                   role="listbox"
                   aria-label={t("Hour")}
                 >
@@ -346,7 +403,9 @@ export default function DateTimePicker({
                       type="button"
                       role="option"
                       aria-selected={chosen.getHours() === hour}
-                      disabled={tooEarly(hour, 45) || tooLate(hour, 0)}
+                      disabled={
+                        tooEarly(hour, timeOnly ? 59 : 45) || tooLate(hour, 0)
+                      }
                       onClick={() => withTime(hour, chosen.getMinutes())}
                     >
                       {hourLabel(hour)}
@@ -355,6 +414,30 @@ export default function DateTimePicker({
                 </div>
                 <div
                   className="dtp-column"
+                  onKeyDown={(event) => {
+                    const keys = ["ArrowDown", "ArrowUp", "Home", "End"];
+                    if (!keys.includes(event.key)) return;
+                    event.preventDefault();
+                    const items = [
+                      ...event.currentTarget.querySelectorAll(
+                        "button:not(:disabled)",
+                      ),
+                    ];
+                    const index = items.indexOf(event.target);
+                    const next =
+                      event.key === "Home"
+                        ? 0
+                        : event.key === "End"
+                          ? items.length - 1
+                          : Math.max(
+                              0,
+                              Math.min(
+                                items.length - 1,
+                                index + (event.key === "ArrowDown" ? 1 : -1),
+                              ),
+                            );
+                    items[next]?.focus();
+                  }}
                   role="listbox"
                   aria-label={t("Minute")}
                 >

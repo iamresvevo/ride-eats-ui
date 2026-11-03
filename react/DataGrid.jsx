@@ -69,14 +69,14 @@ export function DataGrid({
   const controlColumns =
       Number(bulkActions.length > 0) + Number(!!renderExpanded),
     cellCount = visible.length + controlColumns + Number(!!rowActions);
-  const reservedWidth = controlColumns * 36 + (rowActions ? 68 : 0);
+  const reservedWidth = controlColumns * 44 + (rowActions ? 68 : 0);
   const dataWidth = visible.reduce(
     (sum, column) => sum + (widths[column.key] || column.width || 160),
     0,
   );
   const tableWidth = Math.max(availableWidth, dataWidth + reservedWidth);
   const scale = dataWidth ? (tableWidth - reservedWidth) / dataWidth : 1;
-  let pinOffset = controlColumns * 36;
+  let pinOffset = controlColumns * 44;
   const layout = visible.map((column) => {
     const width = widths[column.key] || column.width || 160;
     const displayWidth = width * scale,
@@ -203,8 +203,8 @@ export function DataGrid({
           style={{ width: tableWidth, minWidth: tableWidth }}
         >
           <colgroup>
-            {bulkActions.length > 0 && <col style={{ width: 36 }} />}
-            {renderExpanded && <col style={{ width: 36 }} />}
+            {bulkActions.length > 0 && <col style={{ width: 44 }} />}
+            {renderExpanded && <col style={{ width: 44 }} />}
             {layout.map((column) => (
               <col key={column.key} style={{ width: column.displayWidth }} />
             ))}
@@ -239,7 +239,7 @@ export function DataGrid({
               {renderExpanded && (
                 <th
                   className="re-grid-expansion"
-                  style={{ left: bulkActions.length ? 36 : 0 }}
+                  style={{ left: bulkActions.length ? 44 : 0 }}
                 >
                   <span className="re-sr-only">Details</span>
                 </th>
@@ -406,7 +406,7 @@ export function DataGrid({
                         {renderExpanded && (
                           <td
                             className="re-grid-expansion"
-                            style={{ left: bulkActions.length ? 36 : 0 }}
+                            style={{ left: bulkActions.length ? 44 : 0 }}
                           >
                             <button
                               className="re-grid-expand"

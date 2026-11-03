@@ -1414,3 +1414,22 @@
 .dtp-date-only .dtp-grid {
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
+
+.dtp-time-only {
+  width: 248px;
+  grid-template-columns: 1fr;
+}
+.dtp-time-only .dtp-times {
+  border-left: 0;
+  padding-left: 0;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  height: 224px;
+}
+.dtp-time-only .dtp-column {
+  flex: 1;
+}
+
+.dtp-time .dtp-field {
+  border-radius: var(--r-pill);
+}

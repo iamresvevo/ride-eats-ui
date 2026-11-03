@@ -441,20 +441,35 @@ export function TimePicker({
   style,
 }) {
   const id = useId();
+  const seconds = (text) => {
+    if (!text || !/^\d{2}:\d{2}$/.test(text)) return undefined;
+    const [hour, minute] = text.split(":").map(Number);
+    if (hour > 23 || minute > 59) return undefined;
+    return new Date(2000, 0, 1, hour, minute).getTime() / 1000;
+  };
   return (
     <Field label={label} id={id} className={className} style={style}>
-      <input
-        type="time"
-        value={value}
-        onChange={(e) => onValueChange(e.target.value)}
-        min={min}
-        max={max}
-        step={step}
+      <DateTimePicker
+        id={id}
+        label={label}
+        timeOnly
+        value={seconds(value) ?? seconds("09:00")}
+        empty={!value}
+        min={seconds(min)}
+        max={seconds(max)}
         disabled={disabled}
+        minuteStep={Math.max(1, Math.round(step / 60))}
+        onChange={(timestamp) => {
+          const date = new Date(timestamp * 1000);
+          onValueChange(
+            `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`,
+          );
+        }}
       />
     </Field>
   );
 }
+
 export function UploadProgress({
   files,
   onCancel,
