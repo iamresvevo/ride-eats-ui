@@ -347,10 +347,7 @@ test("animated icons contain native SVG motion and no animated view wrapper", as
     }
   }
   assert.match(render("AnimatedIcon", { name: "heart" }), /attributeName="d"/);
-  assert.match(
-    render("AnimatedIcon", { name: "check" }),
-    /attributeName="stroke-dashoffset"/,
-  );
+  assert.match(render("AnimatedIcon", { name: "check" }), /attributeName="d"/);
   assert.match(
     render("Icon", { name: "check", motion: "draw" }),
     /attributeName="stroke-dashoffset"/,
@@ -408,13 +405,8 @@ test("every catalog icon has generated per-shape native SVG animation", async ()
     "utf8",
   );
   assert.match(source, /attributeName="stroke-dashoffset"/);
-  assert.match(source, /values="0;0;.55;0;0"/);
-  assert.match(source, /dur="2.4s"/);
-  assert.match(source, /strokeOpacity:\s*0?\.24/);
-  assert.doesNotMatch(
-    source,
-    /breathePath|attributeName="r"|attributeName="ry"/,
-  );
+  assert.doesNotMatch(source, /values="0;0;.55;0;0"/);
+  assert.doesNotMatch(source, /strokeOpacity:\s*0?\.24/);
   assert.doesNotMatch(source, /<svg|<div|animation:/);
   const names = new Set(UI.animatedIconNames);
   for (const name of UI.iconNames) assert.ok(names.has(name), name);
@@ -877,4 +869,97 @@ test("split resistance stays bounded, increases smoothly and leaves valid ratios
   assert.ok(elasticSplit(90, 20, 80) > 80 && elasticSplit(90, 20, 80) < 86);
   assert.equal(elasticSplit(-200, 0, 100), 0);
   assert.equal(elasticSplit(300, 0, 100), 100);
+});
+
+test("geometry motion preserves arc flags, relative paths and visible native attributes", async () => {
+  const { morphPath, shapeMotion } =
+    await import("../react/icons/motion-profiles.js");
+  assert.equal(morphPath("M2 3h4v5", { dx: 1, dy: 2 }), "M 3 5 h 4 v 5");
+  assert.equal(morphPath("m2 3 4 5", { dx: 1 }), "m 3 3 l 4 5");
+  assert.equal(
+    morphPath("M2 3a4 5 0 0 1 6 7", { scale: 2 }),
+    "M -8 -6 a 8 10 0 0 1 12 14",
+  );
+  const { loaders } = await import("../react/icons/loaders.js");
+  for (const loader of Object.values(loaders))
+    for (const [name, nodes] of Object.entries((await loader()).default))
+      for (const [index, [tag, attributes]] of nodes.entries()) {
+        const result = shapeMotion(name, tag, attributes, index, nodes);
+        assert.ok(
+          ["d", "cy", "cx", "r", "x2", "height", "stroke-opacity"].includes(
+            result.attributeName,
+          ),
+          name,
+        );
+        assert.ok(!/NaN|undefined|Infinity/.test(result.values), name);
+        assert.equal(
+          result.values.split(";")[0],
+          result.values.split(";").at(-1),
+          name,
+        );
+      }
+});
+test("recent hashed assets survive deployment without overwriting the current build", async (t) => {
+  const fs = await import("node:fs");
+  const os = await import("node:os");
+  const path = await import("node:path");
+  const { retainAssets } = await import("../scripts/retain-pages-assets.mjs");
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "ui-asset-test-"));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const make = (name, files) => {
+    const site = path.join(root, name);
+    fs.mkdirSync(path.join(site, "assets"), { recursive: true });
+    for (const [file, body] of Object.entries(files))
+      fs.writeFileSync(path.join(site, "assets", file), body);
+    return site;
+  };
+  const dest = make("current", {
+    "main-new.js": "new",
+    "shared.js": "current",
+  });
+  const previous = make("previous", {
+    "catalog-old.js": "old",
+    "shared.js": "previous",
+  });
+  const oldest = make("oldest", { "expired.js": "expired" });
+  fs.writeFileSync(
+    path.join(previous, "asset-history.json"),
+    JSON.stringify({
+      builds: [
+        {
+          id: "previous",
+          createdAt: "2026-01-02",
+          files: ["catalog-old.js", "shared.js", "../unsafe.js"],
+        },
+      ],
+    }),
+  );
+  const result = retainAssets(
+    dest,
+    [
+      { site: previous, id: "previous", createdAt: "2026-01-02" },
+      { site: oldest, id: "oldest", createdAt: "2026-01-01" },
+    ],
+    { id: "current", createdAt: "2026-01-03" },
+    2,
+  );
+  assert.equal(result.copied, 1);
+  assert.equal(
+    fs.readFileSync(path.join(dest, "assets", "shared.js"), "utf8"),
+    "current",
+  );
+  assert.equal(
+    fs.readFileSync(path.join(dest, "assets", "catalog-old.js"), "utf8"),
+    "old",
+  );
+  assert.equal(fs.existsSync(path.join(dest, "assets", "expired.js")), false);
+  const history = JSON.parse(
+    fs.readFileSync(path.join(dest, "asset-history.json")),
+  );
+  assert.equal(history.builds.length, 2);
+  assert.ok(
+    history.builds.every((group) =>
+      group.files.every((file) => !file.includes("/")),
+    ),
+  );
 });

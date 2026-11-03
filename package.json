@@ -1,6 +1,6 @@
 {
   "name": "@ride-eats/ui",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "private": true,
   "type": "module",
   "description": "Ride Eats React components and design tokens",
@@ -28,9 +28,10 @@
     "build": "vite build",
     "test": "node tests/run.mjs",
     "typecheck": "tsc --noEmit",
-    "icons:generate": "node scripts/generate-icons.mjs",
+    "icons:generate": "node scripts/generate-icons.mjs && node scripts/generate-icon-motion.mjs",
     "visual:compare": "node scripts/compare-visuals.mjs",
-    "design:check": "node scripts/audit-design.mjs"
+    "design:check": "node scripts/audit-design.mjs",
+    "icons:motion": "node scripts/generate-icon-motion.mjs"
   },
   "peerDependencies": {
     "react": ">=19",

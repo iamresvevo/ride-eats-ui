@@ -1,3 +1,4 @@
+import CatalogBoundary from "./CatalogBoundary.jsx";
 import React, { useMemo, useState } from "react";
 import * as UI from "../react/index.jsx";
 const IconBrowser = React.lazy(() => import("./IconBrowser.jsx"));
@@ -299,11 +300,13 @@ export function CollectionDemo({ id }) {
   switch (id) {
     case "icons":
       return (
-        <React.Suspense
-          fallback={<UI.PageLoading label="Loading icon catalog" />}
-        >
-          <IconBrowser />
-        </React.Suspense>
+        <CatalogBoundary>
+          <React.Suspense
+            fallback={<UI.PageLoading label="Loading icon catalog" />}
+          >
+            <IconBrowser />
+          </React.Suspense>
+        </CatalogBoundary>
       );
     case "data-table":
       return <TableDemo />;

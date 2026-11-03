@@ -11,12 +11,19 @@ function catalogChunk(key) {
       key,
       lazy(() =>
         loaders[key]().then((module) => ({
-          default: ({ name, motion }) => {
+          default: ({ name, motion, strokeWidth }) => {
             const nodes = module.default[name] || [
               ["path", { d: "M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" }],
             ];
             if (motion === "auto" || motion === "draw")
-              return <AnimatedShapes nodes={nodes} name={name} />;
+              return (
+                <AnimatedShapes
+                  nodes={nodes}
+                  name={name}
+                  motion={motion}
+                  strokeWidth={strokeWidth}
+                />
+              );
             return nodes.map(([tag, attributes], index) =>
               React.createElement(tag, {
                 ...attributes,
@@ -128,8 +135,24 @@ export default function Icon({
   });
   const custom = useCustomIcons();
   const accessible = label || props["aria-label"] || title;
+  const preferCatalog =
+    motion === "auto" &&
+    [
+      "bell",
+      "heart",
+      "upload",
+      "download",
+      "search",
+      "settings",
+      "users",
+      "file",
+      "trash",
+      "trash-2",
+    ].includes(name);
   const Glyph =
-    !PATHS[name] && !custom[name] ? catalogChunk(String(name || "")[0]) : null;
+    (!PATHS[name] || preferCatalog) && !custom[name]
+      ? catalogChunk(String(name || "")[0])
+      : null;
   return (
     <svg
       {...props}
@@ -162,18 +185,20 @@ export default function Icon({
           />
         )}
         {custom[name] ||
-          (PATHS[name] ? (
+          (PATHS[name] && !preferCatalog ? (
             motion === "auto" || motion === "draw" ? (
               <AnimatedShapes
                 nodes={[["path", { d: PATHS[name] }]]}
                 name={name}
+                motion={motion}
+                strokeWidth={strokeWidth}
               />
             ) : (
               <path d={PATHS[name]} pathLength="1" />
             )
           ) : Glyph ? (
             <Suspense fallback={null}>
-              <Glyph name={name} motion={motion} />
+              <Glyph name={name} motion={motion} strokeWidth={strokeWidth} />
             </Suspense>
           ) : (
             <path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 4h.01" />

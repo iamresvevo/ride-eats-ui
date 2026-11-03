@@ -1,40 +1,108 @@
 import React from "react";
-
-// Animate geometry and strokes independently. No viewport or group transforms.
-export function AnimatedShapes({ nodes }) {
+import { shapeMotion } from "./motion-profiles.js";
+const settle = "0.25 1 0.3 1";
+function Motion({ attributeName, values, phase = 0 }) {
+  const [start, peak, end] = values.split(";");
+  return (
+    <animate
+      attributeName={attributeName}
+      values={`${start};${start};${peak};${end};${end}`}
+      keyTimes={`0;${0.08 + phase};${0.27 + phase};${0.52 + phase};1`}
+      dur="2.8s"
+      begin="indefinite"
+      calcMode="spline"
+      keySplines={`0 0 1 1;${settle};${settle};0 0 1 1`}
+    />
+  );
+}
+function Headset() {
+  return (
+    <>
+      <path d="M3 11a9 9 0 0 1 18 0" />
+      <path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z">
+        <Motion
+          attributeName="d"
+          values="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z;M3 11h3a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z;M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+        />
+      </path>
+      <path d="M21 11h-3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2z">
+        <Motion
+          attributeName="d"
+          phase={0.04}
+          values="M21 11h-3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2z;M21 11h-3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2z;M21 11h-3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2z"
+        />
+      </path>
+      <path d="M21 16v2a4 4 0 0 1-4 4h-5">
+        <Motion
+          attributeName="d"
+          phase={0.08}
+          values="M21 16v2a4 4 0 0 1-4 4h-5;M21 16v1a4 4 0 0 1-4 4h-5;M21 16v2a4 4 0 0 1-4 4h-5"
+        />
+      </path>
+    </>
+  );
+}
+function Folder() {
+  return (
+    <>
+      <path d="M3 9v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9" />
+      <path d="M3 9V5h6l2 3h10v1">
+        <Motion
+          attributeName="d"
+          values="M3 9V5h6l2 3h10v1;M3 9V3h6l2 3h10v3;M3 9V5h6l2 3h10v1"
+        />
+      </path>
+    </>
+  );
+}
+export function AnimatedShapes({
+  nodes,
+  name = "",
+  motion = "auto",
+  strokeWidth = 1.7,
+}) {
+  if (name === "headset" && motion !== "draw") return <Headset />;
+  if (name === "folder" && motion !== "draw") return <Folder />;
   return nodes.map(([tag, attributes], index) => {
-    // Keep the glyph readable throughout the cycle; start and end at the same state.
-    const phase = Math.min(index * 0.025, 0.16);
-    const children = [
-      <animate
-        key="accent"
-        attributeName="stroke-dashoffset"
-        values="0;0;.55;0;0"
-        keyTimes={`0;${phase || 0.001};${0.28 + phase};${0.6 + phase};1`}
-        dur="2.4s"
-        begin="indefinite"
-        calcMode="spline"
-        keySplines="0 0 1 1;.4 0 .2 1;.4 0 .2 1;0 0 1 1"
-      />,
-    ];
-    return (
-      <g key={index} data-svg-trace="true">
-        {React.createElement(tag, {
-          ...attributes,
-          strokeOpacity: 0.24,
-          "aria-hidden": true,
-        })}
-        {React.createElement(
-          tag,
-          {
-            ...attributes,
-            pathLength: 1,
-            strokeDasharray: "1",
-            strokeDashoffset: 0,
-          },
-          children,
-        )}
-      </g>
+    if (motion === "draw")
+      return (
+        <g key={index} data-svg-trace="true">
+          {React.createElement(tag, attributes)}
+          {React.createElement(
+            tag,
+            {
+              ...attributes,
+              pathLength: 1,
+              strokeDasharray: ".16 .84",
+              strokeOpacity: 0,
+              strokeWidth: Number(strokeWidth) + 0.35,
+            },
+            <>
+              <animate
+                attributeName="stroke-dashoffset"
+                values="0;0;-1;-1;0"
+                keyTimes="0;.1;.6;.9;1"
+                dur="2.8s"
+                begin="indefinite"
+                calcMode="spline"
+                keySplines={`0 0 1 1;${settle};0 0 1 1;0 0 1 1`}
+              />
+              <animate
+                attributeName="stroke-opacity"
+                values="0;.8;.8;0;0"
+                keyTimes="0;.1;.6;.9;1"
+                dur="2.8s"
+                begin="indefinite"
+              />
+            </>,
+          )}
+        </g>
+      );
+    const profile = shapeMotion(name, tag, attributes, index, nodes);
+    return React.createElement(
+      tag,
+      { ...attributes, key: index, "data-svg-detail": profile.attributeName },
+      <Motion {...profile} phase={Math.min(index * 0.025, 0.12)} />,
     );
   });
 }

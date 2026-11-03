@@ -9,170 +9,20 @@ import React, {
 } from "react";
 import Icon from "./send/Icon.jsx";
 import Modal from "./send/ui/Modal.jsx";
-const heart =
-  "M20.8 4.6 C18.6 2.4 15.1 2.4 13 4.6 L12 5.7 L10.9 4.6 C8.7 2.4 5.2 2.4 3.1 4.6 C.9 6.8 .9 10.3 3.1 12.4 L12 21 L20.8 12.4 C23 10.3 23 6.8 20.8 4.6 Z";
-const expandHeart = (scale) =>
-  heart.replace(/-?\d*\.?\d+/g, (number) =>
-    String(Number((12 + (Number(number) - 12) * scale).toFixed(3))),
-  );
-const glyphs = {
-  bell: (
-    <>
-      <g>
-        <path
-          pathLength="1"
-          strokeDasharray="1"
-          d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2"
-        />
-        <animate
-          attributeName="stroke-dashoffset"
-          values="0;.12;0;0"
-          dur="2.4s"
-          begin="indefinite"
-        />
-      </g>
-      <path pathLength="1" strokeDasharray="1" d="M10 21h4" />
-    </>
-  ),
-  heart: (
-    <path pathLength="1" strokeDasharray="1" d={heart}>
-      <animate
-        attributeName="d"
-        values={`${heart};${expandHeart(1.025)};${heart};${expandHeart(1.015)};${heart}`}
-        dur="2.4s"
-        begin="indefinite"
-      />
-    </path>
-  ),
-  check: (
-    <>
-      <circle cx="12" cy="12" r="9" />
-      <path pathLength="1" strokeDasharray="1" d="m7.5 12 3 3 6-6">
-        <animate
-          attributeName="stroke-dashoffset"
-          values="0;.18;0;0"
-          dur="2.4s"
-          begin="indefinite"
-        />
-      </path>
-    </>
-  ),
-  upload: (
-    <>
-      <path pathLength="1" strokeDasharray="1" d="M4 16v5h16v-5" />
-      <g>
-        <path pathLength="1" strokeDasharray="1" d="M12 16V3m-5 5 5-5 5 5" />
-        <animate
-          attributeName="stroke-dashoffset"
-          values="0;.12;0;0"
-          dur="2.4s"
-          begin="indefinite"
-        />
-      </g>
-    </>
-  ),
-  download: (
-    <>
-      <path pathLength="1" strokeDasharray="1" d="M4 17v4h16v-4" />
-      <g>
-        <path pathLength="1" strokeDasharray="1" d="M12 3v13m-5-5 5 5 5-5" />
-        <animate
-          attributeName="stroke-dashoffset"
-          values="0;.12;0;0"
-          dur="2.4s"
-          begin="indefinite"
-        />
-      </g>
-    </>
-  ),
-  search: (
-    <>
-      <circle cx="10.5" cy="10.5" r="6.5">
-        <animate
-          attributeName="r"
-          values="6.5;6.8;6.5"
-          dur="2.4s"
-          begin="indefinite"
-        />
-      </circle>
-      <path pathLength="1" strokeDasharray="1" d="m16 16 5 5" />
-    </>
-  ),
-  refresh: (
-    <g>
-      <path
-        pathLength="1"
-        strokeDasharray="1"
-        d="M20 7a8 8 0 0 0-13.5-2L3 8m0-5v5h5M4 17a8 8 0 0 0 13.5 2L21 16m0 5v-5h-5"
-      />
-      <animate
-        attributeName="stroke-dashoffset"
-        values="0;.12;0;0"
-        dur="2.4s"
-        begin="indefinite"
-      />
-    </g>
-  ),
-  settings: (
-    <>
-      <path pathLength="1" strokeDasharray="1" d="M4 6h16M4 12h16M4 18h16" />
-      <path pathLength="1" strokeDasharray="1" d="M8 3v6">
-        <animate
-          attributeName="d"
-          values="M8 3v6;M12 3v6;M8 3v6"
-          dur="2.4s"
-          begin="indefinite"
-        />
-      </path>
-      <path pathLength="1" strokeDasharray="1" d="M16 9v6">
-        <animate
-          attributeName="d"
-          values="M16 9v6;M11 9v6;M16 9v6"
-          dur="2.4s"
-          begin="indefinite"
-        />
-      </path>
-      <path pathLength="1" strokeDasharray="1" d="M10 15v6">
-        <animate
-          attributeName="d"
-          values="M10 15v6;M15 15v6;M10 15v6"
-          dur="2.4s"
-          begin="indefinite"
-        />
-      </path>
-    </>
-  ),
-  folder: (
-    <>
-      <path pathLength="1" strokeDasharray="1" d="M3 9v11h18V9" />
-      <path pathLength="1" strokeDasharray="1" d="M3 9V5h6l2 3h10v1">
-        <animate
-          attributeName="d"
-          values="M3 9V5h6l2 3h10v1;M3 9V3h6l2 3h10v3;M3 9V5h6l2 3h10v1"
-          dur="2.4s"
-          begin="indefinite"
-        />
-      </path>
-    </>
-  ),
-  send: (
-    <g>
-      <path
-        pathLength="1"
-        strokeDasharray="1"
-        d="m21 3-7 18-4-8-8-4L21 3ZM10 13 21 3"
-      />
-      <animate
-        attributeName="stroke-dashoffset"
-        values="0;.12;0;0"
-        dur="2.4s"
-        begin="indefinite"
-      />
-    </g>
-  ),
-};
 export const animatedIconNames = [
-  ...new Set([...Object.keys(glyphs), ...iconNames]),
+  ...new Set([
+    "bell",
+    "heart",
+    "check",
+    "upload",
+    "download",
+    "search",
+    "refresh",
+    "settings",
+    "folder",
+    "send",
+    ...iconNames,
+  ]),
 ];
 export function AnimatedIcon({
   name,
@@ -185,47 +35,22 @@ export function AnimatedIcon({
   style,
   ...props
 }) {
-  const ref = useRef(null);
-  useSvgMotion(ref, { playing, loop, hover: true, name });
-  if (!glyphs[name])
-    return (
-      <Icon
-        {...props}
-        name={name}
-        size={size}
-        strokeWidth={strokeWidth}
-        playing={playing}
-        loop={loop}
-        label={label}
-        className={`re-animated-icon ${className}`}
-        style={style}
-        motion="auto"
-      />
-    );
   return (
-    <svg
+    <Icon
       {...props}
-      ref={ref}
-      className={`re-animated-icon ${className}`}
-      data-preset={name}
-      data-playing={playing || undefined}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
+      name={name}
+      size={size}
       strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      width={size}
-      height={size}
-      style={{ width: size, height: size, ...style }}
-      aria-hidden={label ? undefined : true}
-      aria-label={label}
-      role={label ? "img" : undefined}
-    >
-      {glyphs[name] || glyphs.check}
-    </svg>
+      playing={playing}
+      loop={loop}
+      label={label}
+      className={`re-animated-icon ${className}`}
+      style={style}
+      motion="auto"
+    />
   );
 }
+
 export function Popover({
   open,
   onOpenChange,

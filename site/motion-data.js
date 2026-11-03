@@ -23,13 +23,13 @@ export const motionPages = [
     "animated-icons",
     "Animated Icons",
     "Motion",
-    "Native SVG animation for the complete 2,292 supported icon names. Visible stroke tracing keeps a faint, steady outline underneath. Selection plays immediately; Replay and Loop preview make playback explicit. Ten bespoke presets add path morphs and purpose-built motion. Search any icon, hover to play, and copy one React component.",
+    "435 icon names with native SVG geometry motion, including authored headset and folder treatments and shared family treatments. Complete glyphs stay visible. Replay and Loop preview expose playback; the enlarged preview exports your actual selected size. The full catalog remains available separately with gentle emphasis for other names.",
     `<AnimatedIcon name="bell" size={28} />\n<AnimatedIcon name="check" playing />\n<AnimatedIcon name="refresh" playing loop />\n// Hover/focus on a parent button also triggers the icon.\n<Button><AnimatedIcon name="send" /> Send files</Button>`,
     [
       [
         "name",
         "string — any catalog name",
-        "All 2,292 supported names, plus refresh. Ten bespoke presets; remaining glyphs use native SVG stroke tracing.",
+        "Any catalog name. The animated browser lists geometry treatments; other names use gentle emphasis.",
       ],
       [
         "playing / loop",

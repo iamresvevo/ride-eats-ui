@@ -1,3 +1,4 @@
+import CatalogBoundary from "./CatalogBoundary.jsx";
 import CommandDemo from "./CommandDemo.jsx";
 import GestureDemos from "./GestureDemos.jsx";
 import React, { lazy, Suspense, useState } from "react";
@@ -28,11 +29,13 @@ export default function MotionDemos({ id }) {
   switch (id) {
     case "animated-icons":
       return (
-        <Suspense
-          fallback={<UI.PageLoading label="Loading animated icon library" />}
-        >
-          <IconBrowser animated />
-        </Suspense>
+        <CatalogBoundary>
+          <Suspense
+            fallback={<UI.PageLoading label="Loading animated icon library" />}
+          >
+            <IconBrowser animated />
+          </Suspense>
+        </CatalogBoundary>
       );
     case "popover":
       return (

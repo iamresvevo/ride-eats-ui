@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.5
+npm install github:iamresvevo/ride-eats-ui#v0.9.6
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -261,7 +261,7 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 
 ## Native SVG motion and more components
 
-[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) cover all 2,292 supported names. Catalog glyphs use a visible staggered stroke trace over a faint, steady outline that keeps the icon visible, with a continuous 2.4-second cycle. Arbitrary path scaling and circle/ellipse squashing are removed. Ten bespoke presets add path morphs and purpose-built motion. These are generated SVG animations across the catalog, not 2,015 individually hand-authored choreographies. Hover/focus plays once; `playing` and `loop` control playback. Reduced-motion preferences stop playback. Letter chunks stay lazy-loaded.
+[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) lists 435 names with native SVG geometry motion: two authored treatments and 433 family-based treatments. The complete 2,292-name catalog remains available; other names receive gentle stroke emphasis. This is not a claim of individual choreography or visual review for every glyph. Headset earpieces and microphone move independently; folder motion opens its flap. Default motion keeps the complete glyph visible, with a 2.8-second cycle and resting pause. Explicit `motion="draw"` adds a tracing overlay. Hover/focus plays once; `playing` and `loop` control playback. Reduced-motion preferences stop playback. See [the treatment inventory](docs/icon-motion-coverage.json).
 
 ```jsx
 <AnimatedIcon name="bell" size={28} />

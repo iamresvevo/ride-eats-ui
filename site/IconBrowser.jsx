@@ -1,3 +1,5 @@
+import { geometryMotionNames } from "../react/icons/motion-names.js";
+import { motionFamily } from "../react/icons/motion-profiles.js";
 import React, { useMemo, useState } from "react";
 import {
   Icon,
@@ -82,12 +84,13 @@ export default function IconBrowser({ animated = false }) {
   const PreviewIcon = motion === "auto" ? AnimatedIcon : Icon;
   const filtered = useMemo(() => {
     const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    const names = animated ? geometryMotionNames : iconNames;
     const pool =
       terms.length || category !== "All"
-        ? iconNames
+        ? names
         : [
-            ...popular.filter((name) => iconNames.includes(name)),
-            ...iconNames.filter((name) => !popular.includes(name)),
+            ...popular.filter((name) => names.includes(name)),
+            ...names.filter((name) => !popular.includes(name)),
           ];
     return pool.filter((name) => {
       const text = (
@@ -101,7 +104,7 @@ export default function IconBrowser({ animated = false }) {
           categories[category].some((term) => text.includes(term)))
       );
     });
-  }, [query, category]);
+  }, [query, category, animated]);
   const snippet =
     motion === "auto"
       ? `<AnimatedIcon name="${selected}" size={${size}} strokeWidth={${stroke}} playing${loop ? " loop" : ""} />`
@@ -113,7 +116,7 @@ export default function IconBrowser({ animated = false }) {
           <Icon name="search" />
           <input
             aria-label="Search icons"
-            placeholder={`Search ${iconNames.length.toLocaleString()} icons…`}
+            placeholder={`Search ${(animated ? geometryMotionNames : iconNames).length.toLocaleString()} icons…`}
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -121,7 +124,10 @@ export default function IconBrowser({ animated = false }) {
             }}
           />
         </label>
-        <span>{filtered.length.toLocaleString()} icons</span>
+        <span>
+          {filtered.length.toLocaleString()}{" "}
+          {animated ? "geometry animations" : "icons"}
+        </span>
       </div>
       <div className="icon-browser-categories">
         <Segmented
@@ -143,7 +149,7 @@ export default function IconBrowser({ animated = false }) {
           <PreviewIcon
             key={selected + motion + replay}
             name={selected}
-            size={size}
+            size={size * 2}
             strokeWidth={Number(stroke)}
             {...(motion === "auto" ? {} : { motion, animateOn: "always" })}
             playing={motion !== "none"}
@@ -151,6 +157,12 @@ export default function IconBrowser({ animated = false }) {
             label={selected}
           />
           <strong>{selected}</strong>
+          <small>2× preview · exported at {size}px</small>
+          <small>
+            {motionFamily(selected) === "detail"
+              ? "Gentle emphasis · general treatment"
+              : `${motionFamily(selected)} motion`}
+          </small>
         </div>
         <div className="icon-controls">
           <div className="icon-control-row">
@@ -175,7 +187,7 @@ export default function IconBrowser({ animated = false }) {
                   onChange={setStroke}
                   options={[
                     { value: "1.5", label: "Fine" },
-                    { value: "1.7", label: "Send" },
+                    { value: "1.7", label: "Default" },
                     { value: "2", label: "Regular" },
                     { value: "2.5", label: "Bold" },
                   ]}
@@ -217,7 +229,10 @@ export default function IconBrowser({ animated = false }) {
           onChange={setLoop}
           disabled={motion === "none"}
         />
-        <small>Select an icon to play. Hover any glyph to replay it.</small>
+        <small>
+          Select an icon to play. Hover to replay. Loops include a resting
+          pause.
+        </small>
         <small className="icon-reduced-note">
           Your system reduces motion; animations are paused.
         </small>

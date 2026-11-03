@@ -1,0 +1,26 @@
+{
+  "version": "0.9.6",
+  "checks": [
+    "module parsing",
+    "design contract",
+    "TypeScript",
+    "30 automated tests",
+    "production build"
+  ],
+  "browser": {
+    "icons": "Fresh catalog, selection, replay and loop verified in Chromium-backed IAB",
+    "staleDeployment": "Reproduced blank React root by replacing v0.9.4 assets under an open tab. Retained assets let the old tab open Icons without reload.",
+    "recovery": "Deliberately missing lazy chunk rendered recovery panel; restoring chunk and pressing Reload restored catalog.",
+    "animation": "Headset has four visible paths and three native path-data animations; no animated SVG viewport."
+  },
+  "coverage": {
+    "authoredTreatments": 2,
+    "familyGeometryNames": 433,
+    "emphasisNames": 1857,
+    "individualVisualReviewOfAllGlyphs": false
+  },
+  "limits": [
+    "No cross-browser or physical-device verification",
+    "Shared family treatments are not individually authored choreography"
+  ]
+}

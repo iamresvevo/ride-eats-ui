@@ -26,8 +26,12 @@ export function useSvgMotion(
       if (!nodes.length) return;
       active = true;
       nodes.forEach((animation) => {
-        animation.setAttribute("repeatCount", loop ? "indefinite" : "1");
-        animation.beginElement?.();
+        try {
+          animation.setAttribute("repeatCount", loop ? "indefinite" : "1");
+          animation.beginElement?.();
+        } catch {
+          /* Unsupported SVG playback leaves the complete glyph still. */
+        }
       });
       if (!loop)
         timer = setTimeout(
