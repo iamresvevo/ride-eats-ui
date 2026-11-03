@@ -1171,3 +1171,76 @@ test("flat tabs and section navigation preserve their distinct navigation semant
   assert.match(split, /re-split-plain/);
   assert.match(split, /aria-valuenow="36"/);
 });
+
+test("comparison keeps a controlled native range and meaningful image alternatives", () => {
+  const html = render("ImageCompare", {
+    before: { src: "before.svg", alt: "Original route" },
+    after: { src: "after.svg", alt: "Revised route" },
+    value: 125,
+    onValueChange: () => {},
+  });
+  assert.match(html, /type="range"/);
+  assert.match(html, /value="100"/);
+  assert.match(html, /aria-valuetext="100% before, 0% after"/);
+  assert.match(html, /alt="Original route"/);
+  assert.match(html, /alt="Revised route"/);
+});
+test("tree expansion and selection remain separate and expose hierarchy levels", () => {
+  const nodes = [
+    {
+      id: "root",
+      label: "Artwork",
+      children: [{ id: "file", label: "Logo.svg" }],
+    },
+  ];
+  const open = render("TreeView", {
+    nodes,
+    expandedKeys: ["root"],
+    onExpandedChange: () => {},
+    value: "file",
+    onValueChange: () => {},
+  });
+  assert.match(open, /aria-level="2"/);
+  assert.match(open, /aria-selected="true"/);
+  assert.match(open, /aria-expanded="true"/);
+  const closed = render("TreeView", {
+    nodes,
+    expandedKeys: [],
+    onExpandedChange: () => {},
+    value: "file",
+    onValueChange: () => {},
+  });
+  assert.doesNotMatch(closed, /Logo.svg/);
+  assert.match(closed, /tabindex="0"/);
+});
+test("signature strokes remain vector data with explicit undo and clear controls", () => {
+  const html = render("SignaturePad", {
+    value: [
+      [
+        { x: 10, y: 20 },
+        { x: 30, y: 40 },
+      ],
+    ],
+    onValueChange: () => {},
+    label: "Sample mark",
+  });
+  assert.match(html, /M10 20 L30 40/);
+  assert.match(html, /viewBox="0 0 1000 400"/);
+  assert.match(html, /Undo stroke/);
+  assert.match(html, /Clear/);
+  assert.match(html, /pointing device/);
+});
+test("heatmap dates align to Monday across a year boundary and retain textual values", () => {
+  const html = render("ActivityHeatmap", {
+    startDate: "2027-01-01",
+    weeks: 1,
+    values: [{ date: "2026-12-28", value: 8 }],
+    value: "2026-12-28",
+    onValueChange: () => {},
+  });
+  assert.match(html, /Monday, December 28, 2026: 8 events/);
+  assert.match(html, /aria-pressed="true"/);
+  assert.equal((html.match(/type="button"/g) || []).length, 7);
+  const invalid = render("ActivityHeatmap", { startDate: "2026-02-30" });
+  assert.match(invalid, /role="alert"/);
+});

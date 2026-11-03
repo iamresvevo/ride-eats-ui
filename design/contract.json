@@ -160,6 +160,15 @@
         "animatedIconNames",
         "iconNames"
       ]
+    },
+    "specialized": {
+      "source": "Independent library-owned interaction designs, using neutral Send/Tools tokens and native input semantics; no third-party implementation copied",
+      "apis": [
+        "ImageCompare",
+        "TreeView",
+        "SignaturePad",
+        "ActivityHeatmap"
+      ]
     }
   },
   "removed": {

@@ -30,6 +30,15 @@ const workflows = new Set([
   "support-inbox",
 ]);
 export function sourceForPage(id) {
+  if (
+    [
+      "image-compare",
+      "tree-view",
+      "signature-pad",
+      "activity-heatmap",
+    ].includes(id)
+  )
+    return "react/specialized.jsx";
   if (send[id]) return "react/send/" + send[id];
   if (id === "command-menu") return "react/CommandMenu.jsx";
   if (id === "sticky-bar") return "react/StickyBar.jsx";

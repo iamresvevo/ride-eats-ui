@@ -300,8 +300,6 @@
 }
 .demo-stack .tabs {
   margin: 0;
-  box-shadow: none;
-  background: var(--raised);
 }
 .demo-caption {
   font-size: 11px;
@@ -615,6 +613,8 @@
   margin-bottom: 20px;
 }
 .header-demo {
+  height: 300px;
+  overflow: auto;
   width: 100%;
   align-self: stretch;
   min-width: 0;
@@ -623,7 +623,7 @@
   border-radius: var(--r);
 }
 .header-demo .site-header {
-  position: relative;
+  position: sticky;
   padding: 14px 16px;
   gap: 8px;
   z-index: 2;
@@ -867,14 +867,11 @@
   position: sticky;
   top: 0;
   z-index: 60;
-  background: var(--bg);
 }
 .docs-shell-header > .site-header {
   height: 76px;
   position: relative;
   padding: 12px 28px;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
   gap: 20px;
 }
 .docs-shell-header .brand-name {

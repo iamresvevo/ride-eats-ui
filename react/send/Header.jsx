@@ -15,6 +15,8 @@ export default function Header({
   menuContent,
   guestContent,
   extras,
+  fade = true,
+  fadeSize = 72,
   className = "",
   style,
 }) {
@@ -34,13 +36,22 @@ export default function Header({
   useLayoutEffect(() => {
     const element = header.current;
     const app = element.parentElement;
+    let scrollRoot = app;
+    while (
+      scrollRoot &&
+      !/(auto|scroll|overlay)/.test(getComputedStyle(scrollRoot).overflowY)
+    )
+      scrollRoot = scrollRoot.parentElement;
     let previous = -1;
     const paint = (offset) => {
       const opacity =
         Math.round(Math.min(1, Math.max(0, offset) / 40) * 100) / 100;
       if (opacity === previous) return;
       previous = opacity;
-      element.style.setProperty("--header-blur-opacity", String(opacity));
+      element.style.setProperty(
+        "--header-blur-opacity",
+        String(fade ? opacity : 0),
+      );
     };
     const onScroll = (event) => {
       if (
@@ -48,7 +59,8 @@ export default function Header({
         event.target === window ||
         event.target === document.scrollingElement
       )
-        paint(window.scrollY);
+        paint(scrollRoot ? scrollRoot.scrollTop : window.scrollY);
+      else if (event.target === scrollRoot) paint(scrollRoot.scrollTop);
       else if (
         event.target instanceof HTMLElement &&
         event.target.matches(".page:not([hidden])") &&
@@ -57,9 +69,11 @@ export default function Header({
         paint(event.target.scrollTop);
     };
     paint(
-      window.scrollY ||
-        app.querySelector(":scope > .page:not([hidden])")?.scrollTop ||
-        0,
+      scrollRoot
+        ? scrollRoot.scrollTop
+        : window.scrollY ||
+            app.querySelector(":scope > .page:not([hidden])")?.scrollTop ||
+            0,
     );
     document.addEventListener("scroll", onScroll, {
       passive: true,
@@ -70,7 +84,7 @@ export default function Header({
       document.removeEventListener("scroll", onScroll, true);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [activeValue]);
+  }, [activeValue, fade]);
   // One pill slides to the active tab, like the app's tab bar.
   const nav = useRef(null);
   const pill = useRef(null);
@@ -131,7 +145,7 @@ export default function Header({
     <header
       ref={header}
       className={`site-header site-header-scope send-header ${className}`}
-      style={style}
+      style={{ "--header-fade-size": `${Math.max(0, fadeSize)}px`, ...style }}
     >
       <div className="header-blur" aria-hidden="true" />
       <a

@@ -31,6 +31,8 @@ export interface MenuRow {
   items?: MenuRow[];
 }
 export interface HeaderProps extends StylingProps {
+  fade?: boolean;
+  fadeSize?: number;
   brand: { name: string; href?: string; logoLight?: string; logoDark?: string };
   items?: NavItem[];
   activeValue?: string;
@@ -1139,5 +1141,69 @@ export function SectionNav(
     offset?: number | string;
     value?: string;
     onValueChange?: (id: string) => void;
+  },
+): React.ReactElement;
+
+export interface ComparisonImage {
+  src: string;
+  alt: string;
+  label?: React.ReactNode;
+}
+export function ImageCompare(
+  props: StylingProps & {
+    before: ComparisonImage;
+    after: ComparisonImage;
+    value: number;
+    onValueChange: (value: number) => void;
+    label?: string;
+    aspectRatio?: string;
+    disabled?: boolean;
+  },
+): React.ReactElement;
+export interface TreeNode {
+  id: string;
+  label: string;
+  icon?: string;
+  detail?: React.ReactNode;
+  disabled?: boolean;
+  children?: TreeNode[];
+}
+export function TreeView(
+  props: StylingProps & {
+    nodes: TreeNode[];
+    value?: string;
+    onValueChange: (id: string) => void;
+    expandedKeys: string[];
+    onExpandedChange: (ids: string[]) => void;
+    label?: string;
+  },
+): React.ReactElement;
+export interface SignaturePoint {
+  x: number;
+  y: number;
+}
+export type SignatureStroke = SignaturePoint[];
+export function SignaturePad(
+  props: StylingProps & {
+    value: SignatureStroke[];
+    onValueChange: (strokes: SignatureStroke[]) => void;
+    label?: string;
+    disabled?: boolean;
+    strokeWidth?: number;
+    emptyText?: string;
+    footer?: React.ReactNode;
+  },
+): React.ReactElement;
+export function ActivityHeatmap(
+  props: StylingProps & {
+    startDate: string;
+    weeks?: number;
+    values?: { date: string; value: number }[];
+    value?: string;
+    onValueChange?: (date: string) => void;
+    label?: string;
+    max?: number;
+    locale?: string;
+    formatValue?: (value: number) => string;
   },
 ): React.ReactElement;

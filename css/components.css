@@ -769,8 +769,12 @@ a.tool-card:hover {
   box-shadow: none;
   border-bottom: 1px solid var(--line);
 }
-.tabs-flat .tabs-selection {
-  visibility: hidden;
+.tabs-flat .tabs-selection > span {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--r-pill);
+  background: var(--text);
 }
 .tabs-flat .tab {
   height: 48px;
@@ -778,6 +782,7 @@ a.tool-card:hover {
   color: var(--muted);
 }
 .tabs-flat .tab.active {
+  font-weight: 750;
   color: var(--text);
   background: transparent;
 }

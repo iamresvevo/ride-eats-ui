@@ -1,3 +1,4 @@
+import { SpecializedDemo } from "./SpecializedDemos.jsx";
 import CatalogBoundary from "./CatalogBoundary.jsx";
 import React, { useMemo, useState } from "react";
 import * as UI from "../react/index.jsx";
@@ -597,6 +598,11 @@ export function CollectionDemo({ id }) {
           </MetricGrid>
         </div>
       );
+    case "image-compare":
+    case "tree-view":
+    case "signature-pad":
+    case "activity-heatmap":
+      return <SpecializedDemo id={id} />;
     case "section-nav":
       return (
         <div style={{ height: 380, overflow: "auto" }}>

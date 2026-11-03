@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.14
+npm install github:iamresvevo/ride-eats-ui#v0.9.18
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -342,3 +342,11 @@ Flat navigation: `Tabs variant="flat" width="full"` keeps controlled panel/tab s
 Toolbar defaults to `align="end"` so labelled fields, hidden-label search inputs and buttons share a control baseline; `start` and `center` remain available. For a table panel, use `<Card padding="none" footer={pagination}><DataTable variant="inset" ... /></Card>` to keep one surface. DataTable column `wrap: true` with `width` allows long identifiers and secondary text to wrap instead of pushing actions off screen. Badges retain intrinsic width inside Stack.
 
 DataTable defaults to `variant="auto"`: standalone outside Cards, inset inside them. Choose `standalone` to explicitly retain the table border. `cellAlign="top"` aligns multi-line row content at its first line; the default is `middle`.
+
+### Four focused additions
+
+[Image Compare](https://iamresvevo.github.io/ride-eats-ui/#image-compare), [Tree View](https://iamresvevo.github.io/ride-eats-ui/#tree-view), [Signature Pad](https://iamresvevo.github.io/ride-eats-ui/#signature-pad) and [Activity Heatmap](https://iamresvevo.github.io/ride-eats-ui/#activity-heatmap) add distinct inspection, hierarchy, pointer drawing and calendar-history interactions. They use controlled caller data and the existing foundation tokens. Each has a live example, type declarations and documented input/accessibility boundaries. Source: `react/specialized.jsx`; no Reacticx implementation or media is copied.
+
+Flat Tabs show the active item with a sliding underline and stronger text. Use `variant="flat"`; the default pill style remains available.
+
+Header supports `fade={true}` (default) and `fadeSize={72}` for the neutral gradient beneath sticky controls. The fade now tracks the nearest native scrolling ancestor as well as document scrolling and the existing page layout. It uses no backdrop blur. Match the header’s containing surface with the shared `--bg` token.

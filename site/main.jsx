@@ -96,6 +96,11 @@ const components = [
       ],
       ["account", "Account | null", "Name, email, avatar and verified."],
       [
+        "fade / fadeSize",
+        "boolean / number",
+        "Neutral scroll-driven fade, enabled by default with a 72px extent.",
+      ],
+      [
         "loading / signingOut",
         "boolean",
         "Account loading and sign-out states.",
@@ -530,7 +535,15 @@ function Demo({ id }) {
             <div className="mini-file">
               <Icon name="folder" />
             </div>
-            <span>Your workspace, beautifully familiar.</span>
+            <span>
+              Scroll this workspace preview to inspect the header fade.
+            </span>
+          </div>
+          <div className="header-demo-page">
+            <h2>Content passes softly under the controls.</h2>
+          </div>
+          <div className="header-demo-page">
+            <p>The header tracks this nested scroll container.</p>
           </div>
         </div>
       );

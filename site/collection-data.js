@@ -18,6 +18,116 @@ const entry = (
 });
 export const collectionPages = [
   entry(
+    "image-compare",
+    "Image Compare",
+    "Display",
+    "A direct before/after artwork inspection surface. Drag the divider or use the native range with arrow keys.",
+    `const [position,setPosition] = useState(50);
+<ImageCompare before={{src:"/before.jpg",alt:"Original artwork"}} after={{src:"/after.jpg",alt:"Revised artwork"}} value={position} onValueChange={setPosition} />`,
+    [
+      [
+        "before / after",
+        "{src,alt,label?}",
+        "Paired image sources with meaningful alternatives.",
+      ],
+      [
+        "value / onValueChange",
+        "0–100 / callback",
+        "Controlled before-image reveal.",
+      ],
+      [
+        "aspectRatio / disabled",
+        "string / boolean",
+        "Surface proportions and input availability.",
+      ],
+    ],
+    "ImageCompare",
+  ),
+  entry(
+    "tree-view",
+    "Tree View",
+    "Navigation",
+    "A compact hierarchy with independent expansion and selection, roving focus, typeahead and the full tree arrow-key model.",
+    `const [selected,setSelected] = useState("artwork");
+const [expanded,setExpanded] = useState(["artwork"]);
+<TreeView label="Assets" nodes={[{id:"artwork",label:"Artwork",children:[{id:"logo",label:"Logo.svg"}]}]} value={selected} onValueChange={setSelected} expandedKeys={expanded} onExpandedChange={setExpanded} />`,
+    [
+      [
+        "nodes",
+        "TreeNode[]",
+        "Unique id, text label, optional icon/detail/children/disabled.",
+      ],
+      [
+        "value / onValueChange",
+        "string / callback",
+        "Controlled selected item.",
+      ],
+      [
+        "expandedKeys / onExpandedChange",
+        "string[] / callback",
+        "Controlled expansion independent of selection.",
+      ],
+    ],
+    "TreeView",
+  ),
+  entry(
+    "signature-pad",
+    "Signature Pad",
+    "Inputs",
+    "A pointer-captured vector drawing surface with undo and clear. Strokes remain caller-owned; it never uploads or submits a signature.",
+    `const [strokes,setStrokes] = useState([]);
+<SignaturePad value={strokes} onValueChange={setStrokes} label="Delivery acknowledgement" />`,
+    [
+      [
+        "value / onValueChange",
+        "SignatureStroke[] / callback",
+        "Arrays of points in a 1000 × 400 coordinate space.",
+      ],
+      [
+        "strokeWidth / disabled",
+        "number / boolean",
+        "Ink width in screen pixels (1–12) and input availability.",
+      ],
+      [
+        "label / emptyText / footer",
+        "string / string / ReactNode",
+        "Accessible name, drawing hint and caller context.",
+      ],
+    ],
+    "SignaturePad",
+  ),
+  entry(
+    "activity-heatmap",
+    "Activity Heatmap",
+    "Display",
+    "A calendar matrix for dense daily history. Neutral levels and a solid accent peak, labelled dates, keyboard day/week navigation and optional selection.",
+    `<ActivityHeatmap startDate="2026-08-03" weeks={12} values={[{date:"2026-08-03",value:8},{date:"2026-08-04",value:3}]} label="Publishing activity" />`,
+    [
+      [
+        "startDate / weeks",
+        "YYYY-MM-DD / 1–53",
+        "Starts on the Monday of the supplied week; dates use UTC day keys.",
+      ],
+      [
+        "values / max",
+        "{date,value}[] / number",
+        "Daily data and an optional shared intensity ceiling.",
+      ],
+      [
+        "value / onValueChange",
+        "date / callback",
+        "Optional selected day; the date labels include counts.",
+      ],
+      [
+        "locale / formatValue",
+        "string / callback",
+        "Date formatting locale and caller-owned value descriptions.",
+      ],
+    ],
+    "ActivityHeatmap",
+  ),
+
+  entry(
     "section-nav",
     "Section Navigation",
     "Navigation",
