@@ -192,6 +192,8 @@ export function Dialog(props: {
   title?: React.ReactNode;
   children?: React.ReactNode;
   footer?: React.ReactNode;
+  toolbar?: React.ReactNode;
+  scroll?: "body" | "dialog";
   size?: "sm" | "md" | "lg";
   dismissible?: boolean;
   beforeClose?: () => boolean | Promise<boolean>;
@@ -568,6 +570,8 @@ export function Masonry(
 export function Grid(
   props: React.HTMLAttributes<HTMLDivElement> & {
     min?: number;
+    columns?: number;
+    density?: "default" | "compact";
     layout?: "auto" | "sidebar" | "aside" | "split";
     sidebarWidth?: number;
     ratio?: [number, number];
@@ -611,6 +615,11 @@ export function Tile(
     disabled?: boolean;
     variant?: "default" | "row";
     selected?: boolean;
+    density?: "default" | "compact";
+    imageSize?: number;
+    imageFit?: "contain" | "cover";
+    titleLines?: number;
+    showFooter?: boolean;
   },
 ): React.ReactElement;
 export function PageHeader(
@@ -1093,5 +1102,21 @@ export function StickyBar(
     /** @deprecated Ignored: the kit no longer uses blur effects. */
     blur?: boolean;
     label?: string;
+  },
+): React.ReactElement;
+
+export function ScrollArea(
+  props: React.HTMLAttributes<HTMLElement> & {
+    header?: React.ReactNode;
+    footer?: React.ReactNode;
+    label: string;
+  },
+): React.ReactElement;
+export function Workbench(
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    leadingWidth?: number;
+    trailingWidth?: number;
+    height?: string;
+    gap?: number;
   },
 ): React.ReactElement;

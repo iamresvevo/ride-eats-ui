@@ -660,7 +660,6 @@ test("audit removes duplicate APIs and preserves canonical equivalents", () => {
     "Stat",
     "Modal",
     "Steps",
-    "ScrollArea",
     "Separator",
   ])
     assert.equal(name in UI, false, name);
@@ -1097,4 +1096,50 @@ test("masonry retains source order and intact item wrappers while flex exposes w
   assert.match(flex, /justify-content:space-between/);
   assert.match(flex, /align-items:flex-end/);
   assert.match(flex, /flex-wrap:wrap/);
+});
+
+test("editor panels expose named native scroll regions and persistent control slots", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(
+      UI.Workbench,
+      { leadingWidth: 240, trailingWidth: 260 },
+      React.createElement(
+        UI.ScrollArea,
+        {
+          label: "Object options",
+          header: "Pinned title",
+          footer: "Pinned action",
+        },
+        "Scrollable fields",
+      ),
+    ),
+  );
+  assert.match(html, /re-workbench/);
+  assert.match(html, /--workbench-leading:240px/);
+  assert.match(html, /role="region" aria-label="Object options" tabindex="0"/);
+  assert.ok(html.indexOf("Pinned title") < html.indexOf("Scrollable fields"));
+  assert.ok(html.indexOf("Pinned action") > html.indexOf("Scrollable fields"));
+});
+
+test("compact catalogue props preserve selection and hide only optional tile chrome", () => {
+  const html = render("Grid", {
+    columns: 3,
+    min: 120,
+    density: "compact",
+    children: React.createElement(UI.Tile, {
+      title: "Long catalogue title",
+      density: "compact",
+      imageSize: 32,
+      titleLines: 2,
+      showFooter: false,
+      selected: true,
+      onClick: () => {},
+    }),
+  });
+  assert.match(html, /--layout-columns:3/);
+  assert.match(html, /--layout-gap:8px/);
+  assert.match(html, /--tile-image-size:32px/);
+  assert.match(html, /aria-pressed="true"/);
+  assert.doesNotMatch(html, /re-tile-footer/);
+  assert.match(html, /Long catalogue title/);
 });

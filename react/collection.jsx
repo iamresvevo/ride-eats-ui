@@ -848,7 +848,9 @@ export function Grid({
   layout = "auto",
   sidebarWidth = 320,
   ratio = [1, 1],
-  gap = 20,
+  gap,
+  columns,
+  density = "default",
   align = "start",
   className = "",
   style,
@@ -857,10 +859,15 @@ export function Grid({
   return (
     <div
       {...props}
+      data-density={density}
+      data-columns={columns ? true : undefined}
       className={`re-layout-grid re-layout-grid-${layout} ${className}`}
       style={{
         "--layout-min": `${min}px`,
-        "--layout-gap": `${gap}px`,
+        "--layout-gap": `${gap ?? (density === "compact" ? 8 : 20)}px`,
+        "--layout-columns": columns
+          ? Math.max(1, Math.floor(columns))
+          : undefined,
         "--layout-sidebar": `${sidebarWidth}px`,
         "--layout-leading": `${Math.max(0.01, Number(ratio[0]) || 1)}fr`,
         "--layout-trailing": `${Math.max(0.01, Number(ratio[1]) || 1)}fr`,
@@ -1072,6 +1079,12 @@ export function Tile({
   disabled = false,
   variant = "default",
   selected = false,
+  density,
+  imageSize,
+  imageFit = "contain",
+  titleLines,
+  showFooter = true,
+  style,
   className = "",
   ...props
 }) {
@@ -1080,6 +1093,14 @@ export function Tile({
     return (
       <Tag
         {...props}
+        data-density={density}
+        data-title-lines={titleLines ? true : undefined}
+        style={{
+          "--tile-image-size": imageSize ? `${imageSize}px` : undefined,
+          "--tile-image-fit": imageFit,
+          "--tile-title-lines": titleLines,
+          ...style,
+        }}
         href={disabled ? undefined : href}
         type={onClick ? "button" : undefined}
         onClick={disabled ? undefined : onClick}
@@ -1097,12 +1118,24 @@ export function Tile({
           {description && <span>{description}</span>}
         </span>
         {meta && <span className="re-tile-meta">{meta}</span>}
-        {footer && <span className="re-tile-row-footer">{footer}</span>}
+        {showFooter && footer && (
+          <span className="re-tile-row-footer">{footer}</span>
+        )}
       </Tag>
     );
   return (
     <Tag
       {...props}
+      data-density={density}
+      data-title-lines={titleLines ? true : undefined}
+      data-selected={selected || undefined}
+      aria-pressed={onClick ? selected : undefined}
+      style={{
+        "--tile-image-size": imageSize ? `${imageSize}px` : undefined,
+        "--tile-image-fit": imageFit,
+        "--tile-title-lines": titleLines,
+        ...style,
+      }}
       href={disabled ? undefined : href}
       tabIndex={disabled ? -1 : undefined}
       type={onClick ? "button" : undefined}
@@ -1119,7 +1152,7 @@ export function Tile({
       </div>
       <strong>{title}</strong>
       {description && <p>{description}</p>}
-      {(footer || href || onClick) && (
+      {showFooter && (footer || href || onClick) && (
         <div className="re-tile-footer">
           <span>{footer || "Open"}</span>
           {(href || onClick) && <Icon name="next" />}
@@ -1163,6 +1196,59 @@ export function Toolbar({ children, trailing, className = "", ...props }) {
     <div {...props} className={`re-toolbar ${className}`}>
       <div>{children}</div>
       {trailing && <div>{trailing}</div>}
+    </div>
+  );
+}
+
+/** Native scroll region with persistent panel controls outside its scrolling content. */
+export function ScrollArea({
+  children,
+  header,
+  footer,
+  label,
+  className = "",
+  style,
+  ...props
+}) {
+  return (
+    <section {...props} className={`re-scroll-area ${className}`} style={style}>
+      {header && <div className="re-scroll-area-header">{header}</div>}
+      <div
+        className="re-scroll-area-body"
+        role="region"
+        aria-label={label}
+        tabIndex={0}
+      >
+        {children}
+      </div>
+      {footer && <div className="re-scroll-area-footer">{footer}</div>}
+    </section>
+  );
+}
+/** Three bounded editor panels; side panels scroll independently of the central stage. */
+export function Workbench({
+  children,
+  leadingWidth = 280,
+  trailingWidth = 300,
+  height = "min(66dvh, 760px)",
+  gap = 16,
+  className = "",
+  style,
+  ...props
+}) {
+  return (
+    <div
+      {...props}
+      className={`re-workbench ${className}`}
+      style={{
+        "--workbench-leading": `${leadingWidth}px`,
+        "--workbench-trailing": `${trailingWidth}px`,
+        "--workbench-height": height,
+        "--workbench-gap": `${gap}px`,
+        ...style,
+      }}
+    >
+      {children}
     </div>
   );
 }

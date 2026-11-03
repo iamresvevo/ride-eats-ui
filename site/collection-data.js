@@ -18,6 +18,41 @@ const entry = (
 });
 export const collectionPages = [
   entry(
+    "workbench",
+    "Workbench",
+    "Layout",
+    "Bounded editor panels with independent native scrolling. Panel headers and actions stay visible; narrow screens stack the panels.",
+    `<Workbench leadingWidth={240} trailingWidth={260}>
+ <ScrollArea label="Catalogue" header={<CardHeader title="Objects" />}><p>Long object catalogue</p></ScrollArea>
+ <Stack><Card title="Preview">Your canvas</Card><Button>Preview</Button></Stack>
+ <ScrollArea label="Options" header={<CardHeader title="Options" />}><p>Long options form</p></ScrollArea>
+</Workbench>`,
+    [
+      [
+        "leadingWidth / trailingWidth",
+        "number",
+        "Preferred side panel widths in pixels.",
+      ],
+      [
+        "height",
+        "string",
+        "Bounded desktop height; defaults to min(66dvh, 760px).",
+      ],
+      [
+        "ScrollArea header / footer",
+        "ReactNode",
+        "Persistent controls outside the labelled native scroll region.",
+      ],
+      [
+        "ScrollArea label",
+        "string",
+        "Accessible name for the keyboard-scrollable content.",
+      ],
+    ],
+    "Workbench, ScrollArea, CardHeader, Card, Stack, Button",
+  ),
+
+  entry(
     "masonry",
     "Masonry",
     "Layout",
@@ -53,6 +88,11 @@ export const collectionPages = [
   <Card title="Details"><FileDropzone variant="compact" label="Main logo" onFiles={()=>{}} /></Card>
 </Grid>`,
     [
+      [
+        "columns / min / density",
+        "number / number / default | compact",
+        "Responsive maximum columns, minimum width and inherited compact tiles.",
+      ],
       [
         "layout",
         "auto | sidebar | aside | split",
@@ -460,6 +500,22 @@ const mixed = selected.length > 0 && !all;
         "ReactNode",
         "Tile content and supporting context.",
       ],
+      [
+        "density / variant",
+        "default | compact / default | row",
+        "Compact spacing and selectable row layout.",
+      ],
+      [
+        "imageSize / imageFit",
+        "number / contain | cover",
+        "Thumbnail dimensions and fitting.",
+      ],
+      [
+        "titleLines / showFooter",
+        "number / boolean",
+        "Limit title lines and optionally remove footer chrome.",
+      ],
+      ["selected", "boolean", "Controlled pressed state for selectable tiles."],
       ["icon / image", "name / image URL", "Visual identity."],
       [
         "href / onClick",

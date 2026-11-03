@@ -1435,3 +1435,45 @@
 .dtp-time .dtp-field {
   border-radius: var(--r-pill);
 }
+
+/* Bounded dialogs keep title, optional tools and actions outside the scrolling body. */
+.dialog-contained[open] {
+  display: flex;
+  flex-direction: column;
+  overflow: clip;
+  padding: 0;
+}
+.dialog-contained > .dialog-head {
+  flex: none;
+  margin: 0;
+  padding: 16px 16px 12px;
+  background: var(--surface);
+}
+.dialog-contained > .dialog-head h2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.dialog-contained > .dialog-toolbar {
+  flex: none;
+  padding: 0 16px 12px;
+  background: var(--surface);
+}
+.dialog-contained > .dialog-body {
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 4px 16px 16px;
+  scrollbar-gutter: stable;
+}
+.dialog-contained > .dialog-footer {
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 12px 16px 16px;
+  background: var(--surface);
+}
+.dialog-contained:has(.re-workbench) > .dialog-body {
+  display: flex;
+  flex-direction: column;
+}

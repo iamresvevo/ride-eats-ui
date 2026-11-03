@@ -1,6 +1,6 @@
 # Ride Eats UI
 
-Version 0.9 removes Steps, ScrollArea and Separator. See the [migration notes](docs/migrations-v0.9.md) and [Send / Tools design audit](docs/design-audit.md).
+Version 0.9 removes Steps and Separator; 0.9.14 adds bounded ScrollArea panels with persistent control slots. See the [migration notes](docs/migrations-v0.9.md) and [Send / Tools design audit](docs/design-audit.md).
 
 **A complete React UI foundation for Ride Eats tools and internal platforms.**
 
@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.13
+npm install github:iamresvevo/ride-eats-ui#v0.9.14
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -324,3 +324,11 @@ Use `<StickyBar><Tabs ... /></StickyBar>` for automatic page floaters below Head
 ## Keeping the system consistent
 
 `css/tokens.css` owns the Send/Tools foundation. Component styles consume its solid palette, pill/circle/panel corners, compact density and shared motion. `npm run design:check` rejects drift and is required in CI. The [full audit](docs/design-audit.md) maps every public API and docs page to its design family and owning references. Single-line controls and toggle selection follow the same pill/ink language as the shared Segmented control. Consumer CSS can override tokens after the library import.
+
+### Persistent modal controls and editor panels
+
+`Dialog` now defaults to `scroll="body"`: its title/Close, optional `toolbar` slot and footer stay visible while the body scrolls. Use `scroll="dialog"` for legacy whole-surface scrolling. Put primary actions in `footer`, not at the bottom of long body content. Existing native dialog focus, Escape, stacking and close animations are preserved.
+
+`Workbench` arranges three bounded desktop panels with `leadingWidth`, `trailingWidth`, `height` and `gap`; it stacks below 1000px. Use `ScrollArea label="..." header={...} footer={...}` for independently scrolling catalogues and option forms. Its header/footer stay outside the native keyboard-scrollable content. Give standalone ScrollArea a bounded height via its style or parent layout. Keep canvas input in the middle panel; the library owns its flexible available height. Menus and selects continue to use their own popup positioning.
+
+Tile customization: `density="compact"`, `imageSize={32}`, `imageFit="contain" | "cover"`, `titleLines={2}`, `showFooter={false}` and `selected` work with card and row variants. Grid accepts `density="compact"` (8px default gap and inherited compact tiles), `columns={3}` (responsive maximum), `min={120}` and `gap={8}`. Full titles remain in the DOM when visually clamped.

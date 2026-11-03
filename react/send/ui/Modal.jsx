@@ -87,6 +87,8 @@ export default function Modal({
   onAfterClose,
   children,
   footer,
+  toolbar,
+  scroll = "dialog",
 }) {
   const [mounted, setMounted] = useState(open);
   if (open && !mounted) setMounted(true);
@@ -208,7 +210,7 @@ export default function Modal({
     <dialog
       ref={dialog}
       style={style}
-      className={`${variant === "screen" ? "viewer" : "dialog"} ${size ? "dialog-" + size : ""} ${className}`.trim()}
+      className={`${variant === "screen" ? "viewer" : "dialog"} ${size ? "dialog-" + size : ""} ${className} ${scroll === "body" ? "dialog-contained" : ""}`.trim()}
       aria-label={label}
       aria-labelledby={title ? titleId : labelledBy}
       onClose={() => {
@@ -243,7 +245,12 @@ export default function Modal({
           </button>
         </div>
       )}
-      {children}
+      {toolbar && <div className="dialog-toolbar">{toolbar}</div>}
+      {scroll === "body" ? (
+        <div className="dialog-body">{children}</div>
+      ) : (
+        children
+      )}
       {footer && <div className="dialog-footer">{footer}</div>}
     </dialog>,
     document.body,

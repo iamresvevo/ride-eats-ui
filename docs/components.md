@@ -245,3 +245,11 @@ Tabs fit their content inside vertical stacks by default; opt into `width="full"
 For compact selection lists, use `Tile variant="row" selected={selected}` with optional image, description and meta. It renders one selectable row, without the default tile footer. `FileDropzone variant="compact" preview={imageUrl}` places an existing image beside its upload label and hint; the default dropzone remains available. Uploads fill their parent width.
 
 `Flex` provides wrapping action rows with `direction`, `align`, `justify`, `gap` and `wrap`. Use `Masonry min={240} columns={3} gap={16}` for varying-height cards; it adapts the number of columns and keeps each card intact. Masonry source/keyboard order runs down columns; use Grid when content needs row alignment. Use the existing SplitPane when users need drag-resizable panels.
+
+### Persistent modal controls and editor panels
+
+`Dialog` now defaults to `scroll="body"`: its title/Close, optional `toolbar` slot and footer stay visible while the body scrolls. Use `scroll="dialog"` for legacy whole-surface scrolling. Put primary actions in `footer`, not at the bottom of long body content. Existing native dialog focus, Escape, stacking and close animations are preserved.
+
+`Workbench` arranges three bounded desktop panels with `leadingWidth`, `trailingWidth`, `height` and `gap`; it stacks below 1000px. Use `ScrollArea label="..." header={...} footer={...}` for independently scrolling catalogues and option forms. Its header/footer stay outside the native keyboard-scrollable content. Give standalone ScrollArea a bounded height via its style or parent layout. Keep canvas input in the middle panel; the library owns its flexible available height. Menus and selects continue to use their own popup positioning.
+
+Tile customization: `density="compact"`, `imageSize={32}`, `imageFit="contain" | "cover"`, `titleLines={2}`, `showFooter={false}` and `selected` work with card and row variants. Grid accepts `density="compact"` (8px default gap and inherited compact tiles), `columns={3}` (responsive maximum), `min={120}` and `gap={8}`. Full titles remain in the DOM when visually clamped.

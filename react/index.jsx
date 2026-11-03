@@ -549,6 +549,8 @@ export function Dialog({
   title,
   children,
   footer,
+  toolbar,
+  scroll = "body",
   size = "md",
   dismissible = true,
   beforeClose,
@@ -583,6 +585,8 @@ export function Dialog({
       dismissable={dismissible}
       onClose={requestClose}
       footer={footer}
+      toolbar={toolbar}
+      scroll={scroll}
     >
       {children}
     </SendModal>

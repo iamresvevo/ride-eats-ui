@@ -1,4 +1,4 @@
-import packageInfo from '../package.json';
+import packageInfo from "../package.json";
 import { sourceForPage } from "./component-source.js";
 import PropsPlayground from "./PropsPlayground.jsx";
 import { platformPages } from "./platform-data.js";
@@ -258,6 +258,16 @@ const components = [
       ["title / children / footer", "ReactNode", "Header, body and actions."],
       ["size", "'sm' | 'md' | 'lg'", "Dialog width."],
       ["dismissible", "boolean", "Whether Escape/backdrop can dismiss."],
+      [
+        "scroll",
+        "body | dialog",
+        "Body scroll is the default; title, toolbar and footer remain visible.",
+      ],
+      [
+        "toolbar",
+        "ReactNode",
+        "Persistent tools between the title and scrollable body.",
+      ],
     ],
   },
   {

@@ -180,3 +180,5 @@ SupportInbox has compact searchable thread rows, shared avatars/textarea/buttons
 Blur effects are removed across overlays, headers and floaters. CI rejects CSS blur functions. StickyBar retains a neutral fade; its legacy blur prop is ignored. BottomSheet accepts dragging from its grip or header, tracks pointer displacement without a transition while held, and settles short pulls or dismisses deliberate pulls/flicks. Pointer cancellation returns it to position.
 
 SplitPane now has bounded visual resistance and shared easing on release, keyboard and external changes; controlled values remain within min/max. The design check rejects unconfigured CSS transition/animation easing, alongside local curves and blur effects.
+
+In 0.9.14, ScrollArea returns with substantive panel behavior: independently bounded native scrolling, persistent header/footer slots, accessible region naming and Workbench integration. The previous simple overflow wrapper remains retired.

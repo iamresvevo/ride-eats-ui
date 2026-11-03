@@ -124,7 +124,9 @@
         "Grid",
         "Stack",
         "Flex",
-        "Masonry"
+        "Masonry",
+        "ScrollArea",
+        "Workbench"
       ]
     },
     "gestures": {
@@ -161,7 +163,6 @@
   },
   "removed": {
     "Steps": "Use application-owned flow state and existing navigation/form components. No additional wizard abstraction.",
-    "ScrollArea": "Use a labelled native scroll region and StickyBar when floating controls are needed.",
     "Separator": "Use a semantic hr or an owning layout separator; MenuSeparator stays inside the Menu compound API."
   }
 }

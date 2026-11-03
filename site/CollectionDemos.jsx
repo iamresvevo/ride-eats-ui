@@ -597,6 +597,8 @@ export function CollectionDemo({ id }) {
           </MetricGrid>
         </div>
       );
+    case "workbench":
+      return <WorkbenchDemo />;
     case "masonry":
       return (
         <UI.Masonry min={200} columns={3} gap={16}>
@@ -693,26 +695,7 @@ export function CollectionDemo({ id }) {
         </UI.Stack>
       );
     case "tiles":
-      return (
-        <MetricGrid minWidth={220}>
-          <Tile
-            icon="files"
-            title="My transfers"
-            description="Everything you have shared, in one familiar place."
-            meta="24 files"
-            onClick={() => toast("Open transfers")}
-            footer="View transfers"
-          />
-          <Tile
-            icon="team"
-            title="Team workspace"
-            description="A shared space for your people and projects."
-            meta="6 members"
-            onClick={() => toast("Open workspace")}
-            footer="Open workspace"
-          />
-        </MetricGrid>
-      );
+      return <TileCustomizationDemo />;
     case "page-header":
       return (
         <PageHeader
@@ -939,5 +922,149 @@ export function SimpleDialogDemo() {
         </UI.SettingRow>
       </Dialog>
     </>
+  );
+}
+
+function WorkbenchDemo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open editor layout</Button>
+      <UI.Dialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Editor workspace"
+        style={{ width: "min(1400px,96vw)", maxWidth: "none" }}
+        toolbar={
+          <UI.Toolbar>
+            <UI.Field label="Workspace name">
+              <input defaultValue="Autumn artwork" />
+            </UI.Field>
+            <Button>Preview</Button>
+          </UI.Toolbar>
+        }
+        footer={
+          <>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={() => setOpen(false)}>
+              Done
+            </Button>
+          </>
+        }
+      >
+        <UI.Workbench leadingWidth={240} trailingWidth={260}>
+          <UI.ScrollArea
+            label="Object catalogue"
+            header={
+              <UI.Stack>
+                <UI.CardHeader title="Objects" />
+                <UI.Tabs
+                  value="all"
+                  onValueChange={() => {}}
+                  items={[
+                    { value: "all", label: "All objects" },
+                    { value: "saved", label: "Saved" },
+                  ]}
+                />
+              </UI.Stack>
+            }
+          >
+            <UI.Stack>
+              {Array.from({ length: 30 }, (_, i) => (
+                <UI.Tile
+                  key={i}
+                  variant="row"
+                  title={`Object ${i + 1}`}
+                  description="Select an object"
+                  onClick={() => {}}
+                />
+              ))}
+            </UI.Stack>
+          </UI.ScrollArea>
+          <UI.Stack>
+            <UI.Card title="Canvas preview">
+              <p>The centre stays in place while either panel scrolls.</p>
+            </UI.Card>
+            <UI.Toolbar>
+              <Button>Move</Button>
+              <Button>Rotate</Button>
+              <Button>Scale</Button>
+            </UI.Toolbar>
+          </UI.Stack>
+          <UI.ScrollArea
+            label="Object options"
+            header={<UI.CardHeader title="Object options" />}
+            footer={<Button>Reset options</Button>}
+          >
+            <UI.Stack>
+              {Array.from({ length: 20 }, (_, i) => (
+                <UI.Field key={i} label={`Option ${i + 1}`}>
+                  <input defaultValue="Value" />
+                </UI.Field>
+              ))}
+            </UI.Stack>
+          </UI.ScrollArea>
+        </UI.Workbench>
+      </UI.Dialog>
+    </>
+  );
+}
+
+function TileCustomizationDemo() {
+  const [compact, setCompact] = useState(true),
+    [row, setRow] = useState(false),
+    [footer, setFooter] = useState(false),
+    [size, setSize] = useState(32),
+    [columns, setColumns] = useState(3),
+    [selected, setSelected] = useState(0);
+  return (
+    <UI.Stack>
+      <UI.Flex>
+        <UI.Switch label="Compact" checked={compact} onChange={setCompact} />
+        <UI.Switch label="Rows" checked={row} onChange={setRow} />
+        <UI.Switch label="Show footer" checked={footer} onChange={setFooter} />
+        <UI.NumberInput
+          label="Image size"
+          min={24}
+          max={96}
+          step={4}
+          value={size}
+          onValueChange={setSize}
+        />
+        <UI.NumberInput
+          label="Maximum columns"
+          min={1}
+          max={6}
+          value={columns}
+          onValueChange={setColumns}
+        />
+      </UI.Flex>
+      <UI.Grid
+        min={130}
+        columns={columns}
+        density={compact ? "compact" : "default"}
+      >
+        {Array.from({ length: 6 }, (_, i) => (
+          <UI.Tile
+            key={i}
+            title={
+              [
+                "Townhouse · Slender",
+                "Townhouse · Grand",
+                "Market stall · Fruit",
+              ][i % 3]
+            }
+            icon={["home", "building", "store"][i % 3]}
+            variant={row ? "row" : "default"}
+            imageSize={size}
+            titleLines={2}
+            showFooter={footer}
+            description="Reusable catalogue tile"
+            onClick={() => setSelected(i)}
+            selected={i === selected}
+          />
+        ))}
+      </UI.Grid>
+    </UI.Stack>
   );
 }
