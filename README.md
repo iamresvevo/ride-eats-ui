@@ -350,3 +350,5 @@ DataTable defaults to `variant="auto"`: standalone outside Cards, inset inside t
 Flat Tabs show the active item with a sliding underline and stronger text. Use `variant="flat"`; the default pill style remains available.
 
 Header supports `fade={true}` (default) and `fadeSize={72}` for the neutral gradient beneath sticky controls. The fade now tracks the nearest native scrolling ancestor as well as document scrolling and the existing page layout. It uses no backdrop blur. Match the header’s containing surface with the shared `--bg` token.
+
+ImageCompare uses pointer capture and a fixed drag-start rectangle for direct, subpixel reveal. It keeps a native range for assistive technology, Arrow keys (1%), Shift+Arrow (10%), and Home/End. The example reserves percentage-output width so changing digits cannot resize the comparison surface.

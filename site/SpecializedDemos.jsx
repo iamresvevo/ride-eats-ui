@@ -57,7 +57,7 @@ export function SpecializedDemo({ id }) {
     [day, setDay] = useState("2026-09-09");
   if (id === "image-compare")
     return (
-      <UI.Stack>
+      <UI.Stack style={{ width: "100%", maxWidth: 640 }}>
         <UI.ImageCompare
           before={{
             src: before,
@@ -76,7 +76,12 @@ export function SpecializedDemo({ id }) {
           <UI.Button onClick={() => setPosition(0)}>Revised route</UI.Button>
           <UI.Button onClick={() => setPosition(50)}>Compare</UI.Button>
           <UI.Button onClick={() => setPosition(100)}>Original route</UI.Button>
-          <output aria-live="polite">{position}% original</output>
+          <output
+            aria-live="polite"
+            style={{ minWidth: "12ch", fontVariantNumeric: "tabular-nums" }}
+          >
+            {position}% original
+          </output>
         </UI.Flex>
       </UI.Stack>
     );

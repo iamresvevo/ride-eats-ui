@@ -13,10 +13,50 @@ export function ImageCompare({
   className = "",
   style,
 }) {
+  const surface = useRef(null),
+    control = useRef(null),
+    drag = useRef(null);
+  const positionAt = (event, bounds) =>
+    Math.round(
+      Math.max(
+        0,
+        Math.min(
+          100,
+          ((event.clientX - bounds.left) / Math.max(1, bounds.width)) * 100,
+        ),
+      ) * 10,
+    ) / 10;
+  const move = (event) => {
+    if (!disabled && drag.current?.pointer === event.pointerId)
+      onValueChange(positionAt(event, drag.current.bounds));
+  };
+  const finish = (event, cancelled = false) => {
+    if (drag.current?.pointer !== event.pointerId) return;
+    if (!cancelled) move(event);
+    drag.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId))
+      event.currentTarget.releasePointerCapture(event.pointerId);
+  };
   const position = Math.max(0, Math.min(100, Number(value) || 0));
   return (
     <figure
+      ref={surface}
       className={`re-image-compare ${className}`}
+      onPointerDown={(event) => {
+        if (disabled || event.button !== 0 || !event.isPrimary) return;
+        event.preventDefault();
+        control.current?.focus({ preventScroll: true });
+        drag.current = {
+          pointer: event.pointerId,
+          bounds: surface.current.getBoundingClientRect(),
+        };
+        event.currentTarget.setPointerCapture(event.pointerId);
+        move(event);
+      }}
+      onPointerMove={move}
+      onPointerUp={(event) => finish(event)}
+      onPointerCancel={(event) => finish(event, true)}
+      onLostPointerCapture={(event) => finish(event, true)}
       style={{ aspectRatio, "--compare-position": `${position}%`, ...style }}
     >
       <img src={after.src} alt={after.alt} draggable={false} />
@@ -38,15 +78,28 @@ export function ImageCompare({
         </span>
       </span>
       <input
+        ref={control}
         type="range"
         min={0}
         max={100}
-        step={1}
+        step={0.1}
         value={position}
         disabled={disabled}
         aria-label={label}
         aria-valuetext={`${position}% before, ${100 - position}% after`}
         onChange={(e) => onValueChange(Number(e.target.value))}
+        onKeyDown={(event) => {
+          let next;
+          if (event.key === "ArrowRight" || event.key === "ArrowUp")
+            next = position + (event.shiftKey ? 10 : 1);
+          else if (event.key === "ArrowLeft" || event.key === "ArrowDown")
+            next = position - (event.shiftKey ? 10 : 1);
+          else if (event.key === "Home") next = 0;
+          else if (event.key === "End") next = 100;
+          else return;
+          event.preventDefault();
+          onValueChange(Math.max(0, Math.min(100, Math.round(next * 10) / 10)));
+        }}
       />
     </figure>
   );

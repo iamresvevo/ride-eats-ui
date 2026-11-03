@@ -274,3 +274,5 @@ DataTable defaults to `variant="auto"`: standalone outside Cards, inset inside t
 These are independent library-owned designs in `react/specialized.jsx` and `css/specialized.css`, not renamed controls or application screens. Live examples use local assets and in-memory state. Flat Tabs now retain the existing measured selection motion as an underline; documentation previews no longer paint a background over the component.
 
 Header supports `fade={true}` (default) and `fadeSize={72}` for the neutral gradient beneath sticky controls. The fade now tracks the nearest native scrolling ancestor as well as document scrolling and the existing page layout. It uses no backdrop blur. Match the header’s containing surface with the shared `--bg` token.
+
+ImageCompare uses pointer capture and a fixed drag-start rectangle for direct, subpixel reveal. It keeps a native range for assistive technology, Arrow keys (1%), Shift+Arrow (10%), and Home/End. The example reserves percentage-output width so changing digits cannot resize the comparison surface.
