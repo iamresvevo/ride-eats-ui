@@ -78,9 +78,15 @@ export function SpecializedDemo({ id }) {
           <UI.Button onClick={() => setPosition(100)}>Original route</UI.Button>
           <output
             aria-live="polite"
-            style={{ minWidth: "12ch", fontVariantNumeric: "tabular-nums" }}
+            style={{
+              width: "16ch",
+              flex: "0 0 16ch",
+              whiteSpace: "nowrap",
+              textAlign: "right",
+              fontVariantNumeric: "tabular-nums",
+            }}
           >
-            {position}% original
+            {position.toFixed(1)}% original
           </output>
         </UI.Flex>
       </UI.Stack>
