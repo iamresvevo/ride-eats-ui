@@ -542,7 +542,7 @@ const [range, setRange] = useState([20,80]);
 
 ## Animated Icons
 
-Motion. 29 explicit SVG animations with complete visible glyphs, smooth easing and a resting pause. Unfinished catalog icons remain static. Replay, loop and copy the exact React usage.
+Motion. 87 supported names with explicit SVG choreography, including compatibility aliases with complete visible glyphs, smooth easing and a resting pause. Unfinished catalog icons remain static. Replay, loop and copy the exact React usage.
 
 ```jsx
 import { AnimatedIcon, Button } from '@ride-eats/ui';

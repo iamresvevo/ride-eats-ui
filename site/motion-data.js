@@ -23,7 +23,7 @@ export const motionPages = [
     "animated-icons",
     "Animated Icons",
     "Motion",
-    "29 explicit SVG animations with complete visible glyphs, smooth easing and a resting pause. Unfinished catalog icons remain static. Replay, loop and copy the exact React usage.",
+    "87 supported names with explicit SVG choreography, including compatibility aliases with complete visible glyphs, smooth easing and a resting pause. Unfinished catalog icons remain static. Replay, loop and copy the exact React usage.",
     `<AnimatedIcon name="bell" size={28} />\n<AnimatedIcon name="check" playing />\n<AnimatedIcon name="refresh" playing loop />\n// Hover/focus on a parent button also triggers the icon.\n<Button><AnimatedIcon name="send" /> Send files</Button>`,
     [
       [

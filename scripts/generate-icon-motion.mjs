@@ -1,3 +1,4 @@
+import { coreMotion, coreAliases } from "../react/icons/core-motion.js";
 import fs from "node:fs";
 import { authoredMotion } from "../react/icons/authored-motion.js";
 import { loaders } from "../react/icons/loaders.js";
@@ -21,6 +22,11 @@ for (const loader of Object.values(loaders))
             : "static — pending choreography",
     });
   }
+for (const name of [...Object.keys(coreMotion), ...Object.keys(coreAliases)]) {
+  const item = icons.find((icon) => icon.name === name);
+  if (item) item.treatment = "authored geometry";
+  else icons.push({ name, family: "explicit", treatment: "authored geometry" });
+}
 icons.sort((a, b) => a.name.localeCompare(b.name));
 const counts = {};
 for (const icon of icons)

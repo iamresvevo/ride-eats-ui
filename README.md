@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.7
+npm install github:iamresvevo/ride-eats-ui#v0.9.8
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -261,7 +261,7 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 
 ## Native SVG motion and more components
 
-[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) lists 29 explicit SVG treatments. Other catalog icons remain static until their choreography is ready. Playback uses a 2.8-second cycle with a resting pause and honors reduced motion. See [coverage](docs/icon-motion-coverage.json) and [source usage](docs/icon-usage-audit.json).
+[Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) lists 87 supported names with explicit SVG choreography, including compatibility aliases. Other catalog icons remain static until their choreography is ready. Playback uses a 2.8-second cycle with a resting pause and honors reduced motion. See [coverage](docs/icon-motion-coverage.json) and [source usage](docs/icon-usage-audit.json).
 
 ```jsx
 <AnimatedIcon name="bell" size={28} />

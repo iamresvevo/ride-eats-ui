@@ -969,3 +969,26 @@ test("recent hashed assets survive deployment without overwriting the current bu
     ),
   );
 });
+
+test("audited literal core icons render explicit SVG motion", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const usage = JSON.parse(
+    await readFile(
+      new URL("../docs/icon-usage-audit.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const names = new Set(
+    Object.values(usage)
+      .filter((value) => typeof value === "object")
+      .flatMap(Object.keys),
+  );
+  for (const name of names) {
+    if (name === "brand" || name === "${selected}") continue;
+    assert.match(
+      render("AnimatedIcon", { name, playing: true }),
+      /<animate /,
+      name,
+    );
+  }
+});

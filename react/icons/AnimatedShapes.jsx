@@ -1,4 +1,5 @@
 import React from "react";
+import { coreMotion, coreAliases } from "./core-motion.js";
 import { authoredMotion } from "./authored-motion.js";
 const settle = "0.25 1 0.3 1";
 function Motion({ attributeName, values, phase = 0 }) {
@@ -61,11 +62,14 @@ export function AnimatedShapes({
   motion = "auto",
   strokeWidth = 1.7,
 }) {
+  name = coreAliases[name] || name;
+  const definition = coreMotion[name] || authoredMotion[name];
+  if (motion === "auto" && coreMotion[name]) nodes = coreMotion[name].nodes;
   if (name === "headset" && motion !== "draw") return <Headset />;
   if (name === "folder" && motion !== "draw") return <Folder />;
-  if (motion === "auto" && authoredMotion[name]) {
+  if (motion === "auto" && definition) {
     return nodes.map(([tag, attributes], index) => {
-      const part = authoredMotion[name].parts[index];
+      const part = definition.parts[index];
       return React.createElement(
         tag,
         { ...attributes, key: index },

@@ -1,8 +1,8 @@
 {
   "note": "Programmatic treatment inventory, not a claim of individual visual review or original glyph artwork.",
   "counts": {
-    "static — pending choreography": 2263,
-    "authored geometry": 29
+    "static — pending choreography": 2227,
+    "authored geometry": 87
   },
   "icons": [
     {
@@ -28,7 +28,7 @@
     {
       "name": "activity",
       "family": "signal",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "activity-square",
@@ -318,7 +318,7 @@
     {
       "name": "archive",
       "family": "mechanism",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "archive-arrow-down",
@@ -791,6 +791,11 @@
       "treatment": "static — pending choreography"
     },
     {
+      "name": "back",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
       "name": "backpack",
       "family": "detail",
       "treatment": "static — pending choreography"
@@ -894,6 +899,11 @@
       "name": "badge-x",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "bag",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "baggage-claim",
@@ -1258,7 +1268,7 @@
     {
       "name": "bolt",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "bomb",
@@ -1891,6 +1901,11 @@
       "treatment": "static — pending choreography"
     },
     {
+      "name": "card",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
       "name": "card-sim",
       "family": "detail",
       "treatment": "static — pending choreography"
@@ -1959,6 +1974,11 @@
       "name": "certificate",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "chart",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "chart-area",
@@ -2166,6 +2186,11 @@
       "treatment": "static — pending choreography"
     },
     {
+      "name": "chevron",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
       "name": "chevron-down",
       "family": "direction",
       "treatment": "authored geometry"
@@ -2223,7 +2248,7 @@
     {
       "name": "chevron-up",
       "family": "direction",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "chevron-up-circle",
@@ -2911,6 +2936,11 @@
       "treatment": "static — pending choreography"
     },
     {
+      "name": "close",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
       "name": "closed-caption",
       "family": "detail",
       "treatment": "static — pending choreography"
@@ -3078,7 +3108,7 @@
     {
       "name": "columns-3",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "columns-3-cog",
@@ -3703,7 +3733,7 @@
     {
       "name": "edit",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "edit-2",
@@ -3818,7 +3848,12 @@
     {
       "name": "expand",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
+    },
+    {
+      "name": "external",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "external-link",
@@ -3918,7 +3953,7 @@
     {
       "name": "file",
       "family": "document",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "file-archive",
@@ -4333,7 +4368,7 @@
     {
       "name": "files",
       "family": "document",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "film",
@@ -4343,7 +4378,7 @@
     {
       "name": "filter",
       "family": "adjust",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "filter-x",
@@ -4958,7 +4993,7 @@
     {
       "name": "globe",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "globe-2",
@@ -5098,7 +5133,7 @@
     {
       "name": "grip-vertical",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "groceries",
@@ -5378,7 +5413,7 @@
     {
       "name": "home",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "hop",
@@ -5483,7 +5518,7 @@
     {
       "name": "image",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "image-down",
@@ -5558,7 +5593,7 @@
     {
       "name": "infinity",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "info",
@@ -5763,7 +5798,7 @@
     {
       "name": "layers",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "layers-2",
@@ -5813,7 +5848,7 @@
     {
       "name": "layout-dashboard",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "layout-freeform",
@@ -6108,7 +6143,7 @@
     {
       "name": "link",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "link-2",
@@ -6123,7 +6158,7 @@
     {
       "name": "list",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "list-check",
@@ -6253,7 +6288,7 @@
     {
       "name": "loader-circle",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "loader-pinwheel",
@@ -6309,6 +6344,16 @@
       "name": "log-out",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "login",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
+      "name": "logout",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "logs",
@@ -6588,7 +6633,7 @@
     {
       "name": "menu",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "menu-square",
@@ -6599,6 +6644,11 @@
       "name": "merge",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "message",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "message-circle",
@@ -6768,7 +6818,7 @@
     {
       "name": "messages-square",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "metronome",
@@ -6853,7 +6903,7 @@
     {
       "name": "minus",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "minus-circle",
@@ -6878,7 +6928,7 @@
     {
       "name": "monitor",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "monitor-activity",
@@ -6974,6 +7024,11 @@
       "name": "mop-sparkles",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "more",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "more-horizontal",
@@ -7143,7 +7198,7 @@
     {
       "name": "music",
       "family": "signal",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "music-2",
@@ -7194,6 +7249,11 @@
       "name": "newspaper",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "next",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "nfc",
@@ -7294,6 +7354,11 @@
       "name": "orbit",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "orders",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "origami",
@@ -7413,7 +7478,7 @@
     {
       "name": "panel-left",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "panel-left-close",
@@ -7578,7 +7643,7 @@
     {
       "name": "pause",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "pause-circle",
@@ -7703,7 +7768,7 @@
     {
       "name": "phone",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "phone-call",
@@ -7853,7 +7918,7 @@
     {
       "name": "play",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "play-circle",
@@ -7888,7 +7953,7 @@
     {
       "name": "plug",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "plug-2",
@@ -7986,6 +8051,11 @@
       "treatment": "static — pending choreography"
     },
     {
+      "name": "prev",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
       "name": "printer",
       "family": "detail",
       "treatment": "static — pending choreography"
@@ -8024,6 +8094,11 @@
       "name": "pyramid",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "qr",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "qr-code",
@@ -8191,6 +8266,11 @@
       "treatment": "static — pending choreography"
     },
     {
+      "name": "refresh",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
       "name": "refresh-ccw",
       "family": "detail",
       "treatment": "static — pending choreography"
@@ -8264,6 +8344,11 @@
       "name": "reply-all",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "restore",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "rewind",
@@ -8661,9 +8746,14 @@
       "treatment": "static — pending choreography"
     },
     {
+      "name": "select",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
       "name": "send",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "send-horizonal",
@@ -8723,7 +8813,7 @@
     {
       "name": "settings",
       "family": "adjust",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "settings-2",
@@ -8763,7 +8853,7 @@
     {
       "name": "shield",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "shield-alert",
@@ -9119,6 +9209,11 @@
       "name": "solar-panel",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "sort",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "sort-asc",
@@ -9966,6 +10061,11 @@
       "treatment": "static — pending choreography"
     },
     {
+      "name": "storage",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
       "name": "store",
       "family": "detail",
       "treatment": "static — pending choreography"
@@ -10003,7 +10103,7 @@
     {
       "name": "sun",
       "family": "ambient",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "sun-dim",
@@ -10133,7 +10233,7 @@
     {
       "name": "tag",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "tag-plus",
@@ -10186,6 +10286,11 @@
       "treatment": "static — pending choreography"
     },
     {
+      "name": "team",
+      "family": "explicit",
+      "treatment": "authored geometry"
+    },
+    {
       "name": "telescope",
       "family": "detail",
       "treatment": "static — pending choreography"
@@ -10203,7 +10308,7 @@
     {
       "name": "terminal",
       "family": "detail",
-      "treatment": "static — pending choreography"
+      "treatment": "authored geometry"
     },
     {
       "name": "terminal-square",
@@ -11164,6 +11269,11 @@
       "name": "warehouse",
       "family": "detail",
       "treatment": "static — pending choreography"
+    },
+    {
+      "name": "warning",
+      "family": "explicit",
+      "treatment": "authored geometry"
     },
     {
       "name": "washing-machine",

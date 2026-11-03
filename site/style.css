@@ -1931,6 +1931,10 @@
   flex-wrap: wrap;
   margin-top: 2px;
 }
+.icon-playback > .switch {
+  margin: 0;
+  align-self: center;
+}
 .icon-playback .setting-row {
   min-height: 32px;
   padding: 0;

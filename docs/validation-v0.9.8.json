@@ -1,0 +1,17 @@
+{
+  "scope": "All literal core icon names from the source usage audit, excluding the decorative brand logo and dynamic example placeholder",
+  "supportedAnimatedNamesIncludingAliases": 87,
+  "checks": [
+    "31 tests",
+    "TypeScript",
+    "design contract",
+    "production build",
+    "87 browser selection controls without console errors",
+    "loop/replay of storage",
+    "playback row vertical center measured equal"
+  ],
+  "limits": [
+    "Dynamic source names are outside the literal usage audit",
+    "No complete frame-by-frame or cross-browser flicker verification"
+  ]
+}

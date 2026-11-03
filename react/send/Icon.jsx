@@ -1,3 +1,4 @@
+import { coreMotion, coreAliases } from "../icons/core-motion.js";
 import { authoredMotion } from "../icons/authored-motion.js";
 import { AnimatedShapes } from "../icons/AnimatedShapes.jsx";
 import { useSvgMotion } from "../icons/useSvgMotion.js";
@@ -136,6 +137,8 @@ export default function Icon({
   });
   const custom = useCustomIcons();
   const accessible = label || props["aria-label"] || title;
+  if (motion === "auto" && coreAliases[name] && !custom[name])
+    name = coreAliases[name];
   const preferCatalog =
     motion === "auto" &&
     (authoredMotion[name] ||
@@ -190,6 +193,13 @@ export default function Icon({
           />
         )}
         {custom[name] ||
+          (motion === "auto" && coreMotion[coreAliases[name] || name] ? (
+            <AnimatedShapes
+              name={name}
+              motion={motion}
+              nodes={coreMotion[coreAliases[name] || name]?.nodes || []}
+            />
+          ) : null) ||
           (PATHS[name] && !preferCatalog ? (
             motion === "auto" || motion === "draw" ? (
               <AnimatedShapes
