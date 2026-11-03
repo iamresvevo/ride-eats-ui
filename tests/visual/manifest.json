@@ -1,5 +1,5 @@
 {
-  "version": "0.9.2",
+  "version": "0.9.3",
   "capture": "Supported browser tools; independent baseline/candidate reloads; JPEG",
   "states": [
     {
@@ -241,6 +241,36 @@
         "height": 1433
       },
       "state": "Initial component state."
+    },
+    {
+      "file": "split-pane-dark.jpg",
+      "page": "split-pane",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1242
+      },
+      "state": "Initial controlled split ratio, before dragging."
+    },
+    {
+      "file": "split-pane-light.jpg",
+      "page": "split-pane",
+      "theme": "light",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullPage": true,
+      "image": {
+        "width": 1280,
+        "height": 1242
+      },
+      "state": "Initial controlled split ratio, before dragging."
     },
     {
       "file": "stacked-dialogs-dark.jpg",

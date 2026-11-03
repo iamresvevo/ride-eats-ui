@@ -39,3 +39,5 @@ Use Form/Field/Textarea/Combobox/MultiSelect/DateRangePicker/TimePicker for form
 AppShell, WorkspaceSwitcher, NotificationCenter, BottomSheet and ContextMenu compose platform navigation and overlays. SettingsPanel, TeamDirectory, FileManager, ActivityFeed and SupportInbox are reusable workflows. Use UIProvider for confirmations/toasts. Examples never perform real backend operations. See examples/platform for the complete starter and docs/platform-system.md for API composition.
 
 Visual baselines and the comparison command are described in tests/visual/README.md. Capture candidates with supported browser tooling; automated candidate capture is not configured. Run comparison-engine tests and inspect visual changes before updating baselines.
+
+Do not add blur or backdrop blur effects. Headers/sticky bars may use neutral fades; modal backdrops dim without blur. BottomSheet drag must follow the pointer from the grip or header, then settle or dismiss according to release distance/velocity.

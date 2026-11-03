@@ -51,7 +51,7 @@ For larger already-loaded datasets use `virtual height={320} rowHeight={40}`. Th
 
 AppShell accepts navigation items, value/onValueChange and slots for brand, workspace, search, actions, sidebarFooter and children. Desktop navigation collapses to icons; mobile navigation uses a native modal with focus restoration. Compose CommandMenu into the search slot for Cmd/Ctrl+K navigation. WorkspaceSwitcher and NotificationCenter never create backend sessions, subscriptions or polling.
 
-Keep BottomSheet mounted and control open so its native modal can animate exits. Drag its handle down more than 100px to dismiss; pressing the handle or Close and Escape provide alternatives. The internal native dialog engine handles stacking and focus. ContextMenu opens on right-click or Shift+F10, supports nested items, disabled actions and keyboard movement. For touch-first actions, provide a visible button or Dropdown rather than relying on long press.
+Keep BottomSheet mounted and control open so its native modal can animate exits. Drag the handle or header down to dismiss by distance or a deliberate flick; short pulls return smoothly. Pressing the handle or Close and Escape provide alternatives. The internal native dialog engine handles stacking and focus. ContextMenu opens on right-click or Shift+F10, supports nested items, disabled actions and keyboard movement. For touch-first actions, provide a visible button or Dropdown rather than relying on long press.
 
 Popover supports nesting. Closing an inner popover leaves its parent open; Escape dismisses one level at a time. Native top-layer APIs require a modern browser.
 

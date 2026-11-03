@@ -9,7 +9,7 @@ The kit uses Send's control behavior and Tools' compact product layouts. Read [t
 - Default controls are 36px, table rows 40px, panel padding 16px. Coarse-pointer menu targets are at least 44px. Compact never means unreadable labels.
 - `--motion-ease` is Send's soft settle, shared by CSS and JavaScript animations. Menu presence, expanding submenus, measured selection pills and native dialog stacking keep their actual interaction semantics. A sheet slides from its edge. Dragging follows the pointer directly; release settles. Spinners/progress remain linear; static reading content stays still.
 - Reduced motion suppresses nonessential travel. Closures preserve focus and inert state until their exit completes. Native popover dismissal retains the top layer when the browser supports discrete display/overlay transitions.
-- Header and StickyBar use scroll-driven neutral progressive fade/blur, keeping controls sharp. Blur and backdrop transparency are depth treatments, not translucent accent fills.
+- Header and StickyBar use scroll-driven neutral fade. The kit has no blur effects; dialog backdrops dim the page while keeping it sharp.
 - Documentation uses the same components and tokens. Previews do not recolor Card, StatCard or Tile to manufacture contrast. Props, callbacks, complete workbench examples and real source links explain implementation.
 
 Run `npm run design:check` before visual review. CI checks foundation ownership, tokenized shapes, semantic fills, shared CSS motion, valid literal icon names, documentation IDs and public API audit coverage. Browser and interaction checks still matter; passing the contract is not proof of accessibility conformance or physical-device gesture feel.

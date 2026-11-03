@@ -590,7 +590,7 @@ export default function PlatformDemos({ id }) {
                 onChange={setSaved}
               />
               <small className="muted">
-                Drag the handle down to close this sheet.
+                Drag the handle or title down. A short pull returns to position.
               </small>
             </div>
           </UI.BottomSheet>

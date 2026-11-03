@@ -1,5 +1,5 @@
 {
-  "version": "0.9.2",
+  "version": "0.9.3",
   "cssFiles": 15,
   "publicApis": [
     "Accordion",
@@ -373,35 +373,35 @@
       "name": "Reorder List",
       "group": "Layout",
       "imports": "ReorderList",
-      "source": "react/motion.jsx"
+      "source": "react/gestures.jsx"
     },
     {
       "id": "swipe-actions",
       "name": "Swipe Actions",
       "group": "Actions",
       "imports": "SwipeActions",
-      "source": "react/motion.jsx"
+      "source": "react/gestures.jsx"
     },
     {
       "id": "carousel",
       "name": "Carousel",
       "group": "Display",
       "imports": "Carousel, Card",
-      "source": "react/motion.jsx"
+      "source": "react/gestures.jsx"
     },
     {
       "id": "split-pane",
       "name": "Split Pane",
       "group": "Layout",
       "imports": "SplitPane",
-      "source": "react/motion.jsx"
+      "source": "react/gestures.jsx"
     },
     {
       "id": "range-slider",
       "name": "Range Slider",
       "group": "Inputs",
       "imports": "RangeSlider",
-      "source": "react/motion.jsx"
+      "source": "react/gestures.jsx"
     },
     {
       "id": "animated-icons",
@@ -608,6 +608,7 @@
     "tokenized corners",
     "neutral semantic supporting surfaces",
     "shared CSS easing",
+    "no blur effects",
     "literal demo icons resolve",
     "all public APIs have a design family",
     "unique component page IDs"

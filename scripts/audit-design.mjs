@@ -21,6 +21,8 @@ for (const file of files) {
   const ast = postcss.parse(fs.readFileSync(file, "utf8"), { from: file });
   ast.walkDecls((d) => {
     const at = `${file}:${d.source.start.line}`;
+    if (/\bblur\(/.test(d.value))
+      errors.push(at + " blur effects are not part of the design");
     if (file !== "css/tokens.css" && foundation.has(d.prop))
       errors.push(at + " foundation token outside tokens.css: " + d.prop);
     if (
@@ -34,6 +36,14 @@ for (const file of files) {
       d.value !== "var(--raised)"
     )
       errors.push(at + " tinted semantic surface");
+    if (
+      (d.prop === "transition" || d.prop === "animation") &&
+      !/var\(--(?:motion-ease|ease|spring|spring-soft)\)|\blinear\b|\bnone\b/.test(
+        d.value,
+      ) &&
+      !d.parent.nodes.some((node) => node.prop === d.prop + "-timing-function")
+    )
+      errors.push(at + " motion must use shared easing");
     if (file !== "css/tokens.css" && d.value.includes("cubic-bezier("))
       errors.push(at + " local motion curve");
     if (d.prop === "background" || d.prop === "background-color") {
@@ -74,7 +84,10 @@ const known = new Set([...iconNames, ...builtins]);
 for (const file of sourceFiles) {
   const source = fs.readFileSync(file, "utf8");
   const registered = new Set(known);
-  for (const match of source.matchAll(/icons=\{\{\s*["']?([a-z][a-z0-9-]*)["']?\s*:/g)) registered.add(match[1]);
+  for (const match of source.matchAll(
+    /icons=\{\{\s*["']?([a-z][a-z0-9-]*)["']?\s*:/g,
+  ))
+    registered.add(match[1]);
   if (/easing:\s*["']cubic-bezier/.test(source))
     errors.push(file + " local JavaScript easing curve");
   for (const pattern of [
@@ -131,6 +144,7 @@ const report = {
     "tokenized corners",
     "neutral semantic supporting surfaces",
     "shared CSS easing",
+    "no blur effects",
     "literal demo icons resolve",
     "all public APIs have a design family",
     "unique component page IDs",

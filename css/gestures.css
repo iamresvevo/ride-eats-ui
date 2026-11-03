@@ -180,9 +180,22 @@
 }
 .re-split {
   display: grid;
-  grid-template-columns: minmax(0, var(--split)) 16px minmax(0, 1fr);
+  grid-template-columns: minmax(
+      0,
+      calc((100% - 16px) * var(--split))
+    ) 16px minmax(0, 1fr);
+  transition: grid-template-columns var(--motion-selection) var(--motion-ease);
   width: 100%;
   min-height: 240px;
+}
+.re-split[data-dragging] {
+  transition: none;
+  user-select: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .re-split {
+    transition: none;
+  }
 }
 .re-split > div:first-child,
 .re-split > div:last-child {

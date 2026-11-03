@@ -1051,6 +1051,7 @@ export function StickyBar(
     children: React.ReactNode;
     offset?: number | string;
     fade?: boolean;
+    /** @deprecated Ignored: the kit no longer uses blur effects. */
     blur?: boolean;
     label?: string;
   },

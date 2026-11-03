@@ -5,7 +5,6 @@ export function StickyBar({
   children,
   offset,
   fade = true,
-  blur = true,
   className = "",
   style,
   label = "Page controls",
@@ -66,7 +65,6 @@ export function StickyBar({
         className={`re-sticky-bar ${className}`}
         role="group"
         aria-label={label}
-        data-blur={blur || undefined}
         data-fade={fade || undefined}
         style={{
           ...(offset == null
@@ -78,13 +76,7 @@ export function StickyBar({
           ...style,
         }}
       >
-        {(fade || blur) && (
-          <span className="re-floater-fade" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-        )}
+        {fade && <span className="re-floater-fade" aria-hidden="true"></span>}
         {children}
       </div>
     </>

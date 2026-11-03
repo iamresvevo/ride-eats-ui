@@ -136,10 +136,12 @@ The implementation workbench follows the primary example and uses Accordion, Car
 </main>
 ```
 
-StickyBar follows Tools' sentinel behavior, discovers the nearest scroll container, and inherits Header's measured `--header-height` from their shared ancestor. Content scrolls beneath sharp controls with a scroll-driven neutral fade and layered 2/6/12px backdrop blur. Use `offset={0}` inside an independent scroll area, `blur={false}` for fade only, or `fade={false}` for no overlay. Keep it in the content parent whose boundary should stop it. Header also applies its progressive neutral fade/blur as scrolling begins. Blur support depends on the browser; the neutral gradient is the fallback.
+StickyBar follows Tools' sentinel behavior, discovers the nearest scroll container, and inherits Header's measured `--header-height` from their shared ancestor. Content scrolls beneath controls with a scroll-driven neutral fade and no blur. Use `offset={0}` inside an independent scroll area or `fade={false}` for no overlay. Keep it in the content parent whose boundary should stop it. The legacy `blur` prop is ignored. BottomSheet follows pointer movement from either the grip or header; short pulls settle back, while a long pull or deliberate downward flick dismisses it. Dialog backdrops only dim the underlying page.
 
 ### One accent, including overlays
 
 Use `<UIProvider accent="#1fa476">` once at the application root. The root tokens reach body-level popovers, calendars and feedback. Hex values get a contrasting black/white foreground; `accentForeground` overrides it. Primary actions use the solid accent, navigation retains neutral selection pills, and semantic danger/status colors stay separate.
 
 SettingsPanel supports optional section `icon` values. SupportInbox retains drafts per thread for its mounted session and filters conversations locally by name/subject. DataGrid accepts `toolbarActions` for upload/create controls and reserves 36px selection/expansion columns.
+
+SplitPane tracks the pointer directly, adds bounded visual resistance beyond min/max, then settles back with `--motion-selection` and `--motion-ease`. Controlled values never overshoot. Keyboard and external value changes use the same settling curve; reduced motion removes interpolation. Pointer cancellation restores the starting ratio.

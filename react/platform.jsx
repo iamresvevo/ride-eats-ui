@@ -1,3 +1,4 @@
+import { shouldDismissSheet } from "./sheet-motion.js";
 import React, { useRef, useState, useEffect } from "react";
 import Icon from "./send/Icon.jsx";
 import Modal from "./send/ui/Modal.jsx";
@@ -237,16 +238,84 @@ export function BottomSheet({
   className = "",
   style,
 }) {
-  const [offset, setOffset] = useState(0),
-    [dragging, setDragging] = useState(false),
-    drag = useRef(null),
+  const [offset, setOffset] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const drag = useRef(null),
     moved = useRef(false);
+  const reset = () => {
+    drag.current = null;
+    setDragging(false);
+    setOffset(0);
+  };
+  useEffect(() => {
+    if (open) reset();
+  }, [open]);
+  const dragProps = {
+    onPointerDown(event) {
+      if (
+        event.button !== 0 ||
+        !event.isPrimary ||
+        event.target.closest(
+          "input,textarea,select,a,[contenteditable=true],.dialog-head button",
+        )
+      )
+        return;
+      const sheet = event.currentTarget.closest("dialog");
+      if (sheet?.dataset.closing === "true") return;
+      event.currentTarget.setPointerCapture(event.pointerId);
+      drag.current = {
+        pointer: event.pointerId,
+        start: event.clientY,
+        last: event.clientY,
+        time: event.timeStamp,
+        velocity: 0,
+        distance: 0,
+        height: sheet?.offsetHeight || 360,
+      };
+      moved.current = false;
+      setDragging(true);
+    },
+    onPointerMove(event) {
+      const current = drag.current;
+      if (!current || current.pointer !== event.pointerId) return;
+      const elapsed = event.timeStamp - current.time;
+      if (elapsed > 0)
+        current.velocity = (event.clientY - current.last) / elapsed;
+      current.last = event.clientY;
+      current.time = event.timeStamp;
+      current.distance = Math.max(0, event.clientY - current.start);
+      if (Math.abs(event.clientY - current.start) > 4) moved.current = true;
+      setOffset(current.distance);
+    },
+    onPointerUp(event) {
+      const current = drag.current;
+      if (!current || current.pointer !== event.pointerId) return;
+      const distance = Math.max(0, event.clientY - current.start);
+      const velocity =
+        event.timeStamp - current.time > 100 ? 0 : current.velocity;
+      drag.current = null;
+      setDragging(false);
+      if (event.currentTarget.hasPointerCapture(event.pointerId))
+        event.currentTarget.releasePointerCapture(event.pointerId);
+      if (shouldDismissSheet(distance, velocity, current.height)) {
+        setOffset(distance);
+        onClose();
+      } else setOffset(0);
+    },
+    onPointerCancel() {
+      if (drag.current) reset();
+    },
+    onLostPointerCapture() {
+      if (drag.current) reset();
+    },
+  };
   return (
     <Modal
       open={open}
       onClose={onClose}
       title={title}
-      onAfterClose={() => setOffset(0)}
+      onAfterClose={reset}
+      headerProps={dragProps}
       className={`re-bottom-sheet ${dragging ? "is-dragging" : ""} ${className}`}
       style={{
         "--sheet-offset": `${offset}px`,
@@ -263,30 +332,7 @@ export function BottomSheet({
         onClick={() => {
           if (!moved.current) onClose();
         }}
-        onPointerDown={(event) => {
-          if (event.button !== 0) return;
-          event.currentTarget.setPointerCapture(event.pointerId);
-          drag.current = event.clientY;
-          moved.current = false;
-          setDragging(true);
-        }}
-        onPointerMove={(event) => {
-          if (drag.current == null) return;
-          const distance = Math.max(0, event.clientY - drag.current);
-          if (distance > 6) moved.current = true;
-          setOffset(distance);
-        }}
-        onPointerUp={() => {
-          drag.current = null;
-          setDragging(false);
-          if (offset > 100) onClose();
-          else setOffset(0);
-        }}
-        onPointerCancel={() => {
-          drag.current = null;
-          setDragging(false);
-          setOffset(0);
-        }}
+        {...dragProps}
       >
         <span />
       </button>
@@ -315,8 +361,12 @@ export function ContextMenu({
     node.style.top =
       Math.max(8, Math.min(position.y, innerHeight - node.offsetHeight - 8)) +
       "px";
-    if (submenu) node.querySelector(".re-context-sub.is-open button:not(:disabled)")?.focus();
-    else if (!node.contains(document.activeElement)) node.querySelector("button:not(:disabled)")?.focus();
+    if (submenu)
+      node
+        .querySelector(".re-context-sub.is-open button:not(:disabled)")
+        ?.focus();
+    else if (!node.contains(document.activeElement))
+      node.querySelector("button:not(:disabled)")?.focus();
   }, [position, submenu]);
   const close = () => {
     panel.current?.hidePopover();
@@ -351,9 +401,14 @@ export function ContextMenu({
             {item.items && <Icon name="chevron" />}
           </button>
           {item.items && (
-            <div className={`re-context-sub ${submenu === item.value ? "is-open" : ""}`}
-              inert={submenu !== item.value} aria-hidden={submenu !== item.value}>
-              <div role="menu" aria-label={item.label}>{render(item.items)}</div>
+            <div
+              className={`re-context-sub ${submenu === item.value ? "is-open" : ""}`}
+              inert={submenu !== item.value}
+              aria-hidden={submenu !== item.value}
+            >
+              <div role="menu" aria-label={item.label}>
+                {render(item.items)}
+              </div>
             </div>
           )}
         </React.Fragment>
@@ -398,15 +453,23 @@ export function ContextMenu({
           }
         }}
         onKeyDown={(event) => {
-          if ((event.key === "Escape" || event.key === "ArrowLeft") && submenu) {
+          if (
+            (event.key === "Escape" || event.key === "ArrowLeft") &&
+            submenu
+          ) {
             event.preventDefault();
-            const parent = panel.current.querySelector('[aria-expanded="true"]');
+            const parent = panel.current.querySelector(
+              '[aria-expanded="true"]',
+            );
             setSubmenu(null);
             requestAnimationFrame(() => parent?.focus());
           } else if (event.key === "Escape") {
             event.preventDefault();
             close();
-          } else if (event.key === "ArrowRight" && event.target.getAttribute("aria-haspopup") === "menu") {
+          } else if (
+            event.key === "ArrowRight" &&
+            event.target.getAttribute("aria-haspopup") === "menu"
+          ) {
             event.preventDefault();
             event.target.click();
           } else if (

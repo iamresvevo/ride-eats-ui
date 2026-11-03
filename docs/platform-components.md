@@ -508,7 +508,7 @@ import { Carousel, Card } from '@ride-eats/ui';
 
 ## Split Pane
 
-Layout. Drag the divider to resize two panels. Arrow keys adjust by 2%, Shift by 10%, and Home/End jump to bounds.
+Layout. Drag the divider to resize with elastic resistance at the bounds and a smooth release. Controlled values stay within min/max. Keyboard resizing uses the shared settling curve: arrows adjust by 2%, Shift by 10%, Home/End jump to bounds.
 
 ```jsx
 import { SplitPane } from '@ride-eats/ui';
@@ -831,7 +831,7 @@ import { NotificationCenter } from '@ride-eats/ui';
 
 ## Bottom Sheet
 
-Feedback. A compact native modal sheet. Drag its handle down to dismiss, press the handle, use Close, or press Escape. It keeps the real dialog mounted through exits.
+Feedback. A compact native modal sheet. Drag the handle or header down to dismiss; short pulls smoothly return, press the handle, use Close, or press Escape. It keeps the real dialog mounted through exits.
 
 ```jsx
 import { BottomSheet, Button } from '@ride-eats/ui';
@@ -961,7 +961,7 @@ import { SupportInbox } from '@ride-eats/ui';
 
 ## Sticky Bar
 
-Layout. Tools’ automatic floating page controls. Scroll depth progressively fades and blurs the content beneath while controls remain sharp. The header offset is measured automatically when used with Header.
+Layout. Tools’ automatic floating page controls. Scroll depth progressively fades the content beneath without blur while controls remain sharp. The header offset is measured automatically when used with Header.
 
 ```jsx
 import { StickyBar, Tabs } from '@ride-eats/ui';
@@ -973,5 +973,5 @@ import { StickyBar, Tabs } from '@ride-eats/ui';
 | --- | --- | --- |
 | children | ReactNode | Tabs, chips, search or action controls. |
 | offset | number | CSS length | Defaults to the nearest inherited --header-height. Set 0 for an independent scroll container. |
-| fade / blur | boolean | Progressive neutral fade and layered backdrop blur, both enabled by default. |
+| fade | boolean | Progressive neutral fade, enabled by default. No blur effects. |
 | label / className / style | styling and accessibility | The parent defines the sticky scroll boundary; use a labelled scroll region for keyboard scrolling. |

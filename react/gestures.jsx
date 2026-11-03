@@ -1,3 +1,4 @@
+import { elasticSplit } from "./split-motion.js";
 import { motionEase } from "./send/hooks/motion.js";
 import React, { useId, useLayoutEffect, useRef, useState } from "react";
 import Icon from "./send/Icon.jsx";
@@ -402,19 +403,38 @@ export function SplitPane({
   style,
 }) {
   const root = useRef(null),
-    [dragging, setDragging] = useState(false);
-  const update = (e) => {
-    const box = root.current.getBoundingClientRect();
-    onValueChange(
-      Math.max(min, Math.min(max, ((e.clientX - box.left) / box.width) * 100)),
-    );
+    drag = useRef(null);
+  const [preview, setPreview] = useState(null);
+  const dragging = preview !== null;
+  const bounded = Math.max(min, Math.min(max, value));
+  const update = (event) => {
+    const active = drag.current;
+    if (!active || active.pointer !== event.pointerId) return;
+    const raw =
+      active.value + ((event.clientX - active.x) / active.width) * 100;
+    setPreview(elasticSplit(raw, min, max));
+    const next = Math.max(min, Math.min(max, raw));
+    if (active.last !== next) {
+      active.last = next;
+      onValueChange(next);
+    }
+  };
+  const finish = (event, cancelled = false) => {
+    const active = drag.current;
+    if (!active || active.pointer !== event.pointerId) return;
+    if (!cancelled) update(event);
+    drag.current = null;
+    setPreview(null);
+    if (cancelled) onValueChange(active.value);
+    if (event.currentTarget.hasPointerCapture(event.pointerId))
+      event.currentTarget.releasePointerCapture(event.pointerId);
   };
   return (
     <div
       className={`re-split ${className}`}
       ref={root}
       data-dragging={dragging || undefined}
-      style={{ "--split": `${Math.max(min, Math.min(max, value))}%`, ...style }}
+      style={{ "--split": (preview ?? bounded) / 100, ...style }}
     >
       <div>{first}</div>
       <div
@@ -424,7 +444,7 @@ export function SplitPane({
         aria-orientation="vertical"
         aria-valuemin={min}
         aria-valuemax={max}
-        aria-valuenow={Math.round(value)}
+        aria-valuenow={Math.round(bounded)}
         onKeyDown={(e) => {
           if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) {
             e.preventDefault();
@@ -445,17 +465,22 @@ export function SplitPane({
             );
           }
         }}
-        onPointerDown={(e) => {
-          if (e.button !== 0) return;
-          e.currentTarget.setPointerCapture(e.pointerId);
-          setDragging(true);
-          update(e);
+        onPointerDown={(event) => {
+          if (event.button !== 0 || !event.isPrimary) return;
+          event.currentTarget.setPointerCapture(event.pointerId);
+          drag.current = {
+            pointer: event.pointerId,
+            x: event.clientX,
+            value: bounded,
+            last: bounded,
+            width: Math.max(1, root.current.clientWidth - 16),
+          };
+          setPreview(bounded);
         }}
-        onPointerMove={(e) => {
-          if (dragging) update(e);
-        }}
-        onPointerUp={() => setDragging(false)}
-        onPointerCancel={() => setDragging(false)}
+        onPointerMove={update}
+        onPointerUp={(event) => finish(event)}
+        onPointerCancel={(event) => finish(event, true)}
+        onLostPointerCapture={(event) => finish(event, true)}
       >
         <span />
       </div>

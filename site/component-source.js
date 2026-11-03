@@ -1,3 +1,4 @@
+import { gesturePages } from "./gesture-data.js";
 import { collectionPages } from "./collection-data.js";
 import { motionPages } from "./motion-data.js";
 import { platformPages } from "./platform-data.js";
@@ -38,6 +39,7 @@ export function sourceForPage(id) {
   if (forms.has(id)) return "react/forms.jsx";
   if (workflows.has(id)) return "react/workflows.jsx";
   if (collectionPages.some((p) => p.id === id)) return "react/collection.jsx";
+  if (gesturePages.some((p) => p.id === id)) return "react/gestures.jsx";
   if (motionPages.some((p) => p.id === id)) return "react/motion.jsx";
   if (platformPages.some((p) => p.id === id)) return "react/platform.jsx";
   return "react/index.jsx";

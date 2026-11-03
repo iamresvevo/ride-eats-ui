@@ -1317,8 +1317,18 @@
   max-width: min(560px, 100%);
   transition: translate 280ms var(--motion-ease);
 }
-.re-bottom-sheet.is-dragging {
+.re-bottom-sheet.dialog.is-dragging {
   transition: none;
+  will-change: translate;
+}
+.re-bottom-sheet .dialog-head {
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+.re-bottom-sheet.is-dragging .dialog-head,
+.re-bottom-sheet.is-dragging .re-sheet-handle {
+  cursor: grabbing;
 }
 @media (prefers-reduced-motion: reduce) {
   .re-bottom-sheet.dialog {

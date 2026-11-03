@@ -129,11 +129,11 @@ Each page was loaded in light and dark desktop layouts and in a 390px narrow lay
 | [Tiles](https://iamresvevo.github.io/ride-eats-ui/#tiles) | Layout | [react/collection.jsx](../react/collection.jsx) |
 | [Page Header](https://iamresvevo.github.io/ride-eats-ui/#page-header) | Layout | [react/collection.jsx](../react/collection.jsx) |
 | [Dashboard Layout](https://iamresvevo.github.io/ride-eats-ui/#dashboard) | Recipes | [react/collection.jsx](../react/collection.jsx) |
-| [Reorder List](https://iamresvevo.github.io/ride-eats-ui/#reorder-list) | Layout | [react/motion.jsx](../react/motion.jsx) |
-| [Swipe Actions](https://iamresvevo.github.io/ride-eats-ui/#swipe-actions) | Actions | [react/motion.jsx](../react/motion.jsx) |
-| [Carousel](https://iamresvevo.github.io/ride-eats-ui/#carousel) | Display | [react/motion.jsx](../react/motion.jsx) |
-| [Split Pane](https://iamresvevo.github.io/ride-eats-ui/#split-pane) | Layout | [react/motion.jsx](../react/motion.jsx) |
-| [Range Slider](https://iamresvevo.github.io/ride-eats-ui/#range-slider) | Inputs | [react/motion.jsx](../react/motion.jsx) |
+| [Reorder List](https://iamresvevo.github.io/ride-eats-ui/#reorder-list) | Layout | [react/gestures.jsx](../react/gestures.jsx) |
+| [Swipe Actions](https://iamresvevo.github.io/ride-eats-ui/#swipe-actions) | Actions | [react/gestures.jsx](../react/gestures.jsx) |
+| [Carousel](https://iamresvevo.github.io/ride-eats-ui/#carousel) | Display | [react/gestures.jsx](../react/gestures.jsx) |
+| [Split Pane](https://iamresvevo.github.io/ride-eats-ui/#split-pane) | Layout | [react/gestures.jsx](../react/gestures.jsx) |
+| [Range Slider](https://iamresvevo.github.io/ride-eats-ui/#range-slider) | Inputs | [react/gestures.jsx](../react/gestures.jsx) |
 | [Animated Icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) | Motion | [react/send/Icon.jsx](../react/send/Icon.jsx) |
 | [Popover](https://iamresvevo.github.io/ride-eats-ui/#popover) | Feedback | [react/motion.jsx](../react/motion.jsx) |
 | [Command Menu](https://iamresvevo.github.io/ride-eats-ui/#command-menu) | Navigation | [react/CommandMenu.jsx](../react/CommandMenu.jsx) |
@@ -174,3 +174,9 @@ Steps, ScrollArea and Separator were removed from exports, types, examples and n
 Primary actions and calendar Done/Clear buttons now use the solid accent. UIProvider can set `accent` and optional `accentForeground` at the document root, so portaled overlays share the palette. Hex foregrounds are derived by contrast. Neutral navigation pills and semantic statuses retain their roles.
 
 SupportInbox has compact searchable thread rows, shared avatars/textarea/buttons, separate incoming/outgoing surfaces and per-thread drafts. SettingsPanel uses bounded rounded section cards. DataGrid reserves actual control-column widths rather than stretching them; FileManager puts upload inside its single toolbar. StickyBar measures the top cover needed by a padded scroll container and renders fade/blur independently.
+
+## 0.9.3 motion correction
+
+Blur effects are removed across overlays, headers and floaters. CI rejects CSS blur functions. StickyBar retains a neutral fade; its legacy blur prop is ignored. BottomSheet accepts dragging from its grip or header, tracks pointer displacement without a transition while held, and settles short pulls or dismisses deliberate pulls/flicks. Pointer cancellation returns it to position.
+
+SplitPane now has bounded visual resistance and shared easing on release, keyboard and external changes; controlled values remain within min/max. The design check rejects unconfigured CSS transition/animation easing, alongside local curves and blur effects.

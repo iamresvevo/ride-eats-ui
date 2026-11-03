@@ -80,6 +80,7 @@ export default function Modal({
   title,
   label,
   labelledBy,
+  headerProps,
   dismissable = true,
   closeOnBackdrop = true,
   onClose,
@@ -229,7 +230,7 @@ export default function Modal({
       }}
     >
       {title && (
-        <div className="dialog-head">
+        <div {...headerProps} className="dialog-head">
           <h2 id={titleId}>{t(title)}</h2>
           <button
             type="button"

@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.2
+npm install github:iamresvevo/ride-eats-ui#v0.9.3
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -315,7 +315,7 @@ Native popovers and contextual menus animate both opening and closing. Context s
 
 ### Send/Tools motion and floating controls
 
-Use `<StickyBar><Tabs ... /></StickyBar>` for automatic page floaters below Header. It detects the scroll container and progressively fades/blurs the content underneath. Set `offset={0}` in independent scroll regions. The component browser now uses the shared Segmented, Select, Accordion, Card, Field, NumberInput, Switch and CopyButton implementations rather than parallel documentation controls. See [implementation](docs/implementation.md) for solid action tones, circular controls, complete React examples and motion configuration.
+Use `<StickyBar><Tabs ... /></StickyBar>` for automatic page floaters below Header. It detects the scroll container and progressively fades the content underneath without blur. Set `offset={0}` in independent scroll regions. The component browser now uses the shared Segmented, Select, Accordion, Card, Field, NumberInput, Switch and CopyButton implementations rather than parallel documentation controls. See [implementation](docs/implementation.md) for solid action tones, circular controls, complete React examples and motion configuration.
 
 ## Keeping the system consistent
 

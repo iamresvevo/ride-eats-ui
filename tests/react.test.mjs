@@ -857,3 +857,24 @@ test("solid accent foreground chooses the higher contrast black or white", async
   assert.equal(accentText("#ffcc00"), "#000000");
   assert.equal(accentText("var(--custom)"), undefined);
 });
+
+test("sheet release distinguishes a short pull, a deliberate distance, and a flick", async () => {
+  const { shouldDismissSheet } = await import("../react/sheet-motion.js");
+  assert.equal(shouldDismissSheet(15, 2, 360), false);
+  assert.equal(shouldDismissSheet(60, 0.1, 360), false);
+  assert.equal(shouldDismissSheet(110, 0.1, 360), true);
+  assert.equal(shouldDismissSheet(40, 0.8, 360), true);
+  assert.equal(shouldDismissSheet(40, -0.8, 360), false);
+  assert.equal(shouldDismissSheet(85, 0.1, 300), true);
+  assert.equal(shouldDismissSheet(125, 0, 800), true);
+});
+
+test("split resistance stays bounded, increases smoothly and leaves valid ratios unchanged", async () => {
+  const { elasticSplit } = await import("../react/split-motion.js");
+  assert.equal(elasticSplit(50, 20, 80), 50);
+  assert.ok(elasticSplit(10, 20, 80) < 20 && elasticSplit(10, 20, 80) > 14);
+  assert.ok(elasticSplit(0, 20, 80) < elasticSplit(10, 20, 80));
+  assert.ok(elasticSplit(90, 20, 80) > 80 && elasticSplit(90, 20, 80) < 86);
+  assert.equal(elasticSplit(-200, 0, 100), 0);
+  assert.equal(elasticSplit(300, 0, 100), 100);
+});

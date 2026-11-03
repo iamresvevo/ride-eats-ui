@@ -261,7 +261,7 @@ export const platformPages = [
     "bottom-sheet",
     "Bottom Sheet",
     "Feedback",
-    "A compact native modal sheet. Drag its handle down to dismiss, press the handle, use Close, or press Escape. It keeps the real dialog mounted through exits.",
+    "A compact native modal sheet. Drag the handle or header down to dismiss; short pulls smoothly return, press the handle, use Close, or press Escape. It keeps the real dialog mounted through exits.",
     `<BottomSheet open={open} onClose={() => setOpen(false)} title="Transfer settings" footer={<Button onClick={save}>Save changes</Button>}>\n  Your settings\n</BottomSheet>`,
     [
       [
@@ -429,7 +429,7 @@ export const platformPages = [
     "sticky-bar",
     "Sticky Bar",
     "Layout",
-    "Tools’ automatic floating page controls. Scroll depth progressively fades and blurs the content beneath while controls remain sharp. The header offset is measured automatically when used with Header.",
+    "Tools’ automatic floating page controls. Scroll depth progressively fades the content beneath without blur while controls remain sharp. The header offset is measured automatically when used with Header.",
     `<StickyBar><Tabs items={tabs} value={tab} onValueChange={setTab} /></StickyBar>`,
     [
       ["children", "ReactNode", "Tabs, chips, search or action controls."],
@@ -439,9 +439,9 @@ export const platformPages = [
         "Defaults to the nearest inherited --header-height. Set 0 for an independent scroll container.",
       ],
       [
-        "fade / blur",
+        "fade",
         "boolean",
-        "Progressive neutral fade and layered backdrop blur, both enabled by default.",
+        "Progressive neutral fade, enabled by default. No blur effects.",
       ],
       [
         "label / className / style",

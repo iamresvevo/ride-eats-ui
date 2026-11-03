@@ -64,7 +64,7 @@ export const gesturePages = [
     "split-pane",
     "Split Pane",
     "Layout",
-    "Drag the divider to resize two panels. Arrow keys adjust by 2%, Shift by 10%, and Home/End jump to bounds.",
+    "Drag the divider to resize with elastic resistance at the bounds and a smooth release. Controlled values stay within min/max. Keyboard resizing uses the shared settling curve: arrows adjust by 2%, Shift by 10%, Home/End jump to bounds.",
     `const [split, setSplit] = useState(40);\n<SplitPane value={split} onValueChange={setSplit} first={<p>Navigation</p>} second={<p>Workspace</p>} />`,
     [
       [

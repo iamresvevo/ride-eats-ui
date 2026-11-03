@@ -597,8 +597,6 @@
 }
 .dialog::backdrop {
   background: var(--overlay);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
 }
 /* Opening: the backdrop fades while the dialog pops in, both 150ms. Scale only, so the backdrop beneath stays put. */
 .dialog[open] {
@@ -626,7 +624,7 @@
     transform: scale(0.97);
   }
 }
-/* Keep the entrance blur stable; var(--motion-ease) it fully away before the exit layer is removed. */
+/* Fade the dimming layer before removing it. */
 @keyframes backdrop-in {
   from {
     background-color: transparent;
@@ -635,13 +633,9 @@
 @keyframes backdrop-out {
   from {
     background-color: var(--overlay);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
   }
   to {
     background-color: transparent;
-    -webkit-backdrop-filter: blur(0);
-    backdrop-filter: blur(0);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1244,7 +1238,7 @@
   animation: spin 0.8s linear infinite;
 }
 .page-loading {
-  animation: loading-reveal 0.2s 0.2s both;
+  animation: loading-reveal 0.2s var(--motion-ease) 0.2s both;
 }
 @keyframes loading-reveal {
   from {
