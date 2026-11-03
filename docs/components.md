@@ -347,8 +347,10 @@ Menus use intrinsic option width, with the trigger as a minimum and a viewport-s
 TextDiffViewer uses a quiet toolbar, plain pane headings and text-style context disclosure controls. It keeps line alignment and bounded matching without an enclosing card frame or animated code rows.
 
 
-SupportInbox keeps direct, group and channel conversations in one component. Choose `template="bubbles"` or `template="channel"`, set `density`, `showAvatars`, `sidebarWidth`, `height` and `showSidebar`, and supply participants and message avatars. Consecutive messages group by author and chronology; system entries interrupt grouping. Conversation rows have 8px separation, or 4px in compact mode, and message text has a separate gap beneath the author.
+SupportInbox keeps direct, group and channel conversations in one component. Choose `template="bubbles"` or `template="channel"`, set `density`, `showAvatars`, `sidebarWidth`, `height` and `showSidebar`, and supply participants and message avatars. Consecutive messages group by author and chronology; system entries interrupt grouping. Conversation rows have 6px separation, or 4px in compact mode, and message text has a separate gap beneath the author.
 
 Use `renderThread`, `renderHeader`, `renderMessage`, `renderMessageActions` and `renderComposer` for application content. The custom composer receives its per-thread draft, pending/error state and `onSend`. `onReply` remains caller-owned; the library performs no network requests. Drafts survive thread switching, failed sends preserve text, and new text typed during a pending send is preserved.
 
 Header and AppShell navigation items accept `count` (including zero) or a custom React `badge`. Custom badge content takes precedence.
+
+SupportInbox sidebar rows retain a 44px minimum target. Section labels sit 2px above their rows, with a 6px section lead-in. Compact mode reduces row padding and avatar size while preserving subjects and statuses. The catalog starts in compact mode.

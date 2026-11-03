@@ -996,11 +996,11 @@
 .re-support > aside {
   min-width: 0;
   min-height: 0;
-  padding: 12px 8px;
+  padding: 10px 8px;
   border-right: 1px solid var(--line);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 .re-support-heading {
   display: flex;
@@ -1015,7 +1015,7 @@
 .re-support-count::before {
   display: none;
 }
-.re-support-search {
+.re-support .re-support-search {
   order: 0;
   width: 100%;
   flex-shrink: 0;
@@ -1025,16 +1025,17 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 .re-support-group-title {
   font-size: 11px;
   color: var(--muted);
-  margin: 12px 8px 8px;
+  line-height: 16px;
+  margin: 6px 8px 2px;
   font-weight: 700;
 }
-.re-support-group-title:first-child {
-  margin-top: 8px;
+.re-support aside [role="listitem"]:first-child .re-support-group-title {
+  margin-top: 0;
 }
 .re-support aside button {
   width: 100%;
@@ -1042,9 +1043,10 @@
   background: none;
   text-align: left;
   border-radius: var(--r-lg);
-  padding: 10px;
+  min-height: 44px;
+  padding: 6px 8px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   color: var(--text);
   transition: background var(--motion-fast) var(--motion-ease);
@@ -1063,7 +1065,7 @@
   flex: 1;
   min-width: 0;
   display: grid;
-  gap: 4px;
+  gap: 2px;
 }
 .re-support-row-title {
   display: flex;
@@ -1256,7 +1258,15 @@
   gap: 4px;
 }
 .re-support[data-density="compact"] aside button {
-  padding: 8px;
+  padding: 4px 8px;
+}
+.re-support[data-density="compact"] aside .account-avatar {
+  width: 28px;
+  height: 28px;
+  flex-basis: 28px;
+}
+.re-support[data-density="compact"] .re-support-summary {
+  gap: 1px;
 }
 .re-support[data-density="compact"] .re-support-thread > ol {
   gap: 8px;

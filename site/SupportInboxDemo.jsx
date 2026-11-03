@@ -121,7 +121,7 @@ export default function SupportInboxDemo() {
   const [threads, setThreads] = useState(initial),
     [value, setValue] = useState("room"),
     [template, setTemplate] = useState("channel"),
-    [compact, setCompact] = useState(false),
+    [compact, setCompact] = useState(true),
     [avatars, setAvatars] = useState(true),
     [reactions, setReactions] = useState({}),
     toast = useToast();
