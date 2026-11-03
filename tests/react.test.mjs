@@ -1434,3 +1434,13 @@ test('color picker and button groups expose reusable controlled semantics',()=>{
   assert.match(group,/data-orientation="vertical" data-attached="true"/);
   assert.match(group,/<button[^>]*disabled/);
 });
+
+test('section headings keep their semantic hierarchy and section navigation marks the selected anchor',()=>{
+ const title=render('CardHeader',{title:'Related actions',headingLevel:3});
+ assert.match(title,/<h3>Related actions<\/h3>/);
+ const fallback=render('CardHeader',{title:'Default'});
+ assert.match(fallback,/<h2>Default<\/h2>/);
+ const nav=render('SectionNav',{items:[{id:'send',label:'Send',count:6},{id:'share',label:'Share',count:6}],value:'share'});
+ assert.match(nav,/<a href="#share" aria-current="location"/);
+ assert.doesNotMatch(nav,/<a href="#send" aria-current/);
+});

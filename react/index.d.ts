@@ -544,6 +544,7 @@ export function DataTable<T extends Record<string, unknown>>(
 export function CardHeader(
   props: Omit<React.HTMLAttributes<HTMLDivElement>, "title"> & {
     title?: React.ReactNode;
+    headingLevel?: 2 | 3 | 4;
     description?: React.ReactNode;
     action?: React.ReactNode;
   },

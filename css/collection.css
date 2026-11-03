@@ -875,9 +875,10 @@
   justify-content: space-between;
   gap: 16px;
 }
-.re-card-header h2 {
+.re-card-header :is(h2, h3, h4) {
+  margin: 0;
   font-size: 15px;
-  font-weight: 650;
+  font-weight: 700;
   line-height: 1.4;
   letter-spacing: -0.2px;
 }
@@ -1559,6 +1560,7 @@ button.re-avatar-more:hover {
   z-index: 20;
 }
 .re-section-nav a {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1571,10 +1573,35 @@ button.re-avatar-more:hover {
   text-decoration: none;
   border-radius: var(--r-pill);
 }
-.re-section-nav a:hover,
-.re-section-nav a[aria-current] {
+.re-section-nav a:hover {
   color: var(--text);
 }
+.re-section-nav a[aria-current="location"] {
+  color: var(--brand-ink);
+  font-weight: 700;
+}
+.re-section-nav a::after {
+  content: "";
+  position: absolute;
+  inset-inline: 14px;
+  bottom: 0;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: var(--brand);
+  opacity: 0;
+}
+.re-section-nav a[aria-current="location"]::after {
+  opacity: 1;
+}
+.re-section-nav a[aria-current="location"] > span {
+  color: inherit;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .re-section-nav a::after {
+    transition: opacity var(--motion-fast) var(--motion-ease);
+  }
+}
+
 .re-section-nav a > span {
   color: var(--muted);
   font-size: 12px;

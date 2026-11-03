@@ -52,6 +52,7 @@
   opacity: 0.5;
 }
 .re-button-group {
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 8px;

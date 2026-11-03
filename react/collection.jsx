@@ -864,16 +864,18 @@ export function DataTable({
 
 export function CardHeader({
   title,
+  headingLevel = 2,
   description,
   action,
   children,
   className = "",
   ...props
 }) {
+  const Heading = [2, 3, 4].includes(headingLevel) ? `h${headingLevel}` : "h2";
   return (
     <div {...props} className={`re-card-header ${className}`}>
       <div>
-        {title && <h2>{title}</h2>}
+        {title && <Heading>{title}</Heading>}
         {description && <p>{description}</p>}
         {children}
       </div>

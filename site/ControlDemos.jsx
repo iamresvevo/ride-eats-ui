@@ -6,6 +6,7 @@ import {
   Button,
   Dropdown,
   Field,
+  CardHeader,
   Flex,
   Switch,
   Icon,
@@ -123,8 +124,8 @@ export function ControlDemo({ id }) {
   if (id === "button-group")
     return (
       <Flex direction="column" gap={24}>
-        <div>
-          <p>Related actions</p>
+        <Flex direction="column" gap={12}>
+          <CardHeader title="Related actions" headingLevel={3} />
           <ButtonGroup label="Record actions">
             <Button icon="download" onClick={() => toast("Download callback")}>
               Download
@@ -140,9 +141,9 @@ export function ControlDemo({ id }) {
               Delete
             </Button>
           </ButtonGroup>
-        </div>
-        <div>
-          <p>Attached actions</p>
+        </Flex>
+        <Flex direction="column" gap={12}>
+          <CardHeader title="Attached actions" headingLevel={3} />
           <ButtonGroup label="Save actions" attached>
             <Button
               variant="primary"
@@ -172,9 +173,9 @@ export function ControlDemo({ id }) {
               ]}
             />
           </ButtonGroup>
-        </div>
-        <div>
-          <p>Vertical layout</p>
+        </Flex>
+        <Flex direction="column" gap={12}>
+          <CardHeader title="Vertical layout" headingLevel={3} />
           <ButtonGroup label="Export formats" orientation="vertical">
             <Button onClick={() => toast("PDF export callback")}>
               Export PDF
@@ -184,7 +185,7 @@ export function ControlDemo({ id }) {
             </Button>
             <Button disabled>Export XML</Button>
           </ButtonGroup>
-        </div>
+        </Flex>
       </Flex>
     );
   return null;

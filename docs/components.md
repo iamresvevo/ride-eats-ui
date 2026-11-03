@@ -316,3 +316,18 @@ Use a unique `label` for each picker. A popover picker works inside Field, inclu
 ```
 
 Compose existing Button and Dropdown children. Separate pills wrap by default; `attached` joins controls into one surface and keeps them on one line. Keep attached labels concise on narrow screens. `orientation="vertical"` stacks actions. Every action keeps native Tab navigation, callbacks, loading and disabled states. This is an action group, not a selection component; use ToggleGroup or Segmented for selection. Dropdown now accepts the same `variant` and `size` as Button for consistent composition.
+
+## Section headings and navigation
+
+Compose a heading and its content with `Flex direction="column" gap={12}`. Use another column with `gap={24}` between sections. CardHeader works without a Card wrapper and accepts `headingLevel={2 | 3 | 4}` (default 2), with shared 15px bold titles and reset browser margins.
+
+```jsx
+<Flex direction="column" gap={24}>
+  <Flex direction="column" gap={12}>
+    <CardHeader title="Related actions" headingLevel={3} />
+    <ButtonGroup label="Related actions">{actions}</ButtonGroup>
+  </Flex>
+</Flex>
+```
+
+SectionNav marks the current anchor with `aria-current="location"`, a bold accent label and accent underline. Hover and keyboard focus remain distinct. Counts inherit the selected label color. Scroll tracking and native anchor behavior are retained.
