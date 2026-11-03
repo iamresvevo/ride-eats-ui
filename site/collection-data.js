@@ -18,6 +18,39 @@ const entry = (
 });
 export const collectionPages = [
   entry(
+    "section-nav",
+    "Section Navigation",
+    "Navigation",
+    "Flat section links with plain counts, sticky positioning, scroll tracking and responsive horizontal overflow. Use Tabs variant=flat for panels; SectionNav is for in-page sections.",
+    `<SectionNav offset={64} items={[{id:"send",label:"Send",count:6},{id:"share",label:"Share",count:6}]} />
+<Card id="send" title="Send">...</Card>
+<Card id="share" title="Share">...</Card>`,
+    [
+      [
+        "items",
+        "{id,label,count?}[]",
+        "IDs reference real section elements; counts stay plain.",
+      ],
+      [
+        "sticky / offset",
+        "boolean / number | string",
+        "Sticky by default; offset matches the main header.",
+      ],
+      [
+        "value / onValueChange",
+        "string / callback",
+        "Optional active override and section-click callback.",
+      ],
+      [
+        "Tabs variant",
+        "pill | flat",
+        "Panel tabs retain keyboard navigation and ARIA associations.",
+      ],
+    ],
+    "SectionNav, Card",
+  ),
+
+  entry(
     "workbench",
     "Workbench",
     "Layout",

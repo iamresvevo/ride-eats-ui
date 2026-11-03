@@ -255,3 +255,7 @@ For compact selection lists, use `Tile variant="row" selected={selected}` with o
 Tile customization: `density="compact"`, `imageSize={32}`, `imageFit="contain" | "cover"`, `titleLines={2}`, `showFooter={false}` and `selected` work with card and row variants. Grid accepts `density="compact"` (8px default gap and inherited compact tiles), `columns={3}` (responsive maximum), `min={120}` and `gap={8}`. Full titles remain in the DOM when visually clamped.
 
 NumberInput supports `buttonStep` independently of native `step`: use `step={0.01} buttonStep={1}` for monetary entry with cent precision and whole-unit −/+ buttons. Buttons preserve existing cents and clamp to min/max.
+
+Flat navigation: `Tabs variant="flat" width="full"` keeps controlled panel/tab semantics with a bottom divider and plain counts. Compose with StickyBar for pinned panel controls. `SectionNav` provides actual anchor links for sectioned pages, automatic active-section tracking and `sticky`/`offset` props; target IDs belong to the consuming page. It scrolls horizontally on narrow screens and respects reduced motion. No pill container is added.
+
+`SplitPane variant="plain"` composes existing Cards without duplicate backgrounds/padding. `collapseAt={800}` stacks the panels and hides the resize handle below the supplied container width. Desktop handles support pointer dragging and arrow/Home/End keys. The Seasons page uses a wider 36% leading panel, adjustable between 30% and 48%.

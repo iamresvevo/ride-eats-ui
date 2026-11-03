@@ -311,7 +311,9 @@ export function NumberInput({
           aria-label={`Decrease ${label.toLowerCase()}`}
           disabled={disabled || value <= min}
           onClick={() =>
-            onValueChange(clamp(Number((Number(value) - buttonStep).toFixed(10))))
+            onValueChange(
+              clamp(Number((Number(value) - buttonStep).toFixed(10))),
+            )
           }
         >
           <Icon name="minus" />
@@ -346,7 +348,9 @@ export function NumberInput({
           aria-label={`Increase ${label.toLowerCase()}`}
           disabled={disabled || value >= max}
           onClick={() =>
-            onValueChange(clamp(Number((Number(value) + buttonStep).toFixed(10))))
+            onValueChange(
+              clamp(Number((Number(value) + buttonStep).toFixed(10))),
+            )
           }
         >
           <Icon name="plus" />
@@ -1251,5 +1255,102 @@ export function Workbench({
     >
       {children}
     </div>
+  );
+}
+
+/** In-page section links: native anchors, plain counts and a sticky scroll-aware rail. */
+export function SectionNav({
+  items,
+  label = "Page sections",
+  sticky = true,
+  offset = 0,
+  value,
+  onValueChange,
+  className = "",
+  style,
+}) {
+  const root = useRef(null),
+    [active, setActive] = useState(value || items[0]?.id);
+  const keys = items.map((x) => x.id).join("|");
+  useEffect(() => {
+    const node = root.current;
+    let scrollRoot = node.parentElement;
+    while (
+      scrollRoot &&
+      !/(auto|scroll)/.test(getComputedStyle(scrollRoot).overflowY)
+    )
+      scrollRoot = scrollRoot.parentElement;
+    const update = () => {
+      const line = node.getBoundingClientRect().bottom + 12;
+      let next = items[0]?.id;
+      for (const item of items) {
+        const section = document.getElementById(item.id);
+        if (section && section.getBoundingClientRect().top <= line)
+          next = item.id;
+      }
+      setActive(next);
+    };
+    document.addEventListener("scroll", update, {
+      capture: true,
+      passive: true,
+    });
+    window.addEventListener("resize", update);
+    update();
+    return () => {
+      document.removeEventListener("scroll", update, true);
+      window.removeEventListener("resize", update);
+    };
+  }, [keys, offset]);
+  return (
+    <nav
+      ref={root}
+      aria-label={label}
+      data-sticky={sticky || undefined}
+      className={`re-section-nav ${className}`}
+      style={{
+        "--section-offset": typeof offset === "number" ? `${offset}px` : offset,
+        ...style,
+      }}
+    >
+      {items.map((item) => (
+        <a
+          key={item.id}
+          href={`#${item.id}`}
+          aria-current={(value ?? active) === item.id ? "location" : undefined}
+          onClick={(event) => {
+            const target = document.getElementById(item.id);
+            if (!target) return;
+            event.preventDefault();
+            setActive(item.id);
+            onValueChange?.(item.id);
+            let scrollRoot = root.current.parentElement;
+            while (
+              scrollRoot &&
+              !/(auto|scroll)/.test(getComputedStyle(scrollRoot).overflowY)
+            )
+              scrollRoot = scrollRoot.parentElement;
+            const inset =
+              (parseFloat(getComputedStyle(root.current).top) || 0) +
+              root.current.offsetHeight +
+              12;
+            const top =
+              target.getBoundingClientRect().top +
+              (scrollRoot
+                ? scrollRoot.scrollTop - scrollRoot.getBoundingClientRect().top
+                : window.scrollY) -
+              inset;
+            (scrollRoot || window).scrollTo({
+              top,
+              behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+                ? "instant"
+                : "smooth",
+            });
+          }}
+        >
+          {item.label}
+          {item.count != null && <span>{item.count}</span>}
+        </a>
+      ))}
+    </nav>
   );
 }

@@ -583,6 +583,18 @@ function Demo({ id }) {
               { value: "archived", label: "Archived" },
             ]}
           />
+          <Tabs
+            variant="flat"
+            width="full"
+            label="Flat file views"
+            value={tab}
+            onValueChange={setTab}
+            items={[
+              { value: "all", label: "All files", count: 24 },
+              { value: "shared", label: "Shared", count: 8 },
+              { value: "archived", label: "Archived" },
+            ]}
+          />
           <span className="demo-caption">
             {tab === "all"
               ? "Everything in one place."

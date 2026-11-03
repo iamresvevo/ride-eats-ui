@@ -597,6 +597,40 @@ export function CollectionDemo({ id }) {
           </MetricGrid>
         </div>
       );
+    case "section-nav":
+      return (
+        <div style={{ height: 380, overflow: "auto" }}>
+          <UI.Stack>
+            <UI.Card title="Everything your workspace can do">
+              <p>Scroll this preview or choose a section.</p>
+            </UI.Card>
+            <UI.SectionNav
+              items={[
+                { id: "demo-send", label: "Send", count: 6 },
+                { id: "demo-share", label: "Share", count: 6 },
+                { id: "demo-protect", label: "Protect", count: 10 },
+                { id: "demo-track", label: "Track", count: 7 },
+              ]}
+            />
+            {["Send", "Share", "Protect", "Track"].map((name) => (
+              <UI.Card
+                key={name}
+                id={`demo-${name.toLowerCase()}`}
+                title={name}
+              >
+                <UI.Stack>
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <p key={i}>
+                      Reusable components for {name.toLowerCase()} workflows.
+                      Section links stay visible while content scrolls.
+                    </p>
+                  ))}
+                </UI.Stack>
+              </UI.Card>
+            ))}
+          </UI.Stack>
+        </div>
+      );
     case "workbench":
       return <WorkbenchDemo />;
     case "masonry":

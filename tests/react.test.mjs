@@ -1143,3 +1143,31 @@ test("compact catalogue props preserve selection and hide only optional tile chr
   assert.doesNotMatch(html, /re-tile-footer/);
   assert.match(html, /Long catalogue title/);
 });
+
+test("flat tabs and section navigation preserve their distinct navigation semantics", () => {
+  const tabs = render("Tabs", {
+    variant: "flat",
+    items: [{ value: "send", label: "Send", count: 6 }],
+    value: "send",
+    onValueChange: () => {},
+  });
+  assert.match(tabs, /tabs-flat/);
+  assert.match(tabs, /role="tablist"/);
+  const nav = render("SectionNav", {
+    items: [{ id: "send", label: "Send", count: 6 }],
+    offset: 64,
+  });
+  assert.match(nav, /href="#send"/);
+  assert.match(nav, /aria-current="location"/);
+  assert.match(nav, /--section-offset:64px/);
+  assert.doesNotMatch(nav, /role="tab"/);
+  const split = render("SplitPane", {
+    value: 36,
+    onValueChange: () => {},
+    variant: "plain",
+    first: "List",
+    second: "Details",
+  });
+  assert.match(split, /re-split-plain/);
+  assert.match(split, /aria-valuenow="36"/);
+});

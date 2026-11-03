@@ -115,6 +115,7 @@ export function Tabs(
     onValueChange: (value: string) => void;
     label?: string;
     width?: "fit" | "full";
+    variant?: "pill" | "flat";
   },
 ): React.ReactElement;
 export function Chips(
@@ -771,6 +772,8 @@ export function SplitPane(
   props: StylingProps & {
     value: number;
     onValueChange: (value: number) => void;
+    variant?: "surface" | "plain";
+    collapseAt?: number;
     min?: number;
     max?: number;
     first: React.ReactNode;
@@ -1119,5 +1122,16 @@ export function Workbench(
     trailingWidth?: number;
     height?: string;
     gap?: number;
+  },
+): React.ReactElement;
+
+export function SectionNav(
+  props: StylingProps & {
+    items: { id: string; label: React.ReactNode; count?: number }[];
+    label?: string;
+    sticky?: boolean;
+    offset?: number | string;
+    value?: string;
+    onValueChange?: (id: string) => void;
   },
 ): React.ReactElement;

@@ -166,6 +166,7 @@ export function Tabs({
   onValueChange,
   label = "Tabs",
   width = "fit",
+  variant = "pill",
   ...props
 }) {
   const buttons = useRef([]);
@@ -204,7 +205,7 @@ export function Tabs({
       ref={root}
       role="tablist"
       aria-label={label}
-      className={`tabs ${width === "full" ? "tabs-full" : "tabs-fit"} ${props.className || ""}`}
+      className={`tabs tabs-${variant} ${width === "full" ? "tabs-full" : "tabs-fit"} ${props.className || ""}`}
     >
       <span
         className="tabs-selection"

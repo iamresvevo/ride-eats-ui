@@ -126,7 +126,8 @@
         "Flex",
         "Masonry",
         "ScrollArea",
-        "Workbench"
+        "Workbench",
+        "SectionNav"
       ]
     },
     "gestures": {

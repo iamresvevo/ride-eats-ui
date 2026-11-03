@@ -399,11 +399,22 @@ export function SplitPane({
   first,
   second,
   label = "Resize panels",
+  variant = "surface",
+  collapseAt = 800,
   className = "",
   style,
 }) {
   const root = useRef(null),
     drag = useRef(null);
+  const [stacked, setStacked] = useState(false);
+  useLayoutEffect(() => {
+    const node = root.current;
+    const resize = new ResizeObserver(() =>
+      setStacked(node.clientWidth <= collapseAt),
+    );
+    resize.observe(node);
+    return () => resize.disconnect();
+  }, [collapseAt]);
   const [preview, setPreview] = useState(null);
   const dragging = preview !== null;
   const bounded = Math.max(min, Math.min(max, value));
@@ -431,7 +442,8 @@ export function SplitPane({
   };
   return (
     <div
-      className={`re-split ${className}`}
+      className={`re-split re-split-${variant} ${className}`}
+      data-stacked={stacked || undefined}
       ref={root}
       data-dragging={dragging || undefined}
       style={{ "--split": (preview ?? bounded) / 100, ...style }}

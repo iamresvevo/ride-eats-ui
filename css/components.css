@@ -760,6 +760,37 @@ a.tool-card:hover {
   place-items: center;
 }
 
+/* Flat section-style tabs retain the tab keyboard and panel semantics. */
+.tabs.tabs-flat {
+  gap: 12px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-bottom: 1px solid var(--line);
+}
+.tabs-flat .tabs-selection {
+  visibility: hidden;
+}
+.tabs-flat .tab {
+  height: 48px;
+  padding: 0 14px;
+  color: var(--muted);
+}
+.tabs-flat .tab.active {
+  color: var(--text);
+  background: transparent;
+}
+.tabs-flat .tab-count,
+.tabs-flat .tab.active .tab-count {
+  background: transparent;
+  color: var(--muted);
+  padding: 0;
+  min-width: 0;
+  font-size: inherit;
+  opacity: 1;
+}
+
 /* Chips, toolbar, search */
 .chips,
 .quick {

@@ -1550,3 +1550,40 @@ button.re-avatar-more:hover {
   --tile-footer-gap: 12px;
   --tile-title-size: 14px;
 }
+
+.re-section-nav {
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+.re-section-nav[data-sticky] {
+  position: sticky;
+  top: var(--section-offset, 0px);
+  z-index: 20;
+}
+.re-section-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  min-height: 48px;
+  padding: 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--r-pill);
+}
+.re-section-nav a:hover,
+.re-section-nav a[aria-current] {
+  color: var(--text);
+}
+.re-section-nav a > span {
+  color: var(--muted);
+  font-size: 12px;
+}
