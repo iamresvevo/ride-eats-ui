@@ -763,6 +763,7 @@
   height: 12px;
 }
 .re-data-table td {
+  vertical-align: var(--table-cell-align, middle);
   border-top: 1px solid var(--line);
 }
 .re-data-table tbody tr {
@@ -1268,7 +1269,7 @@
 }
 .re-toolbar {
   display: flex;
-  align-items: center;
+  align-items: var(--toolbar-align, flex-end);
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
@@ -1276,7 +1277,7 @@
 .re-toolbar > div {
   display: flex;
   gap: 8px;
-  align-items: center;
+  align-items: var(--toolbar-align, flex-end);
   flex-wrap: wrap;
 }
 .re-toolbar input {
@@ -1586,4 +1587,18 @@ button.re-avatar-more:hover {
 .re-section-nav a > span {
   color: var(--muted);
   font-size: 12px;
+}
+
+/* A Card owns the sole surface when its table is inset. */
+.re-card .re-data-table[data-variant="auto"],
+.re-data-table[data-variant="inset"] {
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+}
+.re-card-padding-none > .re-card-footer {
+  padding: 12px 16px;
+}
+.re-stack > .badge {
+  align-self: flex-start;
 }

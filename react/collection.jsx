@@ -648,6 +648,8 @@ export function DataTable({
   onSelectionChange,
   rowActions,
   density = "comfortable",
+  variant = "auto",
+  cellAlign = "middle",
   className = "",
   style,
 }) {
@@ -664,8 +666,9 @@ export function DataTable({
   return (
     <div
       className={`re-data-table ${className}`}
-      style={style}
+      style={{ "--table-cell-align": cellAlign, ...style }}
       data-density={density}
+      data-variant={variant}
       aria-busy={loading || undefined}
     >
       <table>
@@ -702,6 +705,13 @@ export function DataTable({
                 style={{
                   width: column.width,
                   textAlign: column.align || "left",
+                  ...(column.wrap
+                    ? {
+                        whiteSpace: "normal",
+                        overflowWrap: "anywhere",
+                        maxWidth: column.width,
+                      }
+                    : {}),
                 }}
                 aria-sort={
                   sort?.key === column.key
@@ -765,7 +775,16 @@ export function DataTable({
                   {columns.map((column, j) => (
                     <td
                       key={column.key}
-                      style={{ textAlign: column.align || "left" }}
+                      style={{
+                        textAlign: column.align || "left",
+                        ...(column.wrap
+                          ? {
+                              whiteSpace: "normal",
+                              overflowWrap: "anywhere",
+                              maxWidth: column.width,
+                            }
+                          : {}),
+                      }}
                     >
                       {j === 0 && onRowClick ? (
                         <button
@@ -1196,9 +1215,27 @@ export function PageHeader({
     </header>
   );
 }
-export function Toolbar({ children, trailing, className = "", ...props }) {
+export function Toolbar({
+  children,
+  trailing,
+  align = "end",
+  className = "",
+  ...props
+}) {
   return (
-    <div {...props} className={`re-toolbar ${className}`}>
+    <div
+      {...props}
+      className={`re-toolbar ${className}`}
+      style={{
+        "--toolbar-align":
+          align === "end"
+            ? "flex-end"
+            : align === "start"
+              ? "flex-start"
+              : align,
+        ...props.style,
+      }}
+    >
       <div>{children}</div>
       {trailing && <div>{trailing}</div>}
     </div>

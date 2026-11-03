@@ -192,9 +192,14 @@ export const collectionPages = [
     `const [sort, setSort] = useState({ key: 'name', direction: 'asc' });\nconst [selected, setSelected] = useState([]);\nconst rows = [...people].sort((a, b) =>\n  String(a[sort.key]).localeCompare(String(b[sort.key])) * (sort.direction === 'asc' ? 1 : -1)\n);\n\n<DataTable\n  caption="Team members" rows={rows} rowKey="id"\n  columns={[\n    { key: 'name', label: 'Name', sortable: true },\n    { key: 'email', label: 'Email' },\n    { key: 'status', label: 'Status', render: value => <Badge tone="good">{value}</Badge> },\n  ]}\n  sort={sort} onSortChange={setSort}\n  selectedKeys={selected} onSelectionChange={setSelected}\n  rowActions={row => <Button size="sm" onClick={() => openProfile(row)}>View</Button>}\n/>`,
     [
       [
+        "variant / cellAlign",
+        "auto | standalone | inset / top | middle | bottom",
+        "Avoid duplicate Card surfaces and align multi-line content.",
+      ],
+      [
         "columns",
         "Column[]",
-        "key, label, render(value,row), sortable, width, align.",
+        "key, label, render(value,row), sortable, width, wrap, align.",
       ],
       [
         "rows / rowKey",

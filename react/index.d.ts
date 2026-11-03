@@ -518,6 +518,7 @@ export interface TableColumn<T> {
   label: React.ReactNode;
   render?: (value: T[keyof T], row: T) => React.ReactNode;
   sortable?: boolean;
+  wrap?: boolean;
   width?: React.CSSProperties["width"];
   align?: "left" | "center" | "right";
 }
@@ -538,6 +539,8 @@ export function DataTable<T extends Record<string, unknown>>(
     onSelectionChange?: (keys: (string | number)[]) => void;
     rowActions?: (row: T) => React.ReactNode;
     density?: "compact" | "comfortable";
+    variant?: "auto" | "standalone" | "inset";
+    cellAlign?: "top" | "middle" | "bottom";
   },
 ): React.ReactElement;
 export function CardHeader(
@@ -635,7 +638,10 @@ export function PageHeader(
   },
 ): React.ReactElement;
 export function Toolbar(
-  props: React.HTMLAttributes<HTMLDivElement> & { trailing?: React.ReactNode },
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    trailing?: React.ReactNode;
+    align?: "start" | "center" | "end";
+  },
 ): React.ReactElement;
 
 export type AnimatedIconName = string;
