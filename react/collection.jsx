@@ -292,6 +292,7 @@ export function NumberInput({
   min = -Infinity,
   max = Infinity,
   step = 1,
+  buttonStep = step,
   label = "Quantity",
   disabled = false,
   className = "",
@@ -310,7 +311,7 @@ export function NumberInput({
           aria-label={`Decrease ${label.toLowerCase()}`}
           disabled={disabled || value <= min}
           onClick={() =>
-            onValueChange(clamp(Number((value - step).toFixed(10))))
+            onValueChange(clamp(Number((Number(value) - buttonStep).toFixed(10))))
           }
         >
           <Icon name="minus" />
@@ -345,7 +346,7 @@ export function NumberInput({
           aria-label={`Increase ${label.toLowerCase()}`}
           disabled={disabled || value >= max}
           onClick={() =>
-            onValueChange(clamp(Number((value + step).toFixed(10))))
+            onValueChange(clamp(Number((Number(value) + buttonStep).toFixed(10))))
           }
         >
           <Icon name="plus" />

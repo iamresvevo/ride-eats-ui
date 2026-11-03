@@ -440,6 +440,7 @@ export function NumberInput(
     min?: number;
     max?: number;
     step?: number;
+    buttonStep?: number;
     label?: string;
     disabled?: boolean;
   },
