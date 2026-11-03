@@ -329,8 +329,8 @@ export function BottomSheet({
         className="re-sheet-handle"
         aria-label="Close sheet"
         data-dragging={dragging || undefined}
-        onClick={() => {
-          if (!moved.current) onClose();
+        onClick={(event) => {
+          if (event.detail === 0 || !moved.current) onClose();
         }}
         {...dragProps}
       >

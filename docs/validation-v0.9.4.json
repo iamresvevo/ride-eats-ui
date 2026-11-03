@@ -1,0 +1,25 @@
+{
+  "version": "0.9.4",
+  "checks": [
+    "module and import checks",
+    "design contract rejects CSS blur effects",
+    "TypeScript",
+    "28 tests",
+    "production build",
+    "real browser short header drag returns with shared easing",
+    "real browser long header drag dismisses",
+    "reopening resets drag offset",
+    "handle button closes",
+    "computed backdrop filter is none",
+    "SplitPane visual resistance model, controlled bounds and shared easing",
+    "Real browser split drag clamps the controlled value to 80; Home returns to 20 with shared grid transition",
+    "CSS transitions/animations audited for the shared curve (constant-speed indicators remain linear)",
+    "Header drag dismissed at 390px viewport with desktop pointer input",
+    "Keyboard activation of the grip remains available after a drag"
+  ],
+  "limits": [
+    "Desktop pointer behavior verified; physical touch-device gesture feel remains unverified",
+    "The drag region is the header or grip; form content remains editable and scrollable"
+  ],
+  "visualComparisons": 26
+}

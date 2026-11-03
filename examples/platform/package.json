@@ -7,7 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@ride-eats/ui": "github:iamresvevo/ride-eats-ui#v0.9.3",
+    "@ride-eats/ui": "github:iamresvevo/ride-eats-ui#v0.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
