@@ -12,10 +12,12 @@ npm run dev
 
 The starter is a complete React/Vite app. Search, sorting, row selection, folder creation, stacked discard confirmation and toasts all work with local state. Replace its callbacks with your own API; you do not need a UI-specific backend.
 
+For the short install and update commands, see [Quick updates](../README.md#quick-updates).
+
 ## Install in an existing app
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.10.0
+npm install github:iamresvevo/ride-eats-ui#v0.12.2
 ```
 
 ```jsx

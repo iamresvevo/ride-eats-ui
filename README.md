@@ -20,6 +20,32 @@ npm install github:iamresvevo/ride-eats-ui#v0.12.2
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
 
+## Quick updates
+
+For a short update command, install from `main` once in your React project:
+
+```sh
+npm install iamresvevo/ride-eats-ui#main
+```
+
+Then get new library changes with:
+
+```sh
+npm update @ride-eats/ui
+```
+
+Rebuild and deploy your site afterward:
+
+```sh
+npm run build
+```
+
+Commit `package.json` and `package-lock.json`. Keep `import "@ride-eats/ui/styles.css"` in your app once. No changes to component imports are needed.
+
+This follows the latest `main` commit. For a fixed release, use `npm install iamresvevo/ride-eats-ui#v0.12.2` instead and change the tag when upgrading. `npm update` keeps a fixed tag pinned. The package is not on the npm registry, so `npm install @ride-eats/ui@latest` is not available yet.
+
+With npm 12, GitHub dependencies also require `allow-git=root` in your project's `.npmrc`. See npm's [Git dependency configuration](https://docs.npmjs.com/cli/v12/commands/npm-install/#allow-git) and [update command](https://docs.npmjs.com/cli/commands/npm-update/).
+
 ## Start with one component
 
 ```jsx
