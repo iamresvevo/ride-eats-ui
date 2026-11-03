@@ -164,9 +164,24 @@ export function SupportInbox({
                             thread.time && <time>{thread.time}</time>
                           )}
                         </span>
-                        {thread.subject && thread.subject !== thread.name && (
-                          <small>{thread.subject}</small>
-                        )}
+                        <small
+                          className="re-support-preview"
+                          data-draft={!!drafts[thread.id]?.trim() || undefined}
+                        >
+                          {drafts[thread.id]?.trim() ? (
+                            <>
+                              <span className="re-support-draft-label">
+                                Draft
+                              </span>
+                              {` · ${drafts[thread.id].trim().replace(/\s+/g, " ")}`}
+                            </>
+                          ) : thread.subject &&
+                            thread.subject !== thread.name ? (
+                            thread.subject
+                          ) : (
+                            "\u00a0"
+                          )}
+                        </small>
                         {thread.status && (
                           <span
                             className="re-support-status"
@@ -174,11 +189,7 @@ export function SupportInbox({
                           >
                             <i aria-hidden="true" />
                             {thread.status}
-                            {drafts[thread.id] && <span> · Draft</span>}
                           </span>
-                        )}
-                        {!thread.status && drafts[thread.id] && (
-                          <small>Draft</small>
                         )}
                       </span>
                     </>

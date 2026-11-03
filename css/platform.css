@@ -1074,6 +1074,7 @@
   gap: 2px;
 }
 .re-support-row-title {
+  min-height: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1098,6 +1099,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.re-support aside .re-support-preview {
+  height: 16px;
+  line-height: 16px;
+}
+.re-support-draft-label {
+  color: var(--brand-ink);
+  font-weight: 600;
 }
 .re-support-status {
   display: flex;

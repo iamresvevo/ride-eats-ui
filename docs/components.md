@@ -358,3 +358,5 @@ SupportInbox sidebar rows retain a 44px minimum target. Quiet section labels sit
 Chat examples use message previews rather than support statuses. `thread.status` remains optional for support integrations. Sidebar rows use softly rounded selection, aligned identity slots and compact unread counts; channel/group glyphs stay unframed.
 
 The built-in conversation composer is a growing multiline field with an inset circular send action. Enter adds a line; Ctrl/Command+Enter sends, excluding IME composition. The field stays editable during a pending send; newly typed text is preserved. Accessible labels name the destination, and errors and caller hints remain visible.
+
+Conversation preview rows reserve one line even when empty. Draft text replaces that preview with an inline Draft label; it never adds another row. Name/count rows reserve their height as unread counts appear or clear. Typing, clearing and sending therefore preserve sidebar geometry.
