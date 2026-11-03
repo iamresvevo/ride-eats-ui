@@ -22,7 +22,7 @@ Run npm ci, npm run check, npm run build, npm test. Validate changed interaction
 
 ## Implementation is the priority
 
-Use docs/implementation.md and examples/starter for the complete working integration. Build screens with Card, MetricGrid, StatCard, Tile, PageHeader, Toolbar and DataTable instead of reproducing their CSS. DataTable uses caller-owned sorting, selection and rows, with render functions for cells/actions. Wrap the app once in UIProvider; useConfirm supplies Promise-based confirmations that stack over existing dialogs while preserving drafts. Toasts are bounded and deduplicated.
+Use docs/implementation.md and examples/starter for the complete working integration. Build screens with Card, Grid, StatCard, Tile, PageHeader, Toolbar and DataTable instead of reproducing their CSS. DataTable uses caller-owned sorting, selection and rows, with render functions for cells/actions. Wrap the app once in UIProvider; useConfirm supplies Promise-based confirmations that stack over existing dialogs while preserving drafts. Toasts are bounded and deduplicated.
 
 The icon API supports 2,015 vendored Lucide glyphs with 277 compatibility names, plus Send paths and custom IconProvider entries. Art remains attributed upstream. Icons load in letter chunks and use optional reduced-motion-aware animation. Regenerate with npm run icons:generate; include the upstream license. Do not claim vendor artwork as original hand-drawn Ride Eats artwork.
 
@@ -34,10 +34,12 @@ Read docs/design-audit.md and design/contract.json. css/tokens.css is the sole f
 
 Use solid accent fills without translucent green variants. Use circular compact controls, rounded surfaces and pill actions throughout; never introduce square-corner cards or preview targets. Default controls are 36px, DataGrid rows 40px and panels 16px. Prefer these defaults. `data-density="comfortable"` opts into larger controls/panels; coarse-pointer menus retain 44px targets. Static content should not animate without purpose. Use css/interaction-motion.css for shared native-popover enter/exit transitions; submenu content stays mounted and inert while collapsed. See docs/component-audit.md and docs/migrations-v0.8.md for canonical APIs.
 
-Use Form/Field/Textarea/Combobox/MultiSelect/DateRangePicker/TimePicker for forms. DataGrid owns local table view state; rows and backend mutations remain caller-owned. It supports search, exact filters, stable sorting, column visibility/resizing, pinned columns, bulk selection, expansion and optional fixed-height virtualization. `renderExpanded` disables virtualization. Do not put variable-height content in virtual rows.
+Use Form/Field/Textarea/Combobox/DateRangePicker/TimePicker for forms. DataGrid owns local table view state; rows and backend mutations remain caller-owned. It supports search, exact filters, stable sorting, column visibility/resizing, pinned columns, bulk selection, expansion and optional fixed-height virtualization. `renderExpanded` disables virtualization. Do not put variable-height content in virtual rows.
 
-AppShell, WorkspaceSwitcher, NotificationCenter, BottomSheet and ContextMenu compose platform navigation and overlays. SettingsPanel, TeamDirectory, FileManager, ActivityFeed and SupportInbox are reusable workflows. Use UIProvider for confirmations/toasts. Examples never perform real backend operations. See examples/platform for the complete starter and docs/platform-system.md for API composition.
+AppShell, WorkspaceSwitcher, NotificationCenter, BottomSheet and ContextMenu compose platform navigation and overlays. SettingsPanel, TeamDirectory, FileManager, Timeline feed layouts and SupportInbox are reusable workflows. Use UIProvider for confirmations/toasts. Examples never perform real backend operations. See examples/platform for the complete starter and docs/platform-system.md for API composition.
 
 Visual baselines and the comparison command are described in tests/visual/README.md. Capture candidates with supported browser tooling; automated candidate capture is not configured. Run comparison-engine tests and inspect visual changes before updating baselines.
 
 Do not add blur or backdrop blur effects. Headers/sticky bars may use neutral fades; modal backdrops dim without blur. BottomSheet drag must follow the pointer from the grip or header, then settle or dismiss according to release distance/velocity.
+
+Canonical APIs in 0.10: Grid (metrics preset), Flex (column direction), Icon (motion props), Combobox (multiple), Timeline (feed variant), ToggleGroup (chips variant), and ToastProvider. Do not reintroduce removed convenience exports or duplicate catalog pages. See docs/migrations-v0.10.md.

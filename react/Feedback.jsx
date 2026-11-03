@@ -182,7 +182,6 @@ export function ToastProvider({ children, maxVisible = 3 }) {
     </FeedbackContext.Provider>
   );
 }
-export const FeedbackProvider = ToastProvider;
 export const useToast = () => useContext(FeedbackContext).toast;
 export const useConfirm = () => useContext(FeedbackContext).confirm;
 export const useFeedback = () => useContext(FeedbackContext);

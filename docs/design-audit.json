@@ -1,12 +1,11 @@
 {
-  "version": "0.9.6",
-  "cssFiles": 15,
+  "version": "0.10.0",
+  "cssFiles": 17,
   "publicApis": [
     "Accordion",
     "AccountMenu",
-    "ActivityFeed",
+    "ActivityHeatmap",
     "Alert",
-    "AnimatedIcon",
     "AppShell",
     "Avatar",
     "AvatarGroup",
@@ -22,7 +21,7 @@
     "CardHeader",
     "Carousel",
     "Checkbox",
-    "Chips",
+    "Combobox",
     "Combobox",
     "CommandMenu",
     "ContextMenu",
@@ -35,21 +34,22 @@
     "Drawer",
     "Dropdown",
     "EmptyState",
-    "FeedbackProvider",
     "Field",
     "FileDropzone",
     "FileManager",
+    "Flex",
     "Form",
+    "Grid",
     "Header",
     "Icon",
     "IconProvider",
+    "ImageCompare",
+    "Masonry",
     "Menu",
     "MenuItem",
     "MenuLabel",
     "MenuSeparator",
     "MenuSub",
-    "MetricGrid",
-    "MultiSelect",
     "NotificationCenter",
     "NumberInput",
     "PageHeader",
@@ -63,11 +63,15 @@
     "RangeSlider",
     "Rating",
     "ReorderList",
+    "ScrollArea",
     "SearchSelect",
+    "SectionNav",
     "Segmented",
     "Select",
     "SettingRow",
     "SettingsPanel",
+    "ShortcutRecorder",
+    "SignaturePad",
     "Skeleton",
     "Slider",
     "SplitPane",
@@ -78,6 +82,7 @@
     "Switch",
     "Tabs",
     "TeamDirectory",
+    "TextDiffViewer",
     "Textarea",
     "ThemeProvider",
     "Tile",
@@ -86,14 +91,17 @@
     "ToastProvider",
     "ToggleGroup",
     "ToggleGroup",
+    "ToggleGroup",
+    "ToggleGroup",
     "Toolbar",
     "Tooltips",
+    "TreeView",
     "UIProvider",
     "UploadProgress",
     "VerificationBadge",
     "VerifiedName",
+    "Workbench",
     "WorkspaceSwitcher",
-    "animatedIconNames",
     "iconNames",
     "useConfirm",
     "useFeedback",
@@ -210,16 +218,80 @@
       "source": "react/send/ui/EmptyState.jsx"
     },
     {
-      "id": "chips",
-      "name": "Chips",
-      "group": "Navigation",
-      "source": "react/index.jsx"
-    },
-    {
       "id": "card",
       "name": "Card",
       "group": "Layout",
       "source": "react/index.jsx"
+    },
+    {
+      "id": "shortcut-recorder",
+      "name": "Shortcut Recorder",
+      "group": "Inputs",
+      "imports": "ShortcutRecorder",
+      "source": "react/review.jsx"
+    },
+    {
+      "id": "text-diff-viewer",
+      "name": "Text Diff Viewer",
+      "group": "Display",
+      "imports": "TextDiffViewer",
+      "source": "react/review.jsx"
+    },
+    {
+      "id": "image-compare",
+      "name": "Image Compare",
+      "group": "Display",
+      "imports": "ImageCompare",
+      "source": "react/specialized.jsx"
+    },
+    {
+      "id": "tree-view",
+      "name": "Tree View",
+      "group": "Navigation",
+      "imports": "TreeView",
+      "source": "react/specialized.jsx"
+    },
+    {
+      "id": "signature-pad",
+      "name": "Signature Pad",
+      "group": "Inputs",
+      "imports": "SignaturePad",
+      "source": "react/specialized.jsx"
+    },
+    {
+      "id": "activity-heatmap",
+      "name": "Activity Heatmap",
+      "group": "Display",
+      "imports": "ActivityHeatmap",
+      "source": "react/specialized.jsx"
+    },
+    {
+      "id": "section-nav",
+      "name": "Section Navigation",
+      "group": "Navigation",
+      "imports": "SectionNav, Card",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "workbench",
+      "name": "Workbench",
+      "group": "Layout",
+      "imports": "Workbench, ScrollArea, CardHeader, Card, Flex, Button",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "masonry",
+      "name": "Masonry",
+      "group": "Layout",
+      "imports": "Masonry, Card",
+      "source": "react/collection.jsx"
+    },
+    {
+      "id": "layout",
+      "name": "Layouts",
+      "group": "Layout",
+      "imports": "Grid, Flex, Card, Tile, FileDropzone",
+      "source": "react/collection.jsx"
     },
     {
       "id": "icons",
@@ -344,14 +416,14 @@
       "id": "stat-cards",
       "name": "Stat Cards",
       "group": "Display",
-      "imports": "MetricGrid, StatCard",
+      "imports": "Grid, StatCard",
       "source": "react/collection.jsx"
     },
     {
       "id": "tiles",
       "name": "Tiles",
       "group": "Layout",
-      "imports": "Tile, MetricGrid",
+      "imports": "Tile, Grid",
       "source": "react/collection.jsx"
     },
     {
@@ -365,7 +437,7 @@
       "id": "dashboard",
       "name": "Dashboard Layout",
       "group": "Recipes",
-      "imports": "PageHeader,MetricGrid,StatCard,Tabs,Card,DataTable",
+      "imports": "PageHeader,Grid,StatCard,Tabs,Card,DataTable",
       "source": "react/collection.jsx"
     },
     {
@@ -402,13 +474,6 @@
       "group": "Inputs",
       "imports": "RangeSlider",
       "source": "react/gestures.jsx"
-    },
-    {
-      "id": "animated-icons",
-      "name": "Animated Icons",
-      "group": "Motion",
-      "imports": "AnimatedIcon, Button",
-      "source": "react/send/Icon.jsx"
     },
     {
       "id": "popover",
@@ -464,13 +529,6 @@
       "name": "Combobox",
       "group": "Inputs",
       "imports": "Combobox",
-      "source": "react/forms.jsx"
-    },
-    {
-      "id": "multi-select",
-      "name": "Multi Select",
-      "group": "Inputs",
-      "imports": "MultiSelect",
       "source": "react/forms.jsx"
     },
     {
@@ -562,13 +620,6 @@
       "name": "File Manager",
       "group": "Workflows",
       "imports": "FileManager",
-      "source": "react/workflows.jsx"
-    },
-    {
-      "id": "activity-feed",
-      "name": "Activity Feed",
-      "group": "Display",
-      "imports": "ActivityFeed",
       "source": "react/workflows.jsx"
     },
     {

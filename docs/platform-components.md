@@ -1,10 +1,216 @@
-# Extended React component reference
+# Canonical React component reference, 0.10
 
-See [design audit](design-audit.md), [canonical APIs](component-audit.md) and [0.9 migration](migrations-v0.9.md). Import styles once and wrap the application in UIProvider.
+See [the migration guide](migrations-v0.10.md) for removed wrappers and preserved defaults. Import styles once and use UIProvider for theme and feedback.
+
+## Shortcut Recorder
+
+Inputs. Capture a shortcut, review it, check conflicts, then save. Escape cancels without changing the saved binding.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#shortcut-recorder)
+
+```jsx
+import { ShortcutRecorder } from '@ride-eats/ui';
+
+const [keys,setKeys] = useState(["Control","Shift","K"]);
+<ShortcutRecorder value={keys} onValueChange={setKeys} label="Command search" bindings={[{keys:["Alt","M"],label:"Messages"}]} />
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| value / onValueChange | string[] / callback | Controlled modifier/key names. Only Save or Clear changes the value. |
+| bindings / allowConflicts | ShortcutBinding[] / boolean | Normalized matching with conflicts blocked by default. |
+| disabled / label | boolean / string | Availability and accessible name. |
+
+## Text Diff Viewer
+
+Display. Compare actual line edits in split or unified views, reveal folded context, and synchronize the scrollable panes.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#text-diff-viewer)
+
+```jsx
+import { TextDiffViewer } from '@ride-eats/ui';
+
+const [view,setView] = useState("split");
+<TextDiffViewer before={original} after={revision} view={view} onViewChange={setView} contextLines={3} />
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| before / after | string | Plain text, safely escaped. CRLF and CR use LF for line matching. |
+| view / onViewChange | split  /  unified / callback | Controlled layout. Optional callback enables layout buttons. |
+| contextLines / collapseUnchanged | number / boolean | Fold long equal runs; buttons reveal all hidden lines. |
+| syncScroll / maxHeight | boolean / number  /  string | Paired vertical/horizontal scrolling and a bounded viewport. |
+
+## Image Compare
+
+Display. A direct before/after artwork inspection surface. Drag the divider or use the native range with arrow keys.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#image-compare)
+
+```jsx
+import { ImageCompare } from '@ride-eats/ui';
+
+const [position,setPosition] = useState(50);
+<ImageCompare before={{src:"/before.jpg",alt:"Original artwork"}} after={{src:"/after.jpg",alt:"Revised artwork"}} value={position} onValueChange={setPosition} />
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| before / after | {src,alt,label?} | Paired image sources with meaningful alternatives. |
+| value / onValueChange | 0–100 / callback | Controlled before-image reveal. |
+| aspectRatio / disabled | string / boolean | Surface proportions and input availability. |
+
+## Tree View
+
+Navigation. A compact hierarchy with independent expansion and selection, roving focus, typeahead and the full tree arrow-key model.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#tree-view)
+
+```jsx
+import { TreeView } from '@ride-eats/ui';
+
+const [selected,setSelected] = useState("artwork");
+const [expanded,setExpanded] = useState(["artwork"]);
+<TreeView label="Assets" nodes={[{id:"artwork",label:"Artwork",children:[{id:"logo",label:"Logo.svg"}]}]} value={selected} onValueChange={setSelected} expandedKeys={expanded} onExpandedChange={setExpanded} />
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| nodes | TreeNode[] | Unique id, text label, optional icon/detail/children/disabled. |
+| value / onValueChange | string / callback | Controlled selected item. |
+| expandedKeys / onExpandedChange | string[] / callback | Controlled expansion independent of selection. |
+
+## Signature Pad
+
+Inputs. A pointer-captured vector drawing surface with undo and clear. Strokes remain caller-owned; it never uploads or submits a signature.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#signature-pad)
+
+```jsx
+import { SignaturePad } from '@ride-eats/ui';
+
+const [strokes,setStrokes] = useState([]);
+<SignaturePad value={strokes} onValueChange={setStrokes} label="Delivery acknowledgement" />
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| value / onValueChange | SignatureStroke[] / callback | Arrays of points in a 1000 × 400 coordinate space. |
+| strokeWidth / disabled | number / boolean | Ink width in screen pixels (1–12) and input availability. |
+| label / emptyText / footer | string / string / ReactNode | Accessible name, drawing hint and caller context. |
+
+## Activity Heatmap
+
+Display. A calendar matrix for dense daily history. Neutral levels and a solid accent peak, labelled dates, keyboard day/week navigation and optional selection.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#activity-heatmap)
+
+```jsx
+import { ActivityHeatmap } from '@ride-eats/ui';
+
+<ActivityHeatmap startDate="2026-08-03" weeks={12} values={[{date:"2026-08-03",value:8},{date:"2026-08-04",value:3}]} label="Publishing activity" />
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| startDate / weeks | YYYY-MM-DD / 1–53 | Starts on the Monday of the supplied week; dates use UTC day keys. |
+| values / max | {date,value}[] / number | Daily data and an optional shared intensity ceiling. |
+| value / onValueChange | date / callback | Optional selected day; the date labels include counts. |
+| locale / formatValue | string / callback | Date formatting locale and caller-owned value descriptions. |
+
+## Section Navigation
+
+Navigation. Flat section links with plain counts, sticky positioning, scroll tracking and responsive horizontal overflow. Use Tabs variant=flat for panels; SectionNav is for in-page sections.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#section-nav)
+
+```jsx
+import { SectionNav, Card } from '@ride-eats/ui';
+
+<SectionNav offset={64} items={[{id:"send",label:"Send",count:6},{id:"share",label:"Share",count:6}]} />
+<Card id="send" title="Send">...</Card>
+<Card id="share" title="Share">...</Card>
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| items | {id,label,count?}[] | IDs reference real section elements; counts stay plain. |
+| sticky / offset | boolean / number  /  string | Sticky by default; offset matches the main header. |
+| value / onValueChange | string / callback | Optional active override and section-click callback. |
+| Tabs variant | pill  /  flat | Panel tabs retain keyboard navigation and ARIA associations. |
+
+## Workbench
+
+Layout. Bounded editor panels with independent native scrolling. Panel headers and actions stay visible; narrow screens stack the panels.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#workbench)
+
+```jsx
+import { Workbench, ScrollArea, CardHeader, Card, Flex, Button } from '@ride-eats/ui';
+
+<Workbench leadingWidth={240} trailingWidth={260}>
+ <ScrollArea label="Catalogue" header={<CardHeader title="Objects" />}><p>Long object catalogue</p></ScrollArea>
+ <Flex direction="column"><Card title="Preview">Your canvas</Card><Button>Preview</Button></Flex>
+ <ScrollArea label="Options" header={<CardHeader title="Options" />}><p>Long options form</p></ScrollArea>
+</Workbench>
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| leadingWidth / trailingWidth | number | Preferred side panel widths in pixels. |
+| height | string | Bounded desktop height; defaults to min(66dvh, 760px). |
+| ScrollArea header / footer | ReactNode | Persistent controls outside the labelled native scroll region. |
+| ScrollArea label | string | Accessible name for the keyboard-scrollable content. |
+
+## Masonry
+
+Layout. Variable-height cards flow down responsive columns without splitting a card. Source and keyboard order run down each column.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#masonry)
+
+```jsx
+import { Masonry, Card } from '@ride-eats/ui';
+
+<Masonry min={240} columns={3} gap={16}>
+ <Card title="Short card">A short note.</Card>
+ <Card title="Longer card">More content can take its natural height while the next card packs below it.</Card>
+ <Card title="Another card">Content stays intact.</Card>
+</Masonry>
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| min | number | Preferred minimum column width. Columns shrink to fit narrow containers. |
+| columns | number | Maximum columns; actual count adapts to available width. |
+| gap | number | Shared horizontal and vertical spacing. |
+
+## Layouts
+
+Layout. Responsive fixed-side, proportional and wrapping layouts, natural-width tabs, compact selectable rows and image uploads.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#layout)
+
+```jsx
+import { Grid, Flex, Card, Tile, FileDropzone } from '@ride-eats/ui';
+
+<Grid layout="sidebar" sidebarWidth={280}>
+  <Card title="Seasons"><Flex direction="column" gap={4}><Tile variant="row" selected title="Diwali" description="Scheduled" onClick={()=>{}} /></Flex></Card>
+  <Card title="Details"><FileDropzone variant="compact" label="Main logo" onFiles={()=>{}} /></Card>
+</Grid>
+```
+
+| Prop | Type | Purpose |
+| --- | --- | --- |
+| columns / min / density | number / number / default  /  compact | Responsive maximum columns, minimum width and inherited compact tiles. |
+| layout | auto  /  sidebar  /  aside  /  split | Automatic tracks, fixed left or right side, or custom ratios. |
+| sidebarWidth / ratio | number / [number, number] | Fixed-side pixels or flexible relative track sizes. |
+| Flex.gap | number | Vertical rhythm without outer component margins. |
 
 ## Icon Library
 
 Display. 2,015 canonical Lucide glyphs and 277 compatibility names plus Send’s own glyphs. Search by name or purpose, adjust size and stroke, preview motion, and copy the exact React code.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#icons)
 
 ```jsx
 import { Icon, IconProvider } from '@ride-eats/ui';
@@ -19,18 +225,20 @@ import { Icon, IconProvider } from '@ride-eats/ui';
 </IconProvider>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | name | string | Catalog slug or a registered custom name. |
 | size / strokeWidth / color | number / number / string | SVG size, stroke and color; defaults preserve Send control sizing. |
-| motion | auto | none | draw | Opt-in movement; honors reduced motion. |
-| animateOn | hover | always | Hover/focus or continuous animation. |
+| motion | auto  /  none  /  draw | Opt-in movement; honors reduced motion. |
+| animateOn | hover  /  always | Hover/focus or continuous animation. |
 | label / title | string | Accessible meaning for nondecorative icons. |
 | IconProvider.icons | Record<string,ReactNode> | Register custom SVG contents or override catalog names. |
 
 ## Data Table
 
 Display. A real working table: custom cells, sortable columns, selection, row actions, loading and empty states. Keep data fetching and sorting in your application.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#data-table)
 
 ```jsx
 import { DataTable, Badge, Button } from '@ride-eats/ui';
@@ -54,9 +262,10 @@ const rows = [...people].sort((a, b) =>
 />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
-| columns | Column[] | key, label, render(value,row), sortable, width, align. |
+| variant / cellAlign | auto  /  standalone  /  inset / top  /  middle  /  bottom | Avoid duplicate Card surfaces and align multi-line content. |
+| columns | Column[] | key, label, render(value,row), sortable, width, wrap, align. |
 | rows / rowKey | T[] / key or function | Your records and stable identifiers. |
 | sort / onSortChange | Sort / callback | Controlled sort; your app orders/fetches rows. |
 | selectedKeys / onSelectionChange | Key[] / callback | Optional selection with select-all and indeterminate state. |
@@ -67,6 +276,8 @@ const rows = [...people].sort((a, b) =>
 ## Stacked Dialogs
 
 Recipes. Keep the form mounted while a confirmation opens above it. One backdrop, depth transitions, focus restoration and a preserved draft.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#stacked-dialogs)
 
 ```jsx
 import { Button, Dialog, Field, useConfirm } from '@ride-eats/ui';
@@ -90,15 +301,17 @@ const requestClose = async () => {
 // Wrap your app in UIProvider once.
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | useConfirm() | (options) => Promise<boolean> | title, message, confirmLabel, cancelLabel and danger. |
-| Dialog.beforeClose | () => boolean | Promise<boolean> | Optional dismissal guard; external open state remains yours. |
+| Dialog.beforeClose | () => boolean  /  Promise<boolean> | Optional dismissal guard; external open state remains yours. |
 | Native stack | automatic | Underlying form is inert, scaled and preserved; only the first backdrop dims. |
 
 ## Accordion
 
 Layout. Quiet disclosure rows with an animated height, rotating chevrons and controlled state.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#accordion)
 
 ```jsx
 import { Accordion } from '@ride-eats/ui';
@@ -110,15 +323,17 @@ const [open, setOpen] = useState('delivery');
 ]} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items | {value,title,content,icon?}[] | Content and optional row icons. |
-| value / onValueChange | string | null / callback | Open item or null. |
+| value / onValueChange | string  /  null / callback | Open item or null. |
 | className / style | styling hooks | Customize the outer layout. |
 
 ## Alert
 
 Feedback. An inline message with a small status mark, optional action and dismissal.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#alert)
 
 ```jsx
 import { Alert, Button } from '@ride-eats/ui';
@@ -130,15 +345,17 @@ import { Alert, Button } from '@ride-eats/ui';
 </Alert>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
-| tone | neutral | good | bad | Semantic styling and alert/status role. |
+| tone | neutral  /  good  /  bad | Semantic styling and alert/status role. |
 | title / children / action | ReactNode | Message, detail and optional action. |
 | onDismiss | () => void | Optional dismissal control. |
 
 ## Checkbox
 
 Inputs. A compact check with a soft scale transition, a real native input and indeterminate support.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#checkbox)
 
 ```jsx
 import { Checkbox } from '@ride-eats/ui';
@@ -156,7 +373,7 @@ const mixed = selected.length > 0 && !all;
     ? [...current, file.id] : current.filter(id => id !== file.id))} />)}
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | checked / onCheckedChange | boolean / callback | Controlled native checkbox. |
 | label / hint | ReactNode | Label and explanation. |
@@ -165,6 +382,8 @@ const mixed = selected.length > 0 && !all;
 ## Radio Group
 
 Inputs. Selectable option rows with a quiet border, animated dot and supporting text.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#radio-group)
 
 ```jsx
 import { RadioGroup } from '@ride-eats/ui';
@@ -177,7 +396,7 @@ const [access, setAccess] = useState('private');
   ]} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | options | Option[] | value, label, description, trailing and disabled. |
 | value / onValueChange | string / callback | Native radio behavior, controlled state. |
@@ -187,6 +406,8 @@ const [access, setAccess] = useState('private');
 
 Inputs. A smooth value track with a precise native range input and a readable live value.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#slider)
+
 ```jsx
 import { Slider } from '@ride-eats/ui';
 
@@ -195,7 +416,7 @@ const [volume, setVolume] = useState(64);
   min={0} max={100} step={1} formatValue={value => value + '%'} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value / onValueChange | number / callback | Controlled value. |
 | min / max / step | number | Native range bounds. |
@@ -205,6 +426,8 @@ const [volume, setVolume] = useState(64);
 
 Feedback. A measured progress bar with a soft fill transition, or a restrained indeterminate state.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#progress)
+
 ```jsx
 import { Progress, Button } from '@ride-eats/ui';
 
@@ -213,7 +436,7 @@ const [progress, setProgress] = useState(64);
 <Button onClick={() => setProgress(value => Math.min(100, value + 12))}>Advance</Button>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value / max | number | Current and maximum values. |
 | label / hint | string | Task and supporting context. |
@@ -222,6 +445,8 @@ const [progress, setProgress] = useState(64);
 ## Password Input
 
 Inputs. A labeled password field with an integrated reveal control and native input props.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#password-input)
 
 ```jsx
 import { PasswordInput } from '@ride-eats/ui';
@@ -232,7 +457,7 @@ import { PasswordInput } from '@ride-eats/ui';
   hint="Use at least 12 characters." />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | label / hint | ReactNode | Field context. |
 | ...inputProps | native input attributes | value, onChange, name, required, disabled, autoComplete. |
@@ -241,6 +466,8 @@ import { PasswordInput } from '@ride-eats/ui';
 
 Inputs. Increment and decrement controls around a directly editable number.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#number-input)
+
 ```jsx
 import { NumberInput } from '@ride-eats/ui';
 
@@ -248,7 +475,7 @@ const [quantity, setQuantity] = useState(2);
 <NumberInput label="Copies" value={quantity} onValueChange={setQuantity} min={1} max={20} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value / onValueChange | number / callback | Controlled quantity. |
 | min / max / step | number | Bounds and increment. |
@@ -257,6 +484,8 @@ const [quantity, setQuantity] = useState(2);
 ## Breadcrumbs
 
 Navigation. A compact path through the app, with a clear current page and real links.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#breadcrumbs)
 
 ```jsx
 import { Breadcrumbs } from '@ride-eats/ui';
@@ -268,7 +497,7 @@ import { Breadcrumbs } from '@ride-eats/ui';
 ]} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items | {label,href?}[] | Last item is the current page. |
 | label | string | Accessible navigation name. |
@@ -276,6 +505,8 @@ import { Breadcrumbs } from '@ride-eats/ui';
 ## Avatar Group
 
 Display. Overlapping team identities with a measured hover lift and overflow count.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#avatar-group)
 
 ```jsx
 import { AvatarGroup } from '@ride-eats/ui';
@@ -287,7 +518,7 @@ import { AvatarGroup } from '@ride-eats/ui';
 ]} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | people | {id?,name,src?}[] | Images fall back to initials. |
 | max | number | Visible identities before +N. |
@@ -297,6 +528,8 @@ import { AvatarGroup } from '@ride-eats/ui';
 
 Actions. Copy a value, then show a quiet checked confirmation. Failures stay visible.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#copy-button)
+
 ```jsx
 import { CopyButton } from '@ride-eats/ui';
 
@@ -304,7 +537,7 @@ import { CopyButton } from '@ride-eats/ui';
   copiedLabel="Link copied" onCopy={() => console.log('Copied')} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value | string | Clipboard text. |
 | label / copiedLabel | string | Idle and confirmed labels. |
@@ -314,6 +547,8 @@ import { CopyButton } from '@ride-eats/ui';
 
 Inputs. A compact upload target with drag feedback, keyboard selection, size checks and file-type validation. Your app handles uploading.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#file-dropzone)
+
 ```jsx
 import { FileDropzone } from '@ride-eats/ui';
 
@@ -322,7 +557,7 @@ import { FileDropzone } from '@ride-eats/ui';
   label="Drop your files here" description="or browse from your device" />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | onFiles | (files: File[]) => void | Validated files; upload with your own API. |
 | accept / multiple / maxSize | string / boolean / bytes | Type, count and size constraints. |
@@ -331,6 +566,8 @@ import { FileDropzone } from '@ride-eats/ui';
 ## Timeline
 
 Display. A compact activity trail, connected with fine lines and familiar Send icons.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#timeline)
 
 ```jsx
 import { Timeline } from '@ride-eats/ui';
@@ -342,7 +579,7 @@ import { Timeline } from '@ride-eats/ui';
 ]} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items | TimelineItem[] | title, description, time, dateTime, icon and tone. |
 | label | string | Accessible activity-list name. |
@@ -350,6 +587,8 @@ import { Timeline } from '@ride-eats/ui';
 ## Drawer
 
 Layout. A side panel built on the same native modal stack: smooth entry, focus management and Escape.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#drawer)
 
 ```jsx
 import { Drawer, Button } from '@ride-eats/ui';
@@ -362,33 +601,35 @@ const [open, setOpen] = useState(false);
 </Drawer>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | open / onOpenChange | boolean / callback | Controlled visibility. |
 | title / children / footer | ReactNode | Panel structure. |
-| side | right | left | Slide-in direction. |
+| side | right  /  left | Slide-in direction. |
 
 ## Stat Cards
 
 Display. The Tools dashboard metrics, with default, compact, inline and hero layouts. Optional sparklines, trends and progress.
 
-```jsx
-import { MetricGrid, StatCard } from '@ride-eats/ui';
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#stat-cards)
 
-<MetricGrid minWidth={180}>
+```jsx
+import { Grid, StatCard } from '@ride-eats/ui';
+
+<Grid preset="metrics" min={180}>
   <StatCard label="Payments" value="153" hint="1 open" />
   <StatCard label="Paid" value="5" hint="Available from Drop 1" tone="good" />
   <StatCard label="Scenarios passed" value="44 / 48" progress={92} />
   <StatCard label="Avg. response" value="1400 ms" hint="300 calls · 6 errors" />
-</MetricGrid>
+</Grid>
 <StatCard variant="compact" label="Downloads" value="1,284" trend="+12.8%"
   chart={[12,18,15,30,24,40,48,52]} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | label / value / hint | ReactNode | Metric hierarchy. |
-| variant | default | compact | inline | hero | Surface and type scale. |
+| variant | default  /  compact  /  inline  /  hero | Surface and type scale. |
 | chart / trend / progress | number[] / text / percentage | Optional secondary data. |
 | tone / icon | semantic tone / icon name | Meaning and visual context. |
 | className / style / ...props | section attributes | App-specific layout. |
@@ -397,20 +638,26 @@ import { MetricGrid, StatCard } from '@ride-eats/ui';
 
 Layout. The Tools launcher shape: a contained icon, a clear name, a short explanation and a natural next step.
 
-```jsx
-import { Tile, MetricGrid } from '@ride-eats/ui';
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#tiles)
 
-<MetricGrid minWidth={220}>
+```jsx
+import { Tile, Grid } from '@ride-eats/ui';
+
+<Grid preset="metrics" min={220}>
   <Tile icon="files" title="My transfers" description="Everything you have shared."
     meta="24 files" href="/transfers" footer="View transfers" />
   <Tile icon="team" title="Team workspace" description="Share a space with your people."
     onClick={() => setTeamOpen(true)} footer="Open workspace" />
-</MetricGrid>
+</Grid>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | title / description / meta / footer | ReactNode | Tile content and supporting context. |
+| density / variant | default  /  compact / default  /  row | Compact spacing and selectable row layout. |
+| imageSize / imageFit | number / contain  /  cover | Thumbnail dimensions and fitting. |
+| titleLines / showFooter | number / boolean | Limit title lines and optionally remove footer chrome. |
+| selected | boolean | Controlled pressed state for selectable tiles. |
 | icon / image | name / image URL | Visual identity. |
 | href / onClick | link / callback | Choose link, button or static article semantics. |
 | disabled / className / ...props | customization | Interaction and layout. |
@@ -419,6 +666,8 @@ import { Tile, MetricGrid } from '@ride-eats/ui';
 
 Layout. Tools-style page titles with an app icon, context, description and natural-size actions.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#page-header)
+
 ```jsx
 import { PageHeader, Button } from '@ride-eats/ui';
 
@@ -426,7 +675,7 @@ import { PageHeader, Button } from '@ride-eats/ui';
   actions={<Button onClick={refresh}>Check connection</Button>} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | title / description / eyebrow | ReactNode | Page hierarchy. |
 | icon / image | icon name / URL | Optional app identity. |
@@ -436,16 +685,18 @@ import { PageHeader, Button } from '@ride-eats/ui';
 
 Recipes. Compose a working screen from page headers, metric cards, tabs, tool tiles and tables. The same building blocks as Tools.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#dashboard)
+
 ```jsx
-import { PageHeader,MetricGrid,StatCard,Tabs,Card,DataTable } from '@ride-eats/ui';
+import { PageHeader, Grid, StatCard, Tabs, Card, DataTable } from '@ride-eats/ui';
 
 <div className="stack">
   <PageHeader title="Payments" icon="storage" description="Shared across admin devices." />
-  <MetricGrid>
+  <Grid preset="metrics">
     <StatCard label="Payments" value="153" hint="1 open" />
     <StatCard label="Paid" value="5" tone="good" />
     <StatCard label="Scenarios passed" value="44 / 48" progress={92} />
-  </MetricGrid>
+  </Grid>
   <Tabs value={tab} onValueChange={setTab} items={tabs} />
   <Card title="Recent payments" description="A shared view of the latest activity.">
     <DataTable columns={columns} rows={payments} />
@@ -453,15 +704,17 @@ import { PageHeader,MetricGrid,StatCard,Tabs,Card,DataTable } from '@ride-eats/u
 </div>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | Composition | children and slots | No additional provider or dashboard-specific state. |
-| MetricGrid.minWidth | number | Responsive minimum card width in pixels. |
+| Grid.minWidth | number | Responsive minimum card width in pixels. |
 | Card | title,description,action,footer,variant,padding | High-level API or compound CardHeader/Body/Footer. |
 
 ## Reorder List
 
 Layout. Drag handles to reorder rows with animated position changes. Arrow keys on the handle and move buttons provide equivalent controls.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#reorder-list)
 
 ```jsx
 import { ReorderList } from '@ride-eats/ui';
@@ -470,7 +723,7 @@ const [items, setItems] = useState([{id:'a',label:'Design'}, {id:'b',label:'Buil
 <ReorderList items={items} onReorder={setItems} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items / onReorder | T[] / callback | Caller-owned ordered items. Stable IDs preserve state. |
 | getItemKey / renderItem | (item) => key / (item, index) => ReactNode | Customize identity and row content. Defaults to item.id and item.label. |
@@ -480,13 +733,15 @@ const [items, setItems] = useState([{id:'a',label:'Design'}, {id:'b',label:'Buil
 
 Actions. Drag a row left to reveal actions, or use its action button. Actions only run when explicitly pressed.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#swipe-actions)
+
 ```jsx
 import { SwipeActions } from '@ride-eats/ui';
 
 <SwipeActions actions={[{value:'archive', label:'Archive', icon:'archive', tone:'info', onSelect:archive}]}><strong>Project files</strong></SwipeActions>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | actions | {value,label,icon?,tone?,destructive?,onSelect?}[] | Up to three visible actions. Revealing never executes them. |
 | children / label | ReactNode / string | Row content and action region name. |
@@ -495,13 +750,15 @@ import { SwipeActions } from '@ride-eats/ui';
 
 Display. Touch scrolling, mouse dragging, keyboard arrows and navigation buttons share one scroll-snap carousel. Reduced motion removes animated scrolling.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#carousel)
+
 ```jsx
 import { Carousel, Card } from '@ride-eats/ui';
 
 <Carousel items={cards} renderItem={card => <Card title={card.title}>{card.description}</Card>} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items / renderItem | T[] / (item,index) => ReactNode | Content is yours. Item IDs provide stable keys. |
 | label | string | Accessible carousel name. |
@@ -510,6 +767,8 @@ import { Carousel, Card } from '@ride-eats/ui';
 
 Layout. Drag the divider to resize with elastic resistance at the bounds and a smooth release. Controlled values stay within min/max. Keyboard resizing uses the shared settling curve: arrows adjust by 2%, Shift by 10%, Home/End jump to bounds.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#split-pane)
+
 ```jsx
 import { SplitPane } from '@ride-eats/ui';
 
@@ -517,7 +776,7 @@ const [split, setSplit] = useState(40);
 <SplitPane value={split} onValueChange={setSplit} first={<p>Navigation</p>} second={<p>Workspace</p>} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value / onValueChange | number / callback | First-panel width as a percentage. |
 | min / max | number | Allowed percentages; defaults 20–80. |
@@ -527,6 +786,8 @@ const [split, setSplit] = useState(40);
 
 Inputs. Two native range handles with a shared accent track. Drag either handle or use keyboard arrows; the bounds cannot cross.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#range-slider)
+
 ```jsx
 import { RangeSlider } from '@ride-eats/ui';
 
@@ -534,35 +795,17 @@ const [range, setRange] = useState([20,80]);
 <RangeSlider label="Budget" value={range} onValueChange={setRange} formatValue={value => '$' + value} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value / onValueChange | [number,number] / callback | Controlled minimum and maximum. |
 | min / max / step | number | Bounds and native stepping. |
 | label / formatValue / disabled | string / function / boolean | Label, value formatting and availability. |
 
-## Animated Icons
-
-Motion. 87 supported names with explicit SVG choreography, including compatibility aliases with complete visible glyphs, smooth easing and a resting pause. Unfinished catalog icons remain static. Replay, loop and copy the exact React usage.
-
-```jsx
-import { AnimatedIcon, Button } from '@ride-eats/ui';
-
-<AnimatedIcon name="bell" size={28} />
-<AnimatedIcon name="check" playing />
-<AnimatedIcon name="refresh" playing loop />
-// Hover/focus on a parent button also triggers the icon.
-<Button><AnimatedIcon name="send" /> Send files</Button>
-```
-
-| Prop | Type | Behavior |
-| --- | --- | --- |
-| name | string — any catalog name | Any catalog name. The animated browser lists geometry treatments; other names remain static. |
-| playing / loop | boolean | Play explicitly or repeat. Hover/focus also plays. |
-| size / strokeWidth / label | number / number / string | SVG appearance and accessibility. |
-
 ## Popover
 
 Feedback. A floating, native top-layer panel for small forms and contextual details. It positions beside its trigger, escapes clipping, and dismisses on outside click or Escape.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#popover)
 
 ```jsx
 import { Popover, Button } from '@ride-eats/ui';
@@ -575,7 +818,7 @@ const [open, setOpen] = useState(false);
 </Popover>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | open / onOpenChange | boolean / callback | Controlled native popover. |
 | trigger | (buttonProps) => ReactNode | Spread the supplied ref and handlers. |
@@ -585,22 +828,26 @@ const [open, setOpen] = useState(false);
 
 Navigation. A workspace command palette: grouped ranked search, nested scopes, recent commands, modifier shortcuts, async execution and error recovery. The focused demo creates local drafts and filters transfers.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#command-menu)
+
 ```jsx
 import { CommandMenu } from '@ride-eats/ui';
 
 <CommandMenu open={open} onOpenChange={setOpen} shortcut items={[{value:'new',label:'New transfer',group:'Create',description:'Create a draft',shortcut:'Alt+N',onSelect:createDraft},{value:'settings',label:'Settings',group:'Navigate',items:settingsCommands}]} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | open / onOpenChange | controlled state | Open with a visible launcher or optional Ctrl/⌘K. |
 | items | CommandItem[] | Unique value, label, description, group, icon, keywords, modifier shortcut, disabled, onSelect and nested items. |
-| onSelect | void | Promise | Successful commands close the palette; rejected commands show an error and stay open. |
+| onSelect | void  /  Promise | Successful commands close the palette; rejected commands show an error and stay open. |
 | label / placeholder / shortcut | configuration | Accessible scope name, search prompt and global launcher shortcut. Recent IDs stay in memory for the lifetime of this instance. |
 
 ## PIN Input
 
 Inputs. One real input with individual visual cells, so pasting, numeric keyboards and one-time-code autofill work naturally.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#pin-input)
 
 ```jsx
 import { PinInput } from '@ride-eats/ui';
@@ -610,7 +857,7 @@ const [code, setCode] = useState('');
   length={6} onComplete={code => verifyCode(code)} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value / onValueChange | string / callback | Digits only, controlled. |
 | length / label / disabled | number / string / boolean | Cell count and field configuration. |
@@ -620,6 +867,8 @@ const [code, setCode] = useState('');
 
 Inputs. A compact toolbar for one or several independent selections, with native pressed states and soft selection transitions.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#toggle-group)
+
 ```jsx
 import { ToggleGroup } from '@ride-eats/ui';
 
@@ -628,15 +877,17 @@ const [format, setFormat] = useState(['bold']);
   items={[{value:'bold',label:'Bold',icon:'bold'},{value:'italic',label:'Italic',icon:'italic'}]} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items | {value,label,icon?,disabled?}[] | Toggle controls. |
-| value / onValueChange | string|null or string[] / callback | Single or multiple selection. |
+| value / onValueChange | string / null or string[] / callback | Single or multiple selection. |
 | multiple / disabled | boolean | Selection mode and availability. |
 
 ## Rating
 
 Inputs. Drag across stars to choose a rating, preview on hover, or use native radio keyboard controls. Touch cancellation restores the previous value.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#rating)
 
 ```jsx
 import { Rating } from '@ride-eats/ui';
@@ -645,7 +896,7 @@ const [rating, setRating] = useState(4);
 <Rating label="How was your experience?" value={rating} onValueChange={setRating} max={5} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value / onValueChange | number / callback | Chosen rating, 1-based. |
 | max / label / readOnly | configuration | Star count, group label and display-only mode. |
@@ -654,13 +905,15 @@ const [rating, setRating] = useState(4);
 
 Inputs. A compact multiline field with associated labels, hints and validation. Native textarea props remain available.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#textarea)
+
 ```jsx
 import { Textarea } from '@ride-eats/ui';
 
 <Textarea label="Description" value={description} onChange={event => setDescription(event.target.value)} hint="Keep it short and useful." />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | label / hint / error | ReactNode | Accessible label and supporting content. |
 | rows / value / onChange / disabled | native textarea props | Defaults to three rows; controlled content stays yours. |
@@ -668,6 +921,8 @@ import { Textarea } from '@ride-eats/ui';
 ## Form
 
 Inputs. Validation, async submit state, server errors and first-invalid-field focus in one render-prop form. The demo saves local state.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#form)
 
 ```jsx
 import { Form, Field, Button } from '@ride-eats/ui';
@@ -677,15 +932,17 @@ import { Form, Field, Button } from '@ride-eats/ui';
 </Form>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | initialValues / validate | object / values => errors | Initial values and synchronous validation. |
-| onSubmit | values => void | Promise | Errors become a visible alert; duplicate submissions are prevented. |
+| onSubmit | values => void  /  Promise | Errors become a visible alert; duplicate submissions are prevented. |
 | children | render function | Receives values, errors, submitting, field(name), setValue(name,value), reset(). |
 
 ## Combobox
 
 Inputs. Searchable selection with native top-layer positioning, listbox semantics and keyboard navigation.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#combobox)
 
 ```jsx
 import { Combobox } from '@ride-eats/ui';
@@ -693,31 +950,17 @@ import { Combobox } from '@ride-eats/ui';
 <Combobox label="Assignee" options={people} value={person} onValueChange={setPerson} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | options | {value,label,description?,disabled?}[] | Searchable choices. |
 | value / onValueChange | string / callback | Controlled selected option. |
 | label / placeholder / error / hint / disabled | configuration | Labels, validation and availability. |
 
-## Multi Select
-
-Inputs. Choose multiple options from one searchable field, then remove selections with compact chips.
-
-```jsx
-import { MultiSelect } from '@ride-eats/ui';
-
-<MultiSelect label="Teams" options={teams} value={selectedTeams} onValueChange={setSelectedTeams} />
-```
-
-| Prop | Type | Behavior |
-| --- | --- | --- |
-| options | ComboboxOption[] | Searchable choices. |
-| value / onValueChange | string[] / callback | Controlled selected keys. |
-| label / placeholder / error / hint / disabled | configuration | Labels, validation and availability. |
-
 ## Date Range Picker
 
 Inputs. Send’s custom calendar for both range endpoints, with linked bounds, circular day controls and animated opening and closing. Values stay local YYYY-MM-DD dates.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#date-range-picker)
 
 ```jsx
 import { DateRangePicker } from '@ride-eats/ui';
@@ -725,7 +968,7 @@ import { DateRangePicker } from '@ride-eats/ui';
 <DateRangePicker value={range} onValueChange={setRange} label="Reporting period" />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value / onValueChange | {start,end} / callback | ISO dates or empty strings. |
 | min / max / disabled / label / locale | configuration | Shared calendar bounds and fieldset label. |
@@ -734,13 +977,15 @@ import { DateRangePicker } from '@ride-eats/ui';
 
 Inputs. A compact custom time picker with rounded hour and minute choices, solid accent selection and keyboard navigation. Displays local time and returns HH:mm.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#time-picker)
+
 ```jsx
 import { TimePicker } from '@ride-eats/ui';
 
 <TimePicker label="Opening time" value={time} onValueChange={setTime} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | value / onValueChange | HH:mm string / callback | Controlled HH:mm value. |
 | min / max / step / disabled / label | configuration | Step is seconds, rounded to whole minutes (minimum 60); defaults to one minute. |
@@ -749,22 +994,24 @@ import { TimePicker } from '@ride-eats/ui';
 
 Feedback. Compact per-file progress, status, errors, retry and cancellation. The caller owns file transfer and progress; this demo has explicit simulation controls.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#upload-progress)
+
 ```jsx
 import { UploadProgress } from '@ride-eats/ui';
 
 <UploadProgress files={uploads} onCancel={cancelUpload} onRetry={retryUpload} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | files | {id,name,status,progress?,error?}[] | Status is queued, uploading, done, error or cancelled; progress is 0–100. |
 | onCancel / onRetry | id => void | Caller handles transfer cancellation and retry. |
 
 ## DataGrid
 
-`toolbarActions` accepts your primary action, such as an upload button. Selection and expansion columns stay 36px while data columns take the available width.
-
 Display. A compact table with search, filters, sorting, column visibility and resizing, sticky columns, bulk actions and optional row expansion. Fixed-row virtual scrolling supports larger local datasets.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#data-grid)
 
 ```jsx
 import { DataGrid } from '@ride-eats/ui';
@@ -773,7 +1020,7 @@ import { DataGrid } from '@ride-eats/ui';
 // For fixed-height rows: <DataGrid rows={records} columns={columns} virtual height={320} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | rows / columns / getRowKey | T[] / DataGridColumn<T>[] / function | Stable row IDs are required. Columns accept key, label, width, pinned, sortable, resizable, align, render, searchValue and sortValue. |
 | filters / bulkActions | definition arrays | Exact-value filters and selected-row callbacks. |
@@ -785,6 +1032,8 @@ import { DataGrid } from '@ride-eats/ui';
 
 Layout. A reusable compact application frame with collapsible navigation, mobile dialog navigation and slots for workspace, search, notifications and account actions.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#app-shell)
+
 ```jsx
 import { AppShell, WorkspaceSwitcher, NotificationCenter, Card } from '@ride-eats/ui';
 
@@ -793,7 +1042,7 @@ import { AppShell, WorkspaceSwitcher, NotificationCenter, Card } from '@ride-eat
 </AppShell>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items / value / onValueChange | navigation array / string / callback | Navigation items accept value, label, icon, count and disabled. |
 | brand / workspace / search / actions / sidebarFooter / children | ReactNode slots | Supply branding, controls and actual screens. |
@@ -803,13 +1052,15 @@ import { AppShell, WorkspaceSwitcher, NotificationCenter, Card } from '@ride-eat
 
 Navigation. Compact workspace selection using the shared Send menu, ready for a header or app sidebar.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#workspace-switcher)
+
 ```jsx
 import { WorkspaceSwitcher } from '@ride-eats/ui';
 
 <WorkspaceSwitcher items={workspaces} value={workspace} onValueChange={setWorkspace} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items | {value,label,description?,icon?,disabled?}[] | Caller-owned workspaces. |
 | value / onValueChange / label | controlled state and label | Selection does not switch a backend session automatically. |
@@ -818,13 +1069,15 @@ import { WorkspaceSwitcher } from '@ride-eats/ui';
 
 Feedback. Unread counts, compact notification rows and caller-owned read state. No polling, push or backend is bundled.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#notification-center)
+
 ```jsx
 import { NotificationCenter } from '@ride-eats/ui';
 
 <NotificationCenter items={notifications} onRead={markRead} onReadAll={markAllRead} onSelect={openNotification} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items | {id,title,description?,time?,read?,icon?}[] | Notification content and read state. |
 | onRead / onReadAll / onSelect / label | callbacks / string | Caller handles persistence and routing. |
@@ -832,6 +1085,8 @@ import { NotificationCenter } from '@ride-eats/ui';
 ## Bottom Sheet
 
 Feedback. A compact native modal sheet. Drag the handle or header down to dismiss; short pulls smoothly return, press the handle, use Close, or press Escape. It keeps the real dialog mounted through exits.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#bottom-sheet)
 
 ```jsx
 import { BottomSheet, Button } from '@ride-eats/ui';
@@ -841,15 +1096,17 @@ import { BottomSheet, Button } from '@ride-eats/ui';
 </BottomSheet>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | open / onClose | controlled state | Keep mounted for animated exits and focus restoration. |
 | title / children / footer | ReactNode | Accessible heading, content and actions. |
-| height | number | CSS length | Fits content by default. Pass a height for a larger sheet; viewport limits and body scrolling remain active. |
+| height | number  /  CSS length | Fits content by default. Pass a height for a larger sheet; viewport limits and body scrolling remain active. |
 
 ## Context Menu
 
 Actions. Right-click or use Shift+F10 to open compact contextual actions. Nested choices, disabled actions, keyboard movement and Escape are supported.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#context-menu)
 
 ```jsx
 import { ContextMenu, Card } from '@ride-eats/ui';
@@ -859,7 +1116,7 @@ import { ContextMenu, Card } from '@ride-eats/ui';
 </ContextMenu>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | items | ContextMenuItem[] | value, label, icon, disabled, destructive, separator, onSelect and nested items. |
 | children / label | ReactNode / string | Context target and accessible action name. |
@@ -867,6 +1124,8 @@ import { ContextMenu, Card } from '@ride-eats/ui';
 ## Nested Popovers
 
 Recipes. Native top-layer popovers can hold a second popover without clipping into surrounding cards. Dismissal follows the nested hierarchy.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#nested-popovers)
 
 ```jsx
 import { Popover, Button } from '@ride-eats/ui';
@@ -876,7 +1135,7 @@ import { Popover, Button } from '@ride-eats/ui';
 </Popover>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | open / onOpenChange / trigger | controlled state / render prop | Each popover owns its open state. |
 | label / children / align / width | configuration | Same Popover API; native hierarchy handles outside dismissal. |
@@ -885,13 +1144,15 @@ import { Popover, Button } from '@ride-eats/ui';
 
 Layout. Compact settings sections with labels, descriptions, control slots and footer actions. Compose real inputs rather than rebuilding layout CSS.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#settings-panel)
+
 ```jsx
 import { SettingsPanel, Field, Button } from '@ride-eats/ui';
 
 <SettingsPanel title="Workspace settings" sections={[{id:'general',title:'General',description:'Your workspace identity.',children:<Field label="Name"><input value={name} onChange={event => setName(event.target.value)} /></Field>}]} actions={<Button onClick={save}>Save</Button>} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | title / description | ReactNode | Panel heading. |
 | sections | {id,title,icon?,description?,children}[] | Rounded sections, optional icons and caller-owned controls. |
@@ -901,13 +1162,15 @@ import { SettingsPanel, Field, Button } from '@ride-eats/ui';
 
 Workflows. A complete member table with optional invitation form, editable roles and confirmed removal. All changes are caller-owned callbacks; this demo stores changes locally.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#team-directory)
+
 ```jsx
 import { TeamDirectory } from '@ride-eats/ui';
 
 <TeamDirectory members={members} onInvite={inviteMember} onRoleChange={changeRole} onRemove={removeMember} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | members | {id,name,email,role,status?}[] | Caller-owned member records. |
 | onInvite / onRoleChange / onRemove | optional async callbacks | Missing callbacks omit those controls. Rejected promises show errors. |
@@ -917,35 +1180,24 @@ import { TeamDirectory } from '@ride-eats/ui';
 
 Workflows. A compact file table with native multi-file selection, opening, selected-file download and confirmed deletion. Transfer and storage remain in your application.
 
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#file-manager)
+
 ```jsx
 import { FileManager } from '@ride-eats/ui';
 
 <FileManager files={files} onUpload={uploadFiles} onOpen={openFile} onDownload={downloadFiles} onDelete={deleteFile} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | files | {id,name,type?,size?,owner?,updated?}[] | type is file or folder. Display sizes and dates are caller formatted. |
 | onUpload / onOpen / onDownload / onDelete | optional callbacks | Upload receives native File[]. Download receives selected records. Use UIProvider for confirmations. |
 
-## Activity Feed
-
-Display. A dense activity list for audit events, recent changes and workspace updates, with compact icons and timestamps.
-
-```jsx
-import { ActivityFeed } from '@ride-eats/ui';
-
-<ActivityFeed items={activity} label="Workspace activity" />
-```
-
-| Prop | Type | Behavior |
-| --- | --- | --- |
-| items | {id,title,description?,time?,dateTime?,icon?}[] | Display timestamps and optional machine-readable datetimes. |
-| label / emptyText | string | Accessible heading and empty state. |
-
 ## Support Inbox
 
 Workflows. Conversation list, selected thread and reply composer in one responsive workflow. Reply promises control pending and error states; the caller appends persisted messages.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#support-inbox)
 
 ```jsx
 import { SupportInbox } from '@ride-eats/ui';
@@ -953,15 +1205,17 @@ import { SupportInbox } from '@ride-eats/ui';
 <SupportInbox threads={threads} value={threadId} onValueChange={setThreadId} onReply={sendReply} />
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | threads | SupportThread[] | id, name, subject, status, time and messages; messages contain id, author, text, time and own. |
 | value / onValueChange | string / callback | Selected conversation ID. |
-| onReply / label | (id,text) => Promise | void / string | Optional reply callback; controls are omitted without it. Drafts are retained per conversation during the mounted session. Search filters names and subjects. |
+| onReply / label | (id,text) => Promise  /  void / string | Optional reply callback; controls are omitted without it. Drafts are retained per conversation during the mounted session. Search filters names and subjects. |
 
 ## Sticky Bar
 
 Layout. Tools’ automatic floating page controls. Scroll depth progressively fades the content beneath without blur while controls remain sharp. The header offset is measured automatically when used with Header.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#sticky-bar)
 
 ```jsx
 import { StickyBar, Tabs } from '@ride-eats/ui';
@@ -969,9 +1223,9 @@ import { StickyBar, Tabs } from '@ride-eats/ui';
 <StickyBar><Tabs items={tabs} value={tab} onValueChange={setTab} /></StickyBar>
 ```
 
-| Prop | Type | Behavior |
+| Prop | Type | Purpose |
 | --- | --- | --- |
 | children | ReactNode | Tabs, chips, search or action controls. |
-| offset | number | CSS length | Defaults to the nearest inherited --header-height. Set 0 for an independent scroll container. |
+| offset | number  /  CSS length | Defaults to the nearest inherited --header-height. Set 0 for an independent scroll container. |
 | fade | boolean | Progressive neutral fade, enabled by default. No blur effects. |
 | label / className / style | styling and accessibility | The parent defines the sticky scroll boundary; use a labelled scroll region for keyboard scrolling. |

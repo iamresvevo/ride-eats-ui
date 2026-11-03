@@ -3,7 +3,6 @@ import { motionFamily } from "../react/icons/motion-profiles.js";
 import React, { useMemo, useState } from "react";
 import {
   Icon,
-  AnimatedIcon,
   iconNames,
   Button,
   Slider,
@@ -70,8 +69,9 @@ const categories = {
   Media: ["video", "image", "music", "audio", "camera"],
   Systems: ["server", "database", "security", "network", "code", "computer"],
 };
-export default function IconBrowser({ animated = false }) {
-  const [query, setQuery] = useState(""),
+export default function IconBrowser() {
+  const [animated, setAnimated] = useState(false),
+    [query, setQuery] = useState(""),
     [category, setCategory] = useState("All"),
     [selected, setSelected] = useState("headset"),
     [size, setSize] = useState(24),
@@ -81,7 +81,6 @@ export default function IconBrowser({ animated = false }) {
     [replay, setReplay] = useState(0),
     [loop, setLoop] = useState(false);
   const toast = useToast();
-  const PreviewIcon = motion === "auto" ? AnimatedIcon : Icon;
   const filtered = useMemo(() => {
     const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
     const names = animated ? geometryMotionNames : iconNames;
@@ -107,7 +106,7 @@ export default function IconBrowser({ animated = false }) {
   }, [query, category, animated]);
   const snippet =
     motion === "auto"
-      ? `<AnimatedIcon name="${selected}" size={${size}} strokeWidth={${stroke}} playing${loop ? " loop" : ""} />`
+      ? `<Icon motion="auto" name="${selected}" size={${size}} strokeWidth={${stroke}} playing${loop ? " loop" : ""} />`
       : `<Icon name="${selected}" size={${size}} strokeWidth={${stroke}}${motion !== "none" ? ` motion="${motion}" playing${loop ? " loop" : ""}` : ""} />`;
   return (
     <div className="icon-browser">
@@ -146,12 +145,13 @@ export default function IconBrowser({ animated = false }) {
       </div>
       <div className="icon-workbench">
         <div className="icon-selected">
-          <PreviewIcon
+          <Icon
+            motion={motion}
             key={selected + motion + replay}
             name={selected}
             size={size * 2}
             strokeWidth={Number(stroke)}
-            {...(motion === "auto" ? {} : { motion, animateOn: "always" })}
+            {...{ animateOn: "always" }}
             playing={motion !== "none"}
             loop={loop}
             label={selected}
@@ -214,6 +214,11 @@ export default function IconBrowser({ animated = false }) {
         </div>
       </div>
       <div className="icon-playback">
+        <Switch
+          label="Only animated icons"
+          checked={animated}
+          onChange={setAnimated}
+        />
         <Button
           size="sm"
           variant="ghost"
@@ -265,11 +270,12 @@ export default function IconBrowser({ animated = false }) {
             onClick={() => setSelected(name)}
             aria-label={`Select ${name}`}
           >
-            <PreviewIcon
+            <Icon
+              motion={motion}
               name={name}
               size={size}
               strokeWidth={Number(stroke)}
-              {...(motion === "auto" ? {} : { motion, animateOn: "hover" })}
+              {...{ animateOn: "hover" }}
             />
             <span>{name}</span>
           </button>

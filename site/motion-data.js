@@ -19,31 +19,7 @@ const page = (
 });
 export const motionPages = [
   ...gesturePages,
-  page(
-    "animated-icons",
-    "Animated Icons",
-    "Motion",
-    "87 supported names with explicit SVG choreography, including compatibility aliases with complete visible glyphs, smooth easing and a resting pause. Unfinished catalog icons remain static. Replay, loop and copy the exact React usage.",
-    `<AnimatedIcon name="bell" size={28} />\n<AnimatedIcon name="check" playing />\n<AnimatedIcon name="refresh" playing loop />\n// Hover/focus on a parent button also triggers the icon.\n<Button><AnimatedIcon name="send" /> Send files</Button>`,
-    [
-      [
-        "name",
-        "string — any catalog name",
-        "Any catalog name. The animated browser lists geometry treatments; other names remain static.",
-      ],
-      [
-        "playing / loop",
-        "boolean",
-        "Play explicitly or repeat. Hover/focus also plays.",
-      ],
-      [
-        "size / strokeWidth / label",
-        "number / number / string",
-        "SVG appearance and accessibility.",
-      ],
-    ],
-    "AnimatedIcon, Button",
-  ),
+
   page(
     "popover",
     "Popover",

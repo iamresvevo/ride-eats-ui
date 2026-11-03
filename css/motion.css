@@ -1,4 +1,4 @@
-.re-animated-icon {
+.icon[data-motion="auto"] {
   display: block;
   overflow: visible;
   flex: none;
@@ -216,7 +216,7 @@
   color: var(--faint);
 }
 @media (prefers-reduced-motion: reduce) {
-  .re-animated-icon *,
+  .icon[data-motion="auto"] *,
   .re-popover,
   .re-pin-cells > span,
   .re-toggle-group button,

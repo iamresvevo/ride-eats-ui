@@ -27,16 +27,6 @@ export default function MotionDemos({ id }) {
   )
     return <GestureDemos key={id} id={id} />;
   switch (id) {
-    case "animated-icons":
-      return (
-        <CatalogBoundary>
-          <Suspense
-            fallback={<UI.PageLoading label="Loading animated icon library" />}
-          >
-            <IconBrowser animated />
-          </Suspense>
-        </CatalogBoundary>
-      );
     case "popover":
       return (
         <UI.Popover
@@ -87,17 +77,30 @@ export default function MotionDemos({ id }) {
       );
     case "toggle-group":
       return (
-        <UI.ToggleGroup
-          label="Text formatting"
-          multiple
-          value={format}
-          onValueChange={setFormat}
-          items={[
-            { value: "bold", label: "Bold", icon: "bold" },
-            { value: "italic", label: "Italic", icon: "italic" },
-            { value: "underline", label: "Underline", icon: "underline" },
-          ]}
-        />
+        <UI.Flex direction="column">
+          <UI.ToggleGroup
+            label="Text formatting"
+            multiple
+            value={format}
+            onValueChange={setFormat}
+            items={[
+              { value: "bold", label: "Bold", icon: "bold" },
+              { value: "italic", label: "Italic", icon: "italic" },
+              { value: "underline", label: "Underline", icon: "underline" },
+            ]}
+          />
+          <UI.ToggleGroup
+            variant="chips"
+            label="File filter"
+            value={value}
+            onValueChange={setValue}
+            items={[
+              { value: "details", label: "All files" },
+              { value: "shared", label: "Shared" },
+              { value: "archived", label: "Archived" },
+            ]}
+          />
+        </UI.Flex>
       );
     case "rating":
       return (

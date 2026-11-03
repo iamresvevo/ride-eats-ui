@@ -57,7 +57,7 @@ export function SpecializedDemo({ id }) {
     [day, setDay] = useState("2026-09-09");
   if (id === "image-compare")
     return (
-      <UI.Stack style={{ width: "100%", maxWidth: 640 }}>
+      <UI.Flex direction="column" style={{ width: "100%", maxWidth: 640 }}>
         <UI.ImageCompare
           before={{
             src: before,
@@ -89,11 +89,11 @@ export function SpecializedDemo({ id }) {
             {position.toFixed(1)}% original
           </output>
         </UI.Flex>
-      </UI.Stack>
+      </UI.Flex>
     );
   if (id === "tree-view")
     return (
-      <UI.Stack>
+      <UI.Flex direction="column">
         <UI.TreeView
           label="Season artwork"
           nodes={nodes}
@@ -103,11 +103,11 @@ export function SpecializedDemo({ id }) {
           onExpandedChange={setExpanded}
         />
         <output>Selected: {selected}</output>
-      </UI.Stack>
+      </UI.Flex>
     );
   if (id === "signature-pad")
     return (
-      <UI.Stack>
+      <UI.Flex direction="column">
         <UI.SignaturePad
           value={strokes}
           onValueChange={setStrokes}
@@ -118,7 +118,7 @@ export function SpecializedDemo({ id }) {
           {strokes.length} strokes · {strokes.reduce((n, s) => n + s.length, 0)}{" "}
           points
         </output>
-      </UI.Stack>
+      </UI.Flex>
     );
   if (id === "activity-heatmap") {
     const values = Array.from({ length: 112 }, (_, i) => ({
@@ -128,7 +128,7 @@ export function SpecializedDemo({ id }) {
       value: i % 9 === 0 ? 0 : (i * 17 + (i % 5)) % 22,
     }));
     return (
-      <UI.Stack>
+      <UI.Flex direction="column">
         <UI.ActivityHeatmap
           startDate="2026-08-03"
           weeks={16}
@@ -141,7 +141,7 @@ export function SpecializedDemo({ id }) {
         <output aria-live="polite">
           {day} · {values.find((x) => x.date === day)?.value || 0} publishes
         </output>
-      </UI.Stack>
+      </UI.Flex>
     );
   }
   return null;

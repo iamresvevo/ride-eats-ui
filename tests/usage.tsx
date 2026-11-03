@@ -68,7 +68,7 @@ import {
   CardBody,
   CardFooter,
   StatCard,
-  MetricGrid,
+  Grid,
   Tile,
   Icon,
   IconProvider,
@@ -83,7 +83,7 @@ export function PlatformExample() {
   const confirm = useConfirm();
   return (
     <>
-      <MetricGrid>
+      <Grid preset="metrics">
         <StatCard
           label="Payments"
           value="153"
@@ -91,7 +91,7 @@ export function PlatformExample() {
           trend="+12%"
         />
         <Tile title="Files" href="/files" />
-      </MetricGrid>
+      </Grid>
       <Card
         title="Members"
         description="Shared workspace"
@@ -139,7 +139,6 @@ export function PlatformExample() {
   );
 }
 import {
-  AnimatedIcon,
   Popover,
   CommandMenu,
   PinInput,
@@ -151,7 +150,7 @@ export function MotionUsage() {
     [format, setFormat] = useState<string[]>([]);
   return (
     <>
-      <AnimatedIcon name="bell" playing />
+      <Icon motion="auto" size={24} name="bell" playing />
       <Popover
         open={open}
         onOpenChange={setOpen}
@@ -214,7 +213,7 @@ const platform = (
       value="a"
       onValueChange={() => {}}
     />
-    <UI.MultiSelect options={[]} value={["a"]} onValueChange={() => {}} />
+    <UI.Combobox multiple options={[]} value={["a"]} onValueChange={() => {}} />
     <UI.DateRangePicker
       value={{ start: "", end: "" }}
       onValueChange={() => {}}
@@ -256,3 +255,38 @@ const platform = (
     />
   </>
 );
+
+export function ConsolidatedUsage() {
+  const [people, setPeople] = useState<string[]>([]),
+    [choice, setChoice] = useState("a"),
+    [keys, setKeys] = useState<string[]>(["Control", "K"]),
+    [view, setView] = useState<"split" | "unified">("split");
+  return (
+    <UI.Flex direction="column">
+      <UI.Grid preset="metrics">
+        <UI.StatCard label="Total" value={4} />
+      </UI.Grid>
+      <UI.Combobox
+        multiple
+        options={[{ value: "a", label: "A" }]}
+        value={people}
+        onValueChange={setPeople}
+      />
+      <UI.ToggleGroup
+        variant="chips"
+        items={[{ value: "a", label: "A" }]}
+        value={choice}
+        onValueChange={setChoice}
+      />
+      <UI.Timeline variant="feed" items={[]} />
+      <UI.Icon motion="auto" size={24} name="bell" playing loop />
+      <UI.ShortcutRecorder value={keys} onValueChange={setKeys} />
+      <UI.TextDiffViewer
+        before="old"
+        after="new"
+        view={view}
+        onViewChange={setView}
+      />
+    </UI.Flex>
+  );
+}

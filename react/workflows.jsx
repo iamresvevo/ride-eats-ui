@@ -321,41 +321,6 @@ export function FileManager({
     </div>
   );
 }
-export function ActivityFeed({
-  items,
-  label = "Recent activity",
-  emptyText = "No activity yet.",
-  className = "",
-  style,
-}) {
-  return (
-    <section
-      className={`re-activity-feed ${className}`}
-      style={style}
-      aria-label={label}
-    >
-      <h2>{label}</h2>
-      {items.length ? (
-        <ol>
-          {items.map((item) => (
-            <li key={item.id}>
-              <span className="re-activity-icon">
-                <Icon name={item.icon || "activity"} />
-              </span>
-              <div>
-                <strong>{item.title}</strong>
-                {item.description && <p>{item.description}</p>}
-              </div>
-              <time dateTime={item.dateTime}>{item.time}</time>
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <p className="re-platform-empty">{emptyText}</p>
-      )}
-    </section>
-  );
-}
 export function SupportInbox({
   threads,
   value,

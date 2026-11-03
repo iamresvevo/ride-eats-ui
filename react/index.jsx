@@ -1,9 +1,9 @@
+import { accentText } from "./accent.js";
 import { IconProvider } from "./icons/registry.jsx";
 import { CardHeader, CardFooter } from "./collection.jsx";
 import { ToastProvider } from "./Feedback.jsx";
 export {
   ToastProvider,
-  FeedbackProvider,
   useToast,
   useConfirm,
   useFeedback,
@@ -251,24 +251,6 @@ export function Tabs({
     </div>
   );
 }
-export function Chips({ items, value, onValueChange, className = "", style }) {
-  return (
-    <div className={`chips ${className}`} style={style}>
-      {items.map((item) => (
-        <button
-          type="button"
-          key={item.value}
-          className={`chip ${value === item.value ? "active" : ""}`}
-          aria-pressed={value === item.value}
-          onClick={() => onValueChange(item.value)}
-        >
-          {item.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 export function SearchSelect({
   label = "Search",
   load,
@@ -641,7 +623,7 @@ export function UIProvider({
     const root = document.documentElement.style;
     const tokens = {
       ...(accent ? { "--brand": accent } : {}),
-      "--on-brand": accentForeground || "#ffffff",
+      "--on-brand": accentForeground || accentText(accent) || "#ffffff",
     };
     const previous = Object.fromEntries(
       Object.keys(tokens).map((key) => [
@@ -688,3 +670,5 @@ export * from "./workflows.jsx";
 export { StickyBar } from "./StickyBar.jsx";
 
 export * from "./specialized.jsx";
+
+export { ShortcutRecorder, TextDiffViewer } from "./review.jsx";

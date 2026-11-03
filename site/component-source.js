@@ -17,7 +17,6 @@ const forms = new Set([
   "textarea",
   "form",
   "combobox",
-  "multi-select",
   "date-range-picker",
   "time-picker",
   "upload-progress",
@@ -26,10 +25,11 @@ const workflows = new Set([
   "settings-panel",
   "team-directory",
   "file-manager",
-  "activity-feed",
   "support-inbox",
 ]);
 export function sourceForPage(id) {
+  if (["shortcut-recorder", "text-diff-viewer"].includes(id))
+    return "react/review.jsx";
   if (
     [
       "image-compare",
@@ -43,7 +43,7 @@ export function sourceForPage(id) {
   if (id === "command-menu") return "react/CommandMenu.jsx";
   if (id === "sticky-bar") return "react/StickyBar.jsx";
   if (id === "data-grid") return "react/DataGrid.jsx";
-  if (id === "icons" || id === "animated-icons") return "react/send/Icon.jsx";
+  if (id === "icons") return "react/send/Icon.jsx";
   if (id === "stacked-dialogs" || id === "toast") return "react/Feedback.jsx";
   if (forms.has(id)) return "react/forms.jsx";
   if (workflows.has(id)) return "react/workflows.jsx";

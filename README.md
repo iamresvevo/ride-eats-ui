@@ -1,6 +1,6 @@
 # Ride Eats UI
 
-Version 0.9 removes Steps and Separator; 0.9.14 adds bounded ScrollArea panels with persistent control slots. See the [migration notes](docs/migrations-v0.9.md) and [Send / Tools design audit](docs/design-audit.md).
+Version 0.10 consolidates duplicate APIs and preserves their behavior in canonical components. See the [0.10 migration guide](docs/migrations-v0.10.md) and [component audit](docs/component-audit.md).
 
 **A complete React UI foundation for Ride Eats tools and internal platforms.**
 
@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.18
+npm install github:iamresvevo/ride-eats-ui#v0.10.0
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -49,7 +49,7 @@ import { UIProvider } from "@ride-eats/ui";
 
 ## Responsive layouts
 
-Use `Grid layout="sidebar" sidebarWidth={280}`, `Grid layout="aside" sidebarWidth={360}`, or `Grid layout="split" ratio={[2,3]}` to preserve compact fixed-side or proportional screen layouts. Compose vertical content with `Stack gap={12}`, wrapping rows with `Flex`, or varying-height card collections with `Masonry min={240} columns={3}`. Selectable lists can use `Tile variant="row"`; existing-image uploads can use `FileDropzone variant="compact" preview={url}`. See the [layout preview](https://iamresvevo.github.io/ride-eats-ui/#layout).
+Use `Grid layout="sidebar" sidebarWidth={280}`, `Grid layout="aside" sidebarWidth={360}`, or `Grid layout="split" ratio={[2,3]}` to preserve compact fixed-side or proportional screen layouts. Compose vertical content with `Flex direction="column" gap={12}`, wrapping rows with `Flex`, or varying-height card collections with `Masonry min={240} columns={3}`. Selectable lists can use `Tile variant="row"`; existing-image uploads can use `FileDropzone variant="compact" preview={url}`. See the [layout preview](https://iamresvevo.github.io/ride-eats-ui/#layout).
 
 ## Header
 
@@ -197,7 +197,7 @@ Override CSS variables after importing the stylesheet:
 
 | Area               | Components                                                                                   |
 | ------------------ | -------------------------------------------------------------------------------------------- |
-| Navigation         | `Header`, `AccountMenu`, `Menu`, `Dropdown`, `Tabs`, `Segmented`, `Chips`, `Pagination`      |
+| Navigation         | `Header`, `AccountMenu`, `Menu`, `Dropdown`, `Tabs`, `Segmented`, `ToggleGroup`, `Pagination`      |
 | Actions            | `Button`, `Icon`                                                                             |
 | Inputs             | `Field`, `Select`, `SearchSelect`, `Switch`, `DateTimePicker`                                |
 | Feedback           | `Dialog`, `Skeleton`, `Bone`, `BoneText`, `EmptyState`, `ToastProvider`, `useToast` |
@@ -234,11 +234,11 @@ The older vanilla DOM helpers remain available from `@ride-eats/ui/vanilla`; the
   <Header brand={brand} items={navigation} account={account} />
   <main className="site-page stack">
     <PageHeader title="Payments" actions={<Button>Check connection</Button>} />
-    <MetricGrid>
+    <Grid preset="metrics">
       <StatCard label="Payments" value="153" hint="1 open" />
       <StatCard label="Paid" value="5" tone="good" />
       <StatCard label="Passed" value="44 / 48" progress={92} />
-    </MetricGrid>
+    </Grid>
     <Card title="Recent payments" description="Shared across your team.">
       <DataTable columns={columns} rows={payments} />
     </Card>
@@ -246,7 +246,7 @@ The older vanilla DOM helpers remain available from `@ride-eats/ui/vanilla`; the
 </UIProvider>
 ```
 
-The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioGroup, Slider, Progress, PasswordInput, NumberInput, Breadcrumbs, AvatarGroup, CopyButton, FileDropzone, Timeline, Drawer, CardHeader, CardBody, CardFooter, MetricGrid, StatCard, Tile, PageHeader, Toolbar**, and async **useConfirm** / **useFeedback**.
+The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioGroup, Slider, Progress, PasswordInput, NumberInput, Breadcrumbs, AvatarGroup, CopyButton, FileDropzone, Timeline, Drawer, CardHeader, CardBody, CardFooter, Grid, StatCard, Tile, PageHeader, Toolbar**, and async **useConfirm** / **useFeedback**.
 
 ## Built-in icons
 
@@ -254,7 +254,7 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 
 ```jsx
 <Icon name="headset" size={24} strokeWidth={1.7} />
-<AnimatedIcon name="loader-circle" playing loop />
+<Icon motion="auto" size={24} name="loader-circle" playing loop />
 <Icon name="check" motion="draw" />
 <IconProvider icons={{ brand: <path d="M4 12 12 4l8 8-8 8Z" /> }}>
   <Icon name="brand" size={32} />
@@ -268,11 +268,11 @@ The expanded collection includes **DataTable, Accordion, Alert, Checkbox, RadioG
 [Animated icons](https://iamresvevo.github.io/ride-eats-ui/#animated-icons) lists 87 supported names with explicit SVG choreography, including compatibility aliases. Other catalog icons remain static until their choreography is ready. Playback uses a 2.8-second cycle with a resting pause and honors reduced motion. See [coverage](docs/icon-motion-coverage.json) and [source usage](docs/icon-usage-audit.json).
 
 ```jsx
-<AnimatedIcon name="bell" size={28} />
-<AnimatedIcon name="heart" playing loop />
-<AnimatedIcon name="headset" />
-<AnimatedIcon name="database" playing loop />
-<AnimatedIcon name="check" playing />
+<Icon motion="auto" size={24} name="bell" size={28} />
+<Icon motion="auto" size={24} name="heart" playing loop />
+<Icon motion="auto" size={24} name="headset" />
+<Icon motion="auto" size={24} name="database" playing loop />
+<Icon motion="auto" size={24} name="check" playing />
 ```
 
 The library also includes Popover, CommandMenu, PinInput, ToggleGroup, Rating. Component references, workflows and composition recipes are separated in the browser. Its sidebar search stays pinned, and icon size uses a slider while stroke/motion use segmented selectors.
@@ -303,7 +303,7 @@ Use gestures where they make the task easier. Static content remains stable. Red
 
 [Platform implementation guide](docs/platform-system.md) · [Complete starter](examples/platform/README.md) · [Visual regression checks](tests/visual/README.md)
 
-The browser separates reusable primitives from workflows and recipes. New components cover forms (Form, Textarea, Combobox, MultiSelect, DateRangePicker, TimePicker, UploadProgress), advanced DataGrid tables, AppShell, WorkspaceSwitcher, NotificationCenter, BottomSheet, ContextMenu and reusable SettingsPanel, TeamDirectory, FileManager, ActivityFeed and SupportInbox workflows.
+The browser separates reusable primitives from workflows and recipes. New components cover forms (Form, Textarea, Combobox single/multiple modes, DateRangePicker, TimePicker, UploadProgress), advanced DataGrid tables, AppShell, WorkspaceSwitcher, NotificationCenter, BottomSheet, ContextMenu and reusable SettingsPanel, TeamDirectory, FileManager, Timeline and SupportInbox workflows.
 
 Defaults are compact: 36px controls, 40px DataGrid rows and 16px panel padding. Use `data-density="comfortable"` for larger controls/panels, and `rowHeight={52}` for roomier DataGrid rows. Selected pages include a compact implementation workbench with prop controls and complete copyable React examples. Examples use local state; application endpoints, authentication and persistence belong in caller callbacks.
 
@@ -339,7 +339,7 @@ Flat navigation: `Tabs variant="flat" width="full"` keeps controlled panel/tab s
 
 `SplitPane variant="plain"` composes existing Cards without duplicate backgrounds/padding. `collapseAt={800}` stacks the panels and hides the resize handle below the supplied container width. Desktop handles support pointer dragging and arrow/Home/End keys. The Seasons page uses a wider 36% leading panel, adjustable between 30% and 48%.
 
-Toolbar defaults to `align="end"` so labelled fields, hidden-label search inputs and buttons share a control baseline; `start` and `center` remain available. For a table panel, use `<Card padding="none" footer={pagination}><DataTable variant="inset" ... /></Card>` to keep one surface. DataTable column `wrap: true` with `width` allows long identifiers and secondary text to wrap instead of pushing actions off screen. Badges retain intrinsic width inside Stack.
+Toolbar defaults to `align="end"` so labelled fields, hidden-label search inputs and buttons share a control baseline; `start` and `center` remain available. For a table panel, use `<Card padding="none" footer={pagination}><DataTable variant="inset" ... /></Card>` to keep one surface. DataTable column `wrap: true` with `width` allows long identifiers and secondary text to wrap instead of pushing actions off screen. Badges retain intrinsic width inside Flex.
 
 DataTable defaults to `variant="auto"`: standalone outside Cards, inset inside them. Choose `standalone` to explicitly retain the table border. `cellAlign="top"` aligns multi-line row content at its first line; the default is `middle`.
 
@@ -352,3 +352,7 @@ Flat Tabs show the active item with a sliding underline and stronger text. Use `
 Header supports `fade={true}` (default) and `fadeSize={72}` for the neutral gradient beneath sticky controls. The fade now tracks the nearest native scrolling ancestor as well as document scrolling and the existing page layout. It uses no backdrop blur. Match the header’s containing surface with the shared `--bg` token.
 
 ImageCompare uses pointer capture and a fixed drag-start rectangle for direct, subpixel reveal. It keeps a native range for assistive technology, Arrow keys (1%), Shift+Arrow (10%), and Home/End. The example reserves percentage-output width so changing digits cannot resize the comparison surface.
+
+## Review tools
+
+[Shortcut Recorder](https://iamresvevo.github.io/ride-eats-ui/#shortcut-recorder) captures and reviews a binding with conflict checks. [Text Diff Viewer](https://iamresvevo.github.io/ride-eats-ui/#text-diff-viewer) performs line comparison with folding, split/unified views and synchronized scrolling. See [0.10 migration](docs/migrations-v0.10.md) for behavior and limits.

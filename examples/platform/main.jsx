@@ -11,7 +11,7 @@ import {
   SettingsPanel,
   Field,
   Button,
-  ActivityFeed,
+  Timeline,
   SupportInbox,
   useToast,
 } from "@ride-eats/ui";
@@ -182,7 +182,7 @@ function Application() {
             }
           />
         )}
-        {view === "activity" && <ActivityFeed items={activity} />}
+        {view === "activity" && <Timeline variant="feed" items={activity} />}
         {view === "support" && (
           <SupportInbox
             threads={threads}

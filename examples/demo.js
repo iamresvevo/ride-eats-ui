@@ -1,4 +1,4 @@
-import {initUI,applyTheme,setTheme,el,siteHeader,tabs,chips,menu,selectControl,searchSelect,openModal,confirmModal,toast,badge,stat,pager,empty,busy} from '../src/index.js';
+import {initUI, applyTheme, setTheme, el, siteHeader, tabs, chips, menu, selectControl, searchSelect, openModal, confirmModal, toast, badge, stat, pager, empty, busy} from '../src/index.js';
 initUI();applyTheme();
 const logo='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="10" fill="#1fa476"/><path d="M9 23V9h8a5 5 0 0 1 0 10h-8m8 0 6 4" fill="none" stroke="white" stroke-width="3"/></svg>');
 const header=siteHeader({brand:{name:'UI Kit',href:'#',logoLight:logo,logoDark:logo},items:[{id:'components',label:'Components',icon:'home',href:'#components'},{id:'docs',label:'Docs',icon:'files',href:'../docs/components.md'}],account:{name:'Demo Developer',email:'demo@example.com',verified:true},menuItems:()=>[{type:'sub',id:'theme',label:'Appearance',items:['system','light','dark'].map(value=>({label:value,onSelect:()=>setTheme(value)}))}],onSignOut:async()=>toast('Demo sign out')});

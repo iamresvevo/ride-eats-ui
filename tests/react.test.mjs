@@ -312,8 +312,9 @@ test("animated icons contain native SVG motion and no animated view wrapper", as
       React.createElement(
         React.Fragment,
         null,
-        UI.animatedIconNames.map((name) =>
-          React.createElement(UI.AnimatedIcon, {
+        UI.iconNames.map((name) =>
+          React.createElement(UI.Icon, {
+            motion: "auto",
             key: name,
             name,
             size: 28,
@@ -330,8 +331,8 @@ test("animated icons contain native SVG motion and no animated view wrapper", as
     );
   });
   assert.ok(html.length > 0);
-  for (const name of UI.animatedIconNames) {
-    const html = render("AnimatedIcon", { name, playing: true });
+  for (const name of UI.iconNames) {
+    const html = render("Icon", { motion: "auto", name, playing: true });
     assert.match(html, /<svg/);
     const { geometryMotionNames } =
       await import("../react/icons/motion-names.js");
@@ -349,9 +350,12 @@ test("animated icons contain native SVG motion and no animated view wrapper", as
       );
     }
   }
-  assert.match(render("AnimatedIcon", { name: "upload" }), /attributeName="d"/);
   assert.match(
-    render("AnimatedIcon", { name: "download" }),
+    render("Icon", { motion: "auto", name: "upload" }),
+    /attributeName="d"/,
+  );
+  assert.match(
+    render("Icon", { motion: "auto", name: "download" }),
     /attributeName="d"/,
   );
   assert.match(
@@ -376,6 +380,7 @@ test("new platform controls expose native interaction semantics", () => {
       "ToggleGroup",
       {
         items: [{ value: "a", label: "Bold" }],
+        multiple: true,
         value: ["a"],
         multiple: true,
         onValueChange: noop,
@@ -414,7 +419,7 @@ test("every catalog icon has generated per-shape native SVG animation", async ()
   assert.doesNotMatch(source, /values="0;0;.55;0;0"/);
   assert.doesNotMatch(source, /strokeOpacity:\s*0?\.24/);
   assert.doesNotMatch(source, /<svg|<div|animation:/);
-  const names = new Set(UI.animatedIconNames);
+  const names = new Set(UI.iconNames);
   for (const name of UI.iconNames) assert.ok(names.has(name), name);
   let count = 0;
   const geometryNames = new Set();
@@ -549,9 +554,10 @@ test("platform controls render compact semantics, data states and typed composit
       },
     ],
     [
-      "MultiSelect",
+      "Combobox",
       {
         options: [{ value: "a", label: "Alex" }],
+        multiple: true,
         value: ["a"],
         onValueChange: noop,
       },
@@ -613,7 +619,7 @@ test("platform controls render compact semantics, data states and typed composit
     ],
     ["TeamDirectory", { members: [] }],
     ["FileManager", { files: [] }],
-    ["ActivityFeed", { items: [] }],
+    ["Timeline", { variant: "feed", items: [] }],
     ["SupportInbox", { threads: [], value: "", onValueChange: noop }],
   ])
     assert.ok(render(name, props).length > 0 || name === "BottomSheet", name);
@@ -622,8 +628,10 @@ test("platform controls render compact semantics, data states and typed composit
     /role="combobox"/,
   );
   assert.match(
-    render("MultiSelect", {
+    render("Combobox", {
+      multiple: true,
       options: [{ value: "a", label: "Alex" }],
+      multiple: true,
       value: ["a"],
       onValueChange: noop,
     }),
@@ -754,10 +762,11 @@ test("implementation workbench emits complete parsable controlled React examples
       },
     ],
     [
-      "MultiSelect",
+      "Combobox",
       { label: "People" },
       {
         options: [{ value: "a", label: "Alex" }],
+        multiple: true,
         value: ["a"],
         onValueChange() {},
       },
@@ -985,7 +994,7 @@ test("audited literal core icons render explicit SVG motion", async () => {
   for (const name of names) {
     if (name === "brand" || name === "${selected}") continue;
     assert.match(
-      render("AnimatedIcon", { name, playing: true }),
+      render("Icon", { motion: "auto", name, playing: true }),
       /<animate /,
       name,
     );
@@ -1025,7 +1034,10 @@ test("page layouts expose fixed sides, proportional tracks and compact vertical 
   });
   assert.match(split, /--layout-leading:2fr/);
   assert.match(split, /--layout-trailing:3fr/);
-  assert.match(render("Stack", { gap: 4, children: "Rows" }), /gap:4px/);
+  assert.match(
+    render("Flex", { direction: "column", gap: 4, children: "Rows" }),
+    /gap:4px/,
+  );
   const tabs = render("Tabs", {
     items: [{ value: "one", label: "One" }],
     value: "one",
@@ -1243,4 +1255,154 @@ test("heatmap dates align to Monday across a year boundary and retain textual va
   assert.equal((html.match(/type="button"/g) || []).length, 7);
   const invalid = render("ActivityHeatmap", { startDate: "2026-02-30" });
   assert.match(invalid, /role="alert"/);
+});
+
+test("consolidated APIs retain defaults without exporting duplicate component names", () => {
+  for (const name of [
+    "MetricGrid",
+    "Stack",
+    "AnimatedIcon",
+    "animatedIconNames",
+    "MultiSelect",
+    "ActivityFeed",
+    "FeedbackProvider",
+    "Chips",
+  ])
+    assert.equal(name in UI, false, name);
+  assert.match(
+    render("Grid", { preset: "metrics", children: "Metrics" }),
+    /--layout-min:170px/,
+  );
+  const column = render("Flex", { direction: "column", children: "Rows" });
+  assert.match(column, /align-items:stretch/);
+  assert.match(column, /flex-wrap:nowrap/);
+  const feed = render("Timeline", {
+    variant: "feed",
+    items: [],
+    emptyText: "Nothing recorded",
+  });
+  assert.match(feed, /Recent activity/);
+  assert.match(feed, /Nothing recorded/);
+});
+test("canonical toggle group preserves required chips, optional toggles and multiple selection", () => {
+  let result;
+  const make = (props) =>
+    UI.ToggleGroup({
+      items: [
+        { value: "a", label: "A" },
+        { value: "b", label: "B" },
+      ],
+      value: "a",
+      onValueChange: (value) => (result = value),
+      ...props,
+    });
+  make({ variant: "chips" }).props.children[0].props.onClick();
+  assert.equal(result, "a");
+  make({}).props.children[0].props.onClick();
+  assert.equal(result, null);
+  make({ multiple: true, value: ["a"] }).props.children[1].props.onClick();
+  assert.deepEqual(result, ["a", "b"]);
+  make({ multiple: true, value: ["a", "b"] }).props.children[0].props.onClick();
+  assert.deepEqual(result, ["b"]);
+});
+test("shortcut normalization and conflict checks use semantic modifier order", async () => {
+  const { normalizeShortcut, shortcutFromEvent, shortcutIssue } =
+    await import("../react/review-model.js");
+  assert.deepEqual(normalizeShortcut(["K", "Shift", "Ctrl", "Control"]), [
+    "Control",
+    "Shift",
+    "K",
+  ]);
+  assert.deepEqual(
+    shortcutFromEvent({ ctrlKey: true, shiftKey: true, key: "k" }),
+    ["Control", "Shift", "K"],
+  );
+  assert.equal(
+    shortcutIssue(["K", "Ctrl"], [{ keys: ["Control", "K"], label: "Search" }])
+      .kind,
+    "conflict",
+  );
+  assert.equal(shortcutIssue(["Meta", "W"]).kind, "reserved");
+  assert.equal(shortcutIssue(["Control", "Alt", "K"]), null);
+});
+test("line diff retains both revisions across replacements, empty text and line endings", async () => {
+  const { lineDiff, foldDiff, splitDiff } =
+    await import("../react/review-model.js");
+  const samples = [
+    ["", ""],
+    ["", "one\ntwo"],
+    ["one\ntwo", ""],
+    ["a\nb\nc", "a\nx\nc"],
+    ["a\r\nb\r\n", "a\nb\n"],
+    ["a\na\nb", "a\nb\na"],
+    ["x\n", "x"],
+  ];
+  for (let i = 0; i < 80; i++) {
+    const old = Array.from({ length: i % 13 }, (_, j) =>
+        String((j * 7 + i) % 5),
+      ).join("\n"),
+      next = Array.from({ length: (i * 3) % 17 }, (_, j) =>
+        String((j * 11 + i) % 7),
+      ).join("\n");
+    samples.push([old, next]);
+  }
+  for (const [old, next] of samples) {
+    const diff = lineDiff(old, next);
+    assert.equal(
+      diff.rows
+        .filter((x) => x.type !== "add")
+        .map((x) => x.text)
+        .join("\n"),
+      old.replace(/\r\n?/g, "\n"),
+    );
+    assert.equal(
+      diff.rows
+        .filter((x) => x.type !== "remove")
+        .map((x) => x.text)
+        .join("\n"),
+      next.replace(/\r\n?/g, "\n"),
+    );
+  }
+  const diff = lineDiff("a\nb\nc", "a\nx\nc");
+  assert.equal(diff.added, 1);
+  assert.equal(diff.removed, 1);
+  const coarse = lineDiff("x\ny", "a\nb", { cellBudget: 1 });
+  assert.equal(coarse.coarse, true);
+  assert.equal(coarse.rows.length, 4);
+  const rows = lineDiff(
+    Array.from({ length: 30 }, (_, i) => String(i)).join("\n"),
+    Array.from({ length: 30 }, (_, i) =>
+      i === 15 ? "changed" : String(i),
+    ).join("\n"),
+  ).rows;
+  const folded = foldDiff(rows, 2);
+  assert.ok(folded.some((x) => x.type === "fold"));
+  assert.equal(
+    foldDiff(
+      rows,
+      2,
+      folded.filter((x) => x.type === "fold").map((x) => x.id),
+    ).length,
+    rows.length,
+  );
+  const pairs = splitDiff(diff.rows);
+  assert.equal(pairs.length, 3);
+  assert.equal(pairs[1].left.text, "b");
+  assert.equal(pairs[1].right.text, "x");
+});
+test("diff rendering escapes code and exposes split, unified and unchanged context controls", () => {
+  const props = {
+    before: "<script>old</script>\nkeep",
+    after: "<script>new</script>\nkeep",
+    collapseUnchanged: false,
+  };
+  const split = render("TextDiffViewer", props);
+  assert.match(split, /&lt;script&gt;new&lt;\/script&gt;/);
+  assert.doesNotMatch(split, /<script>/);
+  assert.match(split, /Previous text/);
+  assert.match(split, /Revision text/);
+  const unified = render("TextDiffViewer", { ...props, view: "unified" });
+  assert.match(unified, /Unified changes/);
+  assert.match(unified, /1 added/);
+  assert.match(unified, /1 removed/);
 });

@@ -24,7 +24,7 @@ const {
   Card,
   Header,
   Tabs,
-  Chips,
+  ToggleGroup,
   Dropdown,
   Select,
   SearchSelect,
@@ -411,19 +411,7 @@ const components = [
       ["action", "ReactNode", "Optional next action."],
     ],
   },
-  {
-    id: "chips",
-    name: "Chips",
-    group: "Navigation",
-    description: "Quick filters that keep their place.",
-    detail:
-      "Controlled filter buttons with an accessible pressed state. Use them for filtering a list, rather than switching content panels.",
-    code: `<Chips value={filter} onValueChange={setFilter}\n  items={[{ value: 'all', label: 'All files' }, { value: 'mine', label: 'Mine' }]} />`,
-    props: [
-      ["items", "{ value, label }[]", "Filter options."],
-      ["value / onValueChange", "string / callback", "Controlled selection."],
-    ],
-  },
+
   {
     id: "card",
     name: "Card",
@@ -788,20 +776,6 @@ function Demo({ id }) {
           }
         />
       );
-    case "chips":
-      return (
-        <Chips
-          value={tab}
-          onValueChange={setTab}
-          items={[
-            { value: "all", label: "All files" },
-            { value: "mine", label: "Mine" },
-            { value: "team", label: "Team" },
-          ]}
-        />
-      );
-    case "card":
-      return <CardsDemo />;
     default:
       return null;
   }
@@ -821,6 +795,12 @@ function Code({ children }) {
 }
 const canonicalPage = (id) =>
   ({
+    "multi-select": "combobox",
+    "animated-icons": "icons",
+    "activity-feed": "timeline",
+    chips: "toggle-group",
+    "metric-grid": "layout",
+    stack: "layout",
     autocomplete: "combobox",
     collapsible: "accordion",
     steps: "overview",
@@ -936,9 +916,9 @@ function App({ accent, setAccent }) {
             onChange={(e) => setQuery(e.target.value)}
           />
         </label>
-        <div className="sidebar-scroll">
+        <div className="sidebar-scroll re-scroll-area-body">
           <div className="sidebar-group">
-            <span>Get started</span>
+            <h2>Get started</h2>
             {[
               ["overview", "Introduction"],
               ["installation", "Installation"],
@@ -947,6 +927,7 @@ function App({ accent, setAccent }) {
               <button
                 key={id}
                 onClick={() => navigate(id)}
+                aria-current={current === id ? "page" : undefined}
                 className={current === id ? "selected" : ""}
               >
                 {name}
@@ -964,26 +945,46 @@ function App({ accent, setAccent }) {
             "Layout",
             "Workflows",
             "Recipes",
-          ].map((group) => (
-            <div className="sidebar-group" key={group}>
-              <span>{group}</span>
-              {components
-                .filter(
-                  (c) =>
-                    c.group === group &&
-                    c.name.toLowerCase().includes(query.toLowerCase()),
-                )
-                .map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => navigate(c.id)}
-                    className={current === c.id ? "selected" : ""}
-                  >
-                    {c.name}
-                  </button>
-                ))}
-            </div>
-          ))}
+          ]
+            .filter((group) =>
+              components.some(
+                (c) =>
+                  c.group === group &&
+                  c.name.toLowerCase().includes(query.toLowerCase()),
+              ),
+            )
+            .map((group) => (
+              <div className="sidebar-group" key={group}>
+                <h2>
+                  {group}
+                  <small>
+                    {
+                      components.filter(
+                        (c) =>
+                          c.group === group &&
+                          c.name.toLowerCase().includes(query.toLowerCase()),
+                      ).length
+                    }
+                  </small>
+                </h2>
+                {components
+                  .filter(
+                    (c) =>
+                      c.group === group &&
+                      c.name.toLowerCase().includes(query.toLowerCase()),
+                  )
+                  .map((c) => (
+                    <button
+                      key={c.id}
+                      onClick={() => navigate(c.id)}
+                      aria-current={current === c.id ? "page" : undefined}
+                      className={current === c.id ? "selected" : ""}
+                    >
+                      {c.name}
+                    </button>
+                  ))}
+              </div>
+            ))}
           <a
             className="sidebar-footer"
             href={`${repo}/blob/main/AGENTS.md`}
@@ -1131,7 +1132,7 @@ function App({ accent, setAccent }) {
             <h2 className="doc-heading">1. Install a reviewed version</h2>
             <Code>{`npm install github:iamresvevo/ride-eats-ui#v${packageInfo.version}`}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
-            <Code>{`import { UIProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App({accent,setAccent}) {\n  return (\n    <UIProvider defaultTheme="system">\n      <Button variant="primary">Hello, Studio</Button>\n    </UIProvider>\n  );\n}`}</Code>
+            <Code>{`import {UIProvider, Button} from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App({accent,setAccent}) {\n  return (\n    <UIProvider defaultTheme="system">\n      <Button variant="primary">Hello, Studio</Button>\n    </UIProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>
             <p className="component-description">
               Pass your brand, routes and account into Header. Keep API calls

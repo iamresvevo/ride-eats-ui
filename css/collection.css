@@ -926,7 +926,7 @@
 .re-flex > * {
   min-width: 0;
 }
-.re-stack {
+.re-flex-column {
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -967,15 +967,6 @@
   .re-layout-grid-split {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-.re-metric-grid {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(100%, var(--metric-min, 170px)), 1fr)
-  );
-  gap: 12px;
-  width: 100%;
 }
 .re-stat-card {
   position: relative;
@@ -1297,8 +1288,8 @@
   .re-stat-main > strong {
     font-size: 24px;
   }
-  .re-metric-grid {
-    gap: 10px;
+  .re-grid-metrics {
+    --metric-gap: 10px;
   }
   .re-tile {
     padding: var(--tile-padding, 18px);
@@ -1474,16 +1465,16 @@ button.re-avatar-more:hover {
   min-width: 0;
   min-height: 0;
 }
-.re-workbench > .re-stack {
+.re-workbench > .re-flex-column {
   overflow: hidden;
 }
-.re-workbench > .re-stack > :first-child {
+.re-workbench > .re-flex-column > :first-child {
   overflow: hidden;
   border-radius: var(--r-lg);
   flex: 1 1 auto;
   min-height: 0;
 }
-.re-workbench > .re-stack > :not(:first-child) {
+.re-workbench > .re-flex-column > :not(:first-child) {
   flex: none;
 }
 @media (max-width: 1000px) {
@@ -1494,7 +1485,7 @@ button.re-avatar-more:hover {
   .re-workbench > .re-scroll-area {
     max-height: 55dvh;
   }
-  .re-workbench > .re-stack {
+  .re-workbench > .re-flex-column {
     height: 60dvh;
     min-height: 300px;
   }
@@ -1599,6 +1590,25 @@ button.re-avatar-more:hover {
 .re-card-padding-none > .re-card-footer {
   padding: 12px 16px;
 }
-.re-stack > .badge {
+.re-flex-column > .badge {
   align-self: flex-start;
+}
+
+.re-scroll-area-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.re-scroll-area-body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.re-scroll-area-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.re-scroll-area-body::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: var(--r-pill);
+}
+.re-scroll-area-body::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
 }

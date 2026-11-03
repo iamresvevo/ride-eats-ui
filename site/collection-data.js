@@ -18,6 +18,64 @@ const entry = (
 });
 export const collectionPages = [
   entry(
+    "shortcut-recorder",
+    "Shortcut Recorder",
+    "Inputs",
+    "Capture a shortcut, review it, check conflicts, then save. Escape cancels without changing the saved binding.",
+    `const [keys,setKeys] = useState(["Control","Shift","K"]);
+<ShortcutRecorder value={keys} onValueChange={setKeys} label="Command search" bindings={[{keys:["Alt","M"],label:"Messages"}]} />`,
+    [
+      [
+        "value / onValueChange",
+        "string[] / callback",
+        "Controlled modifier/key names. Only Save or Clear changes the value.",
+      ],
+      [
+        "bindings / allowConflicts",
+        "ShortcutBinding[] / boolean",
+        "Normalized matching with conflicts blocked by default.",
+      ],
+      [
+        "disabled / label",
+        "boolean / string",
+        "Availability and accessible name.",
+      ],
+    ],
+    "ShortcutRecorder",
+  ),
+  entry(
+    "text-diff-viewer",
+    "Text Diff Viewer",
+    "Display",
+    "Compare actual line edits in split or unified views, reveal folded context, and synchronize the scrollable panes.",
+    `const [view,setView] = useState("split");
+<TextDiffViewer before={original} after={revision} view={view} onViewChange={setView} contextLines={3} />`,
+    [
+      [
+        "before / after",
+        "string",
+        "Plain text, safely escaped. CRLF and CR use LF for line matching.",
+      ],
+      [
+        "view / onViewChange",
+        "split | unified / callback",
+        "Controlled layout. Optional callback enables layout buttons.",
+      ],
+      [
+        "contextLines / collapseUnchanged",
+        "number / boolean",
+        "Fold long equal runs; buttons reveal all hidden lines.",
+      ],
+      [
+        "syncScroll / maxHeight",
+        "boolean / number | string",
+        "Paired vertical/horizontal scrolling and a bounded viewport.",
+      ],
+    ],
+    "TextDiffViewer",
+  ),
+
+  entry(
     "image-compare",
     "Image Compare",
     "Display",
@@ -167,7 +225,7 @@ const [expanded,setExpanded] = useState(["artwork"]);
     "Bounded editor panels with independent native scrolling. Panel headers and actions stay visible; narrow screens stack the panels.",
     `<Workbench leadingWidth={240} trailingWidth={260}>
  <ScrollArea label="Catalogue" header={<CardHeader title="Objects" />}><p>Long object catalogue</p></ScrollArea>
- <Stack><Card title="Preview">Your canvas</Card><Button>Preview</Button></Stack>
+ <Flex direction="column"><Card title="Preview">Your canvas</Card><Button>Preview</Button></Flex>
  <ScrollArea label="Options" header={<CardHeader title="Options" />}><p>Long options form</p></ScrollArea>
 </Workbench>`,
     [
@@ -192,7 +250,7 @@ const [expanded,setExpanded] = useState(["artwork"]);
         "Accessible name for the keyboard-scrollable content.",
       ],
     ],
-    "Workbench, ScrollArea, CardHeader, Card, Stack, Button",
+    "Workbench, ScrollArea, CardHeader, Card, Flex, Button",
   ),
 
   entry(
@@ -227,7 +285,7 @@ const [expanded,setExpanded] = useState(["artwork"]);
     "Layout",
     "Responsive fixed-side, proportional and wrapping layouts, natural-width tabs, compact selectable rows and image uploads.",
     `<Grid layout="sidebar" sidebarWidth={280}>
-  <Card title="Seasons"><Stack gap={4}><Tile variant="row" selected title="Diwali" description="Scheduled" onClick={()=>{}} /></Stack></Card>
+  <Card title="Seasons"><Flex direction="column" gap={4}><Tile variant="row" selected title="Diwali" description="Scheduled" onClick={()=>{}} /></Flex></Card>
   <Card title="Details"><FileDropzone variant="compact" label="Main logo" onFiles={()=>{}} /></Card>
 </Grid>`,
     [
@@ -247,12 +305,12 @@ const [expanded,setExpanded] = useState(["artwork"]);
         "Fixed-side pixels or flexible relative track sizes.",
       ],
       [
-        "Stack.gap",
+        "Flex.gap",
         "number",
         "Vertical rhythm without outer component margins.",
       ],
     ],
-    "Grid, Stack, Card, Tile, FileDropzone",
+    "Grid, Flex, Card, Tile, FileDropzone",
   ),
 
   entry(
@@ -610,7 +668,7 @@ const mixed = selected.length > 0 && !all;
     "Stat Cards",
     "Display",
     "The Tools dashboard metrics, with default, compact, inline and hero layouts. Optional sparklines, trends and progress.",
-    `<MetricGrid minWidth={180}>\n  <StatCard label="Payments" value="153" hint="1 open" />\n  <StatCard label="Paid" value="5" hint="Available from Drop 1" tone="good" />\n  <StatCard label="Scenarios passed" value="44 / 48" progress={92} />\n  <StatCard label="Avg. response" value="1400 ms" hint="300 calls · 6 errors" />\n</MetricGrid>\n<StatCard variant="compact" label="Downloads" value="1,284" trend="+12.8%"\n  chart={[12,18,15,30,24,40,48,52]} />`,
+    `<Grid preset="metrics" min={180}>\n  <StatCard label="Payments" value="153" hint="1 open" />\n  <StatCard label="Paid" value="5" hint="Available from Drop 1" tone="good" />\n  <StatCard label="Scenarios passed" value="44 / 48" progress={92} />\n  <StatCard label="Avg. response" value="1400 ms" hint="300 calls · 6 errors" />\n</Grid>\n<StatCard variant="compact" label="Downloads" value="1,284" trend="+12.8%"\n  chart={[12,18,15,30,24,40,48,52]} />`,
     [
       ["label / value / hint", "ReactNode", "Metric hierarchy."],
       [
@@ -634,14 +692,14 @@ const mixed = selected.length > 0 && !all;
         "App-specific layout.",
       ],
     ],
-    "MetricGrid, StatCard",
+    "Grid, StatCard",
   ),
   entry(
     "tiles",
     "Tiles",
     "Layout",
     "The Tools launcher shape: a contained icon, a clear name, a short explanation and a natural next step.",
-    `<MetricGrid minWidth={220}>\n  <Tile icon="files" title="My transfers" description="Everything you have shared."\n    meta="24 files" href="/transfers" footer="View transfers" />\n  <Tile icon="team" title="Team workspace" description="Share a space with your people."\n    onClick={() => setTeamOpen(true)} footer="Open workspace" />\n</MetricGrid>`,
+    `<Grid preset="metrics" min={220}>\n  <Tile icon="files" title="My transfers" description="Everything you have shared."\n    meta="24 files" href="/transfers" footer="View transfers" />\n  <Tile icon="team" title="Team workspace" description="Share a space with your people."\n    onClick={() => setTeamOpen(true)} footer="Open workspace" />\n</Grid>`,
     [
       [
         "title / description / meta / footer",
@@ -676,7 +734,7 @@ const mixed = selected.length > 0 && !all;
         "Interaction and layout.",
       ],
     ],
-    "Tile, MetricGrid",
+    "Tile, Grid",
   ),
   entry(
     "page-header",
@@ -700,24 +758,20 @@ const mixed = selected.length > 0 && !all;
     "Dashboard Layout",
     "Recipes",
     "Compose a working screen from page headers, metric cards, tabs, tool tiles and tables. The same building blocks as Tools.",
-    `<div className="stack">\n  <PageHeader title="Payments" icon="storage" description="Shared across admin devices." />\n  <MetricGrid>\n    <StatCard label="Payments" value="153" hint="1 open" />\n    <StatCard label="Paid" value="5" tone="good" />\n    <StatCard label="Scenarios passed" value="44 / 48" progress={92} />\n  </MetricGrid>\n  <Tabs value={tab} onValueChange={setTab} items={tabs} />\n  <Card title="Recent payments" description="A shared view of the latest activity.">\n    <DataTable columns={columns} rows={payments} />\n  </Card>\n</div>`,
+    `<div className="stack">\n  <PageHeader title="Payments" icon="storage" description="Shared across admin devices." />\n  <Grid preset="metrics">\n    <StatCard label="Payments" value="153" hint="1 open" />\n    <StatCard label="Paid" value="5" tone="good" />\n    <StatCard label="Scenarios passed" value="44 / 48" progress={92} />\n  </Grid>\n  <Tabs value={tab} onValueChange={setTab} items={tabs} />\n  <Card title="Recent payments" description="A shared view of the latest activity.">\n    <DataTable columns={columns} rows={payments} />\n  </Card>\n</div>`,
     [
       [
         "Composition",
         "children and slots",
         "No additional provider or dashboard-specific state.",
       ],
-      [
-        "MetricGrid.minWidth",
-        "number",
-        "Responsive minimum card width in pixels.",
-      ],
+      ["Grid.minWidth", "number", "Responsive minimum card width in pixels."],
       [
         "Card",
         "title,description,action,footer,variant,padding",
         "High-level API or compound CardHeader/Body/Footer.",
       ],
     ],
-    "PageHeader,MetricGrid,StatCard,Tabs,Card,DataTable",
+    "PageHeader,Grid,StatCard,Tabs,Card,DataTable",
   ),
 ];

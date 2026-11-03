@@ -15,7 +15,7 @@ The starter is a complete React/Vite app. Search, sorting, row selection, folder
 ## Install in an existing app
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.0
+npm install github:iamresvevo/ride-eats-ui#v0.10.0
 ```
 
 ```jsx
@@ -63,12 +63,12 @@ React 19+ and a JSX-capable bundler are required. For Next.js use a client wrapp
 ## Dashboard metrics and tiles
 
 ```jsx
-<MetricGrid minWidth={180}>
+<Grid preset="metrics" min={180}>
   <StatCard label="Payments" value="153" hint="1 open" />
   <StatCard label="Paid" value="5" tone="good" />
   <StatCard label="Downloads" value="1,284" trend="+12.8%"
     chart={[12,18,15,30,24,40,48,52]} />
-</MetricGrid>
+</Grid>
 <Tile icon="files" title="Transfers" description="Everything you have shared."
   href="/transfers" meta="24 files" footer="View transfers" />
 ```

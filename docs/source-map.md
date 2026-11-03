@@ -1,3 +1,5 @@
+Current public APIs are documented in [the 0.10 migration guide](migrations-v0.10.md). Older API names below describe extraction history, not current imports.
+
 # Send extraction map
 
 Source checkout: ride-eats-send, HEAD `2530ac60d257a8440da6c3a93efc254e3f6fb5df`. Extraction also reads the current working files; Send is not modified.
@@ -52,3 +54,7 @@ DateRangePicker composes the same extracted Send DateTimePicker in date-only mod
 ## Independent specialized controls (v0.9.18)
 
 `react/specialized.jsx` and `css/specialized.css` own ImageCompare, TreeView, SignaturePad and ActivityHeatmap. These are new independent implementations, not Send extractions or copied Reacticx components. The local route comparison SVGs in `site/assets/` were authored for the example. Native range semantics, ARIA tree navigation, SVG pointer capture and UTC date arithmetic are their interaction foundations.
+
+## Review tools and consolidation (0.10)
+
+`react/review.jsx`, `react/review-model.js` and `css/review.css` own ShortcutRecorder and TextDiffViewer. These are independent implementations. The consolidation reuses the existing icon motion hooks and SVG geometry; it does not re-extract or modify Send. See the migration guide for removed names and exact canonical replacements.

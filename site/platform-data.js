@@ -66,8 +66,8 @@ export const platformPages = [
       ],
       [
         "value / onValueChange",
-        "string / callback",
-        "Controlled selected option.",
+        "string or string[] / callback",
+        "Single choice by default; array selection with multiple.",
       ],
       [
         "label / placeholder / error / hint / disabled",
@@ -76,27 +76,7 @@ export const platformPages = [
       ],
     ],
   ),
-  page(
-    "multi-select",
-    "Multi Select",
-    "Inputs",
-    "Choose multiple options from one searchable field, then remove selections with compact chips.",
-    `<MultiSelect label="Teams" options={teams} value={selectedTeams} onValueChange={setSelectedTeams} />`,
-    [
-      ["options", "ComboboxOption[]", "Searchable choices."],
-      [
-        "value / onValueChange",
-        "string[] / callback",
-        "Controlled selected keys.",
-      ],
-      [
-        "label / placeholder / error / hint / disabled",
-        "configuration",
-        "Labels, validation and availability.",
-      ],
-    ],
-    "MultiSelect",
-  ),
+
   page(
     "date-range-picker",
     "Date Range Picker",
@@ -384,22 +364,7 @@ export const platformPages = [
     ],
     "FileManager",
   ),
-  page(
-    "activity-feed",
-    "Activity Feed",
-    "Display",
-    "A dense activity list for audit events, recent changes and workspace updates, with compact icons and timestamps.",
-    `<ActivityFeed items={activity} label="Workspace activity" />`,
-    [
-      [
-        "items",
-        "{id,title,description?,time?,dateTime?,icon?}[]",
-        "Display timestamps and optional machine-readable datetimes.",
-      ],
-      ["label / emptyText", "string", "Accessible heading and empty state."],
-    ],
-    "ActivityFeed",
-  ),
+
   page(
     "support-inbox",
     "Support Inbox",

@@ -80,7 +80,7 @@ Variants: `primary`, `brand`, `secondary` (default), `ghost`, `danger`, `surface
 
 Dropdown array rows: `{label, icon?, checked?, disabled?, danger?, closesMenu?, onSelect?}`; `{type:'separator'}`; `{type:'label',label}`; nested `{id,label,icon?,value?,items:[...]}`. Compound Menu preserves Send’s API. Choosing a subgroup option collapses the group while keeping the menu open. `closesMenu` closes the entire menu. Arrow keys move between rows; Escape collapses a group first, then closes and returns focus. Align start/end; the menu flips above its trigger when needed.
 
-## Tabs and Chips
+## Tabs and ToggleGroup
 
 ```jsx
 <Tabs label="File views" value={tab} onValueChange={setTab} items={[
@@ -90,11 +90,11 @@ Dropdown array rows: `{label, icon?, checked?, disabled?, danger?, closesMenu?, 
 <div id="panel-all" role="tabpanel" aria-labelledby="tab-all" hidden={tab !== 'all'}>…</div>
 <div id="panel-shared" role="tabpanel" aria-labelledby="tab-shared" hidden={tab !== 'shared'}>…</div>
 
-<Chips value={filter} onValueChange={setFilter}
+<ToggleGroup variant="chips" value={filter} onValueChange={setFilter}
   items={[{value:'all',label:'All'},{value:'mine',label:'Mine'}]} />
 ```
 
-Tabs owns arrow/Home/End keyboard navigation. Supply the panel content, IDs, and visibility. Chips are pressed filter buttons, not tab panels.
+Tabs owns arrow/Home/End keyboard navigation. Supply the panel content, IDs, and visibility. ToggleGroup are pressed filter buttons, not tab panels.
 
 ## Select and SearchSelect
 
@@ -238,7 +238,7 @@ Segmented accepts label, icon, name, options, value, onChange, disabled and fit.
 
 ## Compact responsive layouts
 
-`Grid` and `Stack` own page, form and sidebar geometry. `Grid layout="sidebar" sidebarWidth={280}` gives a narrow left side and a flexible right side; `layout="aside"` reverses it. `layout="split" ratio={[2,3]}` uses proportional tracks. These split modes stack below 800px. Automatic grids retain the `min` minimum item width. Both expose `gap`; Grid also exposes `align`.
+`Grid` and `Flex` own page, form and sidebar geometry. `Grid layout="sidebar" sidebarWidth={280}` gives a narrow left side and a flexible right side; `layout="aside"` reverses it. `layout="split" ratio={[2,3]}` uses proportional tracks. These split modes stack below 800px. Automatic grids retain the `min` minimum item width. Both expose `gap`; Grid also exposes `align`.
 
 Tabs fit their content inside vertical stacks by default; opt into `width="full"` when the full-width rail is intentional. Tabs have no outer margin. CardHeader centers actions with its title and wraps on narrow surfaces. Use `Field labelHidden` to retain an accessible label without adding a visible label above header search controls.
 
@@ -260,7 +260,7 @@ Flat navigation: `Tabs variant="flat" width="full"` keeps controlled panel/tab s
 
 `SplitPane variant="plain"` composes existing Cards without duplicate backgrounds/padding. `collapseAt={800}` stacks the panels and hides the resize handle below the supplied container width. Desktop handles support pointer dragging and arrow/Home/End keys. The Seasons page uses a wider 36% leading panel, adjustable between 30% and 48%.
 
-Toolbar defaults to `align="end"` so labelled fields, hidden-label search inputs and buttons share a control baseline; `start` and `center` remain available. For a table panel, use `<Card padding="none" footer={pagination}><DataTable variant="inset" ... /></Card>` to keep one surface. DataTable column `wrap: true` with `width` allows long identifiers and secondary text to wrap instead of pushing actions off screen. Badges retain intrinsic width inside Stack.
+Toolbar defaults to `align="end"` so labelled fields, hidden-label search inputs and buttons share a control baseline; `start` and `center` remain available. For a table panel, use `<Card padding="none" footer={pagination}><DataTable variant="inset" ... /></Card>` to keep one surface. DataTable column `wrap: true` with `width` allows long identifiers and secondary text to wrap instead of pushing actions off screen. Badges retain intrinsic width inside Flex.
 
 DataTable defaults to `variant="auto"`: standalone outside Cards, inset inside them. Choose `standalone` to explicitly retain the table border. `cellAlign="top"` aligns multi-line row content at its first line; the default is `middle`.
 
@@ -276,3 +276,7 @@ These are independent library-owned designs in `react/specialized.jsx` and `css/
 Header supports `fade={true}` (default) and `fadeSize={72}` for the neutral gradient beneath sticky controls. The fade now tracks the nearest native scrolling ancestor as well as document scrolling and the existing page layout. It uses no backdrop blur. Match the header’s containing surface with the shared `--bg` token.
 
 ImageCompare uses pointer capture and a fixed drag-start rectangle for direct, subpixel reveal. It keeps a native range for assistive technology, Arrow keys (1%), Shift+Arrow (10%), and Home/End. The example reserves percentage-output width so changing digits cannot resize the comparison surface.
+
+## Shortcut Recorder and Text Diff Viewer
+
+Both tools use controlled caller values. ShortcutRecorder changes a binding only on explicit Save or Clear, blocks known reserved combinations and supplied conflicts, and cancels with Escape. TextDiffViewer preserves revision text, folds equal runs, supports split/unified views and synchronizes scrolling. Large replacements have a documented bounded matching fallback. See [the migration guide](migrations-v0.10.md) and [live API reference](platform-components.md).

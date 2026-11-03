@@ -1,5 +1,3 @@
-import { iconNames } from "./icons/names.js";
-import { useSvgMotion } from "./icons/useSvgMotion.js";
 import React, {
   useEffect,
   useId,
@@ -9,48 +7,6 @@ import React, {
 } from "react";
 import Icon from "./send/Icon.jsx";
 import Modal from "./send/ui/Modal.jsx";
-export const animatedIconNames = [
-  ...new Set([
-    "bell",
-    "heart",
-    "check",
-    "upload",
-    "download",
-    "search",
-    "refresh",
-    "settings",
-    "folder",
-    "send",
-    ...iconNames,
-  ]),
-];
-export function AnimatedIcon({
-  name,
-  size = 24,
-  strokeWidth = 1.7,
-  playing = false,
-  loop = false,
-  label,
-  className = "",
-  style,
-  ...props
-}) {
-  return (
-    <Icon
-      {...props}
-      name={name}
-      size={size}
-      strokeWidth={strokeWidth}
-      playing={playing}
-      loop={loop}
-      label={label}
-      className={`re-animated-icon ${className}`}
-      style={style}
-      motion="auto"
-    />
-  );
-}
-
 export function Popover({
   open,
   onOpenChange,
@@ -182,6 +138,8 @@ export function ToggleGroup({
   onValueChange,
   label = "Options",
   multiple = false,
+  variant = "toggle",
+  allowEmpty = variant !== "chips",
   disabled = false,
   className = "",
   style,
@@ -191,14 +149,19 @@ export function ToggleGroup({
     <div
       role="group"
       aria-label={label}
-      className={`re-toggle-group ${className}`}
+      className={`${variant === "chips" ? "chips" : "re-toggle-group"} ${className}`}
       style={style}
     >
       {items.map((item) => (
         <button
           type="button"
           key={item.value}
-          aria-label={item.label}
+          className={
+            variant === "chips"
+              ? `chip ${selected(item.value) ? "active" : ""}`
+              : undefined
+          }
+          aria-label={typeof item.label === "string" ? item.label : undefined}
           aria-pressed={selected(item.value)}
           disabled={disabled || item.disabled}
           onClick={() =>
@@ -207,7 +170,7 @@ export function ToggleGroup({
                 ? selected(item.value)
                   ? value.filter((v) => v !== item.value)
                   : [...value, item.value]
-                : selected(item.value)
+                : selected(item.value) && allowEmpty
                   ? null
                   : item.value,
             )

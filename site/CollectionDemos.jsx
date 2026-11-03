@@ -1,3 +1,4 @@
+import { ReviewDemo } from "./ReviewDemos.jsx";
 import { SpecializedDemo } from "./SpecializedDemos.jsx";
 import CatalogBoundary from "./CatalogBoundary.jsx";
 import React, { useMemo, useState } from "react";
@@ -11,7 +12,7 @@ const {
   CardBody,
   CardFooter,
   StatCard,
-  MetricGrid,
+  Grid,
   Tile,
   PageHeader,
   Toolbar,
@@ -487,31 +488,52 @@ export function CollectionDemo({ id }) {
       );
     case "timeline":
       return (
-        <UI.Timeline
-          items={[
-            {
-              id: 1,
-              title: "Transfer delivered",
-              description: "Campaign assets reached Alex.",
-              time: "Just now",
-              icon: "check",
-              tone: "good",
-            },
-            {
-              id: 2,
-              title: "12 files uploaded",
-              description: "48 MB · Ready to share",
-              time: "2 minutes ago",
-              icon: "upload",
-            },
-            {
-              id: 3,
-              title: "Folder created",
-              time: "5 minutes ago",
-              icon: "folder",
-            },
-          ]}
-        />
+        <UI.Flex direction="column" style={{ width: "100%" }}>
+          <UI.Timeline
+            items={[
+              {
+                id: 1,
+                title: "Transfer delivered",
+                description: "Campaign assets reached Alex.",
+                time: "Just now",
+                icon: "check",
+                tone: "good",
+              },
+              {
+                id: 2,
+                title: "12 files uploaded",
+                description: "48 MB · Ready to share",
+                time: "2 minutes ago",
+                icon: "upload",
+              },
+              {
+                id: 3,
+                title: "Folder created",
+                time: "5 minutes ago",
+                icon: "folder",
+              },
+            ]}
+          />
+          <UI.Timeline
+            variant="feed"
+            label="Recent activity"
+            items={[
+              {
+                id: "feed1",
+                title: "Artwork updated",
+                description: "Main logo replaced",
+                time: "2m ago",
+                icon: "image",
+              },
+              {
+                id: "feed2",
+                title: "Season published",
+                time: "1h ago",
+                icon: "check",
+              },
+            ]}
+          />
+        </UI.Flex>
       );
     case "drawer":
       return (
@@ -559,7 +581,7 @@ export function CollectionDemo({ id }) {
     case "stat-cards":
       return (
         <div className="demo-stat-collection">
-          <MetricGrid minWidth={160}>
+          <Grid preset="metrics" min={160}>
             <StatCard label="Payments" value="153" hint="1 open" />
             <StatCard
               label="Paid"
@@ -573,8 +595,8 @@ export function CollectionDemo({ id }) {
               value="1400 ms"
               hint="300 calls · 6 errors"
             />
-          </MetricGrid>
-          <MetricGrid minWidth={180}>
+          </Grid>
+          <Grid preset="metrics" min={180}>
             <StatCard
               label="Downloads"
               value="1,284"
@@ -595,9 +617,12 @@ export function CollectionDemo({ id }) {
               variant="inline"
               hint="Across 3 workspaces"
             />
-          </MetricGrid>
+          </Grid>
         </div>
       );
+    case "shortcut-recorder":
+    case "text-diff-viewer":
+      return <ReviewDemo id={id} />;
     case "image-compare":
     case "tree-view":
     case "signature-pad":
@@ -606,7 +631,7 @@ export function CollectionDemo({ id }) {
     case "section-nav":
       return (
         <div style={{ height: 380, overflow: "auto" }}>
-          <UI.Stack>
+          <UI.Flex direction="column">
             <UI.Card title="Everything your workspace can do">
               <p>Scroll this preview or choose a section.</p>
             </UI.Card>
@@ -624,17 +649,17 @@ export function CollectionDemo({ id }) {
                 id={`demo-${name.toLowerCase()}`}
                 title={name}
               >
-                <UI.Stack>
+                <UI.Flex direction="column">
                   {Array.from({ length: 5 }, (_, i) => (
                     <p key={i}>
                       Reusable components for {name.toLowerCase()} workflows.
                       Section links stay visible while content scrolls.
                     </p>
                   ))}
-                </UI.Stack>
+                </UI.Flex>
               </UI.Card>
             ))}
-          </UI.Stack>
+          </UI.Flex>
         </div>
       );
     case "workbench":
@@ -651,7 +676,7 @@ export function CollectionDemo({ id }) {
             "Review",
           ].map((title, i) => (
             <Card key={title} title={title}>
-              <UI.Stack gap={8}>
+              <UI.Flex direction="column" gap={8}>
                 {Array.from({ length: (i % 3) + 1 }, (_, n) => (
                   <p key={n}>
                     {
@@ -664,14 +689,14 @@ export function CollectionDemo({ id }) {
                   </p>
                 ))}
                 <Badge>{i % 2 ? "In progress" : "Ready"}</Badge>
-              </UI.Stack>
+              </UI.Flex>
             </Card>
           ))}
         </UI.Masonry>
       );
     case "layout":
       return (
-        <UI.Stack gap={16}>
+        <UI.Flex direction="column" gap={16}>
           <UI.Tabs
             label="Layout options"
             value={value}
@@ -688,11 +713,11 @@ export function CollectionDemo({ id }) {
             ratio={[2, 3]}
           >
             <Card title="Seasons">
-              <UI.Stack gap={4}>
+              <UI.Flex direction="column" gap={4}>
                 <Tile
                   variant="row"
                   title="A little light, a lot of joy"
-                  description="28 Oct – 10 Nov"
+                  description="28 Oct to 10 Nov"
                   selected
                   onClick={() => {}}
                   meta={<Badge tone="good">Live</Badge>}
@@ -700,11 +725,11 @@ export function CollectionDemo({ id }) {
                 <Tile
                   variant="row"
                   title="A little spooky, a lot of fun"
-                  description="27 Oct – 1 Nov"
+                  description="27 Oct to 1 Nov"
                   onClick={() => {}}
                   meta={<Badge>Ended</Badge>}
                 />
-              </UI.Stack>
+              </UI.Flex>
             </Card>
             <Card
               title="Season details"
@@ -732,7 +757,7 @@ export function CollectionDemo({ id }) {
               />
             </Card>
           </UI.Grid>
-        </UI.Stack>
+        </UI.Flex>
       );
     case "tiles":
       return <TileCustomizationDemo />;
@@ -769,7 +794,7 @@ export function CollectionDemo({ id }) {
               </Button>
             }
           />
-          <MetricGrid minWidth={140}>
+          <Grid preset="metrics" min={140}>
             <StatCard label="Payments" value="153" hint="1 open" />
             <StatCard
               label="Paid"
@@ -778,7 +803,7 @@ export function CollectionDemo({ id }) {
               hint="Available from Drop 1"
             />
             <StatCard label="Scenarios passed" value="44 / 48" hint="48 run" />
-          </MetricGrid>
+          </Grid>
           <UI.Tabs
             value={tab}
             onValueChange={setTab}
@@ -996,7 +1021,7 @@ function WorkbenchDemo() {
           <UI.ScrollArea
             label="Object catalogue"
             header={
-              <UI.Stack>
+              <UI.Flex direction="column">
                 <UI.CardHeader title="Objects" />
                 <UI.Tabs
                   value="all"
@@ -1006,10 +1031,10 @@ function WorkbenchDemo() {
                     { value: "saved", label: "Saved" },
                   ]}
                 />
-              </UI.Stack>
+              </UI.Flex>
             }
           >
-            <UI.Stack>
+            <UI.Flex direction="column">
               {Array.from({ length: 30 }, (_, i) => (
                 <UI.Tile
                   key={i}
@@ -1019,9 +1044,9 @@ function WorkbenchDemo() {
                   onClick={() => {}}
                 />
               ))}
-            </UI.Stack>
+            </UI.Flex>
           </UI.ScrollArea>
-          <UI.Stack>
+          <UI.Flex direction="column">
             <UI.Card title="Canvas preview">
               <p>The centre stays in place while either panel scrolls.</p>
             </UI.Card>
@@ -1030,19 +1055,19 @@ function WorkbenchDemo() {
               <Button>Rotate</Button>
               <Button>Scale</Button>
             </UI.Toolbar>
-          </UI.Stack>
+          </UI.Flex>
           <UI.ScrollArea
             label="Object options"
             header={<UI.CardHeader title="Object options" />}
             footer={<Button>Reset options</Button>}
           >
-            <UI.Stack>
+            <UI.Flex direction="column">
               {Array.from({ length: 20 }, (_, i) => (
                 <UI.Field key={i} label={`Option ${i + 1}`}>
                   <input defaultValue="Value" />
                 </UI.Field>
               ))}
-            </UI.Stack>
+            </UI.Flex>
           </UI.ScrollArea>
         </UI.Workbench>
       </UI.Dialog>
@@ -1058,7 +1083,7 @@ function TileCustomizationDemo() {
     [columns, setColumns] = useState(3),
     [selected, setSelected] = useState(0);
   return (
-    <UI.Stack>
+    <UI.Flex direction="column">
       <UI.Flex>
         <UI.Switch label="Compact" checked={compact} onChange={setCompact} />
         <UI.Switch label="Rows" checked={row} onChange={setRow} />
@@ -1105,6 +1130,6 @@ function TileCustomizationDemo() {
           />
         ))}
       </UI.Grid>
-    </UI.Stack>
+    </UI.Flex>
   );
 }

@@ -120,13 +120,6 @@ export function Tabs(
     variant?: "pill" | "flat";
   },
 ): React.ReactElement;
-export function Chips(
-  props: StylingProps & {
-    items: TabItem[];
-    value: string;
-    onValueChange: (value: string) => void;
-  },
-): React.ReactElement;
 export function Select(
   props: StylingProps &
     Omit<
@@ -356,7 +349,6 @@ export function useFeedback(): {
   toast: ReturnType<typeof useToast>;
   confirm: ReturnType<typeof useConfirm>;
 };
-export const FeedbackProvider: typeof ToastProvider;
 export function Accordion(
   props: StylingProps & {
     items: {
@@ -499,6 +491,8 @@ export function Timeline(
       tone?: string;
     }[];
     label?: string;
+    variant?: "timeline" | "feed";
+    emptyText?: string;
   },
 ): React.ReactElement;
 export function Drawer(
@@ -577,6 +571,7 @@ export function Masonry(
 export function Grid(
   props: React.HTMLAttributes<HTMLDivElement> & {
     min?: number;
+    preset?: "metrics";
     columns?: number;
     density?: "default" | "compact";
     layout?: "auto" | "sidebar" | "aside" | "split";
@@ -585,15 +580,6 @@ export function Grid(
     gap?: number;
     align?: "start" | "center" | "end" | "stretch";
   },
-): React.ReactElement;
-export function Stack(
-  props: React.HTMLAttributes<HTMLDivElement> & {
-    gap?: number;
-    align?: "start" | "center" | "end" | "stretch";
-  },
-): React.ReactElement;
-export function MetricGrid(
-  props: React.HTMLAttributes<HTMLDivElement> & { minWidth?: number },
 ): React.ReactElement;
 export function StatCard(
   props: React.HTMLAttributes<HTMLElement> & {
@@ -646,18 +632,6 @@ export function Toolbar(
   },
 ): React.ReactElement;
 
-export type AnimatedIconName = string;
-export const animatedIconNames: AnimatedIconName[];
-export function AnimatedIcon(
-  props: Omit<React.SVGProps<SVGSVGElement>, "name"> & {
-    name: AnimatedIconName;
-    size?: number;
-    strokeWidth?: number;
-    playing?: boolean;
-    loop?: boolean;
-    label?: string;
-  },
-): React.ReactElement;
 export function Popover(
   props: StylingProps & {
     open: boolean;
@@ -683,34 +657,49 @@ export function PinInput(
     onComplete?: (value: string) => void;
   },
 ): React.ReactElement;
+export interface ToggleItem {
+  value: string;
+  label: React.ReactNode;
+  icon?: string;
+  disabled?: boolean;
+}
+export interface ToggleGroupBase extends StylingProps {
+  items: ToggleItem[];
+  label?: string;
+  disabled?: boolean;
+  variant?: "toggle" | "chips";
+}
 export function ToggleGroup(
-  props: StylingProps & {
-    items: {
-      value: string;
-      label: string;
-      icon?: string;
-      disabled?: boolean;
-    }[];
-    value: string | null;
-    onValueChange: (value: string | null) => void;
+  props: ToggleGroupBase & {
     multiple?: false;
-    disabled?: boolean;
-    label?: string;
+    variant: "chips";
+    allowEmpty?: false;
+    value: string;
+    onValueChange: (value: string) => void;
   },
 ): React.ReactElement;
 export function ToggleGroup(
-  props: StylingProps & {
-    items: {
-      value: string;
-      label: string;
-      icon?: string;
-      disabled?: boolean;
-    }[];
+  props: ToggleGroupBase & {
+    multiple?: false;
+    allowEmpty: false;
+    value: string;
+    onValueChange: (value: string) => void;
+  },
+): React.ReactElement;
+export function ToggleGroup(
+  props: ToggleGroupBase & {
+    multiple?: false;
+    allowEmpty?: boolean;
+    value: string | null;
+    onValueChange: (value: string | null) => void;
+  },
+): React.ReactElement;
+export function ToggleGroup(
+  props: ToggleGroupBase & {
+    multiple: true;
+    allowEmpty?: boolean;
     value: string[];
     onValueChange: (value: string[]) => void;
-    multiple: true;
-    disabled?: boolean;
-    label?: string;
   },
 ): React.ReactElement;
 export function Rating(
@@ -842,6 +831,7 @@ export interface ComboboxOption {
   disabled?: boolean;
 }
 export interface ComboboxProps extends StylingProps {
+  multiple?: false;
   options: ComboboxOption[];
   value: string;
   onValueChange: (value: string) => void;
@@ -853,8 +843,12 @@ export interface ComboboxProps extends StylingProps {
   allowCustom?: boolean;
 }
 export function Combobox(props: ComboboxProps): React.ReactElement;
-export function MultiSelect(
-  props: Omit<ComboboxProps, "value" | "onValueChange" | "allowCustom"> & {
+export function Combobox(
+  props: Omit<
+    ComboboxProps,
+    "value" | "onValueChange" | "allowCustom" | "multiple"
+  > & {
+    multiple: true;
     value: string[];
     onValueChange: (value: string[]) => void;
   },
@@ -1068,20 +1062,6 @@ export function FileManager(
     onDelete?: (id: string) => void | Promise<void>;
   },
 ): React.ReactElement;
-export function ActivityFeed(
-  props: StylingProps & {
-    items: {
-      id: string;
-      title: React.ReactNode;
-      description?: React.ReactNode;
-      time?: string;
-      dateTime?: string;
-      icon?: string;
-    }[];
-    label?: string;
-    emptyText?: string;
-  },
-): React.ReactElement;
 export interface SupportMessage {
   id: string;
   author: string;
@@ -1205,5 +1185,35 @@ export function ActivityHeatmap(
     max?: number;
     locale?: string;
     formatValue?: (value: number) => string;
+  },
+): React.ReactElement;
+
+export interface ShortcutBinding {
+  keys: string[];
+  label: string;
+}
+export function ShortcutRecorder(
+  props: StylingProps & {
+    value: string[];
+    onValueChange: (keys: string[]) => void;
+    label?: string;
+    bindings?: ShortcutBinding[];
+    disabled?: boolean;
+    allowConflicts?: boolean;
+  },
+): React.ReactElement;
+export function TextDiffViewer(
+  props: StylingProps & {
+    before: string;
+    after: string;
+    beforeLabel?: string;
+    afterLabel?: string;
+    label?: string;
+    view?: "split" | "unified";
+    onViewChange?: (view: "split" | "unified") => void;
+    contextLines?: number;
+    collapseUnchanged?: boolean;
+    syncScroll?: boolean;
+    maxHeight?: number | string;
   },
 ): React.ReactElement;

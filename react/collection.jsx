@@ -592,21 +592,51 @@ export function FileDropzone({
     </div>
   );
 }
-export function Timeline({ items, label = "Activity", className = "", style }) {
-  return (
+export function Timeline({
+  items,
+  label,
+  variant = "timeline",
+  emptyText = "No activity yet.",
+  className = "",
+  style,
+}) {
+  const feed = variant === "feed";
+  const heading = label ?? (feed ? "Recent activity" : "Activity");
+  const rows = items.map((item, i) => (
+    <li key={item.id ?? i}>
+      <span
+        className={
+          feed ? "re-activity-icon" : `re-timeline-dot ${item.tone || ""}`
+        }
+      >
+        <Icon name={item.icon || (feed ? "activity" : "check")} />
+      </span>
+      <div>
+        <strong>{item.title}</strong>
+        {item.description && <p>{item.description}</p>}
+        {!feed && item.time && (
+          <time dateTime={item.dateTime}>{item.time}</time>
+        )}
+      </div>
+      {feed && <time dateTime={item.dateTime}>{item.time}</time>}
+    </li>
+  ));
+  return feed ? (
+    <section
+      className={`re-activity-feed ${className}`}
+      style={style}
+      aria-label={heading}
+    >
+      <h2>{heading}</h2>
+      {items.length ? (
+        <ol>{rows}</ol>
+      ) : (
+        <p className="re-platform-empty">{emptyText}</p>
+      )}
+    </section>
+  ) : (
     <ol className={`re-timeline ${className}`} style={style} aria-label={label}>
-      {items.map((item, i) => (
-        <li key={item.id || i}>
-          <span className={`re-timeline-dot ${item.tone || ""}`}>
-            <Icon name={item.icon || "check"} />
-          </span>
-          <div>
-            <strong>{item.title}</strong>
-            {item.description && <p>{item.description}</p>}
-            {item.time && <time dateTime={item.dateTime}>{item.time}</time>}
-          </div>
-        </li>
-      ))}
+      {rows}
     </ol>
   );
 }
@@ -868,7 +898,8 @@ export function CardFooter({ children, className = "", ...props }) {
 /** Responsive page/form layout. Sidebar modes collapse at narrow widths. */
 export function Grid({
   children,
-  min = 260,
+  min,
+  preset,
   layout = "auto",
   sidebarWidth = 320,
   ratio = [1, 1],
@@ -885,10 +916,15 @@ export function Grid({
       {...props}
       data-density={density}
       data-columns={columns ? true : undefined}
-      className={`re-layout-grid re-layout-grid-${layout} ${className}`}
+      className={`re-layout-grid re-layout-grid-${layout} ${preset === "metrics" ? "re-grid-metrics" : ""} ${className}`}
       style={{
-        "--layout-min": `${min}px`,
-        "--layout-gap": `${gap ?? (density === "compact" ? 8 : 20)}px`,
+        "--layout-min": `${min ?? (preset === "metrics" ? 170 : 260)}px`,
+        "--layout-gap":
+          gap != null
+            ? `${gap}px`
+            : preset === "metrics"
+              ? "var(--metric-gap,12px)"
+              : `${density === "compact" ? 8 : 20}px`,
         "--layout-columns": columns
           ? Math.max(1, Math.floor(columns))
           : undefined,
@@ -908,9 +944,9 @@ export function Flex({
   children,
   direction = "row",
   gap = 12,
-  align = "center",
+  align = direction === "column" ? "stretch" : "center",
   justify = "start",
-  wrap = true,
+  wrap = direction !== "column",
   className = "",
   style,
   ...props
@@ -925,7 +961,7 @@ export function Flex({
   return (
     <div
       {...props}
-      className={`re-flex ${className}`}
+      className={`re-flex ${direction === "column" ? "re-flex-column" : ""} ${className}`}
       style={{
         display: "flex",
         flexDirection: direction,
@@ -970,42 +1006,6 @@ export function Masonry({
 }
 
 /** Vertical composition; controls keep their own outer spacing at zero. */
-export function Stack({
-  children,
-  gap = 12,
-  align = "stretch",
-  className = "",
-  style,
-  ...props
-}) {
-  return (
-    <div
-      {...props}
-      className={`re-stack ${className}`}
-      style={{ gap: `${gap}px`, alignItems: align, ...style }}
-    >
-      {children}
-    </div>
-  );
-}
-
-export function MetricGrid({
-  children,
-  minWidth = 170,
-  className = "",
-  style,
-  ...props
-}) {
-  return (
-    <div
-      {...props}
-      className={`re-metric-grid ${className}`}
-      style={{ "--metric-min": `${minWidth}px`, ...style }}
-    >
-      {children}
-    </div>
-  );
-}
 export function StatCard({
   label,
   value,

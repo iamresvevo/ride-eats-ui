@@ -1,7 +1,7 @@
 # Build a compact platform
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.0
+npm install github:iamresvevo/ride-eats-ui#v0.10.0
 ```
 
 Import `@ride-eats/ui/styles.css` once and wrap the app in UIProvider. The complete runnable example is [examples/platform](../examples/platform/README.md). Component references, workflows and recipes have live examples, imports and prop tables; selected primitives also have an implementation workbench built from shared prop controls, live components and complete copyable React examples.
@@ -24,9 +24,9 @@ Controls are 36px, small actions 32px, DataGrid rows 40px and panel padding 16px
 </Form>
 ```
 
-`field(name)` returns native name/value/onChange props. `setValue(name,value)` connects non-native controls such as MultiSelect. `reset()` returns to the initial values. Form focuses the first invalid field and displays rejected submit errors. Validation must be synchronous; server checks belong in onSubmit. Initial values are read on mount; remount with a new key when switching records. Do not rely on client validation for server authorization or data integrity.
+`field(name)` returns native name/value/onChange props. `setValue(name,value)` connects non-native controls such as Combobox. `reset()` returns to the initial values. Form focuses the first invalid field and displays rejected submit errors. Validation must be synchronous; server checks belong in onSubmit. Initial values are read on mount; remount with a new key when switching records. Do not rely on client validation for server authorization or data integrity.
 
-Combobox selects existing options and accepts custom text with allowCustom; MultiSelect stores string arrays. Arrow keys move, Enter selects, Escape closes, and selected chips are removable. Options use `{value,label,description?,disabled?}`. DateRangePicker uses Send’s custom calendar and `{start,end}` local ISO dates, with linked min/max bounds and optional locale. TimePicker uses native time strings; that time input varies by browser. UploadProgress displays caller-supplied status and progress and never creates a transfer itself.
+Combobox selects existing options and accepts custom text with allowCustom; its multiple mode stores string arrays. Arrow keys move, Enter selects, Escape closes, and selected chips are removable. Options use `{value,label,description?,disabled?}`. DateRangePicker uses Send’s custom calendar and `{start,end}` local ISO dates, with linked min/max bounds and optional locale. TimePicker uses native time strings; that time input varies by browser. UploadProgress displays caller-supplied status and progress and never creates a transfer itself.
 
 ## Tables
 
@@ -43,7 +43,7 @@ Combobox selects existing options and accepts custom text with allowCustom; Mult
 />
 ```
 
-Rows need stable `id` values or getRowKey. View state—query, filters, sort, widths, visibility, selection, pagination and expansion—lives inside DataGrid. Rows and mutations stay in the consuming application. `searchValue(row)` and `sortValue(row)` override column text/value behavior. Sorting is stable, with numeric-aware text comparison. The Columns menu cannot hide the last visible column. Header separators support pointer and arrow-key resizing (72–600px). Pinned columns stay visible during horizontal scrolling.
+Rows need stable `id` values or getRowKey. View state, query, filters, sort, widths, visibility, selection, pagination and expansion, lives inside DataGrid. Rows and mutations stay in the consuming application. `searchValue(row)` and `sortValue(row)` override column text/value behavior. Sorting is stable, with numeric-aware text comparison. The Columns menu cannot hide the last visible column. Header separators support pointer and arrow-key resizing (72–600px). Pinned columns stay visible during horizontal scrolling.
 
 For larger already-loaded datasets use `virtual height={320} rowHeight={40}`. This renders a small window plus overscan, not all rows. Content must fit the fixed row height. Variable-height expansion disables virtualization. Search/filter/sort operate on the supplied local rows; this is not server pagination or a million-row query engine. For server tables, use DataTable with caller-owned rows, sort and selection instead.
 
@@ -60,7 +60,7 @@ Popover supports nesting. Closing an inner popover leaves its parent open; Escap
 - SettingsPanel accepts sections with React control slots and actions.
 - TeamDirectory accepts members plus optional async onInvite/onRoleChange/onRemove callbacks. Rejected mutations show errors; removal uses useConfirm.
 - FileManager accepts files and optional onUpload/onOpen/onDownload/onDelete callbacks. Upload receives native File objects. No file data leaves the browser until your callback sends it.
-- ActivityFeed displays caller-owned events and formatted timestamps.
+- Timeline displays caller-owned events and formatted timestamps.
 - SupportInbox accepts threads, selected ID and optional async onReply. The caller appends persisted messages; errors preserve the draft. Switching threads clears the draft.
 
 The starter uses local React state and explicitly labels this. Wire callbacks to your authenticated API for production. The library cannot infer authorization, persistence, invitation delivery or transfer completion.
@@ -69,6 +69,6 @@ The starter uses local React state and explicitly labels this. Wire callbacks to
 
 Run check, typecheck, test and build. Browser checks cover key interactions at desktop and a 390px viewport, with both themes reviewed. Visual baselines and `npm run visual:compare` help catch spacing and density regressions; candidate capture is manual, not an automated CI browser job. Physical-device gesture feel, exhaustive screen-reader behavior and accessibility conformance remain unverified.
 
-For remote option lookup, use the existing SearchSelect `load(query)` callback and handle authentication/cancellation in your application. Combobox/MultiSelect are intended for already-loaded option lists. The implementation workbench edits listed props and emits imports, option data, controlled state and callbacks; it does not execute arbitrary JSX. Full custom render functions belong in your application code.
+For remote option lookup, use the existing SearchSelect `load(query)` callback and handle authentication/cancellation in your application. Combobox are intended for already-loaded option lists. The implementation workbench edits listed props and emits imports, option data, controlled state and callbacks; it does not execute arbitrary JSX. Full custom render functions belong in your application code.
 
 BottomSheet fits its content by default. Pass `height={360}` (or a CSS length) when an explicit panel height is useful; long content scrolls within the viewport cap. Its body arranges direct child controls with compact gaps, so a separate form-width wrapper is unnecessary.

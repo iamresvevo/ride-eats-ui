@@ -1,38 +1,33 @@
-# Component purpose audit — v0.8
+# Component purpose audit, 0.10
 
-The goal is one implementation per interaction, with clear composition APIs. A popup shell alone does not make a useful component. This audit covers the public React exports, browser examples, types and interaction styles; it is not a claim of physical-device or accessibility conformance testing.
+One canonical public API owns each interaction. Convenience wrappers are not separate components. Nonvisual providers, hooks, compound slots and layout primitives are not advertised as additional visual designs.
 
-## Removed duplication
+## Consolidated
 
-Autocomplete duplicated Combobox with allowCustom; Collapsible duplicated one-item Accordion; Stat duplicated StatCard's inline variant; raw Modal exposed a second API over Dialog's internal engine. These four public exports and their duplicate documentation were removed. See [migration examples](migrations-v0.8.md).
+MetricGrid moved into Grid's metrics preset. Stack moved into Flex's column direction. AnimatedIcon moved into Icon motion props, and the duplicate icon-name list was removed. MultiSelect moved into Combobox's multiple mode. ActivityFeed moved into Timeline's feed layout. Chips moved into ToggleGroup's chips variant. FeedbackProvider was an exact alias and is replaced by ToastProvider. See the [migration guide](migrations-v0.10.md) for defaults and examples.
+
+The catalog has one Icon page, one Combobox page and one Timeline page. Redirects preserve old bookmarks. Removed public names are asserted absent by regression tests.
 
 ## Retained distinctions
 
-| Family | Why the APIs differ |
+| APIs | Reason |
 | --- | --- |
-| Dropdown / compound Menu | Same Send implementation; array convenience API versus custom composition. Nested options unfold in place. |
-| ContextMenu | Pointer-context or Shift+F10 actions, viewport positioning, nested choices and keyboard navigation. Shares menu motion, not global search behavior. |
-| CommandMenu | Global ranked search, groups, nested scopes, recent actions, modifier shortcuts, async pending/error recovery. The demo edits real local workspace state. |
-| Popover | Anchored rich content with caller-owned controls, rather than command selection. Nested Popovers is a composition recipe. |
-| Dialog / Drawer / BottomSheet | One native focus/stack engine, with centered decision, side workspace, or mobile bottom-sheet presentation and gesture behavior. Stacked Dialogs is a recipe. |
-| Tabs / Segmented / Chips / ToggleGroup | Panels, single form choice, removable filters, and one/multiple toggle choices respectively. Shared styling does not imply identical semantics. |
-| Select / Combobox / SearchSelect / MultiSelect | Simple native choice, searchable local choice with optional custom text, async remote search, and array selection. |
-| Form / Field / Textarea | Form state and validation, field association, and multiline input. Input primitives retain native props. |
-| DataTable / DataGrid | Caller-controlled table primitive for server state versus local search/filter/sort/selection/columns/windowing. DataGrid composes DataTable conventions. |
-| Card / Tile / StatCard / SettingRow | Content grouping, navigable destination, metric presentation, and setting/action alignment. MetricGrid supplies responsive layout. |
-| Skeleton / Progress / UploadProgress | Unknown content, bounded progress, and caller-owned transfer lifecycle with retry/cancel slots. |
-| Icon / AnimatedIcon | Static/custom glyph rendering versus explicit SVG motion. Catalog glyphs use a shared stroke trace; curated glyphs have tailored motion. Vendor artwork remains attributed. |
-| ReorderList / SwipeActions / Carousel / SplitPane | Different drag constraints and keyboard alternatives. Gestures never trigger destructive actions by merely revealing them. |
-| SettingsPanel / TeamDirectory / FileManager / SupportInbox | Reusable task workflows over caller-owned data and callbacks. No library network endpoints or simulated backend persistence. |
+| Tabs / SectionNav | Associated content panels versus in-page anchor destinations and scroll tracking |
+| RadioGroup / Segmented / ToggleGroup | Native rich form radio choices, compact animated radio choices, and optional/multiple pressed buttons |
+| Select / Combobox / SearchSelect | Simple choices, searchable local choices, and remote asynchronous lookup |
+| DataTable / DataGrid | Caller-owned table state versus a locally managed search/filter/columns/windowing tool |
+| Card / Tile / StatCard | Content grouping, selectable/actionable destination, and metric presentation |
+| Dialog / Drawer / BottomSheet | Shared modal engine with different placement and sheet gesture behavior |
+| Progress / UploadProgress | Numeric progress versus a caller-owned per-file transfer lifecycle |
+| Grid / Flex / Masonry / SplitPane / Workbench | Grid tracks, flex flow, packed columns, draggable division, and bounded editor panes |
+| Skeleton / PageLoading | Content-shaped placeholders versus a delayed initial-page loading indicator |
+| ShortcutRecorder / TextDiffViewer | Key capture/review/conflict handling versus actual revision matching and comparison |
+| ImageCompare / TreeView / SignaturePad / ActivityHeatmap | Paired image inspection, hierarchical navigation, vector strokes, and daily history |
 
-Dashboard Layout, Nested Popovers and Stacked Dialogs live under Recipes. Workflows have their own navigation category. They are excluded from the component-reference count.
+Toolbar owns leading/trailing controls and labelled-field baseline alignment. ScrollArea owns a labelled native scrolling region with persistent control slots. These are layout APIs, not independent themed designs. Compound Card/Menu slots remain compositional APIs rather than extra catalog entries.
 
-## Motion contract
+## Functionality and motion
 
-Controls animate meaningful state changes. Send menus retain entry/exit presence and unfolding submenus. Native Popover, ContextMenu and Combobox lists use top-layer-preserving discrete display/overlay transitions so closing does not vanish instantly. Context submenu rows remain mounted, inert and hidden from assistive technology while collapsed. Dialog stacking uses one native engine; swipe content slides smoothly beside compact pill actions. Selection/focus/hover colors transition without animating static reading content.
+SVG geometry, icon triggers/replay/looping, measured tab and segmented motion, menu presence/submenus, dialog stacking, focus handling and reduced-motion rules remain intact. Chips were never removable tokens; that obsolete claim has been corrected. Selection-removal chips belong to Combobox multiple mode.
 
-Selected icon previews run once immediately, with Replay and opt-in Loop. SVG paths animate internally; the SVG viewport stays steady. Reduced-motion preferences suppress nonessential movement. CSS native-popover exit transitions depend on modern discrete-transition support; unsupported browsers retain functional immediate dismissal.
-
-## Integration priorities
-
-Import styles once. Use controlled values and callbacks, stable IDs and native props. Theme through CSS tokens, then className/style and render slots. Keep network requests and permissions in the consuming application. Prefer the canonical primitive before adding another export with the same behavior.
+Workflows remain a separate catalog category. Recipes remain recipes. The source map distinguishes actual Send extractions from independently implemented tools. A build or browser preview is not physical-device or accessibility conformance certification.

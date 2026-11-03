@@ -356,9 +356,6 @@ export function Combobox({
     </div>
   );
 }
-export function MultiSelect(props) {
-  return <Combobox {...props} multiple />;
-}
 // Parse and serialize calendar dates in local time; UTC parsing shifts dates west of Greenwich.
 const dateSeconds = (value) =>
   value ? new Date(value + "T12:00:00").getTime() / 1000 : undefined;

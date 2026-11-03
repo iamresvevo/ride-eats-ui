@@ -30,7 +30,6 @@
         "Dropdown",
         "Tabs",
         "Segmented",
-        "Chips",
         "Pagination",
         "Breadcrumbs",
         "WorkspaceSwitcher",
@@ -67,7 +66,6 @@
         "Textarea",
         "Form",
         "Combobox",
-        "MultiSelect",
         "DateRangePicker",
         "TimePicker",
         "RangeSlider"
@@ -100,7 +98,6 @@
         "CardHeader",
         "CardBody",
         "CardFooter",
-        "MetricGrid",
         "StatCard",
         "Tile",
         "PageHeader",
@@ -114,15 +111,12 @@
         "VerifiedName",
         "Badge",
         "Timeline",
-        "ActivityFeed",
         "Icon",
-        "AnimatedIcon",
         "IconProvider",
         "Accordion",
         "PageLoading",
         "Tooltips",
         "Grid",
-        "Stack",
         "Flex",
         "Masonry",
         "ScrollArea",
@@ -155,9 +149,7 @@
         "ThemeProvider",
         "useTheme",
         "useDebounce",
-        "FeedbackProvider",
         "useFeedback",
-        "animatedIconNames",
         "iconNames"
       ]
     },
@@ -167,12 +159,22 @@
         "ImageCompare",
         "TreeView",
         "SignaturePad",
-        "ActivityHeatmap"
+        "ActivityHeatmap",
+        "ShortcutRecorder",
+        "TextDiffViewer"
       ]
     }
   },
   "removed": {
     "Steps": "Use application-owned flow state and existing navigation/form components. No additional wizard abstraction.",
-    "Separator": "Use a semantic hr or an owning layout separator; MenuSeparator stays inside the Menu compound API."
+    "Separator": "Use a semantic hr or an owning layout separator; MenuSeparator stays inside the Menu compound API.",
+    "MetricGrid": "Grid preset=\"metrics\"",
+    "Stack": "Flex direction=\"column\"",
+    "AnimatedIcon": "Icon motion=\"auto\"",
+    "animatedIconNames": "iconNames",
+    "MultiSelect": "Combobox multiple",
+    "ActivityFeed": "Timeline variant=\"feed\"",
+    "FeedbackProvider": "ToastProvider",
+    "Chips": "ToggleGroup variant=\"chips\""
   }
 }

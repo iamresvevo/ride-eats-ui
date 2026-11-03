@@ -5,7 +5,7 @@ import {
   Header,
   Button,
   PageHeader,
-  MetricGrid,
+  Grid,
   StatCard,
   Card,
   DataTable,
@@ -95,7 +95,7 @@ function Workspace() {
             </Button>
           }
         />
-        <MetricGrid>
+        <Grid preset="metrics">
           <StatCard
             label="Folders"
             value={rows.length}
@@ -107,7 +107,7 @@ function Workspace() {
             tone="good"
           />
           <StatCard label="Team members" value="3" icon="users" />
-        </MetricGrid>
+        </Grid>
         <Card
           title="Folders"
           description="A working example with your own data and callbacks."

@@ -1,6 +1,6 @@
-import { build } from "vite";
-import { spawnSync } from "node:child_process";
-import { rmSync } from "node:fs";
+import {build} from "vite";
+import {spawnSync} from "node:child_process";
+import {rmSync} from "node:fs";
 try {
   await build({
     configFile: false,

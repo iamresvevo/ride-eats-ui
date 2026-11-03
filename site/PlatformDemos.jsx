@@ -301,26 +301,22 @@ export default function PlatformDemos({ id }) {
       );
     case "combobox":
       return (
-        <div className="platform-form-demo">
+        <UI.Flex direction="column" style={{ width: "100%", maxWidth: 420 }}>
           <UI.Combobox
             label="Assignee"
             options={people}
             value={person}
             onValueChange={setPerson}
           />
-        </div>
-      );
-    case "multi-select":
-      return (
-        <div className="platform-form-demo">
-          <UI.MultiSelect
+          <UI.Combobox
+            multiple
             label="Notify teammates"
             options={people}
             value={teams}
             onValueChange={setTeams}
             hint="Choose one or more people."
           />
-        </div>
+        </UI.Flex>
       );
     case "date-range-picker":
       return (
@@ -506,7 +502,7 @@ export default function PlatformDemos({ id }) {
             actions={notification}
           >
             {view === "activity" ? (
-              <UI.ActivityFeed items={activity} />
+              <UI.Timeline variant="feed" items={activity} />
             ) : (
               <>
                 <div className="re-workflow-heading">
@@ -521,7 +517,7 @@ export default function PlatformDemos({ id }) {
                 </div>
                 {view === "overview" ? (
                   <>
-                    <UI.MetricGrid columns={3}>
+                    <UI.Grid preset="metrics" columns={3}>
                       <UI.StatCard
                         label="Files"
                         value="24"
@@ -533,8 +529,8 @@ export default function PlatformDemos({ id }) {
                         value="2.4 GB"
                         hint="Of 10 GB"
                       />
-                    </UI.MetricGrid>
-                    <UI.ActivityFeed items={activity.slice(0, 2)} />
+                    </UI.Grid>
+                    <UI.Timeline variant="feed" items={activity.slice(0, 2)} />
                   </>
                 ) : (
                   <UI.DataGrid
@@ -783,12 +779,6 @@ export default function PlatformDemos({ id }) {
               )
             }
           />
-        </div>
-      );
-    case "activity-feed":
-      return (
-        <div className="platform-form-demo">
-          <UI.ActivityFeed items={activity} />
         </div>
       );
     case "support-inbox":

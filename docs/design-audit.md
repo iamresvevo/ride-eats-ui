@@ -1,4 +1,4 @@
-# Send / Tools audit — v0.9
+# Send / Tools audit. v0.9
 
 This audit covers every public React API and documentation page, including workflows and composition recipes. The machine-readable inventory is [design-audit.json](design-audit.json); family ownership is in [design/contract.json](../design/contract.json). Nonvisual hooks, providers and icon-name lists are counted as APIs, not additional visual components.
 
@@ -38,7 +38,7 @@ Every API belongs to one family below. Recipes use the same primitives rather th
 
 Send Header/AccountMenu/Segmented/Menu and Tools tabs/chips/stickyBar.
 
-`Header`, `AccountMenu`, `Menu`, `MenuItem`, `MenuSub`, `MenuLabel`, `MenuSeparator`, `Dropdown`, `Tabs`, `Segmented`, `Chips`, `Pagination`, `Breadcrumbs`, `WorkspaceSwitcher`, `AppShell`, `StickyBar`, `CommandMenu`.
+`Header`, `AccountMenu`, `Menu`, `MenuItem`, `MenuSub`, `MenuLabel`, `MenuSeparator`, `Dropdown`, `Tabs`, `Segmented`, `ToggleGroup`, `Pagination`, `Breadcrumbs`, `WorkspaceSwitcher`, `AppShell`, `StickyBar`, `CommandMenu`.
 
 ### actions
 
@@ -50,7 +50,7 @@ Send ActionButton and Tools pill actions; derivative controls use the same token
 
 Send Field/Switch/DateTimePicker; local and remote selectors retain their distinct data semantics.
 
-`Field`, `Switch`, `Select`, `SearchSelect`, `DateTimePicker`, `Checkbox`, `RadioGroup`, `Slider`, `PasswordInput`, `NumberInput`, `FileDropzone`, `PinInput`, `Rating`, `Textarea`, `Form`, `Combobox`, `MultiSelect`, `DateRangePicker`, `TimePicker`, `RangeSlider`.
+`Field`, `Switch`, `Select`, `SearchSelect`, `DateTimePicker`, `Checkbox`, `RadioGroup`, `Slider`, `PasswordInput`, `NumberInput`, `FileDropzone`, `PinInput`, `Rating`, `Textarea`, `Form`, `Combobox`, `Combobox`, `DateRangePicker`, `TimePicker`, `RangeSlider`.
 
 ### feedback
 
@@ -62,7 +62,7 @@ Send native Modal, feedback depth stack, skeletons, empty states; shared presenc
 
 Tools Cards/stats/table structure, Send identity and vendored icon geometry.
 
-`Card`, `CardHeader`, `CardBody`, `CardFooter`, `MetricGrid`, `StatCard`, `Tile`, `PageHeader`, `Toolbar`, `SettingRow`, `DataTable`, `DataGrid`, `Avatar`, `AvatarGroup`, `VerificationBadge`, `VerifiedName`, `Badge`, `Timeline`, `ActivityFeed`, `Icon`, `AnimatedIcon`, `IconProvider`, `Accordion`, `PageLoading`, `Tooltips`.
+`Card`, `CardHeader`, `CardBody`, `CardFooter`, `Grid`, `StatCard`, `Tile`, `PageHeader`, `Toolbar`, `SettingRow`, `DataTable`, `DataGrid`, `Avatar`, `AvatarGroup`, `VerificationBadge`, `VerifiedName`, `Badge`, `Timeline`, `Timeline`, `Icon`, `Icon`, `IconProvider`, `Accordion`, `PageLoading`, `Tooltips`.
 
 ### gestures
 
@@ -80,7 +80,7 @@ Compositions of the audited controls; caller data/callbacks remain application-o
 
 Nonvisual integration APIs; no independent design surface.
 
-`UIProvider`, `ThemeProvider`, `useTheme`, `useDebounce`, `FeedbackProvider`, `useFeedback`, `animatedIconNames`, `iconNames`.
+`UIProvider`, `ThemeProvider`, `useTheme`, `useDebounce`, `ToastProvider`, `useFeedback`, `iconNames`, `iconNames`.
 
 ## Documentation coverage
 
@@ -106,7 +106,7 @@ Each page was loaded in light and dark desktop layouts and in a 390px narrow lay
 | [Field](https://iamresvevo.github.io/ride-eats-ui/#field) | Inputs | [react/index.jsx](../react/index.jsx) |
 | [Badge](https://iamresvevo.github.io/ride-eats-ui/#badge) | Display | [react/index.jsx](../react/index.jsx) |
 | [Empty State](https://iamresvevo.github.io/ride-eats-ui/#empty) | Feedback | [react/send/ui/EmptyState.jsx](../react/send/ui/EmptyState.jsx) |
-| [Chips](https://iamresvevo.github.io/ride-eats-ui/#chips) | Navigation | [react/index.jsx](../react/index.jsx) |
+| [ToggleGroup](https://iamresvevo.github.io/ride-eats-ui/#chips) | Navigation | [react/index.jsx](../react/index.jsx) |
 | [Card](https://iamresvevo.github.io/ride-eats-ui/#card) | Layout | [react/index.jsx](../react/index.jsx) |
 | [Icon Library](https://iamresvevo.github.io/ride-eats-ui/#icons) | Display | [react/send/Icon.jsx](../react/send/Icon.jsx) |
 | [Data Table](https://iamresvevo.github.io/ride-eats-ui/#data-table) | Display | [react/collection.jsx](../react/collection.jsx) |
