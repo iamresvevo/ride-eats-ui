@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.9.12
+npm install github:iamresvevo/ride-eats-ui#v0.9.13
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -46,6 +46,10 @@ import { UIProvider } from "@ride-eats/ui";
   <App />
 </UIProvider>;
 ```
+
+## Responsive layouts
+
+Use `Grid layout="sidebar" sidebarWidth={280}`, `Grid layout="aside" sidebarWidth={360}`, or `Grid layout="split" ratio={[2,3]}` to preserve compact fixed-side or proportional screen layouts. Compose vertical content with `Stack gap={12}`, wrapping rows with `Flex`, or varying-height card collections with `Masonry min={240} columns={3}`. Selectable lists can use `Tile variant="row"`; existing-image uploads can use `FileDropzone variant="compact" preview={url}`. See the [layout preview](https://iamresvevo.github.io/ride-eats-ui/#layout).
 
 ## Header
 

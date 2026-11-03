@@ -114,6 +114,7 @@ export function Tabs(
     value: string;
     onValueChange: (value: string) => void;
     label?: string;
+    width?: "fit" | "full";
   },
 ): React.ReactElement;
 export function Chips(
@@ -260,6 +261,7 @@ export function Card(
 export function Field(
   props: StylingProps & {
     label: React.ReactNode;
+    labelHidden?: boolean;
     hint?: React.ReactNode;
     error?: React.ReactNode;
     id?: string;
@@ -472,6 +474,9 @@ export function FileDropzone(
     multiple?: boolean;
     disabled?: boolean;
     maxSize?: number;
+    variant?: "default" | "compact";
+    preview?: string;
+    previewAlt?: string;
     label?: React.ReactNode;
     description?: React.ReactNode;
   },
@@ -544,6 +549,38 @@ export function CardBody(
 export function CardFooter(
   props: React.HTMLAttributes<HTMLDivElement>,
 ): React.ReactElement;
+export function Flex(
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    direction?: "row" | "column";
+    gap?: number;
+    align?: "start" | "end" | "center" | "stretch" | "baseline";
+    justify?: "start" | "end" | "center" | "between" | "around" | "evenly";
+    wrap?: boolean;
+  },
+): React.ReactElement;
+export function Masonry(
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    min?: number;
+    columns?: number;
+    gap?: number;
+  },
+): React.ReactElement;
+export function Grid(
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    min?: number;
+    layout?: "auto" | "sidebar" | "aside" | "split";
+    sidebarWidth?: number;
+    ratio?: [number, number];
+    gap?: number;
+    align?: "start" | "center" | "end" | "stretch";
+  },
+): React.ReactElement;
+export function Stack(
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    gap?: number;
+    align?: "start" | "center" | "end" | "stretch";
+  },
+): React.ReactElement;
 export function MetricGrid(
   props: React.HTMLAttributes<HTMLDivElement> & { minWidth?: number },
 ): React.ReactElement;
@@ -572,6 +609,8 @@ export function Tile(
     href?: string;
     onClick?: React.MouseEventHandler;
     disabled?: boolean;
+    variant?: "default" | "row";
+    selected?: boolean;
   },
 ): React.ReactElement;
 export function PageHeader(

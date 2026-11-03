@@ -18,6 +18,61 @@ const entry = (
 });
 export const collectionPages = [
   entry(
+    "masonry",
+    "Masonry",
+    "Layout",
+    "Variable-height cards flow down responsive columns without splitting a card. Source and keyboard order run down each column.",
+    `<Masonry min={240} columns={3} gap={16}>
+ <Card title="Short card">A short note.</Card>
+ <Card title="Longer card">More content can take its natural height while the next card packs below it.</Card>
+ <Card title="Another card">Content stays intact.</Card>
+</Masonry>`,
+    [
+      [
+        "min",
+        "number",
+        "Preferred minimum column width. Columns shrink to fit narrow containers.",
+      ],
+      [
+        "columns",
+        "number",
+        "Maximum columns; actual count adapts to available width.",
+      ],
+      ["gap", "number", "Shared horizontal and vertical spacing."],
+    ],
+    "Masonry, Card",
+  ),
+
+  entry(
+    "layout",
+    "Layouts",
+    "Layout",
+    "Responsive fixed-side, proportional and wrapping layouts, natural-width tabs, compact selectable rows and image uploads.",
+    `<Grid layout="sidebar" sidebarWidth={280}>
+  <Card title="Seasons"><Stack gap={4}><Tile variant="row" selected title="Diwali" description="Scheduled" onClick={()=>{}} /></Stack></Card>
+  <Card title="Details"><FileDropzone variant="compact" label="Main logo" onFiles={()=>{}} /></Card>
+</Grid>`,
+    [
+      [
+        "layout",
+        "auto | sidebar | aside | split",
+        "Automatic tracks, fixed left or right side, or custom ratios.",
+      ],
+      [
+        "sidebarWidth / ratio",
+        "number / [number, number]",
+        "Fixed-side pixels or flexible relative track sizes.",
+      ],
+      [
+        "Stack.gap",
+        "number",
+        "Vertical rhythm without outer component margins.",
+      ],
+    ],
+    "Grid, Stack, Card, Tile, FileDropzone",
+  ),
+
+  entry(
     "icons",
     "Icon Library",
     "Display",

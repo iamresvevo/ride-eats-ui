@@ -699,10 +699,18 @@ a.tool-card:hover {
   display: inline-flex;
   gap: 4px;
   padding: 4px;
-  margin-bottom: 20px;
+  margin: 0;
+  align-self: flex-start;
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
   border-radius: var(--r-pill);
   background: var(--surface);
   box-shadow: var(--shadow-card);
+}
+.tabs-full {
+  align-self: stretch;
+  width: 100%;
 }
 /* Inside a card or dialog the bar sits on a surface already: Send's segmented control. */
 :is(.card, .modal) .tabs {

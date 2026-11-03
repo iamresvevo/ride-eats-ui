@@ -127,6 +127,7 @@ export function Field({
   hint,
   error,
   id,
+  labelHidden = false,
   children,
   className = "",
   style,
@@ -135,7 +136,12 @@ export function Field({
   const fieldId = id || children?.props?.id || generated;
   return (
     <div className={`field ${className}`} style={style}>
-      <label htmlFor={fieldId}>{label}</label>
+      <label
+        htmlFor={fieldId}
+        className={labelHidden ? "re-sr-only" : undefined}
+      >
+        {label}
+      </label>
       {React.isValidElement(children)
         ? React.cloneElement(children, {
             id: fieldId,
@@ -159,6 +165,7 @@ export function Tabs({
   value,
   onValueChange,
   label = "Tabs",
+  width = "fit",
   ...props
 }) {
   const buttons = useRef([]);
@@ -197,7 +204,7 @@ export function Tabs({
       ref={root}
       role="tablist"
       aria-label={label}
-      className={`tabs ${props.className || ""}`}
+      className={`tabs ${width === "full" ? "tabs-full" : "tabs-fit"} ${props.className || ""}`}
     >
       <span
         className="tabs-selection"

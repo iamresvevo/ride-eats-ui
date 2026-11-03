@@ -120,7 +120,11 @@
         "IconProvider",
         "Accordion",
         "PageLoading",
-        "Tooltips"
+        "Tooltips",
+        "Grid",
+        "Stack",
+        "Flex",
+        "Masonry"
       ]
     },
     "gestures": {

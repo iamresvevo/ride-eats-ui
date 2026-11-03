@@ -994,11 +994,107 @@ test("audited literal core icons render explicit SVG motion", async () => {
 });
 
 test("TimePicker uses the shared custom popup and keeps empty/disabled semantics", () => {
-  const html = render("TimePicker", {value: "09:30", onValueChange() {}, label: "Opening time"});
+  const html = render("TimePicker", {
+    value: "09:30",
+    onValueChange() {},
+    label: "Opening time",
+  });
   assert.match(html, /aria-haspopup="dialog"/);
   assert.match(html, /dtp-time/);
   assert.doesNotMatch(html, /type="time"/);
-  const empty = render("TimePicker", {value: "", disabled: true, onValueChange() {}});
+  const empty = render("TimePicker", {
+    value: "",
+    disabled: true,
+    onValueChange() {},
+  });
   assert.match(empty, /Choose time/);
   assert.match(empty, /disabled/);
+});
+
+test("page layouts expose fixed sides, proportional tracks and compact vertical rhythm", () => {
+  const sidebar = render("Grid", {
+    layout: "sidebar",
+    sidebarWidth: 280,
+    children: "Content",
+  });
+  assert.match(sidebar, /re-layout-grid-sidebar/);
+  assert.match(sidebar, /--layout-sidebar:280px/);
+  const split = render("Grid", {
+    layout: "split",
+    ratio: [2, 3],
+    children: "Content",
+  });
+  assert.match(split, /--layout-leading:2fr/);
+  assert.match(split, /--layout-trailing:3fr/);
+  assert.match(render("Stack", { gap: 4, children: "Rows" }), /gap:4px/);
+  const tabs = render("Tabs", {
+    items: [{ value: "one", label: "One" }],
+    value: "one",
+    onValueChange: () => {},
+  });
+  assert.match(tabs, /tabs-fit/);
+  assert.match(
+    render("Tabs", {
+      items: [],
+      value: "",
+      width: "full",
+      onValueChange: () => {},
+    }),
+    /tabs-full/,
+  );
+});
+test("compact selection rows and preview uploads preserve their actual controls", () => {
+  const row = render("Tile", {
+    variant: "row",
+    title: "Season",
+    description: "28 Oct – 10 Nov",
+    selected: true,
+    onClick: () => {},
+    meta: "Live",
+  });
+  assert.match(row, /re-tile-row/);
+  assert.match(row, /aria-pressed="true"/);
+  assert.match(row, /Live/);
+  assert.doesNotMatch(row, /re-tile-footer/);
+  const upload = render("FileDropzone", {
+    variant: "compact",
+    preview: "/logo.png",
+    label: "Main logo",
+    onFiles: () => {},
+    accept: "image/png",
+    multiple: false,
+  });
+  assert.match(upload, /re-dropzone-compact/);
+  assert.match(upload, /src="\/logo.png"/);
+  assert.match(upload, /type="file"/);
+  const field = render("Field", {
+    label: "Search",
+    labelHidden: true,
+    children: React.createElement("input", { id: "search" }),
+  });
+  assert.match(field, /for="search" class="re-sr-only"/);
+});
+test("masonry retains source order and intact item wrappers while flex exposes wrapping alignment", () => {
+  const html = render("Masonry", {
+    min: 240,
+    columns: 3,
+    gap: 16,
+    children: [
+      React.createElement("section", { key: "a" }, "First card"),
+      React.createElement("section", { key: "b" }, "Second card"),
+    ],
+  });
+  assert.match(html, /--masonry-min:240px/);
+  assert.match(html, /--masonry-columns:3/);
+  assert.equal((html.match(/class="re-masonry-item"/g) || []).length, 2);
+  assert.ok(html.indexOf("First card") < html.indexOf("Second card"));
+  const flex = render("Flex", {
+    justify: "between",
+    align: "end",
+    gap: 8,
+    children: "Actions",
+  });
+  assert.match(flex, /justify-content:space-between/);
+  assert.match(flex, /align-items:flex-end/);
+  assert.match(flex, /flex-wrap:wrap/);
 });

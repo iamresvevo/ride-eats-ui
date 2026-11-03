@@ -597,6 +597,101 @@ export function CollectionDemo({ id }) {
           </MetricGrid>
         </div>
       );
+    case "masonry":
+      return (
+        <UI.Masonry min={200} columns={3} gap={16}>
+          {[
+            "Quick note",
+            "Release checklist",
+            "Artwork",
+            "Team update",
+            "Next steps",
+            "Review",
+          ].map((title, i) => (
+            <Card key={title} title={title}>
+              <UI.Stack gap={8}>
+                {Array.from({ length: (i % 3) + 1 }, (_, n) => (
+                  <p key={n}>
+                    {
+                      [
+                        "A short note stays compact.",
+                        "A longer update wraps naturally and keeps its own height. The following card packs directly below it.",
+                        "Review the artwork and confirm the schedule before publishing.",
+                      ][i % 3]
+                    }
+                  </p>
+                ))}
+                <Badge>{i % 2 ? "In progress" : "Ready"}</Badge>
+              </UI.Stack>
+            </Card>
+          ))}
+        </UI.Masonry>
+      );
+    case "layout":
+      return (
+        <UI.Stack gap={16}>
+          <UI.Tabs
+            label="Layout options"
+            value={value}
+            onValueChange={setValue}
+            items={[
+              { value: "delivery", label: "Narrow left" },
+              { value: "aside", label: "Narrow right" },
+              { value: "split", label: "2 : 3 split" },
+            ]}
+          />
+          <UI.Grid
+            layout={value === "delivery" ? "sidebar" : value}
+            sidebarWidth={260}
+            ratio={[2, 3]}
+          >
+            <Card title="Seasons">
+              <UI.Stack gap={4}>
+                <Tile
+                  variant="row"
+                  title="A little light, a lot of joy"
+                  description="28 Oct – 10 Nov"
+                  selected
+                  onClick={() => {}}
+                  meta={<Badge tone="good">Live</Badge>}
+                />
+                <Tile
+                  variant="row"
+                  title="A little spooky, a lot of fun"
+                  description="27 Oct – 1 Nov"
+                  onClick={() => {}}
+                  meta={<Badge>Ended</Badge>}
+                />
+              </UI.Stack>
+            </Card>
+            <Card
+              title="Season details"
+              action={
+                <UI.Flex gap={8}>
+                  <Button size="sm">Save</Button>
+                  <Button size="sm" variant="ghost">
+                    Cancel
+                  </Button>
+                </UI.Flex>
+              }
+            >
+              <UI.Textarea
+                label="Message"
+                defaultValue="A short message for the season."
+              />
+              <UI.FileDropzone
+                variant="compact"
+                label="Main logo"
+                description="PNG image · up to 2 MB"
+                accept="image/png"
+                maxSize={2 * 1024 * 1024}
+                multiple={false}
+                onFiles={setFiles}
+              />
+            </Card>
+          </UI.Grid>
+        </UI.Stack>
+      );
     case "tiles":
       return (
         <MetricGrid minWidth={220}>

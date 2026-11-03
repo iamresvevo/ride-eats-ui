@@ -235,3 +235,13 @@ Tabs uses Send’s single moving selection surface, including its directional st
 ```
 
 Segmented accepts label, icon, name, options, value, onChange, disabled and fit. It retains radiogroup semantics; use Tabs for content panels.
+
+## Compact responsive layouts
+
+`Grid` and `Stack` own page, form and sidebar geometry. `Grid layout="sidebar" sidebarWidth={280}` gives a narrow left side and a flexible right side; `layout="aside"` reverses it. `layout="split" ratio={[2,3]}` uses proportional tracks. These split modes stack below 800px. Automatic grids retain the `min` minimum item width. Both expose `gap`; Grid also exposes `align`.
+
+Tabs fit their content inside vertical stacks by default; opt into `width="full"` when the full-width rail is intentional. Tabs have no outer margin. CardHeader centers actions with its title and wraps on narrow surfaces. Use `Field labelHidden` to retain an accessible label without adding a visible label above header search controls.
+
+For compact selection lists, use `Tile variant="row" selected={selected}` with optional image, description and meta. It renders one selectable row, without the default tile footer. `FileDropzone variant="compact" preview={imageUrl}` places an existing image beside its upload label and hint; the default dropzone remains available. Uploads fill their parent width.
+
+`Flex` provides wrapping action rows with `direction`, `align`, `justify`, `gap` and `wrap`. Use `Masonry min={240} columns={3} gap={16}` for varying-height cards; it adapts the number of columns and keeps each card intact. Masonry source/keyboard order runs down columns; use Grid when content needs row alignment. Use the existing SplitPane when users need drag-resizable panels.

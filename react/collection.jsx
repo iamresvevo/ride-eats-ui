@@ -475,6 +475,9 @@ export function FileDropzone({
   multiple = true,
   disabled = false,
   maxSize = 10 * 1024 * 1024,
+  variant = "default",
+  preview,
+  previewAlt = "Selected image preview",
   label = "Drop your files here",
   description = "or browse from your device",
   className = "",
@@ -517,7 +520,10 @@ export function FileDropzone({
     onFiles(all);
   };
   return (
-    <div className={`re-dropzone-wrap ${className}`} style={style}>
+    <div
+      className={`re-dropzone-wrap re-dropzone-${variant} ${className}`}
+      style={style}
+    >
       <button
         type="button"
         className={`re-dropzone ${dragging ? "is-dragging" : ""}`}
@@ -546,14 +552,20 @@ export function FileDropzone({
         }}
       >
         <span className="re-drop-icon">
-          <Icon name="upload" />
+          {preview ? (
+            <img src={preview} alt={previewAlt} />
+          ) : (
+            <Icon name="upload" />
+          )}
         </span>
-        <strong>{label}</strong>
-        <span id={`${id}-hint`}>{description}</span>
-        <small>
-          {accept || "Any file type"} · Up to{" "}
-          {Math.round(maxSize / 1024 / 1024)} MB each
-        </small>
+        <span className="re-drop-copy">
+          <strong>{label}</strong>
+          <span id={`${id}-hint`}>{description}</span>
+          <small>
+            {accept || "Any file type"} · Up to{" "}
+            {Math.round(maxSize / 1024 / 1024)} MB each
+          </small>
+        </span>
       </button>
       <input
         ref={input}
@@ -829,6 +841,123 @@ export function CardFooter({ children, className = "", ...props }) {
     </div>
   );
 }
+/** Responsive page/form layout. Sidebar modes collapse at narrow widths. */
+export function Grid({
+  children,
+  min = 260,
+  layout = "auto",
+  sidebarWidth = 320,
+  ratio = [1, 1],
+  gap = 20,
+  align = "start",
+  className = "",
+  style,
+  ...props
+}) {
+  return (
+    <div
+      {...props}
+      className={`re-layout-grid re-layout-grid-${layout} ${className}`}
+      style={{
+        "--layout-min": `${min}px`,
+        "--layout-gap": `${gap}px`,
+        "--layout-sidebar": `${sidebarWidth}px`,
+        "--layout-leading": `${Math.max(0.01, Number(ratio[0]) || 1)}fr`,
+        "--layout-trailing": `${Math.max(0.01, Number(ratio[1]) || 1)}fr`,
+        alignItems: align,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+/** Wrapping action rows and general flex composition. */
+export function Flex({
+  children,
+  direction = "row",
+  gap = 12,
+  align = "center",
+  justify = "start",
+  wrap = true,
+  className = "",
+  style,
+  ...props
+}) {
+  const positions = {
+    start: "flex-start",
+    end: "flex-end",
+    between: "space-between",
+    around: "space-around",
+    evenly: "space-evenly",
+  };
+  return (
+    <div
+      {...props}
+      className={`re-flex ${className}`}
+      style={{
+        display: "flex",
+        flexDirection: direction,
+        gap: `${gap}px`,
+        alignItems: positions[align] || align,
+        justifyContent: positions[justify] || justify,
+        flexWrap: wrap ? "wrap" : "nowrap",
+        minWidth: 0,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+/** Variable-height cards flow down each column without splitting interactive content. */
+export function Masonry({
+  children,
+  min = 260,
+  columns = 3,
+  gap = 20,
+  className = "",
+  style,
+  ...props
+}) {
+  return (
+    <div
+      {...props}
+      className={`re-masonry ${className}`}
+      style={{
+        "--masonry-min": `${Math.max(1, min)}px`,
+        "--masonry-columns": Math.max(1, columns),
+        "--masonry-gap": `${Math.max(0, gap)}px`,
+        ...style,
+      }}
+    >
+      {React.Children.map(children, (child) =>
+        child == null ? null : <div className="re-masonry-item">{child}</div>,
+      )}
+    </div>
+  );
+}
+
+/** Vertical composition; controls keep their own outer spacing at zero. */
+export function Stack({
+  children,
+  gap = 12,
+  align = "stretch",
+  className = "",
+  style,
+  ...props
+}) {
+  return (
+    <div
+      {...props}
+      className={`re-stack ${className}`}
+      style={{ gap: `${gap}px`, alignItems: align, ...style }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function MetricGrid({
   children,
   minWidth = 170,
@@ -941,10 +1070,36 @@ export function Tile({
   href,
   onClick,
   disabled = false,
+  variant = "default",
+  selected = false,
   className = "",
   ...props
 }) {
   const Tag = href ? "a" : onClick ? "button" : "article";
+  if (variant === "row")
+    return (
+      <Tag
+        {...props}
+        href={disabled ? undefined : href}
+        type={onClick ? "button" : undefined}
+        onClick={disabled ? undefined : onClick}
+        disabled={onClick ? disabled : undefined}
+        aria-disabled={disabled || undefined}
+        aria-pressed={onClick ? selected : undefined}
+        data-selected={selected || undefined}
+        className={`re-tile re-tile-row ${href || onClick ? "is-interactive" : ""} ${className}`}
+      >
+        <span className="re-tile-icon">
+          {image ? <img src={image} alt="" /> : <Icon name={icon} />}
+        </span>
+        <span className="re-tile-copy">
+          <strong>{title}</strong>
+          {description && <span>{description}</span>}
+        </span>
+        {meta && <span className="re-tile-meta">{meta}</span>}
+        {footer && <span className="re-tile-row-footer">{footer}</span>}
+      </Tag>
+    );
   return (
     <Tag
       {...props}
