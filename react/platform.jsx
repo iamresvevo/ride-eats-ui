@@ -234,7 +234,7 @@ export function BottomSheet({
   title,
   children,
   footer,
-  height = 360,
+  height = "auto",
   className = "",
   style,
 }) {

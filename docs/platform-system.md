@@ -70,3 +70,5 @@ The starter uses local React state and explicitly labels this. Wire callbacks to
 Run check, typecheck, test and build. Browser checks cover key interactions at desktop and a 390px viewport, with both themes reviewed. Visual baselines and `npm run visual:compare` help catch spacing and density regressions; candidate capture is manual, not an automated CI browser job. Physical-device gesture feel, exhaustive screen-reader behavior and accessibility conformance remain unverified.
 
 For remote option lookup, use the existing SearchSelect `load(query)` callback and handle authentication/cancellation in your application. Combobox/MultiSelect are intended for already-loaded option lists. The implementation workbench edits listed props and emits imports, option data, controlled state and callbacks; it does not execute arbitrary JSX. Full custom render functions belong in your application code.
+
+BottomSheet fits its content by default. Pass `height={360}` (or a CSS length) when an explicit panel height is useful; long content scrolls within the viewport cap. Its body arranges direct child controls with compact gaps, so a separate form-width wrapper is unnecessary.

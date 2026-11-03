@@ -262,7 +262,7 @@ export const platformPages = [
     "Bottom Sheet",
     "Feedback",
     "A compact native modal sheet. Drag the handle or header down to dismiss; short pulls smoothly return, press the handle, use Close, or press Escape. It keeps the real dialog mounted through exits.",
-    `<BottomSheet open={open} onClose={() => setOpen(false)} title="Transfer settings" footer={<Button onClick={save}>Save changes</Button>}>\n  Your settings\n</BottomSheet>`,
+    `<BottomSheet open={open} onClose={() => setOpen(false)} title="Transfer settings" footer={<Button variant="primary" onClick={save}>Save changes</Button>}>\n  Your settings\n</BottomSheet>`,
     [
       [
         "open / onClose",
@@ -277,7 +277,7 @@ export const platformPages = [
       [
         "height",
         "number | CSS length",
-        "Defaults to 360px and is constrained by the viewport.",
+        "Fits content by default. Pass a height for a larger sheet; viewport limits and body scrolling remain active.",
       ],
     ],
     "BottomSheet, Button",

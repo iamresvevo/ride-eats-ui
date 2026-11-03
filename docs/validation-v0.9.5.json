@@ -1,0 +1,18 @@
+{
+  "version": "0.9.5",
+  "change": "Content-sized BottomSheet with full-width direct child controls and an accent primary action in the example",
+  "checks": [
+    "module/import checks",
+    "design contract",
+    "TypeScript",
+    "28 tests",
+    "production build",
+    "Browser: 255px content-sized sheet, 520px input/body width, drag dismissal",
+    "Two independent screenshot comparisons in light/dark",
+    "390px viewport: 255px height, 350px input width, no document overflow"
+  ],
+  "limits": [
+    "Explicit height remains caller configurable",
+    "Physical touch-device feel remains unverified"
+  ]
+}

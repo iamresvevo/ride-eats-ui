@@ -836,7 +836,7 @@ Feedback. A compact native modal sheet. Drag the handle or header down to dismis
 ```jsx
 import { BottomSheet, Button } from '@ride-eats/ui';
 
-<BottomSheet open={open} onClose={() => setOpen(false)} title="Transfer settings" footer={<Button onClick={save}>Save changes</Button>}>
+<BottomSheet open={open} onClose={() => setOpen(false)} title="Transfer settings" footer={<Button variant="primary" onClick={save}>Save changes</Button>}>
   Your settings
 </BottomSheet>
 ```
@@ -845,7 +845,7 @@ import { BottomSheet, Button } from '@ride-eats/ui';
 | --- | --- | --- |
 | open / onClose | controlled state | Keep mounted for animated exits and focus restoration. |
 | title / children / footer | ReactNode | Accessible heading, content and actions. |
-| height | number | CSS length | Defaults to 360px and is constrained by the viewport. |
+| height | number | CSS length | Fits content by default. Pass a height for a larger sheet; viewport limits and body scrolling remain active. |
 
 ## Context Menu
 

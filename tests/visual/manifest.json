@@ -43,9 +43,10 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1086
+        "height": 1105
       },
-      "state": "Settings sheet open after its entry settles."
+      "state": "Content-sized sheet open, full-width form and primary accent save action.",
+      "version": "0.9.5"
     },
     {
       "file": "bottom-sheet-light.jpg",
@@ -58,9 +59,10 @@
       "fullPage": true,
       "image": {
         "width": 1280,
-        "height": 1086
+        "height": 1105
       },
-      "state": "Settings sheet open after its entry settles."
+      "state": "Content-sized sheet open, full-width form and primary accent save action.",
+      "version": "0.9.5"
     },
     {
       "file": "data-grid-dark.jpg",

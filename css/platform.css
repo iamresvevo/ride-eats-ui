@@ -737,6 +737,9 @@
   background: var(--line-strong);
 }
 .re-sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   overflow: auto;
   flex: 1;
   min-height: 0;

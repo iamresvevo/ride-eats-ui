@@ -122,6 +122,7 @@ export default function PlatformDemos({ id }) {
     [tag, setTag] = useState(""),
     [text, setText] = useState(""),
     [workspaceName, setWorkspaceName] = useState("Design Studio"),
+    [transferName, setTransferName] = useState("Brand assets"),
     [range, setRange] = useState({ start: "2026-11-02", end: "2026-11-09" }),
     [time, setTime] = useState("09:00"),
     [saved, setSaved] = useState(false),
@@ -566,6 +567,7 @@ export default function PlatformDemos({ id }) {
             title="Transfer settings"
             footer={
               <UI.Button
+                variant="primary"
                 size="sm"
                 onClick={() => {
                   setSheet(false);
@@ -576,11 +578,11 @@ export default function PlatformDemos({ id }) {
               </UI.Button>
             }
           >
-            <div className="platform-form-demo">
+            <>
               <UI.Field label="Transfer name">
                 <input
-                  value={text}
-                  onChange={(event) => setText(event.target.value)}
+                  value={transferName}
+                  onChange={(event) => setTransferName(event.target.value)}
                   placeholder="Brand assets"
                 />
               </UI.Field>
@@ -589,10 +591,7 @@ export default function PlatformDemos({ id }) {
                 checked={saved}
                 onChange={setSaved}
               />
-              <small className="muted">
-                Drag the handle or title down. A short pull returns to position.
-              </small>
-            </div>
+            </>
           </UI.BottomSheet>
         </>
       );
