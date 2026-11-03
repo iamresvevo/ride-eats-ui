@@ -1,3 +1,4 @@
+import packageInfo from '../package.json';
 import { sourceForPage } from "./component-source.js";
 import PropsPlayground from "./PropsPlayground.jsx";
 import { platformPages } from "./platform-data.js";
@@ -855,7 +856,7 @@ function App({ accent, setAccent }) {
           ]}
           activeValue={selected ? "overview" : current}
           onNavigate={(item) => navigate(item.value)}
-          guestContent={<Badge>v0.9.10</Badge>}
+          guestContent={<Badge>v{packageInfo.version}</Badge>}
           extras={
             <>
               <a
@@ -1093,7 +1094,7 @@ function App({ accent, setAccent }) {
               component. React 19 or newer.
             </p>
             <h2 className="doc-heading">1. Install a reviewed version</h2>
-            <Code>{"npm install github:iamresvevo/ride-eats-ui#v0.9.10"}</Code>
+            <Code>{`npm install github:iamresvevo/ride-eats-ui#v${packageInfo.version}`}</Code>
             <h2 className="doc-heading">2. Add the providers and styles</h2>
             <Code>{`import { UIProvider, Button } from '@ride-eats/ui';\nimport '@ride-eats/ui/styles.css';\n\nexport default function App({accent,setAccent}) {\n  return (\n    <UIProvider defaultTheme="system">\n      <Button variant="primary">Hello, Studio</Button>\n    </UIProvider>\n  );\n}`}</Code>
             <h2 className="doc-heading">3. Make it yours</h2>
