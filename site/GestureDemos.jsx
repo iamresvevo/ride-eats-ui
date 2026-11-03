@@ -46,6 +46,13 @@ export default function GestureDemos({ id }) {
               icon: "star",
               onSelect: () => toast("Added to favorites", { tone: "good" }),
             },
+            {
+              value: "delete",
+              label: "Delete",
+              destructive: true,
+              icon: "trash",
+              onSelect: () => toast("Deleted in this demo"),
+            },
           ]}
         >
           <UI.Icon name="folder" size={20} />

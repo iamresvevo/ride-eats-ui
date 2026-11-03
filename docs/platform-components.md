@@ -738,7 +738,7 @@ Actions. Drag a row left to reveal actions, or use its action button. Actions on
 ```jsx
 import { SwipeActions } from '@ride-eats/ui';
 
-<SwipeActions actions={[{value:'archive', label:'Archive', icon:'archive', tone:'info', onSelect:archive}]}><strong>Project files</strong></SwipeActions>
+<SwipeActions actions={[{value:'archive', label:'Archive', icon:'archive', tone:'info', onSelect:archive}, {value:'delete', label:'Delete', icon:'trash', destructive:true, onSelect:remove}]}><strong>Project files</strong></SwipeActions>
 ```
 
 | Prop | Type | Purpose |

@@ -29,7 +29,7 @@ export const gesturePages = [
     "Swipe Actions",
     "Actions",
     "Drag a row left to reveal actions, or use its action button. Actions only run when explicitly pressed.",
-    `<SwipeActions actions={[{value:'archive', label:'Archive', icon:'archive', tone:'info', onSelect:archive}]}><strong>Project files</strong></SwipeActions>`,
+    `<SwipeActions actions={[{value:'archive', label:'Archive', icon:'archive', tone:'info', onSelect:archive}, {value:'delete', label:'Delete', icon:'trash', destructive:true, onSelect:remove}]}><strong>Project files</strong></SwipeActions>`,
     [
       [
         "actions",

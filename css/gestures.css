@@ -353,6 +353,7 @@
   background: var(--raised);
   color: var(--text);
   font-size: 11px;
+  font-weight: 700;
   transition:
     background-color 160ms var(--motion-ease),
     color 160ms var(--motion-ease),
