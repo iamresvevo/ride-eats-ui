@@ -67,6 +67,8 @@ export function Button(props: ButtonProps): React.ReactElement;
 export function Dropdown(
   props: StylingProps & {
     trigger?: React.ReactNode;
+    variant?: ButtonProps["variant"];
+    size?: ButtonProps["size"];
     items: MenuRow[];
     align?: "start" | "end";
     label?: string;
@@ -1217,3 +1219,36 @@ export function TextDiffViewer(
     maxHeight?: number | string;
   },
 ): React.ReactElement;
+
+/** Native input props, including ref/id and Field associations, go to the input. */
+export function InputGroup(
+  props: Omit<React.InputHTMLAttributes<HTMLInputElement>, "prefix"> & {
+    prefix?: React.ReactNode;
+    suffix?: React.ReactNode;
+    ref?: React.Ref<HTMLInputElement>;
+  },
+): React.ReactElement;
+export function ButtonGroup(
+  props: React.HTMLAttributes<HTMLDivElement> & {
+    children: React.ReactNode;
+    label?: string;
+    orientation?: "horizontal" | "vertical";
+    attached?: boolean;
+  },
+): React.ReactElement;
+export interface ColorPickerProps extends StylingProps {
+  /** HEX, RGB or HSL input. Changes return canonical #rrggbb or #rrggbbaa. */
+  value: string;
+  onValueChange: (value: string) => void;
+  label?: string;
+  variant?: "inline" | "popover";
+  alpha?: boolean;
+  formats?: Array<"hex" | "rgb" | "hsl">;
+  swatches?: Array<string | { value: string; label: string }>;
+  eyedropper?: boolean;
+  disabled?: boolean;
+  id?: string;
+  "aria-describedby"?: string;
+  "aria-invalid"?: React.AriaAttributes["aria-invalid"];
+}
+export function ColorPicker(props: ColorPickerProps): React.ReactElement;

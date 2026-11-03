@@ -1,3 +1,4 @@
+import { ControlDemo } from "./ControlDemos.jsx";
 import { ReviewDemo } from "./ReviewDemos.jsx";
 import { SpecializedDemo } from "./SpecializedDemos.jsx";
 import CatalogBoundary from "./CatalogBoundary.jsx";
@@ -300,6 +301,10 @@ export function CollectionDemo({ id }) {
     [tab, setTab] = useState("payments");
   const toast = useToast();
   switch (id) {
+    case "color-picker":
+    case "input-group":
+    case "button-group":
+      return <ControlDemo id={id} />;
     case "icons":
       return (
         <CatalogBoundary>

@@ -1,6 +1,6 @@
 # Ride Eats UI
 
-Version 0.10 consolidates duplicate APIs and preserves their behavior in canonical components. See the [0.10 migration guide](docs/migrations-v0.10.md) and [component audit](docs/component-audit.md).
+Version 0.11 adds customizable ColorPicker, InputGroup and ButtonGroup primitives. Version 0.10 consolidated duplicate APIs and preserved their behavior in canonical components. See the [0.10 migration guide](docs/migrations-v0.10.md) and [component audit](docs/component-audit.md).
 
 **A complete React UI foundation for Ride Eats tools and internal platforms.**
 
@@ -15,7 +15,7 @@ A React-first UI library extracted from [Ride Eats Send](https://github.com/iamr
 React **19+** and React DOM **19+** are peer dependencies. Install a reviewed release from GitHub:
 
 ```sh
-npm install github:iamresvevo/ride-eats-ui#v0.10.0
+npm install github:iamresvevo/ride-eats-ui#v0.11.0
 ```
 
 The package is not published to the npm registry. It ships JSX source for Vite or another JSX-capable bundler. In Next.js, use a client component and add `transpilePackages: ['@ride-eats/ui']` to your Next configuration. TypeScript declarations are included.
@@ -356,3 +356,5 @@ ImageCompare uses pointer capture and a fixed drag-start rectangle for direct, s
 ## Review tools
 
 [Shortcut Recorder](https://iamresvevo.github.io/ride-eats-ui/#shortcut-recorder) captures and reviews a binding with conflict checks. [Text Diff Viewer](https://iamresvevo.github.io/ride-eats-ui/#text-diff-viewer) performs line comparison with folding, split/unified views and synchronized scrolling. See [0.10 migration](docs/migrations-v0.10.md) for behavior and limits.
+
+ColorPicker, InputGroup and ButtonGroup provide customizable colors and composable form/action controls. See [the API and examples](docs/components.md#color-picker).

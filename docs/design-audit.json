@@ -1,6 +1,6 @@
 {
-  "version": "0.10.0",
-  "cssFiles": 17,
+  "version": "0.11.0",
+  "cssFiles": 18,
   "publicApis": [
     "Accordion",
     "AccountMenu",
@@ -15,12 +15,14 @@
     "BottomSheet",
     "Breadcrumbs",
     "Button",
+    "ButtonGroup",
     "Card",
     "CardBody",
     "CardFooter",
     "CardHeader",
     "Carousel",
     "Checkbox",
+    "ColorPicker",
     "Combobox",
     "Combobox",
     "CommandMenu",
@@ -44,6 +46,7 @@
     "Icon",
     "IconProvider",
     "ImageCompare",
+    "InputGroup",
     "Masonry",
     "Menu",
     "MenuItem",
@@ -222,6 +225,27 @@
       "name": "Card",
       "group": "Layout",
       "source": "react/index.jsx"
+    },
+    {
+      "id": "color-picker",
+      "name": "Color Picker",
+      "group": "Inputs",
+      "imports": "ColorPicker",
+      "source": "react/controls.jsx"
+    },
+    {
+      "id": "input-group",
+      "name": "Input Group",
+      "group": "Inputs",
+      "imports": "InputGroup, Field",
+      "source": "react/controls.jsx"
+    },
+    {
+      "id": "button-group",
+      "name": "Button Group",
+      "group": "Actions",
+      "imports": "ButtonGroup, Button",
+      "source": "react/controls.jsx"
     },
     {
       "id": "shortcut-recorder",

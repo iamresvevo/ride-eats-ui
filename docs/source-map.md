@@ -58,3 +58,7 @@ DateRangePicker composes the same extracted Send DateTimePicker in date-only mod
 ## Review tools and consolidation (0.10)
 
 `react/review.jsx`, `react/review-model.js` and `css/review.css` own ShortcutRecorder and TextDiffViewer. These are independent implementations. The consolidation reuses the existing icon motion hooks and SVG geometry; it does not re-extract or modify Send. See the migration guide for removed names and exact canonical replacements.
+
+## Composable controls in 0.11
+
+`react/controls.jsx` owns ColorPicker, InputGroup and ButtonGroup. These generic additions compose existing Segmented, Popover, Button and Dropdown behavior. `react/color-model.js` owns format conversion and validation; `css/controls.css` owns presentation. They contain no Send service integration.

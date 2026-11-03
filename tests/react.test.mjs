@@ -1406,3 +1406,31 @@ test("diff rendering escapes code and exposes split, unified and unchanged conte
   assert.match(unified, /1 added/);
   assert.match(unified, /1 removed/);
 });
+
+test('color parsing preserves formats, alpha and HSV round trips without accepting malformed input', async () => {
+  const {parseColor,colorHex,formatColor,rgbToHsv,hsvToRgb}=await import('../react/color-model.js');
+  for(const [input,output] of [['#abc','#aabbcc'],['#abcd','#aabbccdd'],['rgb(255, 0, 128)','#ff0080'],['rgba(255, 0, 0, 0.5)','#ff000080'],['hsl(120, 100%, 50%)','#00ff00'],['hsla(-120, 100%, 50%, 0)','#0000ff00']])assert.equal(colorHex(parseColor(input),output.length===9),output);
+  for(const bad of ['red','#12','#12345','#gggggg','rgb(256, 0, 0)','rgba(1,2,3,2)','hsl(20, 101%, 50%)','rgb(.,2,3)'])assert.equal(parseColor(bad),null,bad);
+  for(let r=0;r<=255;r+=51)for(let g=0;g<=255;g+=51)for(let b=0;b<=255;b+=51){const hsv=rgbToHsv({r,g,b});assert.deepEqual(hsvToRgb(hsv.h,hsv.s,hsv.v),{r,g,b});}
+  assert.equal(formatColor(parseColor('#ff000080'),'rgb',true),'rgba(255, 0, 0, 0.502)');
+  assert.equal(formatColor(parseColor('#00ff00'),'hsl'),'hsl(120, 100%, 50%)');
+});
+test('input group preserves native form attributes and Field validation on its input',()=>{
+  const html=render('Field',{id:'price',label:'Amount',error:'Required',children:React.createElement(UI.InputGroup,{prefix:'SRD',suffix:'each',name:'price',type:'number',required:true,defaultValue:'2',disabled:true})});
+  assert.match(html,/<label for="price"/);
+  assert.match(html,/<fieldset disabled/);
+  assert.match(html,/<input(?=[^>]*name="price")(?=[^>]*type="number")(?=[^>]*required)/);
+  assert.match(html,/<input[^>]*id="price"[^>]*aria-describedby="price-hint"[^>]*aria-invalid="true"/);
+});
+test('color picker and button groups expose reusable controlled semantics',()=>{
+  const html=render('ColorPicker',{value:'#007aff80',onValueChange:()=>{},label:'Brand',variant:'inline',alpha:true,disabled:true,swatches:[{value:'#007aff80',label:'Blue'},'invalid']});
+  assert.match(html,/<fieldset[^>]*disabled/);
+  assert.match(html,/aria-label="Brand opacity"/);
+  assert.match(html,/aria-label="Blue" aria-pressed="true"/);
+  assert.doesNotMatch(html,/aria-label="invalid"/);
+  assert.match(html,/value="#007aff80"/);
+  const group=render('ButtonGroup',{label:'Save actions',attached:true,orientation:'vertical',children:React.createElement(UI.Button,{disabled:true,children:'Save'})});
+  assert.match(group,/role="group" aria-label="Save actions"/);
+  assert.match(group,/data-orientation="vertical" data-attached="true"/);
+  assert.match(group,/<button[^>]*disabled/);
+});

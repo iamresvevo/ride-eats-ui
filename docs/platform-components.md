@@ -1,6 +1,60 @@
-# Canonical React component reference, 0.10
+# Canonical React component reference, 0.11
 
 See [the migration guide](migrations-v0.10.md) for removed wrappers and preserved defaults. Import styles once and use UIProvider for theme and feedback.
+
+## Color Picker
+
+Inputs. Choose colors with a shade surface, precise keyboard sliders, editable formats and your own swatches.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#color-picker)
+
+```jsx
+import { ColorPicker } from '@ride-eats/ui';
+const [color,setColor] = useState('#1fa476');
+<ColorPicker value={color} onValueChange={setColor} label="Accent" />
+```
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| value / onValueChange | string / callback | HEX, RGB or HSL input; returns #rrggbb, or #rrggbbaa with alpha. |
+| variant | popover \| inline | The same editor, in a popup or embedded. |
+| alpha / formats | boolean / array | Optional opacity; supported formats are hex, rgb and hsl. |
+| swatches | (string \| {value,label})[] | Your colors and accessible names. An empty array hides swatches. |
+| disabled / eyedropper | boolean | Disable all controls; screen picking appears only in supported browsers. |
+
+## Input Group
+
+Inputs. A native input with prefixes, units, icons and adjacent actions. Works directly inside Field.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#input-group)
+
+```jsx
+import { InputGroup, Field } from '@ride-eats/ui';
+<Field label="Amount"><InputGroup prefix="SRD" suffix="each" type="number" value={amount} onChange={e=>setAmount(e.target.value)} /></Field>
+```
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| prefix / suffix | ReactNode | Text, icons or existing buttons beside the input. |
+| native input props | InputHTMLAttributes | id, name, ref, value, onChange, type, required and validation reach the input. |
+| disabled | boolean | Disables both the input and adjacent actions. |
+
+## Button Group
+
+Actions. Arrange existing buttons and dropdowns as related actions, with optional attached or vertical layouts.
+
+[Live example](https://iamresvevo.github.io/ride-eats-ui/#button-group)
+
+```jsx
+import { ButtonGroup, Button } from '@ride-eats/ui';
+<ButtonGroup label="Record actions"><Button onClick={save}>Save</Button><Button onClick={copy}>Copy</Button></ButtonGroup>
+```
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| children | ReactNode | Existing Button and Dropdown components retain their behavior. |
+| label | string | Accessible name for the action group. |
+| attached / orientation | boolean / horizontal \| vertical | Separate pills by default. Attach related actions, or arrange them vertically. |
 
 ## Shortcut Recorder
 
@@ -10,12 +64,11 @@ Inputs. Capture a shortcut, review it, check conflicts, then save. Escape cancel
 
 ```jsx
 import { ShortcutRecorder } from '@ride-eats/ui';
-
 const [keys,setKeys] = useState(["Control","Shift","K"]);
 <ShortcutRecorder value={keys} onValueChange={setKeys} label="Command search" bindings={[{keys:["Alt","M"],label:"Messages"}]} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | string[] / callback | Controlled modifier/key names. Only Save or Clear changes the value. |
 | bindings / allowConflicts | ShortcutBinding[] / boolean | Normalized matching with conflicts blocked by default. |
@@ -29,17 +82,16 @@ Display. Compare actual line edits in split or unified views, reveal folded cont
 
 ```jsx
 import { TextDiffViewer } from '@ride-eats/ui';
-
 const [view,setView] = useState("split");
 <TextDiffViewer before={original} after={revision} view={view} onViewChange={setView} contextLines={3} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | before / after | string | Plain text, safely escaped. CRLF and CR use LF for line matching. |
-| view / onViewChange | split  /  unified / callback | Controlled layout. Optional callback enables layout buttons. |
+| view / onViewChange | split \| unified / callback | Controlled layout. Optional callback enables layout buttons. |
 | contextLines / collapseUnchanged | number / boolean | Fold long equal runs; buttons reveal all hidden lines. |
-| syncScroll / maxHeight | boolean / number  /  string | Paired vertical/horizontal scrolling and a bounded viewport. |
+| syncScroll / maxHeight | boolean / number \| string | Paired vertical/horizontal scrolling and a bounded viewport. |
 
 ## Image Compare
 
@@ -49,12 +101,11 @@ Display. A direct before/after artwork inspection surface. Drag the divider or u
 
 ```jsx
 import { ImageCompare } from '@ride-eats/ui';
-
 const [position,setPosition] = useState(50);
 <ImageCompare before={{src:"/before.jpg",alt:"Original artwork"}} after={{src:"/after.jpg",alt:"Revised artwork"}} value={position} onValueChange={setPosition} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | before / after | {src,alt,label?} | Paired image sources with meaningful alternatives. |
 | value / onValueChange | 0–100 / callback | Controlled before-image reveal. |
@@ -68,13 +119,12 @@ Navigation. A compact hierarchy with independent expansion and selection, roving
 
 ```jsx
 import { TreeView } from '@ride-eats/ui';
-
 const [selected,setSelected] = useState("artwork");
 const [expanded,setExpanded] = useState(["artwork"]);
 <TreeView label="Assets" nodes={[{id:"artwork",label:"Artwork",children:[{id:"logo",label:"Logo.svg"}]}]} value={selected} onValueChange={setSelected} expandedKeys={expanded} onExpandedChange={setExpanded} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | nodes | TreeNode[] | Unique id, text label, optional icon/detail/children/disabled. |
 | value / onValueChange | string / callback | Controlled selected item. |
@@ -88,12 +138,11 @@ Inputs. A pointer-captured vector drawing surface with undo and clear. Strokes r
 
 ```jsx
 import { SignaturePad } from '@ride-eats/ui';
-
 const [strokes,setStrokes] = useState([]);
 <SignaturePad value={strokes} onValueChange={setStrokes} label="Delivery acknowledgement" />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | SignatureStroke[] / callback | Arrays of points in a 1000 × 400 coordinate space. |
 | strokeWidth / disabled | number / boolean | Ink width in screen pixels (1–12) and input availability. |
@@ -107,11 +156,10 @@ Display. A calendar matrix for dense daily history. Neutral levels and a solid a
 
 ```jsx
 import { ActivityHeatmap } from '@ride-eats/ui';
-
 <ActivityHeatmap startDate="2026-08-03" weeks={12} values={[{date:"2026-08-03",value:8},{date:"2026-08-04",value:3}]} label="Publishing activity" />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | startDate / weeks | YYYY-MM-DD / 1–53 | Starts on the Monday of the supplied week; dates use UTC day keys. |
 | values / max | {date,value}[] / number | Daily data and an optional shared intensity ceiling. |
@@ -126,18 +174,17 @@ Navigation. Flat section links with plain counts, sticky positioning, scroll tra
 
 ```jsx
 import { SectionNav, Card } from '@ride-eats/ui';
-
 <SectionNav offset={64} items={[{id:"send",label:"Send",count:6},{id:"share",label:"Share",count:6}]} />
 <Card id="send" title="Send">...</Card>
 <Card id="share" title="Share">...</Card>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items | {id,label,count?}[] | IDs reference real section elements; counts stay plain. |
-| sticky / offset | boolean / number  /  string | Sticky by default; offset matches the main header. |
+| sticky / offset | boolean / number \| string | Sticky by default; offset matches the main header. |
 | value / onValueChange | string / callback | Optional active override and section-click callback. |
-| Tabs variant | pill  /  flat | Panel tabs retain keyboard navigation and ARIA associations. |
+| Tabs variant | pill \| flat | Panel tabs retain keyboard navigation and ARIA associations. |
 
 ## Workbench
 
@@ -147,7 +194,6 @@ Layout. Bounded editor panels with independent native scrolling. Panel headers a
 
 ```jsx
 import { Workbench, ScrollArea, CardHeader, Card, Flex, Button } from '@ride-eats/ui';
-
 <Workbench leadingWidth={240} trailingWidth={260}>
  <ScrollArea label="Catalogue" header={<CardHeader title="Objects" />}><p>Long object catalogue</p></ScrollArea>
  <Flex direction="column"><Card title="Preview">Your canvas</Card><Button>Preview</Button></Flex>
@@ -155,7 +201,7 @@ import { Workbench, ScrollArea, CardHeader, Card, Flex, Button } from '@ride-eat
 </Workbench>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | leadingWidth / trailingWidth | number | Preferred side panel widths in pixels. |
 | height | string | Bounded desktop height; defaults to min(66dvh, 760px). |
@@ -170,7 +216,6 @@ Layout. Variable-height cards flow down responsive columns without splitting a c
 
 ```jsx
 import { Masonry, Card } from '@ride-eats/ui';
-
 <Masonry min={240} columns={3} gap={16}>
  <Card title="Short card">A short note.</Card>
  <Card title="Longer card">More content can take its natural height while the next card packs below it.</Card>
@@ -178,7 +223,7 @@ import { Masonry, Card } from '@ride-eats/ui';
 </Masonry>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | min | number | Preferred minimum column width. Columns shrink to fit narrow containers. |
 | columns | number | Maximum columns; actual count adapts to available width. |
@@ -192,17 +237,16 @@ Layout. Responsive fixed-side, proportional and wrapping layouts, natural-width 
 
 ```jsx
 import { Grid, Flex, Card, Tile, FileDropzone } from '@ride-eats/ui';
-
 <Grid layout="sidebar" sidebarWidth={280}>
   <Card title="Seasons"><Flex direction="column" gap={4}><Tile variant="row" selected title="Diwali" description="Scheduled" onClick={()=>{}} /></Flex></Card>
   <Card title="Details"><FileDropzone variant="compact" label="Main logo" onFiles={()=>{}} /></Card>
 </Grid>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
-| columns / min / density | number / number / default  /  compact | Responsive maximum columns, minimum width and inherited compact tiles. |
-| layout | auto  /  sidebar  /  aside  /  split | Automatic tracks, fixed left or right side, or custom ratios. |
+| columns / min / density | number / number / default \| compact | Responsive maximum columns, minimum width and inherited compact tiles. |
+| layout | auto \| sidebar \| aside \| split | Automatic tracks, fixed left or right side, or custom ratios. |
 | sidebarWidth / ratio | number / [number, number] | Fixed-side pixels or flexible relative track sizes. |
 | Flex.gap | number | Vertical rhythm without outer component margins. |
 
@@ -214,7 +258,6 @@ Display. 2,015 canonical Lucide glyphs and 277 compatibility names plus Send’s
 
 ```jsx
 import { Icon, IconProvider } from '@ride-eats/ui';
-
 <Icon name="headset" size={24} strokeWidth={1.7} />
 <Icon name="loader-circle" motion="spin" animateOn="always" />
 <Icon name="check" motion="draw" />
@@ -225,12 +268,12 @@ import { Icon, IconProvider } from '@ride-eats/ui';
 </IconProvider>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | name | string | Catalog slug or a registered custom name. |
 | size / strokeWidth / color | number / number / string | SVG size, stroke and color; defaults preserve Send control sizing. |
-| motion | auto  /  none  /  draw | Opt-in movement; honors reduced motion. |
-| animateOn | hover  /  always | Hover/focus or continuous animation. |
+| motion | auto \| none \| draw | Opt-in movement; honors reduced motion. |
+| animateOn | hover \| always | Hover/focus or continuous animation. |
 | label / title | string | Accessible meaning for nondecorative icons. |
 | IconProvider.icons | Record<string,ReactNode> | Register custom SVG contents or override catalog names. |
 
@@ -242,7 +285,6 @@ Display. A real working table: custom cells, sortable columns, selection, row ac
 
 ```jsx
 import { DataTable, Badge, Button } from '@ride-eats/ui';
-
 const [sort, setSort] = useState({ key: 'name', direction: 'asc' });
 const [selected, setSelected] = useState([]);
 const rows = [...people].sort((a, b) =>
@@ -262,9 +304,9 @@ const rows = [...people].sort((a, b) =>
 />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
-| variant / cellAlign | auto  /  standalone  /  inset / top  /  middle  /  bottom | Avoid duplicate Card surfaces and align multi-line content. |
+| variant / cellAlign | auto \| standalone \| inset / top \| middle \| bottom | Avoid duplicate Card surfaces and align multi-line content. |
 | columns | Column[] | key, label, render(value,row), sortable, width, wrap, align. |
 | rows / rowKey | T[] / key or function | Your records and stable identifiers. |
 | sort / onSortChange | Sort / callback | Controlled sort; your app orders/fetches rows. |
@@ -281,7 +323,6 @@ Recipes. Keep the form mounted while a confirmation opens above it. One backdrop
 
 ```jsx
 import { Button, Dialog, Field, useConfirm } from '@ride-eats/ui';
-
 const confirm = useConfirm();
 const [open, setOpen] = useState(false);
 const [name, setName] = useState('');
@@ -301,10 +342,10 @@ const requestClose = async () => {
 // Wrap your app in UIProvider once.
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | useConfirm() | (options) => Promise<boolean> | title, message, confirmLabel, cancelLabel and danger. |
-| Dialog.beforeClose | () => boolean  /  Promise<boolean> | Optional dismissal guard; external open state remains yours. |
+| Dialog.beforeClose | () => boolean \| Promise<boolean> | Optional dismissal guard; external open state remains yours. |
 | Native stack | automatic | Underlying form is inert, scaled and preserved; only the first backdrop dims. |
 
 ## Accordion
@@ -315,7 +356,6 @@ Layout. Quiet disclosure rows with an animated height, rotating chevrons and con
 
 ```jsx
 import { Accordion } from '@ride-eats/ui';
-
 const [open, setOpen] = useState('delivery');
 <Accordion value={open} onValueChange={setOpen} items={[
   { value: 'delivery', title: 'How does delivery work?', content: 'Your recipient gets a secure download link.' },
@@ -323,10 +363,10 @@ const [open, setOpen] = useState('delivery');
 ]} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items | {value,title,content,icon?}[] | Content and optional row icons. |
-| value / onValueChange | string  /  null / callback | Open item or null. |
+| value / onValueChange | string \| null / callback | Open item or null. |
 | className / style | styling hooks | Customize the outer layout. |
 
 ## Alert
@@ -337,7 +377,6 @@ Feedback. An inline message with a small status mark, optional action and dismis
 
 ```jsx
 import { Alert, Button } from '@ride-eats/ui';
-
 <Alert tone="good" title="Your files are ready"
   onDismiss={() => setVisible(false)}
   action={<Button size="sm" onClick={openTransfer}>View transfer</Button>}>
@@ -345,9 +384,9 @@ import { Alert, Button } from '@ride-eats/ui';
 </Alert>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
-| tone | neutral  /  good  /  bad | Semantic styling and alert/status role. |
+| tone | neutral \| good \| bad | Semantic styling and alert/status role. |
 | title / children / action | ReactNode | Message, detail and optional action. |
 | onDismiss | () => void | Optional dismissal control. |
 
@@ -359,7 +398,6 @@ Inputs. A compact check with a soft scale transition, a real native input and in
 
 ```jsx
 import { Checkbox } from '@ride-eats/ui';
-
 const files = [{ id: 'brief', name: 'Campaign brief.pdf' }, { id: 'assets', name: 'Brand assets.zip' }];
 const [selected, setSelected] = useState(['brief']);
 const all = selected.length === files.length;
@@ -373,7 +411,7 @@ const mixed = selected.length > 0 && !all;
     ? [...current, file.id] : current.filter(id => id !== file.id))} />)}
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | checked / onCheckedChange | boolean / callback | Controlled native checkbox. |
 | label / hint | ReactNode | Label and explanation. |
@@ -387,7 +425,6 @@ Inputs. Selectable option rows with a quiet border, animated dot and supporting 
 
 ```jsx
 import { RadioGroup } from '@ride-eats/ui';
-
 const [access, setAccess] = useState('private');
 <RadioGroup label="Who can access this?" value={access} onValueChange={setAccess}
   options={[
@@ -396,7 +433,7 @@ const [access, setAccess] = useState('private');
   ]} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | options | Option[] | value, label, description, trailing and disabled. |
 | value / onValueChange | string / callback | Native radio behavior, controlled state. |
@@ -410,13 +447,12 @@ Inputs. A smooth value track with a precise native range input and a readable li
 
 ```jsx
 import { Slider } from '@ride-eats/ui';
-
 const [volume, setVolume] = useState(64);
 <Slider label="Volume" value={volume} onValueChange={setVolume}
   min={0} max={100} step={1} formatValue={value => value + '%'} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | number / callback | Controlled value. |
 | min / max / step | number | Native range bounds. |
@@ -430,13 +466,12 @@ Feedback. A measured progress bar with a soft fill transition, or a restrained i
 
 ```jsx
 import { Progress, Button } from '@ride-eats/ui';
-
 const [progress, setProgress] = useState(64);
 <Progress label="Uploading campaign assets" value={progress} hint="6.4 MB of 10 MB" />
 <Button onClick={() => setProgress(value => Math.min(100, value + 12))}>Advance</Button>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / max | number | Current and maximum values. |
 | label / hint | string | Task and supporting context. |
@@ -450,14 +485,13 @@ Inputs. A labeled password field with an integrated reveal control and native in
 
 ```jsx
 import { PasswordInput } from '@ride-eats/ui';
-
 <PasswordInput label="Password" placeholder="Enter your password"
   autoComplete="current-password" value={password}
   onChange={e => setPassword(e.target.value)}
   hint="Use at least 12 characters." />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | label / hint | ReactNode | Field context. |
 | ...inputProps | native input attributes | value, onChange, name, required, disabled, autoComplete. |
@@ -470,12 +504,11 @@ Inputs. Increment and decrement controls around a directly editable number.
 
 ```jsx
 import { NumberInput } from '@ride-eats/ui';
-
 const [quantity, setQuantity] = useState(2);
 <NumberInput label="Copies" value={quantity} onValueChange={setQuantity} min={1} max={20} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | number / callback | Controlled quantity. |
 | min / max / step | number | Bounds and increment. |
@@ -489,7 +522,6 @@ Navigation. A compact path through the app, with a clear current page and real l
 
 ```jsx
 import { Breadcrumbs } from '@ride-eats/ui';
-
 <Breadcrumbs items={[
   { label: 'Workspace', href: '/' },
   { label: 'Transfers', href: '/transfers' },
@@ -497,7 +529,7 @@ import { Breadcrumbs } from '@ride-eats/ui';
 ]} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items | {label,href?}[] | Last item is the current page. |
 | label | string | Accessible navigation name. |
@@ -510,7 +542,6 @@ Display. Overlapping team identities with a measured hover lift and overflow cou
 
 ```jsx
 import { AvatarGroup } from '@ride-eats/ui';
-
 <AvatarGroup max={4} people={[
   { id: 'alex', name: 'Alex Rivera', src: '/alex.jpg' },
   { id: 'sam', name: 'Sam Chen' },
@@ -518,7 +549,7 @@ import { AvatarGroup } from '@ride-eats/ui';
 ]} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | people | {id?,name,src?}[] | Images fall back to initials. |
 | max | number | Visible identities before +N. |
@@ -532,12 +563,11 @@ Actions. Copy a value, then show a quiet checked confirmation. Failures stay vis
 
 ```jsx
 import { CopyButton } from '@ride-eats/ui';
-
 <CopyButton value="https://example.com/shared/abc" label="Copy link"
   copiedLabel="Link copied" onCopy={() => console.log('Copied')} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value | string | Clipboard text. |
 | label / copiedLabel | string | Idle and confirmed labels. |
@@ -551,13 +581,12 @@ Inputs. A compact upload target with drag feedback, keyboard selection, size che
 
 ```jsx
 import { FileDropzone } from '@ride-eats/ui';
-
 <FileDropzone accept="image/*,.pdf" maxSize={10 * 1024 * 1024} multiple
   onFiles={files => setFiles(files)}
   label="Drop your files here" description="or browse from your device" />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | onFiles | (files: File[]) => void | Validated files; upload with your own API. |
 | accept / multiple / maxSize | string / boolean / bytes | Type, count and size constraints. |
@@ -571,7 +600,6 @@ Display. A compact activity trail, connected with fine lines and familiar Send i
 
 ```jsx
 import { Timeline } from '@ride-eats/ui';
-
 <Timeline items={[
   { id: 1, title: 'Transfer created', time: 'Just now', icon: 'plus' },
   { id: 2, title: 'Files uploaded', description: '12 files · 48 MB', time: '2 minutes ago', icon: 'upload' },
@@ -579,7 +607,7 @@ import { Timeline } from '@ride-eats/ui';
 ]} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items | TimelineItem[] | title, description, time, dateTime, icon and tone. |
 | label | string | Accessible activity-list name. |
@@ -592,7 +620,6 @@ Layout. A side panel built on the same native modal stack: smooth entry, focus m
 
 ```jsx
 import { Drawer, Button } from '@ride-eats/ui';
-
 const [open, setOpen] = useState(false);
 <Button onClick={() => setOpen(true)}>View details</Button>
 <Drawer open={open} onOpenChange={setOpen} title="Transfer details"
@@ -601,11 +628,11 @@ const [open, setOpen] = useState(false);
 </Drawer>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | open / onOpenChange | boolean / callback | Controlled visibility. |
 | title / children / footer | ReactNode | Panel structure. |
-| side | right  /  left | Slide-in direction. |
+| side | right \| left | Slide-in direction. |
 
 ## Stat Cards
 
@@ -615,7 +642,6 @@ Display. The Tools dashboard metrics, with default, compact, inline and hero lay
 
 ```jsx
 import { Grid, StatCard } from '@ride-eats/ui';
-
 <Grid preset="metrics" min={180}>
   <StatCard label="Payments" value="153" hint="1 open" />
   <StatCard label="Paid" value="5" hint="Available from Drop 1" tone="good" />
@@ -626,10 +652,10 @@ import { Grid, StatCard } from '@ride-eats/ui';
   chart={[12,18,15,30,24,40,48,52]} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | label / value / hint | ReactNode | Metric hierarchy. |
-| variant | default  /  compact  /  inline  /  hero | Surface and type scale. |
+| variant | default \| compact \| inline \| hero | Surface and type scale. |
 | chart / trend / progress | number[] / text / percentage | Optional secondary data. |
 | tone / icon | semantic tone / icon name | Meaning and visual context. |
 | className / style / ...props | section attributes | App-specific layout. |
@@ -642,7 +668,6 @@ Layout. The Tools launcher shape: a contained icon, a clear name, a short explan
 
 ```jsx
 import { Tile, Grid } from '@ride-eats/ui';
-
 <Grid preset="metrics" min={220}>
   <Tile icon="files" title="My transfers" description="Everything you have shared."
     meta="24 files" href="/transfers" footer="View transfers" />
@@ -651,11 +676,11 @@ import { Tile, Grid } from '@ride-eats/ui';
 </Grid>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | title / description / meta / footer | ReactNode | Tile content and supporting context. |
-| density / variant | default  /  compact / default  /  row | Compact spacing and selectable row layout. |
-| imageSize / imageFit | number / contain  /  cover | Thumbnail dimensions and fitting. |
+| density / variant | default \| compact / default \| row | Compact spacing and selectable row layout. |
+| imageSize / imageFit | number / contain \| cover | Thumbnail dimensions and fitting. |
 | titleLines / showFooter | number / boolean | Limit title lines and optionally remove footer chrome. |
 | selected | boolean | Controlled pressed state for selectable tiles. |
 | icon / image | name / image URL | Visual identity. |
@@ -670,12 +695,11 @@ Layout. Tools-style page titles with an app icon, context, description and natur
 
 ```jsx
 import { PageHeader, Button } from '@ride-eats/ui';
-
 <PageHeader title="Payments" icon="storage" description="Shared across your admin devices."
   actions={<Button onClick={refresh}>Check connection</Button>} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | title / description / eyebrow | ReactNode | Page hierarchy. |
 | icon / image | icon name / URL | Optional app identity. |
@@ -688,8 +712,7 @@ Recipes. Compose a working screen from page headers, metric cards, tabs, tool ti
 [Live example](https://iamresvevo.github.io/ride-eats-ui/#dashboard)
 
 ```jsx
-import { PageHeader, Grid, StatCard, Tabs, Card, DataTable } from '@ride-eats/ui';
-
+import { PageHeader,Grid,StatCard,Tabs,Card,DataTable } from '@ride-eats/ui';
 <div className="stack">
   <PageHeader title="Payments" icon="storage" description="Shared across admin devices." />
   <Grid preset="metrics">
@@ -704,7 +727,7 @@ import { PageHeader, Grid, StatCard, Tabs, Card, DataTable } from '@ride-eats/ui
 </div>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | Composition | children and slots | No additional provider or dashboard-specific state. |
 | Grid.minWidth | number | Responsive minimum card width in pixels. |
@@ -718,12 +741,11 @@ Layout. Drag handles to reorder rows with animated position changes. Arrow keys 
 
 ```jsx
 import { ReorderList } from '@ride-eats/ui';
-
 const [items, setItems] = useState([{id:'a',label:'Design'}, {id:'b',label:'Build'}, {id:'c',label:'Review'}]);
 <ReorderList items={items} onReorder={setItems} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items / onReorder | T[] / callback | Caller-owned ordered items. Stable IDs preserve state. |
 | getItemKey / renderItem | (item) => key / (item, index) => ReactNode | Customize identity and row content. Defaults to item.id and item.label. |
@@ -737,11 +759,10 @@ Actions. Drag a row left to reveal actions, or use its action button. Actions on
 
 ```jsx
 import { SwipeActions } from '@ride-eats/ui';
-
 <SwipeActions actions={[{value:'archive', label:'Archive', icon:'archive', tone:'info', onSelect:archive}, {value:'delete', label:'Delete', icon:'trash', destructive:true, onSelect:remove}]}><strong>Project files</strong></SwipeActions>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | actions | {value,label,icon?,tone?,destructive?,onSelect?}[] | Up to three visible actions. Revealing never executes them. |
 | children / label | ReactNode / string | Row content and action region name. |
@@ -754,11 +775,10 @@ Display. Touch scrolling, mouse dragging, keyboard arrows and navigation buttons
 
 ```jsx
 import { Carousel, Card } from '@ride-eats/ui';
-
 <Carousel items={cards} renderItem={card => <Card title={card.title}>{card.description}</Card>} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items / renderItem | T[] / (item,index) => ReactNode | Content is yours. Item IDs provide stable keys. |
 | label | string | Accessible carousel name. |
@@ -771,12 +791,11 @@ Layout. Drag the divider to resize with elastic resistance at the bounds and a s
 
 ```jsx
 import { SplitPane } from '@ride-eats/ui';
-
 const [split, setSplit] = useState(40);
 <SplitPane value={split} onValueChange={setSplit} first={<p>Navigation</p>} second={<p>Workspace</p>} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | number / callback | First-panel width as a percentage. |
 | min / max | number | Allowed percentages; defaults 20–80. |
@@ -790,12 +809,11 @@ Inputs. Two native range handles with a shared accent track. Drag either handle 
 
 ```jsx
 import { RangeSlider } from '@ride-eats/ui';
-
 const [range, setRange] = useState([20,80]);
 <RangeSlider label="Budget" value={range} onValueChange={setRange} formatValue={value => '$' + value} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | [number,number] / callback | Controlled minimum and maximum. |
 | min / max / step | number | Bounds and native stepping. |
@@ -809,7 +827,6 @@ Feedback. A floating, native top-layer panel for small forms and contextual deta
 
 ```jsx
 import { Popover, Button } from '@ride-eats/ui';
-
 const [open, setOpen] = useState(false);
 <Popover open={open} onOpenChange={setOpen} label="Share settings"
   trigger={props => <Button {...props}>Share settings</Button>}>
@@ -818,7 +835,7 @@ const [open, setOpen] = useState(false);
 </Popover>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | open / onOpenChange | boolean / callback | Controlled native popover. |
 | trigger | (buttonProps) => ReactNode | Spread the supplied ref and handlers. |
@@ -832,15 +849,14 @@ Navigation. A workspace command palette: grouped ranked search, nested scopes, r
 
 ```jsx
 import { CommandMenu } from '@ride-eats/ui';
-
 <CommandMenu open={open} onOpenChange={setOpen} shortcut items={[{value:'new',label:'New transfer',group:'Create',description:'Create a draft',shortcut:'Alt+N',onSelect:createDraft},{value:'settings',label:'Settings',group:'Navigate',items:settingsCommands}]} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | open / onOpenChange | controlled state | Open with a visible launcher or optional Ctrl/⌘K. |
 | items | CommandItem[] | Unique value, label, description, group, icon, keywords, modifier shortcut, disabled, onSelect and nested items. |
-| onSelect | void  /  Promise | Successful commands close the palette; rejected commands show an error and stay open. |
+| onSelect | void \| Promise | Successful commands close the palette; rejected commands show an error and stay open. |
 | label / placeholder / shortcut | configuration | Accessible scope name, search prompt and global launcher shortcut. Recent IDs stay in memory for the lifetime of this instance. |
 
 ## PIN Input
@@ -851,13 +867,12 @@ Inputs. One real input with individual visual cells, so pasting, numeric keyboar
 
 ```jsx
 import { PinInput } from '@ride-eats/ui';
-
 const [code, setCode] = useState('');
 <PinInput label="Verification code" value={code} onValueChange={setCode}
   length={6} onComplete={code => verifyCode(code)} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | string / callback | Digits only, controlled. |
 | length / label / disabled | number / string / boolean | Cell count and field configuration. |
@@ -871,16 +886,15 @@ Inputs. A compact toolbar for one or several independent selections, with native
 
 ```jsx
 import { ToggleGroup } from '@ride-eats/ui';
-
 const [format, setFormat] = useState(['bold']);
 <ToggleGroup label="Text formatting" multiple value={format} onValueChange={setFormat}
   items={[{value:'bold',label:'Bold',icon:'bold'},{value:'italic',label:'Italic',icon:'italic'}]} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items | {value,label,icon?,disabled?}[] | Toggle controls. |
-| value / onValueChange | string / null or string[] / callback | Single or multiple selection. |
+| value / onValueChange | string\|null or string[] / callback | Single or multiple selection. |
 | multiple / disabled | boolean | Selection mode and availability. |
 
 ## Rating
@@ -891,12 +905,11 @@ Inputs. Drag across stars to choose a rating, preview on hover, or use native ra
 
 ```jsx
 import { Rating } from '@ride-eats/ui';
-
 const [rating, setRating] = useState(4);
 <Rating label="How was your experience?" value={rating} onValueChange={setRating} max={5} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | number / callback | Chosen rating, 1-based. |
 | max / label / readOnly | configuration | Star count, group label and display-only mode. |
@@ -909,11 +922,10 @@ Inputs. A compact multiline field with associated labels, hints and validation. 
 
 ```jsx
 import { Textarea } from '@ride-eats/ui';
-
 <Textarea label="Description" value={description} onChange={event => setDescription(event.target.value)} hint="Keep it short and useful." />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | label / hint / error | ReactNode | Accessible label and supporting content. |
 | rows / value / onChange / disabled | native textarea props | Defaults to three rows; controlled content stays yours. |
@@ -926,16 +938,15 @@ Inputs. Validation, async submit state, server errors and first-invalid-field fo
 
 ```jsx
 import { Form, Field, Button } from '@ride-eats/ui';
-
 <Form initialValues={{name:''}} validate={values => ({name:values.name ? undefined : 'Required'})} onSubmit={save}>
  {({field,errors,submitting}) => <><Field label="Name" error={errors.name}><input {...field('name')} /></Field><Button type="submit" loading={submitting}>Save</Button></>}
 </Form>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | initialValues / validate | object / values => errors | Initial values and synchronous validation. |
-| onSubmit | values => void  /  Promise | Errors become a visible alert; duplicate submissions are prevented. |
+| onSubmit | values => void \| Promise | Errors become a visible alert; duplicate submissions are prevented. |
 | children | render function | Receives values, errors, submitting, field(name), setValue(name,value), reset(). |
 
 ## Combobox
@@ -946,14 +957,13 @@ Inputs. Searchable selection with native top-layer positioning, listbox semantic
 
 ```jsx
 import { Combobox } from '@ride-eats/ui';
-
 <Combobox label="Assignee" options={people} value={person} onValueChange={setPerson} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | options | {value,label,description?,disabled?}[] | Searchable choices. |
-| value / onValueChange | string / callback | Controlled selected option. |
+| value / onValueChange | string or string[] / callback | Single choice by default; array selection with multiple. |
 | label / placeholder / error / hint / disabled | configuration | Labels, validation and availability. |
 
 ## Date Range Picker
@@ -964,11 +974,10 @@ Inputs. Send’s custom calendar for both range endpoints, with linked bounds, c
 
 ```jsx
 import { DateRangePicker } from '@ride-eats/ui';
-
 <DateRangePicker value={range} onValueChange={setRange} label="Reporting period" />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | {start,end} / callback | ISO dates or empty strings. |
 | min / max / disabled / label / locale | configuration | Shared calendar bounds and fieldset label. |
@@ -981,11 +990,10 @@ Inputs. A compact custom time picker with rounded hour and minute choices, solid
 
 ```jsx
 import { TimePicker } from '@ride-eats/ui';
-
 <TimePicker label="Opening time" value={time} onValueChange={setTime} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | value / onValueChange | HH:mm string / callback | Controlled HH:mm value. |
 | min / max / step / disabled / label | configuration | Step is seconds, rounded to whole minutes (minimum 60); defaults to one minute. |
@@ -998,11 +1006,10 @@ Feedback. Compact per-file progress, status, errors, retry and cancellation. The
 
 ```jsx
 import { UploadProgress } from '@ride-eats/ui';
-
 <UploadProgress files={uploads} onCancel={cancelUpload} onRetry={retryUpload} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | files | {id,name,status,progress?,error?}[] | Status is queued, uploading, done, error or cancelled; progress is 0–100. |
 | onCancel / onRetry | id => void | Caller handles transfer cancellation and retry. |
@@ -1015,12 +1022,11 @@ Display. A compact table with search, filters, sorting, column visibility and re
 
 ```jsx
 import { DataGrid } from '@ride-eats/ui';
-
 <DataGrid rows={members} columns={[{key:'name',label:'Name',pinned:true,width:220},{key:'role',label:'Role'}]} filters={[{key:'role',label:'Role',options:roles}]} bulkActions={[{value:'export',label:'Export',onSelect:exportRows}]} renderExpanded={row => <p>{row.email}</p>} />
 // For fixed-height rows: <DataGrid rows={records} columns={columns} virtual height={320} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | rows / columns / getRowKey | T[] / DataGridColumn<T>[] / function | Stable row IDs are required. Columns accept key, label, width, pinned, sortable, resizable, align, render, searchValue and sortValue. |
 | filters / bulkActions | definition arrays | Exact-value filters and selected-row callbacks. |
@@ -1036,13 +1042,12 @@ Layout. A reusable compact application frame with collapsible navigation, mobile
 
 ```jsx
 import { AppShell, WorkspaceSwitcher, NotificationCenter, Card } from '@ride-eats/ui';
-
 <AppShell brand="Studio" items={navigation} value={view} onValueChange={setView} workspace={<WorkspaceSwitcher items={workspaces} value={workspace} onValueChange={setWorkspace} />} actions={<NotificationCenter items={notifications} />}>
   <Card title="Overview">Your application</Card>
 </AppShell>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items / value / onValueChange | navigation array / string / callback | Navigation items accept value, label, icon, count and disabled. |
 | brand / workspace / search / actions / sidebarFooter / children | ReactNode slots | Supply branding, controls and actual screens. |
@@ -1056,11 +1061,10 @@ Navigation. Compact workspace selection using the shared Send menu, ready for a 
 
 ```jsx
 import { WorkspaceSwitcher } from '@ride-eats/ui';
-
 <WorkspaceSwitcher items={workspaces} value={workspace} onValueChange={setWorkspace} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items | {value,label,description?,icon?,disabled?}[] | Caller-owned workspaces. |
 | value / onValueChange / label | controlled state and label | Selection does not switch a backend session automatically. |
@@ -1073,11 +1077,10 @@ Feedback. Unread counts, compact notification rows and caller-owned read state. 
 
 ```jsx
 import { NotificationCenter } from '@ride-eats/ui';
-
 <NotificationCenter items={notifications} onRead={markRead} onReadAll={markAllRead} onSelect={openNotification} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items | {id,title,description?,time?,read?,icon?}[] | Notification content and read state. |
 | onRead / onReadAll / onSelect / label | callbacks / string | Caller handles persistence and routing. |
@@ -1090,17 +1093,16 @@ Feedback. A compact native modal sheet. Drag the handle or header down to dismis
 
 ```jsx
 import { BottomSheet, Button } from '@ride-eats/ui';
-
 <BottomSheet open={open} onClose={() => setOpen(false)} title="Transfer settings" footer={<Button variant="primary" onClick={save}>Save changes</Button>}>
   Your settings
 </BottomSheet>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | open / onClose | controlled state | Keep mounted for animated exits and focus restoration. |
 | title / children / footer | ReactNode | Accessible heading, content and actions. |
-| height | number  /  CSS length | Fits content by default. Pass a height for a larger sheet; viewport limits and body scrolling remain active. |
+| height | number \| CSS length | Fits content by default. Pass a height for a larger sheet; viewport limits and body scrolling remain active. |
 
 ## Context Menu
 
@@ -1110,13 +1112,12 @@ Actions. Right-click or use Shift+F10 to open compact contextual actions. Nested
 
 ```jsx
 import { ContextMenu, Card } from '@ride-eats/ui';
-
 <ContextMenu items={[{value:'open',label:'Open',onSelect:openFile},{value:'sort',label:'Sort',items:[{value:'newest',label:'Newest',onSelect:sortNewest}]}]}>
   <Card title="Project files" />
 </ContextMenu>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | items | ContextMenuItem[] | value, label, icon, disabled, destructive, separator, onSelect and nested items. |
 | children / label | ReactNode / string | Context target and accessible action name. |
@@ -1129,13 +1130,12 @@ Recipes. Native top-layer popovers can hold a second popover without clipping in
 
 ```jsx
 import { Popover, Button } from '@ride-eats/ui';
-
 <Popover open={open} onOpenChange={setOpen} label="Share" trigger={props => <Button {...props}>Share</Button>}>
  <Popover open={details} onOpenChange={setDetails} label="Access" trigger={props => <Button {...props}>Access</Button>}>Access settings</Popover>
 </Popover>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | open / onOpenChange / trigger | controlled state / render prop | Each popover owns its open state. |
 | label / children / align / width | configuration | Same Popover API; native hierarchy handles outside dismissal. |
@@ -1148,11 +1148,10 @@ Layout. Compact settings sections with labels, descriptions, control slots and f
 
 ```jsx
 import { SettingsPanel, Field, Button } from '@ride-eats/ui';
-
 <SettingsPanel title="Workspace settings" sections={[{id:'general',title:'General',description:'Your workspace identity.',children:<Field label="Name"><input value={name} onChange={event => setName(event.target.value)} /></Field>}]} actions={<Button onClick={save}>Save</Button>} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | title / description | ReactNode | Panel heading. |
 | sections | {id,title,icon?,description?,children}[] | Rounded sections, optional icons and caller-owned controls. |
@@ -1166,11 +1165,10 @@ Workflows. A complete member table with optional invitation form, editable roles
 
 ```jsx
 import { TeamDirectory } from '@ride-eats/ui';
-
 <TeamDirectory members={members} onInvite={inviteMember} onRoleChange={changeRole} onRemove={removeMember} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | members | {id,name,email,role,status?}[] | Caller-owned member records. |
 | onInvite / onRoleChange / onRemove | optional async callbacks | Missing callbacks omit those controls. Rejected promises show errors. |
@@ -1184,11 +1182,10 @@ Workflows. A compact file table with native multi-file selection, opening, selec
 
 ```jsx
 import { FileManager } from '@ride-eats/ui';
-
 <FileManager files={files} onUpload={uploadFiles} onOpen={openFile} onDownload={downloadFiles} onDelete={deleteFile} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | files | {id,name,type?,size?,owner?,updated?}[] | type is file or folder. Display sizes and dates are caller formatted. |
 | onUpload / onOpen / onDownload / onDelete | optional callbacks | Upload receives native File[]. Download receives selected records. Use UIProvider for confirmations. |
@@ -1201,15 +1198,14 @@ Workflows. Conversation list, selected thread and reply composer in one responsi
 
 ```jsx
 import { SupportInbox } from '@ride-eats/ui';
-
 <SupportInbox threads={threads} value={threadId} onValueChange={setThreadId} onReply={sendReply} />
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | threads | SupportThread[] | id, name, subject, status, time and messages; messages contain id, author, text, time and own. |
 | value / onValueChange | string / callback | Selected conversation ID. |
-| onReply / label | (id,text) => Promise  /  void / string | Optional reply callback; controls are omitted without it. Drafts are retained per conversation during the mounted session. Search filters names and subjects. |
+| onReply / label | (id,text) => Promise \| void / string | Optional reply callback; controls are omitted without it. Drafts are retained per conversation during the mounted session. Search filters names and subjects. |
 
 ## Sticky Bar
 
@@ -1219,13 +1215,12 @@ Layout. Tools’ automatic floating page controls. Scroll depth progressively fa
 
 ```jsx
 import { StickyBar, Tabs } from '@ride-eats/ui';
-
 <StickyBar><Tabs items={tabs} value={tab} onValueChange={setTab} /></StickyBar>
 ```
 
-| Prop | Type | Purpose |
+| Prop | Type | Description |
 | --- | --- | --- |
 | children | ReactNode | Tabs, chips, search or action controls. |
-| offset | number  /  CSS length | Defaults to the nearest inherited --header-height. Set 0 for an independent scroll container. |
+| offset | number \| CSS length | Defaults to the nearest inherited --header-height. Set 0 for an independent scroll container. |
 | fade | boolean | Progressive neutral fade, enabled by default. No blur effects. |
 | label / className / style | styling and accessibility | The parent defines the sticky scroll boundary; use a labelled scroll region for keyboard scrolling. |

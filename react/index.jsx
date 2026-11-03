@@ -458,6 +458,8 @@ function MenuRows({ items }) {
 }
 export function Dropdown({
   trigger = "Actions",
+  variant = "secondary",
+  size,
   items,
   align = "end",
   label = "Actions",
@@ -470,7 +472,7 @@ export function Dropdown({
       className={className}
       style={style}
       trigger={(props) => (
-        <Button {...props} aria-label={label}>
+        <Button {...props} variant={variant} size={size} aria-label={label}>
           {trigger}
         </Button>
       )}
@@ -672,3 +674,5 @@ export { StickyBar } from "./StickyBar.jsx";
 export * from "./specialized.jsx";
 
 export { ShortcutRecorder, TextDiffViewer } from "./review.jsx";
+
+export { ColorPicker, InputGroup, ButtonGroup } from "./controls.jsx";

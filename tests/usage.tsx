@@ -290,3 +290,30 @@ export function ConsolidatedUsage() {
     </UI.Flex>
   );
 }
+
+import { ColorPicker, InputGroup, ButtonGroup } from "../react/index.jsx";
+function ComposableControls() {
+  const [color, setColor] = useState("#1fa476");
+  return (
+    <>
+      <ColorPicker
+        value={color}
+        onValueChange={setColor}
+        alpha
+        formats={["hex", "rgb"]}
+        swatches={[{ value: "#007aff", label: "Blue" }]}
+      />
+      <Field label="Price">
+        <InputGroup
+          type="number"
+          prefix="SRD"
+          suffix={<Button>Apply</Button>}
+          onChange={(event) => event.currentTarget.value}
+        />
+      </Field>
+      <ButtonGroup label="Actions" attached>
+        <Button>Save</Button>
+      </ButtonGroup>
+    </>
+  );
+}

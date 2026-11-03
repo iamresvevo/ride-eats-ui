@@ -18,6 +18,84 @@ const entry = (
 });
 export const collectionPages = [
   entry(
+    "color-picker",
+    "Color Picker",
+    "Inputs",
+    "Choose colors with a shade surface, precise keyboard sliders, editable formats and your own swatches.",
+    `const [color,setColor] = useState('#1fa476');
+<ColorPicker value={color} onValueChange={setColor} label="Accent" />`,
+    [
+      [
+        "value / onValueChange",
+        "string / callback",
+        "HEX, RGB or HSL input; returns #rrggbb, or #rrggbbaa with alpha.",
+      ],
+      [
+        "variant",
+        "popover | inline",
+        "The same editor, in a popup or embedded.",
+      ],
+      [
+        "alpha / formats",
+        "boolean / array",
+        "Optional opacity; supported formats are hex, rgb and hsl.",
+      ],
+      [
+        "swatches",
+        "(string | {value,label})[]",
+        "Your colors and accessible names. An empty array hides swatches.",
+      ],
+      [
+        "disabled / eyedropper",
+        "boolean",
+        "Disable all controls; screen picking appears only in supported browsers.",
+      ],
+    ],
+    "ColorPicker",
+  ),
+  entry(
+    "input-group",
+    "Input Group",
+    "Inputs",
+    "A native input with prefixes, units, icons and adjacent actions. Works directly inside Field.",
+    `<Field label="Amount"><InputGroup prefix="SRD" suffix="each" type="number" value={amount} onChange={e=>setAmount(e.target.value)} /></Field>`,
+    [
+      [
+        "prefix / suffix",
+        "ReactNode",
+        "Text, icons or existing buttons beside the input.",
+      ],
+      [
+        "native input props",
+        "InputHTMLAttributes",
+        "id, name, ref, value, onChange, type, required and validation reach the input.",
+      ],
+      ["disabled", "boolean", "Disables both the input and adjacent actions."],
+    ],
+    "InputGroup, Field",
+  ),
+  entry(
+    "button-group",
+    "Button Group",
+    "Actions",
+    "Arrange existing buttons and dropdowns as related actions, with optional attached or vertical layouts.",
+    `<ButtonGroup label="Record actions"><Button onClick={save}>Save</Button><Button onClick={copy}>Copy</Button></ButtonGroup>`,
+    [
+      [
+        "children",
+        "ReactNode",
+        "Existing Button and Dropdown components retain their behavior.",
+      ],
+      ["label", "string", "Accessible name for the action group."],
+      [
+        "attached / orientation",
+        "boolean / horizontal | vertical",
+        "Separate pills by default. Attach related actions, or arrange them vertically.",
+      ],
+    ],
+    "ButtonGroup, Button",
+  ),
+  entry(
     "shortcut-recorder",
     "Shortcut Recorder",
     "Inputs",

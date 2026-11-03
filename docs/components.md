@@ -280,3 +280,39 @@ ImageCompare uses pointer capture and a fixed drag-start rectangle for direct, s
 ## Shortcut Recorder and Text Diff Viewer
 
 Both tools use controlled caller values. ShortcutRecorder changes a binding only on explicit Save or Clear, blocks known reserved combinations and supplied conflicts, and cancels with Escape. TextDiffViewer preserves revision text, folds equal runs, supports split/unified views and synchronizes scrolling. Large replacements have a documented bounded matching fallback. See [the migration guide](migrations-v0.10.md) and [live API reference](platform-components.md).
+
+## Color Picker
+
+```jsx
+const [color, setColor] = useState('#1fa476');
+<ColorPicker value={color} onValueChange={setColor} label="Accent" />
+```
+
+The default is a compact popover; `variant="inline"` embeds the same editor. `alpha` enables opacity and eight-digit HEX output. All changes return canonical lowercase `#rrggbb` or `#rrggbbaa`, regardless of the displayed format. `formats={['hex','rgb','hsl']}` controls the format choices. The editor accepts HEX (3/4/6/8 digits), comma-separated RGB/RGBA and HSL/HSLA. It does not parse named colors, CSS variables or other CSS color spaces. Invalid text shows an error without changing the saved value. Enter commits valid text; Escape first discards a text draft, then closes the popover. Pointer shade selection and native Hue, Saturation and Brightness sliders provide equivalent controls; native sliders support keyboard arrows, Home and End. Hue is retained when a shade becomes gray or black.
+
+`swatches` accepts color strings or `{value,label}` objects. Pass `[]` to hide them, and `formats={['hex']}` for a simpler editor. `eyedropper={false}` hides screen picking; otherwise it appears only when the browser exposes EyeDropper. That browser feature requires a secure context and user activation. Cancellation leaves the color unchanged. `disabled` disables the entire editor and cancels screen picking. The caller owns persistence and may replace `value` externally. Invalid controlled values display the default green until replaced.
+
+Use a unique `label` for each picker. A popover picker works inside Field, including hint/error associations. Inline pickers have their own fieldset label. Colors are live updates; Done dismisses the editor rather than staging a separate save. Swatches replace the complete color, including opacity. Disabling `alpha` hides opacity and strips alpha from subsequent emitted changes, without mutating the caller's existing value.
+
+## Input Group
+
+```jsx
+<Field label="Amount" hint="Per item">
+  <InputGroup prefix="SRD" suffix="each" type="number"
+    value={amount} onChange={e => setAmount(e.target.value)} />
+</Field>
+```
+
+`prefix` and `suffix` accept text, icons or buttons. Native input props, including `id`, `name`, `ref`, validation and event handlers, go directly to the input. `className` and `style` customize the group wrapper. Field labels and validation reach the real input. `disabled` uses a native disabled fieldset so adjacent actions are disabled too. Give icon-only actions accessible names. This component owns no parsing, numeric stepping, password state or search behavior; pass existing controls and caller callbacks as needed. PasswordInput and NumberInput retain their specialized behavior.
+
+## Button Group
+
+```jsx
+<ButtonGroup label="Save actions" attached>
+  <Button variant="primary" onClick={save}>Save</Button>
+  <Dropdown variant="primary" label="More save options" trigger="More"
+    items={[{label:'Save a copy', onSelect:saveCopy}]} />
+</ButtonGroup>
+```
+
+Compose existing Button and Dropdown children. Separate pills wrap by default; `attached` joins controls into one surface and keeps them on one line. Keep attached labels concise on narrow screens. `orientation="vertical"` stacks actions. Every action keeps native Tab navigation, callbacks, loading and disabled states. This is an action group, not a selection component; use ToggleGroup or Segmented for selection. Dropdown now accepts the same `variant` and `size` as Button for consistent composition.
