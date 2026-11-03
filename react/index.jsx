@@ -1,4 +1,3 @@
-import { accentText } from "./accent.js";
 import { IconProvider } from "./icons/registry.jsx";
 import { CardHeader, CardFooter } from "./collection.jsx";
 import { ToastProvider } from "./Feedback.jsx";
@@ -626,11 +625,11 @@ export function UIProvider({
   accentForeground,
 }) {
   useLayoutEffect(() => {
-    if (!accent) return;
+    if (!accent && !accentForeground) return;
     const root = document.documentElement.style;
     const tokens = {
-      "--brand": accent,
-      "--on-brand": accentForeground || accentText(accent),
+      ...(accent ? { "--brand": accent } : {}),
+      "--on-brand": accentForeground || "#ffffff",
     };
     const previous = Object.fromEntries(
       Object.keys(tokens).map((key) => [

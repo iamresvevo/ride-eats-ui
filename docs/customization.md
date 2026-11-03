@@ -11,14 +11,14 @@ import '@ride-eats/ui/styles.css';
 </UIProvider>
 ```
 
-Hex colors (`#rgb` or `#rrggbb`) get automatic black or white foreground text. For another CSS color format, pass `accentForeground` explicitly. Use one root provider; theme and accent are document-wide. Changes update live and provider-owned inline tokens are restored on unmount.
+Solid accent fills use white text and icons by default. Pass `accentForeground` to override this for a custom palette. Use one root provider; theme and accent are document-wide. Changes update live and provider-owned inline tokens are restored on unmount.
 
 Primary buttons, Done/Save actions, checked controls, sliders, ratings and calendar selections use the accent. Navigation selection can retain the neutral ink pill; status and destructive colors keep their own meanings. Supporting surfaces remain solid neutral colors.
 
 Advanced overrides can follow the library stylesheet:
 
 ```css
-:root { --brand: #1fa476; --on-brand: #000; }
+:root { --brand: #1fa476; --on-brand: #fff; }
 ```
 
 Hover and icon variants derive from `--brand`; no extra palette setup is required.

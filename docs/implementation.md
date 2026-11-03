@@ -140,7 +140,7 @@ StickyBar follows Tools' sentinel behavior, discovers the nearest scroll contain
 
 ### One accent, including overlays
 
-Use `<UIProvider accent="#1fa476">` once at the application root. The root tokens reach body-level popovers, calendars and feedback. Hex values get a contrasting black/white foreground; `accentForeground` overrides it. Primary actions use the solid accent, navigation retains neutral selection pills, and semantic danger/status colors stay separate.
+Use `<UIProvider accent="#1fa476">` once at the application root. The root tokens reach body-level popovers, calendars and feedback. Accent fills use white foregrounds; `accentForeground` overrides this for custom palettes. Primary actions use the solid accent, navigation retains neutral selection pills, and semantic danger/status colors stay separate.
 
 SettingsPanel supports optional section `icon` values. SupportInbox retains drafts per thread for its mounted session and filters conversations locally by name/subject. DataGrid accepts `toolbarActions` for upload/create controls and reserves 36px selection/expansion columns.
 

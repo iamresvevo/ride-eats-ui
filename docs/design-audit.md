@@ -171,7 +171,7 @@ Steps, ScrollArea and Separator were removed from exports, types, examples and n
 
 ## 0.9.2 refinements
 
-Primary actions and calendar Done/Clear buttons now use the solid accent. UIProvider can set `accent` and optional `accentForeground` at the document root, so portaled overlays share the palette. Hex foregrounds are derived by contrast. Neutral navigation pills and semantic statuses retain their roles.
+Primary actions and calendar Done/Clear buttons now use the solid accent. UIProvider can set `accent` and optional `accentForeground` at the document root, so portaled overlays share the palette. Solid accent foregrounds default to white; custom palettes may override accentForeground. Neutral navigation pills and semantic statuses retain their roles.
 
 SupportInbox has compact searchable thread rows, shared avatars/textarea/buttons, separate incoming/outgoing surfaces and per-thread drafts. SettingsPanel uses bounded rounded section cards. DataGrid reserves actual control-column widths rather than stretching them; FileManager puts upload inside its single toolbar. StickyBar measures the top cover needed by a padded scroll container and renders fade/blur independently.
 
