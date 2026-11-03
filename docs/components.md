@@ -353,4 +353,8 @@ Use `renderThread`, `renderHeader`, `renderMessage`, `renderMessageActions` and 
 
 Header and AppShell navigation items accept `count` (including zero) or a custom React `badge`. Custom badge content takes precedence.
 
-SupportInbox sidebar rows retain a 44px minimum target. Section labels sit 2px above their rows, with a 6px section lead-in. Compact mode reduces row padding and avatar size while preserving subjects and statuses. The catalog starts in compact mode.
+SupportInbox sidebar rows retain a 44px minimum target. Quiet section labels sit 4px above their rows, with an 8px section lead-in. Compact mode reduces row padding and avatar size while preserving subjects and statuses. The catalog starts in compact mode.
+
+Chat examples use message previews rather than support statuses. `thread.status` remains optional for support integrations. Sidebar rows use softly rounded selection, aligned identity slots and compact unread counts; channel/group glyphs stay unframed.
+
+The built-in conversation composer is a growing multiline field with an inset circular send action. Enter adds a line; Ctrl/Command+Enter sends, excluding IME composition. The field stays editable during a pending send; newly typed text is preserved. Accessible labels name the destination, and errors and caller hints remain visible.

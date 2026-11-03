@@ -18,7 +18,7 @@ const initial = [
     kind: "channel",
     group: "Channels",
     name: "design-room",
-    subject: "Design room",
+    subject: "Jordan: I’ll check the narrow layout.",
     description: "Artwork, reviews and shared ideas",
     participants: people,
     unread: 3,
@@ -73,7 +73,7 @@ const initial = [
     kind: "group",
     group: "Groups",
     name: "Project crew",
-    subject: "Project crew",
+    subject: "Jordan: I’ve added my notes.",
     participants: people,
     messages: [
       {
@@ -97,8 +97,7 @@ const initial = [
     kind: "direct",
     group: "Direct messages",
     name: "Alex Rivera",
-    subject: "Help with a shared link",
-    status: "Open",
+    subject: "Can I update the expiry date?",
     time: "5m",
     messages: [
       {

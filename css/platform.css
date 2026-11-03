@@ -1012,6 +1012,12 @@
   font-size: 14px;
   margin: 0;
 }
+.re-support aside .re-support-count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 10px;
+}
 .re-support-count::before {
   display: none;
 }
@@ -1028,11 +1034,11 @@
   gap: 6px;
 }
 .re-support-group-title {
-  font-size: 11px;
-  color: var(--muted);
+  font-size: 10px;
+  color: var(--faint);
   line-height: 16px;
-  margin: 6px 8px 2px;
-  font-weight: 700;
+  margin: 8px 8px 4px;
+  font-weight: 600;
 }
 .re-support aside [role="listitem"]:first-child .re-support-group-title {
   margin-top: 0;
@@ -1042,7 +1048,7 @@
   border: 0;
   background: none;
   text-align: left;
-  border-radius: var(--r-lg);
+  border-radius: var(--r-sm);
   min-height: 44px;
   padding: 6px 8px;
   display: flex;
@@ -1212,9 +1218,13 @@
   width: 32px;
   height: 32px;
   border-radius: var(--r-circle);
-  background: var(--raised);
+  background: transparent;
   color: var(--muted);
   flex: none;
+}
+.re-support[data-density="compact"] aside .re-support-channel-icon {
+  width: 28px;
+  height: 28px;
 }
 .re-support[data-template="channel"] .re-support-thread > ol {
   gap: 12px;
@@ -1287,33 +1297,41 @@
   border-top: 1px solid var(--line);
 }
 .re-support-thread > form {
-  padding: 10px 16px 12px;
+  padding: 12px;
   display: grid;
-  gap: 8px;
-  border-top: 1px solid var(--line);
+  gap: 6px;
+}
+.re-support-compose-surface {
+  position: relative;
 }
 .re-support-thread > form .field {
   gap: 6px;
 }
-.re-support-thread > form .field label {
-  font-size: 11px;
-  color: var(--muted);
+.re-support-thread > form .field > label {
+  display: none;
 }
 .re-support-thread > form .field textarea {
-  resize: vertical;
-  min-height: 52px;
-  max-height: 120px;
-  padding: 9px 12px;
+  field-sizing: content;
+  resize: none;
+  min-height: 56px;
+  max-height: 144px;
+  padding: 16px 56px 16px 14px;
   border-radius: var(--r-lg);
   font-family: inherit;
+  line-height: 22px;
 }
-.re-support-compose-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
+.re-support-compose-surface > .re-support-send {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  padding: 0;
+  border-radius: var(--r-circle);
 }
-.re-support-compose-actions > span {
+.re-support-compose-hint {
+  padding-inline: 4px;
   font-size: 10px;
   color: var(--faint);
 }

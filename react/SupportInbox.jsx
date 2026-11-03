@@ -91,6 +91,15 @@ export function SupportInbox({
       <Avatar name={thread.name} src={thread.avatar} />
     );
   const rows = groupMessages(selected?.messages || [], groupWindow);
+  const headerDetail =
+    selected?.kind === "direct"
+      ? selected.description
+      : selected?.kind === "group" || selected?.kind === "channel"
+        ? selected.description ||
+          (selected.participants?.length
+            ? `${selected.participants.length} members`
+            : "")
+        : selected?.name;
   const composerContext = {
     thread: selected,
     value: draft,
@@ -197,15 +206,12 @@ export function SupportInbox({
                 <>
                   {identity(selected)}
                   <div>
-                    <strong>{selected.subject || selected.name}</strong>
-                    <small>
-                      {selected.kind === "group" || selected.kind === "channel"
-                        ? selected.description ||
-                          (selected.participants?.length
-                            ? `${selected.participants.length} members`
-                            : selected.name)
-                        : selected.name}
-                    </small>
+                    <strong>
+                      {selected.kind
+                        ? selected.name
+                        : selected.subject || selected.name}
+                    </strong>
+                    {headerDetail && <small>{headerDetail}</small>}
                   </div>
                   {selected.status && (
                     <Badge
@@ -297,33 +303,47 @@ export function SupportInbox({
                 </div>
               ) : (
                 <form onSubmit={send}>
-                  <Textarea
-                    label={
-                      selected.kind === "channel"
-                        ? `Message ${selected.name}`
-                        : `Reply to ${selected.name}`
-                    }
-                    rows={2}
-                    value={draft}
-                    onChange={(event) => setDraft(event.target.value)}
-                    placeholder={composerPlaceholder || "Write a message…"}
-                    disabled={pending}
-                    error={errors[value]}
-                  />
-                  <div className="re-support-compose-actions">
-                    <span>{composerHint}</span>
+                  <div className="re-support-compose-surface">
+                    <Textarea
+                      aria-label={
+                        selected.kind === "channel"
+                          ? `Message ${selected.name}`
+                          : `Reply to ${selected.name}`
+                      }
+                      rows={1}
+                      value={draft}
+                      onChange={(event) => setDraft(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (
+                          event.key === "Enter" &&
+                          (event.metaKey || event.ctrlKey) &&
+                          !event.nativeEvent.isComposing
+                        ) {
+                          event.preventDefault();
+                          send();
+                        }
+                      }}
+                      placeholder={
+                        composerPlaceholder || `Message ${selected.name}…`
+                      }
+                      error={errors[value]}
+                    />
                     <Button
+                      className="btn-icon re-support-send"
                       variant="primary"
-                      size="sm"
                       type="submit"
-                      icon="send"
+                      icon="arrow-up"
+                      aria-label="Send message"
                       loading={pending}
-                      loadingLabel="Sending…"
+                      loadingLabel="…"
                       disabled={!draft.trim()}
-                    >
-                      Send
-                    </Button>
+                    />
                   </div>
+                  {composerHint && (
+                    <div className="re-support-compose-hint">
+                      {composerHint}
+                    </div>
+                  )}
                 </form>
               ))}
           </>
