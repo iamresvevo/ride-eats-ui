@@ -401,12 +401,31 @@ export function SplitPane({
   label = "Resize panels",
   variant = "surface",
   collapseAt = 800,
+  fill = false,
+  fillGap = 24,
   className = "",
   style,
 }) {
   const root = useRef(null),
     drag = useRef(null);
   const [stacked, setStacked] = useState(false);
+  const [fillTop, setFillTop] = useState(0);
+  // Fill mode: the split takes the viewport height below its own top so each
+  // pane (and the cards in it) scrolls inside instead of the page.
+  useLayoutEffect(() => {
+    if (!fill) return;
+    const node = root.current;
+    const measure = () =>
+      setFillTop(Math.max(0, node.getBoundingClientRect().top + scrollY));
+    measure();
+    const resize = new ResizeObserver(measure);
+    resize.observe(document.body);
+    addEventListener("resize", measure);
+    return () => {
+      resize.disconnect();
+      removeEventListener("resize", measure);
+    };
+  }, [fill]);
   useLayoutEffect(() => {
     const node = root.current;
     const resize = new ResizeObserver(() =>
@@ -446,9 +465,15 @@ export function SplitPane({
     <div
       className={`re-split re-split-${variant} ${className}`}
       data-stacked={stacked || undefined}
+      data-fill={(fill && !stacked) || undefined}
       ref={root}
       data-dragging={dragging || undefined}
-      style={{ "--split": (preview ?? bounded) / 100, ...style }}
+      style={{
+        "--split": (preview ?? bounded) / 100,
+        "--split-fill-top": `${fillTop}px`,
+        "--split-fill-gap": `${fillGap}px`,
+        ...style,
+      }}
     >
       <div>{first}</div>
       <div

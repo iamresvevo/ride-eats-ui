@@ -779,6 +779,11 @@ export function SplitPane(
     value: number;
     onValueChange: (value: number) => void;
     variant?: "surface" | "plain";
+    /** Fill the viewport below the split; panes and their cards scroll inside,
+     * card headers and footers stay put. Off while stacked. */
+    fill?: boolean;
+    /** Space kept below the split in fill mode, in px. */
+    fillGap?: number;
     collapseAt?: number;
     min?: number;
     max?: number;
