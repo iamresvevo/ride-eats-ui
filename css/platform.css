@@ -1759,3 +1759,29 @@ td .react-select .menu-select {
   min-height: var(--ui-control);
   height: var(--ui-control);
 }
+
+/* Colour input: a compact swatch pill instead of a stretched native bar. */
+input[type="color"],
+.field input[type="color"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 56px;
+  min-width: 56px;
+  height: var(--ui-control);
+  padding: 5px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--raised);
+  cursor: pointer;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: 0;
+  border-radius: var(--r-pill);
+}
+input[type="color"]::-moz-color-swatch {
+  border: 0;
+  border-radius: var(--r-pill);
+}

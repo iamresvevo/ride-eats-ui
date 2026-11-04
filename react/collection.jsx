@@ -496,6 +496,8 @@ export function FileDropzone({
   previewAlt = "Selected image preview",
   label = "Drop your files here",
   description = "or browse from your device",
+  onRemove,
+  removeLabel = "Remove",
   className = "",
   style,
 }) {
@@ -583,6 +585,18 @@ export function FileDropzone({
           </small>
         </span>
       </button>
+      {onRemove && (
+        <button
+          type="button"
+          className="re-dropzone-remove"
+          aria-label={`${removeLabel} ${typeof label === "string" ? label : ""}`.trim()}
+          title={removeLabel}
+          disabled={disabled}
+          onClick={onRemove}
+        >
+          <Icon name="trash" />
+        </button>
+      )}
       <input
         ref={input}
         type="file"

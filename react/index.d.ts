@@ -482,6 +482,8 @@ export function FileDropzone(
     preview?: string;
     previewAlt?: string;
     label?: React.ReactNode;
+    onRemove?: () => void;
+    removeLabel?: string;
     description?: React.ReactNode;
   },
 ): React.ReactElement;
