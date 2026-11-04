@@ -1116,7 +1116,19 @@
   width: 100%;
   height: 100%;
   object-fit: var(--tile-image-fit, contain);
-  padding: 5px;
+}
+/* Logos carry their own plate: drop the icon well, fill the full slot
+   height and let wide marks keep their aspect instead of shrinking. */
+.re-tile-icon[data-image] {
+  width: auto;
+  min-width: var(--tile-image-size, 42px);
+  max-width: calc(var(--tile-image-size, 42px) * 2.5);
+  background: none;
+  border-radius: var(--r-sm);
+}
+.re-tile-icon[data-image] img {
+  width: auto;
+  max-width: 100%;
 }
 .re-tile-meta {
   font-size: 10px;

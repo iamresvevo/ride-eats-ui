@@ -1147,7 +1147,7 @@ export function Tile({
         data-selected={selected || undefined}
         className={`re-tile re-tile-row ${href || onClick ? "is-interactive" : ""} ${className}`}
       >
-        <span className="re-tile-icon">
+        <span className="re-tile-icon" data-image={image ? true : undefined}>
           {image ? <img src={image} alt="" /> : <Icon name={icon} />}
         </span>
         <span className="re-tile-copy">
@@ -1182,7 +1182,7 @@ export function Tile({
       className={`re-tile ${href || onClick ? "is-interactive" : ""} ${className}`}
     >
       <div className="re-tile-top">
-        <span className="re-tile-icon">
+        <span className="re-tile-icon" data-image={image ? true : undefined}>
           {image ? <img src={image} alt="" /> : <Icon name={icon} />}
         </span>
         {meta && <span className="re-tile-meta">{meta}</span>}
