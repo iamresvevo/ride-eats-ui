@@ -1731,3 +1731,34 @@ button.re-avatar-more:hover {
 .re-toolbar:not(:has(label)) > div {
   align-items: var(--toolbar-align, center);
 }
+
+/* Card header: title/description and actions share one row; actions stay
+   right-aligned and wrap within their own group before dropping below. */
+.re-card-header {
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+.re-card-header > div:first-child {
+  flex: 1 1 220px;
+}
+.re-card-header-action {
+  flex: 0 1 auto;
+  min-width: 0;
+  justify-content: flex-end;
+}
+.re-card-header-action > .re-toolbar {
+  min-width: 0;
+}
+.re-card-header-action .re-toolbar,
+.re-card-header-action .re-toolbar > div {
+  justify-content: flex-end;
+}
+@media (max-width: 720px) {
+  .re-card-header {
+    flex-wrap: wrap;
+  }
+  .re-card-header-action {
+    justify-content: flex-start;
+    margin-left: 0;
+  }
+}

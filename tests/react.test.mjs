@@ -19,7 +19,8 @@ test("loading Button preserves Send loading semantics and submit support", () =>
   assert.match(html, /disabled/);
   assert.match(html, /Saving…/);
   assert.match(html, /type="submit"/);
-  assert.doesNotMatch(html, />Save</);
+  // The idle label keeps the button width but is hidden from assistive tech.
+  assert.match(html, /<span class="btn-label" aria-hidden="true">Save<\/span>/);
 });
 test("controlled tabs expose panel associations and only the active stop", () => {
   const html = render("Tabs", {

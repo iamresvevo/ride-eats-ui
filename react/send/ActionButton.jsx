@@ -28,14 +28,15 @@ export default function ActionButton({
       aria-busy={loading || undefined}
       {...props}
     >
-      {loading ? (
-        t(loadingLabel)
-      ) : (
-        <>
-          {icon && <Icon name={icon} />}
-          {children != null && <span className="btn-label">{t(children)}</span>}
-        </>
+      {/* Idle content stays while loading (hidden by CSS) so the button,
+          and everything beside it, never changes width. */}
+      {icon && <Icon name={icon} />}
+      {children != null && (
+        <span className="btn-label" aria-hidden={loading || undefined}>
+          {t(children)}
+        </span>
       )}
+      {loading && <span className="btn-busy">{t(loadingLabel)}</span>}
     </button>
   );
 }

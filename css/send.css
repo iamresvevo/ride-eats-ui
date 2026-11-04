@@ -1513,3 +1513,25 @@
 .react-select .menu-select {
   padding: 0 12px 0 16px;
 }
+
+/* Loading keeps the idle width: content stays for layout, a centred spinner
+   (plus the busy label for assistive tech) overlays it. */
+.btn {
+  position: relative;
+}
+.btn.is-loading > :not(.btn-busy) {
+  visibility: hidden;
+}
+.btn.is-loading::before {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+.btn-busy {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
