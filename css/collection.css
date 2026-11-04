@@ -1725,3 +1725,9 @@ button.re-avatar-more:hover {
 .re-support aside [role="list"]::-webkit-scrollbar-thumb:hover {
   background: var(--muted);
 }
+
+/* Toolbars without labelled fields (badges, buttons) share one centre line. */
+.re-toolbar:not(:has(label)),
+.re-toolbar:not(:has(label)) > div {
+  align-items: var(--toolbar-align, center);
+}

@@ -1536,3 +1536,9 @@ a.tool-card:hover {
     scroll-behavior: auto !important;
   }
 }
+
+/* Badges are labels, never bars: keep them to their content in column layouts. */
+.badge {
+  width: fit-content;
+  max-width: 100%;
+}
