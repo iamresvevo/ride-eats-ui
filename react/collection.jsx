@@ -1231,7 +1231,7 @@ export function PageHeader({
 export function Toolbar({
   children,
   trailing,
-  align = "end",
+  align,
   className = "",
   ...props
 }) {
@@ -1241,7 +1241,9 @@ export function Toolbar({
       className={`re-toolbar ${className}`}
       style={{
         "--toolbar-align":
-          align === "end"
+          align === undefined
+            ? undefined
+            : align === "end"
             ? "flex-end"
             : align === "start"
               ? "flex-start"
