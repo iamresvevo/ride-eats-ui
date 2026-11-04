@@ -128,6 +128,7 @@ export function Field({
   error,
   id,
   labelHidden = false,
+  layout,
   children,
   className = "",
   style,
@@ -135,7 +136,7 @@ export function Field({
   const generated = useId();
   const fieldId = id || children?.props?.id || generated;
   return (
-    <div className={`field ${className}`} style={style}>
+    <div className={`field ${className}`} data-layout={layout} style={style}>
       <label
         htmlFor={fieldId}
         className={labelHidden ? "re-sr-only" : undefined}

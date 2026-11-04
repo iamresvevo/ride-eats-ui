@@ -1124,11 +1124,16 @@
   min-width: var(--tile-image-size, 42px);
   max-width: calc(var(--tile-image-size, 42px) * 2.5);
   background: none;
-  border-radius: var(--r-sm);
+  border-radius: 0;
+  overflow: visible;
 }
 .re-tile-icon[data-image] img {
+  display: block;
   width: auto;
+  height: var(--tile-image-size, 42px);
   max-width: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 .re-tile-meta {
   font-size: 10px;

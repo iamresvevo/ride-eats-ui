@@ -1729,3 +1729,33 @@
   width: 100%;
   min-width: 0;
 }
+
+/* Inline field: label leading, control trailing, one compact row. */
+.field[data-layout="inline"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 46%);
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 4px;
+}
+.field[data-layout="inline"] > label {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.field[data-layout="inline"] > small {
+  grid-column: 2;
+}
+
+/* Controls inside table cells: label lives in the column header, so the
+   control alone sits at compact control height. */
+td .re-combobox {
+  gap: 0;
+}
+td .re-combobox-input,
+td .react-select .menu-select {
+  min-height: var(--ui-control);
+  height: var(--ui-control);
+}

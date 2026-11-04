@@ -1485,3 +1485,31 @@
   gap: inherit;
   min-width: 0;
 }
+
+/* Button wraps children in .btn-label: stretch it so the value sits at the
+   leading inset and the selector icon at the trailing inset. */
+.react-select .menu-select > .btn-label {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.react-select .menu-select .select-label {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.react-select .menu-select .btn-label > .icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--faint);
+}
+.react-select .menu-select {
+  padding: 0 12px 0 16px;
+}

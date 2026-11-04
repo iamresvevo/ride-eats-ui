@@ -112,6 +112,7 @@ export function Combobox({
   value,
   onValueChange,
   label = "Choose an option",
+  labelHidden = false,
   placeholder = "Search options…",
   multiple = false,
   disabled = false,
@@ -192,7 +193,9 @@ export function Combobox({
   };
   return (
     <div className={`re-combobox ${className}`} style={style}>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className={labelHidden ? "re-sr-only" : undefined}>
+        {label}
+      </label>
       {multiple && chosen.length > 0 && (
         <div className="re-selected-chips">
           {chosen.map((key) => (

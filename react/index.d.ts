@@ -264,6 +264,8 @@ export function Field(
   props: StylingProps & {
     label: React.ReactNode;
     labelHidden?: boolean;
+    /** "inline" puts the label on the left and the control on the right. */
+    layout?: "stacked" | "inline";
     hint?: React.ReactNode;
     error?: React.ReactNode;
     id?: string;
@@ -836,6 +838,7 @@ export interface ComboboxOption {
   disabled?: boolean;
 }
 export interface ComboboxProps extends StylingProps {
+  labelHidden?: boolean;
   multiple?: false;
   options: ComboboxOption[];
   value: string;
