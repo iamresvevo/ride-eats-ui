@@ -25,7 +25,8 @@
   color: var(--text);
 }
 .re-card-padding-default {
-  padding: var(--ui-panel);
+  --card-pad: var(--ui-panel);
+  padding: var(--card-pad);
 }
 .re-form {
   display: grid;

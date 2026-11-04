@@ -838,8 +838,9 @@
 }
 /* The Tools dashboard language: filled surfaces, compact hierarchy, no decorative outlines. */
 .re-card {
+  --card-pad: 22px;
   border-radius: var(--r-lg);
-  padding: 22px;
+  padding: var(--card-pad);
   background: var(--surface);
   box-shadow: var(--shadow-card);
   gap: 18px;
@@ -854,10 +855,12 @@
   box-shadow: none;
 }
 .re-card-padding-none {
-  padding: 0;
+  --card-pad: 0px;
+  padding: var(--card-pad);
 }
 .re-card-padding-sm {
-  padding: 16px;
+  --card-pad: 16px;
+  padding: var(--card-pad);
 }
 .re-card-header {
   display: flex;
