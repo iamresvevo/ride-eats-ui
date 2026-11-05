@@ -365,3 +365,5 @@ SplitPane fill mode uses the card’s own padding value for its sticky header/fo
 
 
 Header navigation stays within the available space beside the brand and account. Overflowing menus show directional fades and edge controls. Fine-pointer hover scrolls with acceleration and deceleration; click advances the menu, touch/trackpad scrolling remains native, and focused/active links are revealed. Reduced motion disables hover scrolling and animated reveal. Layout direction is currently left-to-right.
+
+Compact FileDropzone filenames truncate within the upload row and expose the full label in a native hover title. Long labels in standard dropzones wrap without overflowing their parent.

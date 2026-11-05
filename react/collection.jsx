@@ -577,7 +577,9 @@ export function FileDropzone({
           )}
         </span>
         <span className="re-drop-copy">
-          <strong>{label}</strong>
+          <strong title={typeof label === "string" ? label : undefined}>
+            {label}
+          </strong>
           <span id={`${id}-hint`}>{description}</span>
           <small>
             {accept || "Any file type"} · Up to{" "}
@@ -1258,10 +1260,10 @@ export function Toolbar({
           align === undefined
             ? undefined
             : align === "end"
-            ? "flex-end"
-            : align === "start"
-              ? "flex-start"
-              : align,
+              ? "flex-end"
+              : align === "start"
+                ? "flex-start"
+                : align,
         ...props.style,
       }}
     >

@@ -560,6 +560,8 @@
   transform: translateY(-4px);
 }
 .re-dropzone strong {
+  white-space: normal;
+  overflow-wrap: anywhere;
   font-size: 13px;
   font-weight: 550;
 }
@@ -1777,6 +1779,7 @@ button.re-avatar-more:hover {
   padding: 12px 44px 12px 12px;
 }
 .re-dropzone-compact .re-drop-icon {
+  flex-shrink: 0;
   width: 52px;
   height: 52px;
 }
@@ -1786,10 +1789,16 @@ button.re-avatar-more:hover {
   object-fit: contain;
 }
 .re-dropzone-compact .re-drop-copy {
+  flex: 1;
   min-width: 0;
   gap: 2px;
 }
 .re-dropzone-compact .re-drop-copy strong {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 13px;
   line-height: 1.3;
 }
@@ -1815,7 +1824,9 @@ button.re-avatar-more:hover {
   background: transparent;
   color: var(--faint);
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s;
   transition-timing-function: var(--motion-ease);
 }
 .re-dropzone-remove:hover {
