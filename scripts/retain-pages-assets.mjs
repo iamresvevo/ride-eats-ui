@@ -110,15 +110,26 @@ async function main() {
     );
     for (const run of runs) {
       const directory = path.join(temporary, String(run.databaseId));
-      gh([
-        "run",
-        "download",
-        String(run.databaseId),
-        "--name",
-        "github-pages",
-        "--dir",
-        directory,
-      ]);
+      try {
+        gh([
+          "run",
+          "download",
+          String(run.databaseId),
+          "--name",
+          "github-pages",
+          "--dir",
+          directory,
+        ]);
+      } catch (error) {
+        // Pages artifacts expire independently of successful workflow history.
+        // Missing history must not prevent publishing the current documentation.
+        if (!/no valid artifacts found to download/i.test(error.message))
+          throw error;
+        console.warn(
+          `Previous Pages artifact ${run.databaseId} has expired; skipping it.`,
+        );
+        continue;
+      }
       const site = path.join(directory, "site");
       fs.mkdirSync(site);
       const result = spawnSync(
