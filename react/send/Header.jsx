@@ -1,6 +1,6 @@
 import NavBadge from "../NavBadge.jsx";
 import React from "react";
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import AccountMenu from "./AccountMenu.jsx";
 import Icon from "./Icon.jsx";
 export default function Header({
@@ -88,36 +88,119 @@ export default function Header({
   }, [activeValue, fade]);
   // One pill slides to the active tab, like the app's tab bar.
   const nav = useRef(null);
+  const navShell = useRef(null);
+  const edgeMotion = useRef(() => {});
+  const [edges, setEdges] = useState({ left: false, right: false });
   const pill = useRef(null);
   const navItems = useRef(null);
   useLayoutEffect(() => {
     const element = nav.current;
-    const items = navItems.current;
-    const desktop = matchMedia("(min-width: 701px)");
-    let initialized = false;
+    const shell = navShell.current;
+    const content = navItems.current;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    const fine = matchMedia("(hover: hover) and (pointer: fine)");
+    let frame = 0,
+      velocity = 0,
+      target = 0,
+      previous = 0;
+    const update = () => {
+      const left = element.scrollLeft > 2;
+      const right =
+        element.scrollWidth - element.clientWidth - element.scrollLeft > 2;
+      setEdges((old) =>
+        old.left === left && old.right === right ? old : { left, right },
+      );
+    };
+    const reveal = (link, smooth = true) => {
+      if (!link) return;
+      const start = link.offsetLeft;
+      const end = start + link.offsetWidth;
+      const margin = 32;
+      if (
+        start < element.scrollLeft + margin ||
+        end > element.scrollLeft + element.clientWidth - margin
+      )
+        element.scrollTo({
+          left: Math.max(
+            0,
+            start - (element.clientWidth - link.offsetWidth) / 2,
+          ),
+          behavior: smooth && !reduced.matches ? "smooth" : "instant",
+        });
+    };
     const resize = () => {
-      if (!desktop.matches) {
-        element.style.removeProperty("width");
+      shell.style.maxWidth = `${Math.ceil(content.getBoundingClientRect().width) + 8}px`;
+      reveal(element.querySelector(".nav-active"), false);
+      update();
+    };
+    const step = (time) => {
+      const dt = Math.min(32, previous ? time - previous : 16);
+      previous = time;
+      velocity += (target - velocity) * (1 - Math.exp(-dt / 140));
+      const before = element.scrollLeft;
+      element.scrollLeft += (velocity * dt) / 1000;
+      if (
+        (target === 0 && Math.abs(velocity) < 1) ||
+        (Math.abs(element.scrollLeft - before) < 0.01 && target !== 0)
+      ) {
+        frame = 0;
+        velocity = 0;
+        previous = 0;
         return;
       }
-      const width = Math.ceil(items.getBoundingClientRect().width) + 8;
-      if (!initialized) element.style.transition = "none";
-      element.style.width = `${width}px`;
-      if (!initialized) {
-        void element.offsetWidth;
-        element.style.removeProperty("transition");
-        initialized = true;
+      frame = requestAnimationFrame(step);
+    };
+    edgeMotion.current = (direction, immediate = false) => {
+      if (immediate) {
+        stop();
+        return;
       }
+      target = !reduced.matches && fine.matches ? direction * 320 : 0;
+      if (!frame && (target || velocity)) frame = requestAnimationFrame(step);
     };
-    resize();
+    const focus = (event) => {
+      if (event.target.matches("a")) reveal(event.target);
+    };
+    const stop = () => {
+      target = 0;
+      velocity = 0;
+      cancelAnimationFrame(frame);
+      frame = 0;
+      previous = 0;
+    };
+    element.addEventListener("scroll", update, { passive: true });
+    element.addEventListener("focusin", focus);
+    element.addEventListener("pointerdown", stop, { passive: true });
+    element.addEventListener("wheel", stop, { passive: true });
+    window.addEventListener("blur", stop);
+    reduced.addEventListener("change", stop);
     const observer = new ResizeObserver(resize);
-    observer.observe(items);
-    desktop.addEventListener("change", resize);
+    observer.observe(content);
+    observer.observe(shell);
+    resize();
+    reveal(element.querySelector(".nav-active"));
     return () => {
+      stop();
       observer.disconnect();
-      desktop.removeEventListener("change", resize);
+      edgeMotion.current = () => {};
+      element.removeEventListener("scroll", update);
+      element.removeEventListener("focusin", focus);
+      element.removeEventListener("pointerdown", stop);
+      element.removeEventListener("wheel", stop);
+      window.removeEventListener("blur", stop);
+      reduced.removeEventListener("change", stop);
     };
-  }, []);
+  }, [activeValue, items]);
+  const nudge = (direction) => {
+    edgeMotion.current(0, true);
+    const element = nav.current;
+    element.scrollBy({
+      left: direction * element.clientWidth * 0.65,
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  };
   useLayoutEffect(() => {
     const place = () => {
       const active = nav.current?.querySelector(".nav-active");
@@ -140,6 +223,7 @@ export default function Header({
     place();
     const observer = new ResizeObserver(place);
     observer.observe(nav.current);
+    observer.observe(navItems.current);
     return () => observer.disconnect();
   }, [activeValue, items]);
   return (
@@ -162,38 +246,64 @@ export default function Header({
         )}
         <span className="brand-name">{brand.name}</span>
       </a>
-      <nav ref={nav} className="site-nav" aria-label={"Main navigation"}>
-        <span ref={pill} className="nav-pill" aria-hidden="true" />
-        <div ref={navItems} className="site-nav-items">
-          {items.map((item) => (
-            <a
-              key={item.value}
-              href={item.href}
-              className={activeValue === item.value ? "nav-active" : undefined}
-              aria-current={activeValue === item.value ? "page" : undefined}
-              onClick={(event) => {
-                if (busy) {
-                  event.preventDefault();
-                  return;
+      <div
+        ref={navShell}
+        className="site-nav-shell"
+        data-overflow-left={edges.left || undefined}
+        data-overflow-right={edges.right || undefined}
+        onPointerLeave={() => edgeMotion.current(0)}
+      >
+        <nav ref={nav} className="site-nav" aria-label={"Main navigation"}>
+          <span ref={pill} className="nav-pill" aria-hidden="true" />
+          <div ref={navItems} className="site-nav-items">
+            {items.map((item) => (
+              <a
+                key={item.value}
+                href={item.href}
+                className={
+                  activeValue === item.value ? "nav-active" : undefined
                 }
-                if (
-                  onNavigate &&
-                  !event.metaKey &&
-                  !event.ctrlKey &&
-                  !event.shiftKey &&
-                  !event.altKey
-                ) {
-                  event.preventDefault();
-                  onNavigate(item);
-                }
-              }}
-            >
-              {item.icon && <Icon name={item.icon} />} {item.label}
-              <NavBadge count={item.count} badge={item.badge} />
-            </a>
-          ))}
-        </div>
-      </nav>
+                aria-current={activeValue === item.value ? "page" : undefined}
+                onClick={(event) => {
+                  if (busy) {
+                    event.preventDefault();
+                    return;
+                  }
+                  if (
+                    onNavigate &&
+                    !event.metaKey &&
+                    !event.ctrlKey &&
+                    !event.shiftKey &&
+                    !event.altKey
+                  ) {
+                    event.preventDefault();
+                    onNavigate(item);
+                  }
+                }}
+              >
+                {item.icon && <Icon name={item.icon} />} {item.label}
+                <NavBadge count={item.count} badge={item.badge} />
+              </a>
+            ))}
+          </div>
+        </nav>
+        {["left", "right"].map(
+          (side, index) =>
+            edges[side] && (
+              <button
+                key={side}
+                type="button"
+                className={`site-nav-edge site-nav-edge-${side}`}
+                aria-label={`Scroll navigation ${side}`}
+                onPointerEnter={() => edgeMotion.current(index ? 1 : -1)}
+                onPointerLeave={() => edgeMotion.current(0)}
+                onClick={() => nudge(index ? 1 : -1)}
+              >
+                <Icon name={`chevron-${side}`} />
+              </button>
+            ),
+        )}
+      </div>
       <div className="header-account">
         {extras}
         <AccountMenu

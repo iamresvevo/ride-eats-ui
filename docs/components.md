@@ -362,3 +362,6 @@ The built-in conversation composer is a growing multiline field with an inset ci
 Conversation preview rows reserve one line even when empty. Draft text replaces that preview with an inline Draft label; it never adds another row. Name/count rows reserve their height as unread counts appear or clear. Typing, clearing and sending therefore preserve sidebar geometry.
 
 SplitPane fill mode uses the card’s own padding value for its sticky header/footer edges. Default density, comfortable density, small padding and zero padding therefore fit the scrollport without horizontal overflow. Vertical pane scrolling remains automatic.
+
+
+Header navigation stays within the available space beside the brand and account. Overflowing menus show directional fades and edge controls. Fine-pointer hover scrolls with acceleration and deceleration; click advances the menu, touch/trackpad scrolling remains native, and focused/active links are revealed. Reduced motion disables hover scrolling and animated reveal. Layout direction is currently left-to-right.

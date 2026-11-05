@@ -384,3 +384,6 @@ ImageCompare uses pointer capture and a fixed drag-start rectangle for direct, s
 [Shortcut Recorder](https://iamresvevo.github.io/ride-eats-ui/#shortcut-recorder) captures and reviews a binding with conflict checks. [Text Diff Viewer](https://iamresvevo.github.io/ride-eats-ui/#text-diff-viewer) performs line comparison with folding, split/unified views and synchronized scrolling. See [0.10 migration](docs/migrations-v0.10.md) for behavior and limits.
 
 ColorPicker, InputGroup and ButtonGroup provide customizable colors and composable form/action controls. See [the API and examples](docs/components.md#color-picker).
+
+
+Header navigation stays within the available space beside the brand and account. Overflowing menus show directional fades and edge controls. Fine-pointer hover scrolls with acceleration and deceleration; click advances the menu, touch/trackpad scrolling remains native, and focused/active links are revealed. Reduced motion disables hover scrolling and animated reveal. Layout direction is currently left-to-right.
