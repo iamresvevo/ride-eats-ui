@@ -146,8 +146,10 @@ export function Combobox({
       const anchor =
         input.current.closest(".re-combobox-input") || input.current;
       const b = anchor.getBoundingClientRect();
-      node.style.width =
-        Math.min(Math.max(b.width, 240), innerWidth - 16) + "px";
+      const available = innerWidth - 16;
+      node.style.width = "max-content";
+      node.style.minWidth = Math.min(Math.max(b.width, 240), available) + "px";
+      node.style.maxWidth = Math.min(Math.max(b.width, 560), available) + "px";
       node.style.left =
         Math.max(8, Math.min(b.left, innerWidth - node.offsetWidth - 8)) + "px";
       node.style.top =
