@@ -11,6 +11,8 @@ function syncStack() {
     const covered = index < stack.length - 1;
     element.dataset.stackDepth = String(depth);
     element.style.setProperty("--dialog-depth", String(depth));
+    // Covering a freshly opened dialog must not replay its entry when it returns.
+    if (covered) element.dataset.entered = "true";
     element.classList.toggle("is-behind", depth > 0);
     element.inert = covered || element.dataset.closing === "true";
   });
