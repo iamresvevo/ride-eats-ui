@@ -111,7 +111,7 @@ Alternatively, use `beforeClose={async () => await confirm(options)}` to guard b
 
 ## Motion and limits
 
-Tabs and Segmented use Send's measured moving selection surface. Menus retain inline subgroup motion. Dialogs use a shared first backdrop and depth transitions; drawers use the same native stack. Toasts use Send's bounded depth stack, with repeated string messages merged and at most three visible by default. `maxVisible` is configurable on ToastProvider, and `duration`/`id` are per message. Reduced motion is honored.
+Tabs and Segmented use Send's measured moving selection surface. Menus retain inline subgroup motion. Dialogs keep opaque surfaces with a dimming backdrop between each native layer and depth transitions; drawers use the same native stack. Toasts use Send's bounded depth stack, with repeated string messages merged and at most three visible by default. `maxVisible` is configurable on ToastProvider, and `duration`/`id` are per message. Reduced motion is honored.
 
 This is a substantial **web application UI foundation**, not every possible platform feature. Rich text editing, maps, full calendar scheduling, virtualization and domain-specific workflows are not included. Extend the components through props, slots, native elements and your own application code instead of assuming those systems exist.
 

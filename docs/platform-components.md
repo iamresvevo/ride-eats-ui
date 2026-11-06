@@ -318,7 +318,7 @@ const rows = [...people].sort((a, b) =>
 
 ## Stacked Dialogs
 
-Recipes. Keep the form mounted while a confirmation opens above it. One backdrop, depth transitions, focus restoration and a preserved draft.
+Recipes. Keep the form mounted while a confirmation opens above it. Opaque dialog surfaces, a backdrop between layers, focus restoration and a preserved draft.
 
 [Live example](https://iamresvevo.github.io/ride-eats-ui/#stacked-dialogs)
 
@@ -347,7 +347,7 @@ const requestClose = async () => {
 | --- | --- | --- |
 | useConfirm() | (options) => Promise<boolean> | title, message, confirmLabel, cancelLabel and danger. |
 | Dialog.beforeClose | () => boolean \| Promise<boolean> | Optional dismissal guard; external open state remains yours. |
-| Native stack | automatic | Underlying form is inert, scaled and preserved; only the first backdrop dims. |
+| Native stack | automatic | Underlying form stays opaque, inert and preserved beneath the next dialog’s backdrop. |
 
 ## Accordion
 

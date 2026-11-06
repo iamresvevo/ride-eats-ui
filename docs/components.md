@@ -161,7 +161,7 @@ These retain Send’s original props. DateTimePicker uses Unix **seconds**, loca
 </Dialog>
 ```
 
-Sizes: `sm`, `md`, `lg`. Uses Send’s native dialog with focus management, scroll lock, backdrop, Escape and exit animation. The parent updates `open` in `onOpenChange`.
+Sizes: `sm`, `md`, `lg`. Uses Send’s native dialog with focus management, scroll lock, backdrop, Escape and exit animation. Each stacked dialog has its own dimming backdrop; covered dialog surfaces remain opaque, inert and intact beneath it. The parent updates `open` in `onOpenChange`.
 
 Keep Dialog mounted and change `open` for its animated exit. Use `onOpenChange`, `dismissible`, `label`, `labelledBy`, `onAfterClose` and `closeOnBackdrop` as needed. The native modal engine is internal; see [v0.8 migration](migrations-v0.8.md).
 

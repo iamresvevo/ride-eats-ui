@@ -86,26 +86,17 @@
     transform: translateY(0) scale(1);
   }
 }
-/* Native top-layer dialogs share the first backdrop; upper sheets stay transparent behind. */
+/* Each native top-layer dialog owns a dimming backdrop; rear dialog surfaces stay opaque. */
 .dialog {
   transition:
     transform 280ms var(--motion-ease),
-    filter 220ms var(--motion-ease),
     opacity 220ms var(--motion-ease);
   will-change: transform;
   transform-origin: center center;
 }
-.dialog[data-backdrop-owner="false"]::backdrop {
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  animation: none !important;
-}
 .dialog.is-behind {
   transform: translateY(calc(var(--dialog-depth) * -18px))
     scale(calc(1 - var(--dialog-depth) * 0.04));
-  filter: brightness(0.72);
-  opacity: 0.7;
   pointer-events: none;
   animation: none;
 }

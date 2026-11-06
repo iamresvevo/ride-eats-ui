@@ -489,7 +489,7 @@ const [expanded,setExpanded] = useState(["artwork"]);
     "stacked-dialogs",
     "Stacked Dialogs",
     "Recipes",
-    "Keep the form mounted while a confirmation opens above it. One backdrop, depth transitions, focus restoration and a preserved draft.",
+    "Keep the form mounted while a confirmation opens above it. Opaque dialog surfaces, a backdrop between layers, focus restoration and a preserved draft.",
     `const confirm = useConfirm();\nconst [open, setOpen] = useState(false);\nconst [name, setName] = useState('');\nconst requestClose = async () => {\n  const discard = !name || await confirm({\n    title: 'Discard changes?', message: 'Your draft has not been saved.',\n    confirmLabel: 'Discard changes', cancelLabel: 'Keep editing', danger: true,\n  });\n  if (discard) setOpen(false);\n};\n\n<Button onClick={() => setOpen(true)}>Create folder</Button>\n<Dialog open={open} onOpenChange={requestClose} title="Create folder"\n  footer={<Button onClick={requestClose}>Cancel</Button>}>\n  <Field label="Folder name"><input value={name} onChange={e => setName(e.target.value)} /></Field>\n</Dialog>\n// Wrap your app in UIProvider once.`,
     [
       [
@@ -505,7 +505,7 @@ const [expanded,setExpanded] = useState(["artwork"]);
       [
         "Native stack",
         "automatic",
-        "Underlying form is inert, scaled and preserved; only the first backdrop dims.",
+        "Underlying form stays opaque, inert and preserved beneath the next dialog’s backdrop.",
       ],
     ],
     "Button, Dialog, Field, useConfirm",

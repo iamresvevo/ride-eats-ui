@@ -7,12 +7,12 @@ import { t } from "../i18n.js";
 const stack = [];
 function syncStack() {
   stack.forEach((element, index) => {
-    const depth = stack.length - index - 1;
+    const depth = stack.slice(index + 1).filter((item) => item.dataset.closing !== "true").length;
+    const covered = index < stack.length - 1;
     element.dataset.stackDepth = String(depth);
-    element.dataset.backdropOwner = String(index === 0);
     element.style.setProperty("--dialog-depth", String(depth));
     element.classList.toggle("is-behind", depth > 0);
-    element.inert = depth > 0 || element.dataset.closing === "true";
+    element.inert = covered || element.dataset.closing === "true";
   });
   document.body.classList.toggle("dialog-open", stack.length > 0);
 }
