@@ -125,7 +125,6 @@ export function Combobox({
   const id = useId(),
     input = useRef(null),
     panel = useRef(null),
-    pointerFocus = useRef(false),
     [open, setOpen] = useState(false),
     [query, setQuery] = useState(""),
     [active, setActive] = useState(0);
@@ -158,9 +157,20 @@ export function Combobox({
           : Math.max(8, b.top - node.offsetHeight - 6)) + "px";
     };
     place();
+    const dialog = input.current.closest("dialog");
+    const settle = () => place();
+    const observer = new ResizeObserver(place);
+    observer.observe(
+      input.current.closest(".re-combobox-input") || input.current,
+    );
+    dialog?.addEventListener("animationend", settle);
+    dialog?.addEventListener("transitionend", settle);
     addEventListener("resize", place);
     addEventListener("scroll", place, true);
     return () => {
+      observer.disconnect();
+      dialog?.removeEventListener("animationend", settle);
+      dialog?.removeEventListener("transitionend", settle);
       removeEventListener("resize", place);
       removeEventListener("scroll", place, true);
     };
@@ -241,29 +251,15 @@ export function Combobox({
                 ? ""
                 : selected?.label || (allowCustom ? value || "" : "")
           }
-          onPointerDown={() => {
-            pointerFocus.current = true;
-          }}
-          onPointerCancel={() => {
-            pointerFocus.current = false;
-          }}
-          onBlur={() => {
-            pointerFocus.current = false;
-          }}
           onClick={() => {
-            pointerFocus.current = false;
             if (!open) {
               setQuery("");
               setActive(0);
               setOpen(true);
             }
           }}
-          onFocus={() => {
-            // Pointer focus precedes native light-dismiss; open on click instead.
-            if (pointerFocus.current) return;
-            setOpen(true);
-            setQuery("");
-            setActive(0);
+          onFocus={(event) => {
+            event.currentTarget.select();
           }}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -271,7 +267,9 @@ export function Combobox({
             setActive(0);
           }}
           onKeyDown={(e) => {
-            if (e.key === "Escape") {
+            if (e.key === "Escape" && open) {
+              e.preventDefault();
+              e.stopPropagation();
               setOpen(false);
               setQuery("");
             } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
