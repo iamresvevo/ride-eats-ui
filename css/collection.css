@@ -96,7 +96,7 @@
   font-weight: 600;
 }
 .re-alert p {
-  margin-top: 4px;
+  margin: 4px 0 0;
   font-size: 12px;
   line-height: 1.7;
   color: var(--muted);
@@ -879,10 +879,10 @@
   letter-spacing: -0.2px;
 }
 .re-card-header p {
+  margin: 4px 0 0;
   font-size: 12px;
   line-height: 1.65;
   color: var(--muted);
-  margin-top: 4px;
 }
 .re-card-header > div:first-child {
   min-width: 0;

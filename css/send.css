@@ -655,12 +655,14 @@
 .dialog form > .dialog-actions {
   margin-top: 20px;
 }
-.dialog:not(.manage-dialog) h2 {
+.dialog:not(.manage-dialog) > h2,
+.dialog:not(.manage-dialog) > .dialog-head > h2 {
   font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
-.dialog:not(.manage-dialog) p {
+.dialog:not(.manage-dialog) > p,
+.dialog:not(.manage-dialog) > .dialog-body > p {
   margin: 8px 0 20px;
   color: var(--muted);
   line-height: 1.6;
