@@ -143,8 +143,11 @@ export function Combobox({
     }
     if (!node.matches(":popover-open")) node.showPopover();
     const place = () => {
-      const b = input.current.getBoundingClientRect();
-      node.style.width = Math.min(b.width, innerWidth - 16) + "px";
+      const anchor =
+        input.current.closest(".re-combobox-input") || input.current;
+      const b = anchor.getBoundingClientRect();
+      node.style.width =
+        Math.min(Math.max(b.width, 240), innerWidth - 16) + "px";
       node.style.left =
         Math.max(8, Math.min(b.left, innerWidth - node.offsetWidth - 8)) + "px";
       node.style.top =

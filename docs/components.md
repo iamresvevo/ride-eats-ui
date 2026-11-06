@@ -382,3 +382,5 @@ const images = [{ id: 'receipt', src: '/receipt.jpg', title: 'Receipt', alt: 'Or
 `ImageGallery` accepts items with stable `id`, optional `src`, `title`, `alt`, and `description`. For private images supply `loadImage(item, {signal}) => Promise<URL>` instead of `src`; the app owns fetching, caching, credentials, and object URL lifetime. Only the current image loads. `renderActions(item)` supplies actions such as download. Arrow keys navigate within the dialog; Escape closes it and the existing Dialog restores focus. Zoom displays the supplied image at its native size in a scrollable surface.
 
 `ImageThumbnail` accepts `src` or `load({signal}) => Promise<URL>`, `alt`, accessible `label`, `onClick`, and `size` (56px default). Sources load near the viewport and failed loads offer retry. Honor the supplied abort signal when possible. Both primitives handle stale asynchronous results without replacing a newly selected image.
+
+Combobox option popups measure the complete selector control rather than its text input. Their minimum width is 240px when the viewport allows it, and positioning keeps them inside the viewport. Short option lists retain that width.
