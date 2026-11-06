@@ -1315,3 +1315,29 @@ export interface ColorPickerProps extends StylingProps {
   "aria-invalid"?: React.AriaAttributes["aria-invalid"];
 }
 export function ColorPicker(props: ColorPickerProps): React.ReactElement;
+
+export interface GalleryImage {
+  id: string | number;
+  src?: string;
+  title?: string;
+  alt?: string;
+  description?: string;
+}
+export function ImageThumbnail(props: {
+  src?: string;
+  load?: (options: { signal: AbortSignal }) => Promise<string>;
+  alt?: string;
+  label?: string;
+  onClick?: () => void;
+  size?: number;
+}): React.ReactElement;
+export function ImageGallery<T extends GalleryImage>(props: {
+  items: T[];
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  index: number;
+  onIndexChange: (index: number) => void;
+  loadImage?: (item: T, options: { signal: AbortSignal }) => Promise<string>;
+  renderActions?: (item: T) => React.ReactNode;
+  label?: string;
+}): React.ReactElement;

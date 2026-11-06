@@ -164,7 +164,9 @@
         "SignaturePad",
         "ActivityHeatmap",
         "ShortcutRecorder",
-        "TextDiffViewer"
+        "TextDiffViewer",
+        "ImageGallery",
+        "ImageThumbnail"
       ]
     }
   },

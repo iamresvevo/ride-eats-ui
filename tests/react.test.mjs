@@ -1518,3 +1518,12 @@ test('channel templates keep avatars, grouped text and custom content in one inb
  assert.match(html,/data-template="channel"/);assert.match(html,/data-grouped="true"/);assert.match(html,/src="\/alex.png"/);assert.match(html,/<em>Two<\/em>/);assert.match(html,/Send to general/);assert.match(html,/Channels/);
  const embedded=render('SupportInbox',{threads:[thread],value:'room',onValueChange:()=>{},showSidebar:false,showAvatars:false});assert.doesNotMatch(embedded,/<aside>/);assert.doesNotMatch(embedded,/re-support-message-avatar/);
 });
+
+test("image previews stay lazy and retain accessible open controls", () => {
+  let calls = 0;
+  const html = render("ImageThumbnail", {src:"/private.jpg",load:async () => {calls++;return "/private.jpg";},label:"Open receipt #12"});
+  assert.match(html, /aria-label="Open receipt #12"/);
+  assert.doesNotMatch(html, /src="\/private.jpg"/);
+  assert.equal(calls,0);
+  assert.equal(render("ImageGallery", {items:[],open:false,onOpenChange(){},index:0,onIndexChange(){}}), "");
+});

@@ -677,3 +677,5 @@ export * from "./specialized.jsx";
 export { ShortcutRecorder, TextDiffViewer } from "./review.jsx";
 
 export { ColorPicker, InputGroup, ButtonGroup } from "./controls.jsx";
+
+export { ImageGallery, ImageThumbnail } from "./ImageGallery.jsx";

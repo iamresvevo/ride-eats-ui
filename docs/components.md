@@ -367,3 +367,18 @@ SplitPane fill mode uses the card’s own padding value for its sticky header/fo
 Header navigation stays within the available space beside the brand and account. Overflowing menus show directional fades and edge controls. Fine-pointer hover scrolls with acceleration and deceleration; click advances the menu, touch/trackpad scrolling remains native, and focused/active links are revealed. Reduced motion disables hover scrolling and animated reveal. Layout direction is currently left-to-right.
 
 Compact FileDropzone filenames truncate within the upload row and expose the full label in a native hover title. Long labels in standard dropzones wrap without overflowing their parent.
+
+## Image gallery
+
+```jsx
+const [index, setIndex] = useState(0);
+const [open, setOpen] = useState(false);
+const images = [{ id: 'receipt', src: '/receipt.jpg', title: 'Receipt', alt: 'Order receipt' }];
+<ImageThumbnail src={images[0].src} label="Open receipt" onClick={() => setOpen(true)} />
+<ImageGallery items={images} open={open} onOpenChange={setOpen}
+  index={index} onIndexChange={setIndex} />
+```
+
+`ImageGallery` accepts items with stable `id`, optional `src`, `title`, `alt`, and `description`. For private images supply `loadImage(item, {signal}) => Promise<URL>` instead of `src`; the app owns fetching, caching, credentials, and object URL lifetime. Only the current image loads. `renderActions(item)` supplies actions such as download. Arrow keys navigate within the dialog; Escape closes it and the existing Dialog restores focus. Zoom displays the supplied image at its native size in a scrollable surface.
+
+`ImageThumbnail` accepts `src` or `load({signal}) => Promise<URL>`, `alt`, accessible `label`, `onClick`, and `size` (56px default). Sources load near the viewport and failed loads offer retry. Honor the supplied abort signal when possible. Both primitives handle stale asynchronous results without replacing a newly selected image.

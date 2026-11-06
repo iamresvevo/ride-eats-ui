@@ -28,6 +28,7 @@ const workflows = new Set([
   "support-inbox",
 ]);
 export function sourceForPage(id) {
+  if (id === "image-gallery") return "react/ImageGallery.jsx";
   if (["color-picker", "input-group", "button-group"].includes(id))
     return "react/controls.jsx";
   if (["shortcut-recorder", "text-diff-viewer"].includes(id))

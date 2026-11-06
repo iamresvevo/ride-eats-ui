@@ -387,3 +387,7 @@ ColorPicker, InputGroup and ButtonGroup provide customizable colors and composab
 
 
 Header navigation stays within the available space beside the brand and account. Overflowing menus show directional fades and edge controls. Fine-pointer hover scrolls with acceleration and deceleration; click advances the menu, touch/trackpad scrolling remains native, and focused/active links are revealed. Reduced motion disables hover scrolling and animated reveal. Layout direction is currently left-to-right.
+
+## Image galleries
+
+`ImageThumbnail` lazily loads image previews near the viewport. `ImageGallery` composes the shared Dialog with previous/next controls, arrow-key navigation, fit/zoom, loading and retry states, and app-owned action slots. See [the component reference](docs/components.md#image-gallery). Authentication and source caching stay in the consumer.

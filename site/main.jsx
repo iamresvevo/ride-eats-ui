@@ -50,11 +50,101 @@ const {
   MenuSub,
   MenuSeparator,
 } = UI;
+function GalleryDemo() {
+  const [index, setIndex] = useState(0),
+    [open, setOpen] = useState(false);
+  const images = React.useMemo(
+    () => [
+      {
+        id: "one",
+        src: new URL("./assets/dispatch-before.svg", import.meta.url).href,
+        title: "Dispatch before",
+      },
+      {
+        id: "two",
+        src: new URL("./assets/dispatch-after.svg", import.meta.url).href,
+        title: "Dispatch after",
+      },
+    ],
+    [],
+  );
+  return (
+    <>
+      <div style={{ display: "flex", gap: 12 }}>
+        {images.map((image, i) => (
+          <UI.ImageThumbnail
+            key={image.id}
+            src={image.src}
+            alt={image.title}
+            label={"Open " + image.title}
+            onClick={() => {
+              setIndex(i);
+              setOpen(true);
+            }}
+          />
+        ))}
+      </div>
+      <UI.ImageGallery
+        items={images}
+        open={open}
+        onOpenChange={setOpen}
+        index={index}
+        onIndexChange={setIndex}
+      />
+    </>
+  );
+}
 const repo = "https://github.com/iamresvevo/ride-eats-ui";
 const components = [
   ...platformPages,
   ...motionPages,
   ...collectionPages,
+  {
+    id: "image-gallery",
+    name: "Image Gallery",
+    group: "Feedback",
+    description:
+      "Lazy thumbnails and an accessible image viewer with keyboard navigation and zoom.",
+    detail:
+      "Application-owned sources support private images. The viewer composes the shared Dialog with focus restoration, error recovery, previous/next navigation and zoom.",
+    imports: "ImageGallery, ImageThumbnail",
+    code: `const [index,setIndex] = useState(0);
+const [open,setOpen] = useState(false);
+<ImageThumbnail src={images[0].src} label="Open photos" onClick={() => setOpen(true)} />
+<ImageGallery items={images} open={open} onOpenChange={setOpen} index={index} onIndexChange={setIndex} />`,
+    props: [
+      [
+        "items",
+        "GalleryImage[]",
+        "Stable id, src, title, alt and optional description.",
+      ],
+      [
+        "open / onOpenChange",
+        "boolean / callback",
+        "Controlled dialog visibility.",
+      ],
+      [
+        "index / onIndexChange",
+        "number / callback",
+        "Controlled current image.",
+      ],
+      [
+        "loadImage",
+        "async (item, {signal}) => URL",
+        "Optional authenticated source resolver.",
+      ],
+      [
+        "renderActions",
+        "(item) => ReactNode",
+        "App-owned actions such as Download.",
+      ],
+      [
+        "ImageThumbnail load",
+        "async ({signal}) => URL",
+        "Lazy thumbnail source, loaded near the viewport.",
+      ],
+    ],
+  },
   {
     id: "segmented",
     name: "Segmented",
@@ -701,6 +791,8 @@ function Demo({ id }) {
       );
     case "date-time":
       return <DateTimePicker value={date} onChange={setDate} future />;
+    case "image-gallery":
+      return <GalleryDemo />;
     case "dialog":
       return <SimpleDialogDemo />;
     case "skeleton":
