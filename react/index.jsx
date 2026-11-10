@@ -126,6 +126,7 @@ export function Field({
   label,
   hint,
   error,
+  warning,
   id,
   labelHidden = false,
   layout,
@@ -146,16 +147,18 @@ export function Field({
       {React.isValidElement(children)
         ? React.cloneElement(children, {
             id: fieldId,
-            "aria-describedby": hint || error ? `${fieldId}-hint` : undefined,
+            "aria-describedby": hint || error || warning ? `${fieldId}-hint` : undefined,
             "aria-invalid": error ? true : undefined,
           })
         : children}
-      {(error || hint) && (
+      {(error || warning || hint) && (
         <small
           id={`${fieldId}-hint`}
-          style={{ color: error ? "var(--bad)" : "var(--muted)" }}
+          className="re-field-feedback"
+          data-tone={error ? "bad" : warning ? "wait" : undefined}
         >
-          {error || hint}
+          {(error || warning) && <SendIcon name="alert-circle" size={14} />}
+          <span>{error || warning || hint}</span>
         </small>
       )}
     </div>

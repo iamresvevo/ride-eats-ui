@@ -194,6 +194,10 @@ a {
   font-size: 12px;
   color: var(--muted);
 }
+.field .re-field-feedback { display: flex; align-items: flex-start; gap: var(--space-1, 4px); }
+.field .re-field-feedback > svg { flex-shrink: 0; margin-top: 2px; }
+.field .re-field-feedback[data-tone="bad"] { color: var(--bad); }
+.field .re-field-feedback[data-tone="wait"] { color: var(--wait); }
 .field-row {
   display: flex;
   gap: 12px;

@@ -388,3 +388,5 @@ Combobox option popups measure the complete selector control rather than its tex
 Combobox focus alone does not open its menu, including focus assigned by a dialog. Click, type, or use Arrow Down to open it. Escape closes the options before dismissing a containing dialog. Popup positions settle after dialog transitions and update when the control resizes.
 
 Select and Combobox accept a `placeholder` string. A legacy prompt in an options array can be marked `{ value: "", label: "Choose an item", placeholder: true }`. Placeholder options are omitted from the menu and keyboard navigation. Empty values without this flag remain selectable for meaningful choices such as All or None.
+
+`Field` accepts `warning` for non-blocking inline feedback with a warning icon and semantic color. Errors take precedence, then warnings, then hints. Warnings describe the input without setting `aria-invalid`.

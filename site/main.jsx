@@ -474,9 +474,9 @@ const [open,setOpen] = useState(false);
     description: "One place for the label, hint, and error.",
     detail:
       "A generic React addition that links the label and supporting message to your input. Use standard input props for browser behavior and validation.",
-    code: `<Field label="Email address" hint="We’ll send the receipt here.">\n  <input type="email" placeholder="alex@example.com" />\n</Field>`,
+    code: `<Field label="Email address" warning="Confirm this address before sending the receipt.">\n  <input type="email" placeholder="alex@example.com" />\n</Field>`,
     props: [
-      ["label / hint / error", "string", "Field copy and validation feedback."],
+      ["label / hint / warning / error", "ReactNode", "Field copy, non-blocking warnings and validation errors."],
       ["children", "ReactElement", "One input, textarea or select."],
       ["id", "string", "Optional stable field identifier."],
     ],
@@ -862,7 +862,7 @@ function Demo({ id }) {
     case "field":
       return (
         <div style={{ width: 320, maxWidth: "100%" }}>
-          <Field label="Email address" hint="We’ll send the receipt here.">
+          <Field label="Email address" warning="Confirm this address before sending the receipt.">
             <input type="email" placeholder="alex@example.com" />
           </Field>
         </div>

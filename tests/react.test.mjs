@@ -1536,3 +1536,11 @@ test("Combobox uses flagged options as prompts and preserves real empty choices"
   const empty = render("Combobox", {options:[{value:"",label:"All products"}],value:"",onValueChange() {}});
   assert.match(empty, /value="All products"/);
 });
+
+test("Field warnings describe inputs without invalidating them", () => {
+const warningField = renderToStaticMarkup(React.createElement(UI.Field, {label: "Total", warning: "Handwritten amount needs confirmation."}, React.createElement("input")));
+assert.match(warningField, /data-tone="wait"/);
+assert.match(warningField, /aria-describedby=/);
+assert.doesNotMatch(warningField, /aria-invalid/);
+
+});

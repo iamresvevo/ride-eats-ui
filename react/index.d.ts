@@ -270,6 +270,7 @@ export function Field(
     layout?: "stacked" | "inline";
     hint?: React.ReactNode;
     error?: React.ReactNode;
+    warning?: React.ReactNode;
     id?: string;
     children: React.ReactElement;
   },
