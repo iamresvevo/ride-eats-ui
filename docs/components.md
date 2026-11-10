@@ -394,3 +394,5 @@ Select and Combobox accept a `placeholder` string. A legacy prompt in an options
 `ImageGallery` supports `inline` and an optional CSS `height` for embedded photo inspection. Both inline and dialog viewers share zoom-in/out, Fit, double-click zoom and pointer-captured drag panning. Keyboard +/− zoom, 0 fits, and arrow keys scroll zoomed images. `renderActions` adds caller actions such as Expand.
 
 `Workbench layout="comparison"` provides two equal panes with a fixed first pane and independently scrolling content below the second pane header. It stacks on narrow screens. Use `ImageGallery inline fill` to fit its image and controls to the available pane height.
+
+Use `<DataTable stickyFirstColumn stickyLastColumn ... />` to keep the first and last rendered columns visible while the middle scrolls horizontally. Each boolean can be enabled independently and defaults to false. Selection and action columns count as rendered edge columns. Empty/loading rows remain full width. For multiple pinned data columns, use DataGrid.

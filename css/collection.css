@@ -731,6 +731,27 @@
   text-align: left;
   white-space: nowrap;
 }
+/* Pin rendered edge columns, including selection/actions when present. */
+.re-data-table[data-sticky-first] tr > :first-child:not([colspan]),
+.re-data-table[data-sticky-last] tr > :last-child:not([colspan]) {
+  position: sticky;
+  z-index: 1;
+  background: var(--surface);
+}
+.re-data-table[data-sticky-first] tr > :first-child:not([colspan]) {
+  left: 0;
+  box-shadow: 1px 0 var(--line);
+}
+.re-data-table[data-sticky-last] tr > :last-child:not([colspan]) {
+  right: 0;
+  box-shadow: -1px 0 var(--line);
+}
+.re-data-table[data-sticky-first] thead tr > :first-child:not([colspan]),
+.re-data-table[data-sticky-last] thead tr > :last-child:not([colspan]),
+.re-data-table[data-sticky-first] tbody tr:hover > :first-child:not([colspan]),
+.re-data-table[data-sticky-last] tbody tr:hover > :last-child:not([colspan]) {
+  background: var(--raised);
+}
 .re-data-table caption {
   text-align: left;
   font-weight: 550;

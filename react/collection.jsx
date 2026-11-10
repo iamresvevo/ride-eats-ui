@@ -707,6 +707,8 @@ export function DataTable({
   density = "comfortable",
   variant = "auto",
   cellAlign = "middle",
+  stickyFirstColumn = false,
+  stickyLastColumn = false,
   className = "",
   style,
 }) {
@@ -725,6 +727,8 @@ export function DataTable({
       className={`re-data-table ${className}`}
       style={{ "--table-cell-align": cellAlign, ...style }}
       data-density={density}
+      data-sticky-first={stickyFirstColumn || undefined}
+      data-sticky-last={stickyLastColumn || undefined}
       data-variant={variant}
       aria-busy={loading || undefined}
     >
