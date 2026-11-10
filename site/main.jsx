@@ -84,6 +84,7 @@ function GalleryDemo() {
           />
         ))}
       </div>
+      <UI.ImageGallery inline items={images} index={index} onIndexChange={setIndex} height={400} />
       <UI.ImageGallery
         items={images}
         open={open}
@@ -121,7 +122,7 @@ const [open,setOpen] = useState(false);
       [
         "open / onOpenChange",
         "boolean / callback",
-        "Controlled dialog visibility.",
+        "Controlled dialog visibility; inline renders an embedded viewer instead.",
       ],
       [
         "index / onIndexChange",

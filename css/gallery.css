@@ -30,20 +30,11 @@
   border-radius: var(--r-inner);
   background: var(--raised);
 }
-.image-gallery-stage img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-.image-gallery-stage[data-zoom] {
-  display: block;
-}
-.image-gallery-stage[data-zoom] img {
-  max-width: none;
-  max-height: none;
-  margin: auto;
-}
+.image-gallery-canvas { display:flex; align-items:center; justify-content:center; flex:none; }
+.image-gallery-stage img { display:block; max-width:none; max-height:none; object-fit:contain; user-select:none; }
+.image-gallery-stage[data-zoom] { display:block; cursor:grab; touch-action:none; }
+.image-gallery-stage[data-dragging] { cursor:grabbing; }
+.image-gallery-inline { min-width:0; display:flex; flex-direction:column; gap:8px; }
 .image-gallery-controls,
 .image-gallery-navigation {
   display: flex;

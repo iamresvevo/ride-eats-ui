@@ -390,3 +390,5 @@ Combobox focus alone does not open its menu, including focus assigned by a dialo
 Select and Combobox accept a `placeholder` string. A legacy prompt in an options array can be marked `{ value: "", label: "Choose an item", placeholder: true }`. Placeholder options are omitted from the menu and keyboard navigation. Empty values without this flag remain selectable for meaningful choices such as All or None.
 
 `Field` accepts `warning` for non-blocking inline feedback with a warning icon and semantic color. Errors take precedence, then warnings, then hints. Warnings describe the input without setting `aria-invalid`.
+
+`ImageGallery` supports `inline` and an optional CSS `height` for embedded photo inspection. Both inline and dialog viewers share zoom-in/out, Fit, double-click zoom and pointer-captured drag panning. Keyboard +/− zoom, 0 fits, and arrow keys scroll zoomed images. `renderActions` adds caller actions such as Expand.

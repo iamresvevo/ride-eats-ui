@@ -1337,10 +1337,12 @@ export function ImageThumbnail(props: {
 }): React.ReactElement;
 export function ImageGallery<T extends GalleryImage>(props: {
   items: T[];
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  index: number;
-  onIndexChange: (index: number) => void;
+  inline?: boolean;
+  height?: React.CSSProperties["height"];
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  index?: number;
+  onIndexChange?: (index: number) => void;
   loadImage?: (item: T, options: { signal: AbortSignal }) => Promise<string>;
   renderActions?: (item: T) => React.ReactNode;
   label?: string;
