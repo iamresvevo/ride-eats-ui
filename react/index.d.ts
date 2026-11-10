@@ -1177,6 +1177,7 @@ export function ScrollArea(
 export function Workbench(
   props: React.HTMLAttributes<HTMLDivElement> & {
     layout?: "comparison";
+    comparisonTrailingWidth?: number;
     leadingWidth?: number;
     trailingWidth?: number;
     height?: string;

@@ -1348,6 +1348,7 @@ export function ScrollArea({
 export function Workbench({
   children,
   layout,
+  comparisonTrailingWidth,
   leadingWidth = 280,
   trailingWidth = 300,
   height = "min(66dvh, 760px)",
@@ -1364,6 +1365,7 @@ export function Workbench({
       data-layout={layout}
       data-dividers={dividers || undefined}
       style={{
+        "--workbench-comparison-trailing": comparisonTrailingWidth == null ? undefined : `${comparisonTrailingWidth}px`,
         "--workbench-leading": `${leadingWidth}px`,
         "--workbench-trailing": `${trailingWidth}px`,
         "--workbench-height": height,
