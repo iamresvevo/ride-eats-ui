@@ -115,7 +115,7 @@ export function TableDemo() {
         />
       </Toolbar>
       <DataTable
-        stickyFirstColumn
+        stickyFirstColumn={2}
         stickyLastColumn
         caption="Team members"
         rows={filtered.slice((page - 1) * 4, page * 4)}

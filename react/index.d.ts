@@ -548,8 +548,8 @@ export function DataTable<T extends Record<string, unknown>>(
     density?: "compact" | "comfortable";
     variant?: "auto" | "standalone" | "inset";
     cellAlign?: "top" | "middle" | "bottom";
-    stickyFirstColumn?: boolean;
-    stickyLastColumn?: boolean;
+    stickyFirstColumn?: boolean | number;
+    stickyLastColumn?: boolean | number;
   },
 ): React.ReactElement;
 export function CardHeader(

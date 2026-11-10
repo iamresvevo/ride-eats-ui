@@ -731,53 +731,18 @@
   text-align: left;
   white-space: nowrap;
 }
-/* Pin rendered edge columns, including selection/actions when present. */
-.re-data-table[data-sticky-first] tr > :first-child:not([colspan]),
-.re-data-table[data-sticky-last] tr > :last-child:not([colspan]) {
-  position: sticky;
-  z-index: 1;
-  --table-pinned-bg: var(--surface);
+/* Measured offsets keep any number of rendered edge columns together. */
+.re-data-table [data-pinned] { position: sticky; z-index: 1; --table-pinned-bg: var(--surface); }
+.re-data-table tbody [data-pinned] { background: var(--surface); }
+.re-data-table thead [data-pinned],
+.re-data-table tbody tr:hover > [data-pinned] { background: var(--raised); --table-pinned-bg: var(--raised); }
+.re-data-table [data-pin-edge]::after {
+  content: ""; opacity: 0; position: absolute; top: 0; bottom: 0; width: 12px; pointer-events: none;
 }
-.re-data-table[data-sticky-first] tbody tr > :first-child:not([colspan]),
-.re-data-table[data-sticky-last] tbody tr > :last-child:not([colspan]) {
-  background: var(--surface);
-}
-.re-data-table[data-sticky-first] tr > :first-child:not([colspan]) {
-  left: 0;
-}
-.re-data-table[data-sticky-last] tr > :last-child:not([colspan]) {
-  right: 0;
-}
-.re-data-table[data-sticky-first] thead tr > :first-child:not([colspan]),
-.re-data-table[data-sticky-last] thead tr > :last-child:not([colspan]),
-.re-data-table[data-sticky-first] tbody tr:hover > :first-child:not([colspan]),
-.re-data-table[data-sticky-last] tbody tr:hover > :last-child:not([colspan]) {
-  background: var(--raised);
-  --table-pinned-bg: var(--raised);
-}
-/* A neutral fade separates pinned edges without a hard divider. */
-.re-data-table[data-sticky-first] tr > :first-child:not([colspan])::after,
-.re-data-table[data-sticky-last] tr > :last-child:not([colspan])::after {
-  content: "";
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 12px;
-  pointer-events: none;
-}
-.re-data-table[data-sticky-first] tr > :first-child:not([colspan])::after {
-  left: 100%;
-  background: linear-gradient(to right, var(--table-pinned-bg), transparent);
-}
-.re-data-table[data-sticky-last] tr > :last-child:not([colspan])::after {
-  right: 100%;
-  background: linear-gradient(to left, var(--table-pinned-bg), transparent);
-}
-.re-data-table[data-sticky-first][data-scroll-left] tr > :first-child:not([colspan])::after,
-.re-data-table[data-sticky-last][data-scroll-right] tr > :last-child:not([colspan])::after {
-  opacity: 1;
-}
+.re-data-table [data-pin-edge="left"]::after { left: 100%; background: linear-gradient(to right, var(--table-pinned-bg), transparent); }
+.re-data-table [data-pin-edge="right"]::after { right: 100%; background: linear-gradient(to left, var(--table-pinned-bg), transparent); }
+.re-data-table[data-scroll-left] [data-pin-edge="left"]::after,
+.re-data-table[data-scroll-right] [data-pin-edge="right"]::after { opacity: 1; }
 .re-data-table caption {
   text-align: left;
   font-weight: 550;

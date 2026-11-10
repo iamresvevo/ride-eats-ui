@@ -1544,3 +1544,15 @@ assert.match(warningField, /aria-describedby=/);
 assert.doesNotMatch(warningField, /aria-invalid/);
 
 });
+
+test("DataTable pins selection and identity together with one fade per edge", () => {
+  const html = render("DataTable", {
+    rows: [{ id: 1, name: "Receipt", total: 12 }],
+    columns: [{ key: "name", label: "Receipt" }, { key: "total", label: "Total" }],
+    onSelectionChange() {}, rowActions: () => "Review",
+    stickyFirstColumn: 2, stickyLastColumn: true,
+  });
+  assert.equal((html.match(/data-pinned="left"/g) || []).length, 4);
+  assert.equal((html.match(/data-pinned="right"/g) || []).length, 2);
+  assert.equal((html.match(/data-pin-edge="left"/g) || []).length, 2);
+});

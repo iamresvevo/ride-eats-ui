@@ -444,8 +444,8 @@ const [expanded,setExpanded] = useState(["artwork"]);
     [
       [
         "stickyFirstColumn / stickyLastColumn",
-        "boolean / boolean",
-        "Pin either rendered edge column while the middle scrolls. Defaults false; selection/actions count as edges.",
+        "boolean | number / boolean | number",
+        "Pin one or more rendered edge columns while the middle scrolls. Defaults false; selection/actions count as edges.",
       ],
       [
         "variant / cellAlign",

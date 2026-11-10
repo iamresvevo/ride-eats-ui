@@ -713,11 +713,28 @@ export function DataTable({
   style,
 }) {
   const scrollRef = useRef(null);
+  const totalColumns = columns.length + Number(!!onSelectionChange) + Number(!!rowActions);
+  const count = value => value === true ? 1 : Math.max(0, Math.floor(Number(value) || 0));
+  const firstCount = Math.min(totalColumns, count(stickyFirstColumn));
+  const lastCount = Math.min(totalColumns - firstCount, count(stickyLastColumn));
+  const [columnWidths, setColumnWidths] = useState([]);
+  const pinProps = index => {
+    const side = index < firstCount ? "left" : index >= totalColumns - lastCount ? "right" : null;
+    if (!side) return {};
+    const offset = side === "left"
+      ? columnWidths.slice(0, index).reduce((sum, width) => sum + width, 0)
+      : columnWidths.slice(index + 1).reduce((sum, width) => sum + width, 0);
+    return { "data-pinned": side, "data-pin-edge":
+      (side === "left" ? index === firstCount - 1 : index === totalColumns - lastCount) ? side : undefined,
+      style: { [side]: offset } };
+  };
   const [scrollEdges, setScrollEdges] = useState({ left: false, right: false });
   useEffect(() => {
     const node = scrollRef.current;
     if (!node || (!stickyFirstColumn && !stickyLastColumn)) return;
     const update = () => {
+      const widths = Array.from(node.querySelectorAll("thead th"), cell => cell.getBoundingClientRect().width);
+      setColumnWidths(previous => previous.length === widths.length && previous.every((width, index) => Math.abs(width - widths[index]) < 0.1) ? previous : widths);
       const left = node.scrollLeft > 1;
       const right = node.scrollWidth - node.clientWidth - node.scrollLeft > 1;
       setScrollEdges(previous => previous.left === left && previous.right === right
@@ -729,7 +746,7 @@ export function DataTable({
     observer.observe(node);
     observer.observe(node.querySelector("table"));
     return () => { node.removeEventListener("scroll", update); observer.disconnect(); };
-  }, [stickyFirstColumn, stickyLastColumn]);
+  }, [stickyFirstColumn, stickyLastColumn, columns, rows]);
   const keyOf = (row, i) =>
     typeof rowKey === "function" ? rowKey(row) : (row[rowKey] ?? i);
   const keys = rows.map(keyOf),
@@ -765,7 +782,7 @@ export function DataTable({
         <thead>
           <tr>
             {selectable && (
-              <th scope="col">
+              <th scope="col" {...pinProps(0)}>
                 <Checkbox
                   label={<span className="re-sr-only">Select all rows</span>}
                   checked={
@@ -780,11 +797,13 @@ export function DataTable({
                 />
               </th>
             )}
-            {columns.map((column) => (
+            {columns.map((column, index) => (
               <th
                 key={column.key}
+                {...pinProps(index + Number(selectable))}
                 scope="col"
                 style={{
+                  ...pinProps(index + Number(selectable)).style,
                   width: column.width,
                   textAlign: column.align || "left",
                   ...(column.wrap
@@ -827,7 +846,7 @@ export function DataTable({
               </th>
             ))}
             {rowActions && (
-              <th scope="col">
+              <th scope="col" {...pinProps(totalColumns - 1)}>
                 <span className="re-sr-only">Actions</span>
               </th>
             )}
@@ -840,7 +859,7 @@ export function DataTable({
               return (
                 <tr key={key} data-selected={selected.has(key) || undefined}>
                   {selectable && (
-                    <td>
+                    <td {...pinProps(0)}>
                       <Checkbox
                         label={
                           <span className="re-sr-only">Select row {i + 1}</span>
@@ -857,7 +876,9 @@ export function DataTable({
                   {columns.map((column, j) => (
                     <td
                       key={column.key}
+                      {...pinProps(j + Number(selectable))}
                       style={{
+                        ...pinProps(j + Number(selectable)).style,
                         textAlign: column.align || "left",
                         ...(column.wrap
                           ? {
@@ -885,7 +906,7 @@ export function DataTable({
                       )}
                     </td>
                   ))}
-                  {rowActions && <td>{rowActions(row)}</td>}
+                  {rowActions && <td {...pinProps(totalColumns - 1)}>{rowActions(row)}</td>}
                 </tr>
               );
             })
