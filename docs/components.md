@@ -386,3 +386,5 @@ const images = [{ id: 'receipt', src: '/receipt.jpg', title: 'Receipt', alt: 'Or
 Combobox option popups measure the complete selector control rather than its text input. Their minimum width is 240px when the viewport allows it, and positioning keeps them inside the viewport. Short option lists retain that width. Long labels can grow the popup up to 560px, or the wider selector, while remaining inside the viewport.
 
 Combobox focus alone does not open its menu, including focus assigned by a dialog. Click, type, or use Arrow Down to open it. Escape closes the options before dismissing a containing dialog. Popup positions settle after dialog transitions and update when the control resizes.
+
+Select and Combobox accept a `placeholder` string. A legacy prompt in an options array can be marked `{ value: "", label: "Choose an item", placeholder: true }`. Placeholder options are omitted from the menu and keyboard navigation. Empty values without this flag remain selectable for meaningful choices such as All or None.

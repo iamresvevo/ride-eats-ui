@@ -1,5 +1,6 @@
 import type * as React from "react";
 export interface Option {
+  placeholder?: boolean;
   value: string;
   label: string;
   detail?: string;
@@ -130,6 +131,7 @@ export function Select(
       React.ButtonHTMLAttributes<HTMLButtonElement>,
       "value" | "onChange" | "children"
     > & {
+      placeholder?: string;
       options: (Omit<Option, "label"> & { label: React.ReactNode })[];
       renderValue?: (
         option:
@@ -839,6 +841,7 @@ export function Form<T extends Record<string, unknown>>(
   },
 ): React.ReactElement;
 export interface ComboboxOption {
+  placeholder?: boolean;
   value: string;
   label: string;
   description?: string;

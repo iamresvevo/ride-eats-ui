@@ -113,7 +113,7 @@ export function Combobox({
   onValueChange,
   label = "Choose an option",
   labelHidden = false,
-  placeholder = "Search options…",
+  placeholder,
   multiple = false,
   disabled = false,
   error,
@@ -129,9 +129,10 @@ export function Combobox({
     [query, setQuery] = useState(""),
     [active, setActive] = useState(0);
   const chosen = multiple ? value || [] : [value];
-  const selected = options.find((option) => option.value === value);
+  const selected = options.find((option) => !option.placeholder && option.value === value);
+  const prompt = placeholder ?? options.find(option => option.placeholder)?.label ?? "Search options…";
   const matches = options.filter((option) =>
-    option.label.toLowerCase().includes(query.toLowerCase()),
+    !option.placeholder && option.label.toLowerCase().includes(query.toLowerCase()),
   );
   useLayoutEffect(() => {
     const node = panel.current;
@@ -243,7 +244,7 @@ export function Combobox({
           }
           aria-invalid={!!error || undefined}
           aria-describedby={error || hint ? `${id}-hint` : undefined}
-          placeholder={placeholder}
+          placeholder={prompt}
           value={
             open
               ? query

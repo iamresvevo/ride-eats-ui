@@ -264,7 +264,7 @@ export default function PlatformDemos({ id }) {
         <UI.Flex direction="column" style={{ width: "100%", maxWidth: 420 }}>
           <UI.Combobox
             label="Assignee"
-            options={people}
+            options={[{ value: "", label: "Choose an assignee", placeholder: true }, ...people]}
             value={person}
             onValueChange={setPerson}
           />

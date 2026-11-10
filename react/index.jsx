@@ -487,12 +487,15 @@ export function Select({
   value,
   onValueChange,
   label = "Select",
+  placeholder,
   disabled = false,
   className = "",
   style,
   renderValue,
   ...buttonProps
 }) {
+  const choices = options.filter(item => !item.placeholder);
+  const prompt = placeholder ?? options.find(item => item.placeholder)?.label ?? label;
   return (
     <SendMenu
       className={`react-select ${className}`}
@@ -512,15 +515,15 @@ export function Select({
         >
           <span className="select-label">
             {renderValue
-              ? renderValue(options.find((item) => item.value === value))
-              : options.find((item) => item.value === value)?.label || label}
+              ? renderValue(choices.find((item) => item.value === value))
+              : choices.find((item) => item.value === value)?.label || prompt}
           </span>
           <SendIcon name="select" />
         </Button>
       )}
     >
       <MenuRows
-        items={options.map((item) => ({
+        items={choices.map((item) => ({
           ...item,
           checked: item.value === value,
           onSelect: () => onValueChange(item.value),

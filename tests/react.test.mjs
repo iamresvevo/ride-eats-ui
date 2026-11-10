@@ -1527,3 +1527,12 @@ test("image previews stay lazy and retain accessible open controls", () => {
   assert.equal(calls,0);
   assert.equal(render("ImageGallery", {items:[],open:false,onOpenChange(){},index:0,onIndexChange(){}}), "");
 });
+
+test("Combobox uses flagged options as prompts and preserves real empty choices", () => {
+  const options = [{value:"",label:"Choose product",placeholder:true},{value:"a",label:"Apple"}];
+  const html = render("Combobox", {options,value:"",onValueChange() {}});
+  assert.match(html, /placeholder="Choose product"/);
+  assert.doesNotMatch(html, /value="Choose product"/);
+  const empty = render("Combobox", {options:[{value:"",label:"All products"}],value:"",onValueChange() {}});
+  assert.match(empty, /value="All products"/);
+});

@@ -391,3 +391,5 @@ Header navigation stays within the available space beside the brand and account.
 ## Image galleries
 
 `ImageThumbnail` lazily loads image previews near the viewport. `ImageGallery` composes the shared Dialog with previous/next controls, arrow-key navigation, fit/zoom, loading and retry states, and app-owned action slots. See [the component reference](docs/components.md#image-gallery). Authentication and source caching stay in the consumer.
+
+Select and Combobox accept a `placeholder` string. A legacy prompt in an options array can be marked `{ value: "", label: "Choose an item", placeholder: true }`. Placeholder options are omitted from the menu and keyboard navigation. Empty values without this flag remain selectable for meaningful choices such as All or None.
