@@ -712,6 +712,24 @@ export function DataTable({
   className = "",
   style,
 }) {
+  const scrollRef = useRef(null);
+  const [scrollEdges, setScrollEdges] = useState({ left: false, right: false });
+  useEffect(() => {
+    const node = scrollRef.current;
+    if (!node || (!stickyFirstColumn && !stickyLastColumn)) return;
+    const update = () => {
+      const left = node.scrollLeft > 1;
+      const right = node.scrollWidth - node.clientWidth - node.scrollLeft > 1;
+      setScrollEdges(previous => previous.left === left && previous.right === right
+        ? previous : { left, right });
+    };
+    update();
+    node.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(node);
+    observer.observe(node.querySelector("table"));
+    return () => { node.removeEventListener("scroll", update); observer.disconnect(); };
+  }, [stickyFirstColumn, stickyLastColumn]);
   const keyOf = (row, i) =>
     typeof rowKey === "function" ? rowKey(row) : (row[rowKey] ?? i);
   const keys = rows.map(keyOf),
@@ -724,6 +742,9 @@ export function DataTable({
   };
   return (
     <div
+      ref={scrollRef}
+      data-scroll-left={scrollEdges.left || undefined}
+      data-scroll-right={scrollEdges.right || undefined}
       className={`re-data-table ${className}`}
       style={{ "--table-cell-align": cellAlign, ...style }}
       data-density={density}

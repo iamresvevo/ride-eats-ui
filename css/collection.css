@@ -736,21 +736,47 @@
 .re-data-table[data-sticky-last] tr > :last-child:not([colspan]) {
   position: sticky;
   z-index: 1;
+  --table-pinned-bg: var(--surface);
+}
+.re-data-table[data-sticky-first] tbody tr > :first-child:not([colspan]),
+.re-data-table[data-sticky-last] tbody tr > :last-child:not([colspan]) {
   background: var(--surface);
 }
 .re-data-table[data-sticky-first] tr > :first-child:not([colspan]) {
   left: 0;
-  box-shadow: 1px 0 var(--line);
 }
 .re-data-table[data-sticky-last] tr > :last-child:not([colspan]) {
   right: 0;
-  box-shadow: -1px 0 var(--line);
 }
 .re-data-table[data-sticky-first] thead tr > :first-child:not([colspan]),
 .re-data-table[data-sticky-last] thead tr > :last-child:not([colspan]),
 .re-data-table[data-sticky-first] tbody tr:hover > :first-child:not([colspan]),
 .re-data-table[data-sticky-last] tbody tr:hover > :last-child:not([colspan]) {
   background: var(--raised);
+  --table-pinned-bg: var(--raised);
+}
+/* A neutral fade separates pinned edges without a hard divider. */
+.re-data-table[data-sticky-first] tr > :first-child:not([colspan])::after,
+.re-data-table[data-sticky-last] tr > :last-child:not([colspan])::after {
+  content: "";
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  pointer-events: none;
+}
+.re-data-table[data-sticky-first] tr > :first-child:not([colspan])::after {
+  left: 100%;
+  background: linear-gradient(to right, var(--table-pinned-bg), transparent);
+}
+.re-data-table[data-sticky-last] tr > :last-child:not([colspan])::after {
+  right: 100%;
+  background: linear-gradient(to left, var(--table-pinned-bg), transparent);
+}
+.re-data-table[data-sticky-first][data-scroll-left] tr > :first-child:not([colspan])::after,
+.re-data-table[data-sticky-last][data-scroll-right] tr > :last-child:not([colspan])::after {
+  opacity: 1;
 }
 .re-data-table caption {
   text-align: left;
