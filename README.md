@@ -397,3 +397,5 @@ Select and Combobox accept a `placeholder` string. A legacy prompt in an options
 `Field` accepts `warning` for non-blocking inline feedback with a warning icon and semantic color. Errors take precedence, then warnings, then hints. Warnings describe the input without setting `aria-invalid`.
 
 `ImageGallery` supports `inline` and an optional CSS `height` for embedded photo inspection. Both inline and dialog viewers share zoom-in/out, Fit, double-click zoom and pointer-captured drag panning. Keyboard +/− zoom, 0 fits, and arrow keys scroll zoomed images. `renderActions` adds caller actions such as Expand.
+
+`Workbench layout="comparison"` provides two equal panes with a fixed first pane and independently scrolling content below the second pane header. It stacks on narrow screens. Use `ImageGallery inline fill` to fit its image and controls to the available pane height.

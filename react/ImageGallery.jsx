@@ -75,7 +75,7 @@ export function ImageThumbnail({
 
 export function ImageGallery({
   items = [], open, onOpenChange, index = 0, onIndexChange, loadImage,
-  renderActions, label = "Image gallery", inline = false, height,
+  renderActions, label = "Image gallery", inline = false, fill = false, height,
 }) {
   const active = Math.max(0, Math.min(index, items.length - 1));
   const item = items[active];
@@ -142,5 +142,5 @@ export function ImageGallery({
     </div>
     {item?.description&&<p className="image-gallery-caption">{item.description}</p>}
   </div>;
-  return inline?<section className="image-gallery image-gallery-inline" aria-label={label}>{controls}{content}</section>:<Dialog open={open} onOpenChange={onOpenChange} title={item?.title||label} size="lg" style={{width:"min(1200px, calc(100vw - 32px))",maxWidth:"calc(100vw - 32px)"}} className="image-gallery" footer={controls}>{content}</Dialog>;
+  return inline?<section data-fill={fill||undefined} className="image-gallery image-gallery-inline" aria-label={label}>{controls}{content}</section>:<Dialog open={open} onOpenChange={onOpenChange} title={item?.title||label} size="lg" style={{width:"min(1200px, calc(100vw - 32px))",maxWidth:"calc(100vw - 32px)"}} className="image-gallery" footer={controls}>{content}</Dialog>;
 }

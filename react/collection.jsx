@@ -1301,6 +1301,7 @@ export function ScrollArea({
 /** Three bounded editor panels; side panels scroll independently of the central stage. */
 export function Workbench({
   children,
+  layout,
   leadingWidth = 280,
   trailingWidth = 300,
   height = "min(66dvh, 760px)",
@@ -1314,6 +1315,7 @@ export function Workbench({
     <div
       {...props}
       className={`re-workbench ${className}`}
+      data-layout={layout}
       data-dividers={dividers || undefined}
       style={{
         "--workbench-leading": `${leadingWidth}px`,

@@ -1174,6 +1174,7 @@ export function ScrollArea(
 ): React.ReactElement;
 export function Workbench(
   props: React.HTMLAttributes<HTMLDivElement> & {
+    layout?: "comparison";
     leadingWidth?: number;
     trailingWidth?: number;
     height?: string;
@@ -1338,6 +1339,7 @@ export function ImageThumbnail(props: {
 export function ImageGallery<T extends GalleryImage>(props: {
   items: T[];
   inline?: boolean;
+  fill?: boolean;
   height?: React.CSSProperties["height"];
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
