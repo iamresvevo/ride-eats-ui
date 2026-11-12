@@ -403,3 +403,5 @@ Select and Combobox accept a `placeholder` string. A legacy prompt in an options
 Use `<DataTable stickyFirstColumn stickyLastColumn ... />` to keep the first and last rendered columns visible while the middle scrolls horizontally. Each prop accepts a boolean or a column count and defaults to false. For example, `stickyFirstColumn={2}` pins selection and receipt identity together. Widths are measured automatically and updated on resize. Selection and action columns count as rendered edge columns. Empty/loading rows remain full width. A subtle neutral fade marks hidden scrolling content beside each pinned edge and disappears at that scroll boundary. Left pins take precedence if counts overlap.
 
 Use `Workbench layout="comparison" comparisonTrailingWidth={480}` for a fixed-width details pane and an image pane that takes the remaining width. Omit the width for equal panes; narrow screens still stack.
+
+`FloatingProgress` provides a shared, minimizable task monitor; see the [component reference](docs/components.md#floatingprogress).

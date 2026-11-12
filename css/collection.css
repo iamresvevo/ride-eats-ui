@@ -1858,3 +1858,14 @@ button.re-avatar-more:hover {
   width: 15px;
   height: 15px;
 }
+
+/* Floating task monitor: compact state retains live progress and its toggle. */
+.re-floating-progress {
+  position: fixed;
+  right: var(--space-4, 16px);
+  bottom: var(--space-4, 16px);
+  width: min(460px, calc(100vw - 32px));
+  z-index: 25;
+}
+.re-floating-progress > .card { background: var(--raised); box-shadow: var(--shadow-float); }
+.re-floating-progress-details:not([hidden]) { margin-top: var(--space-3, 12px); }

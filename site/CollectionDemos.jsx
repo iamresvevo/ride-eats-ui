@@ -425,6 +425,7 @@ export function CollectionDemo({ id }) {
             </Button>
           </div>
           <UI.Progress label="Preparing your files" indeterminate />
+          <UI.FloatingProgress title="Uploading files" summary={`${number} / 100`} value={number} style={{position:"static",width:"100%"}}><p>Keep working while files upload.</p></UI.FloatingProgress>
         </div>
       );
     case "password-input":

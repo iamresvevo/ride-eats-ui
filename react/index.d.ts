@@ -1352,3 +1352,16 @@ export function ImageGallery<T extends GalleryImage>(props: {
   renderActions?: (item: T) => React.ReactNode;
   label?: string;
 }): React.ReactElement;
+
+export function FloatingProgress(props: {
+  title?: string;
+  summary?: React.ReactNode;
+  value?: number;
+  indeterminate?: boolean;
+  minimized?: boolean;
+  defaultMinimized?: boolean;
+  onMinimizedChange?: (minimized: boolean) => void;
+  children?: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+}): React.ReactElement;

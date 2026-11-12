@@ -91,6 +91,7 @@
         "EmptyState",
         "Alert",
         "Progress",
+        "FloatingProgress",
         "UploadProgress"
       ]
     },
