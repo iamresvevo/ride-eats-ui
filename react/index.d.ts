@@ -1356,6 +1356,7 @@ export function ImageGallery<T extends GalleryImage>(props: {
 export function FloatingProgress(props: {
   title?: string;
   summary?: React.ReactNode;
+  actions?: React.ReactNode;
   value?: number;
   indeterminate?: boolean;
   minimized?: boolean;

@@ -401,7 +401,7 @@ Use `Workbench layout="comparison" comparisonTrailingWidth={480}` for a fixed-wi
 
 ## FloatingProgress
 
-A fixed task monitor with accessible Minimize/Expand controls. The minimized view keeps the title, summary and progress visible; minimizing does not pause work. Use `minimized`/`onMinimizedChange` for app-owned state, or `defaultMinimized` for internal state. `value` is 0–100; `indeterminate` supports preparation. Put statistics and task actions in children. Keep network and task lifecycle in the app.
+A fixed task monitor with accessible Minimize/Expand controls. The minimized view keeps the title, summary and progress visible; minimizing does not pause work. Use `minimized`/`onMinimizedChange` for app-owned state, or `defaultMinimized` for internal state. `value` is 0–100; `indeterminate` supports preparation. Put statistics in children and compact task controls in the `actions` header slot. Keep network and task lifecycle in the app.
 
 ```jsx
 <FloatingProgress title="Reviewing receipts" summary="14 / 20" value={70}>
