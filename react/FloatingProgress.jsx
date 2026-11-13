@@ -12,8 +12,8 @@ export function FloatingProgress({title='Progress', summary, value=0, indetermin
     onMinimizedChange?.(!collapsed);
   }
   return <div className={`re-floating-progress ${className}`} data-minimized={collapsed || undefined} style={style} role="region" aria-label={title}>
-    <Card padding="sm" title={title} action={<Flex gap={8} align="center">{summary}<Button size="sm" variant="ghost" aria-label={collapsed?'Expand progress':'Minimize progress'} aria-expanded={!collapsed} aria-controls={contentId} onClick={toggle}>{collapsed?'Expand':'Minimize'}</Button></Flex>}>
-      <Progress label="Finished" value={value} indeterminate={indeterminate}/>
+    <Card padding="sm" title={collapsed?undefined:title} action={collapsed?undefined:<Flex gap={8} align="center">{summary}<Button size="sm" variant="ghost" aria-label={collapsed?'Expand progress':'Minimize progress'} aria-expanded={!collapsed} aria-controls={contentId} onClick={toggle}>{collapsed?'Expand':'Minimize'}</Button></Flex>}>
+      {collapsed?<div className="re-floating-progress-mini">{summary}<Progress label={title} value={value} indeterminate={indeterminate}/><Button size="sm" variant="ghost" aria-label="Expand progress" aria-expanded={false} aria-controls={contentId} onClick={toggle}>Expand</Button></div>:<Progress label="Finished" value={value} indeterminate={indeterminate}/>}
       <div id={contentId} hidden={collapsed} className="re-floating-progress-details">{children}</div>
     </Card>
   </div>;

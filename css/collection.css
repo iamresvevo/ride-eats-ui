@@ -1869,3 +1869,9 @@ button.re-avatar-more:hover {
 }
 .re-floating-progress > .card { background: var(--raised); box-shadow: var(--shadow-float); }
 .re-floating-progress-details:not([hidden]) { margin-top: var(--space-3, 12px); }
+
+.re-floating-progress[data-minimized] { width: min(340px, calc(100vw - 32px)); }
+.re-floating-progress-mini { display: flex; align-items: center; gap: var(--space-3, 12px); }
+.re-floating-progress-mini > .re-progress { flex: 1; min-width: 32px; }
+.re-floating-progress-mini .re-progress-label { display: none; }
+.re-floating-progress-mini > button { flex-shrink: 0; }
